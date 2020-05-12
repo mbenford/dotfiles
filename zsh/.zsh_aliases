@@ -1,0 +1,11 @@
+# zsh
+alias zshreload='exec zsh'
+alias zshalias='$EDITOR $HOME/.zsh_aliases'
+
+# git
+alias gcfu='git commit --fixup'
+alias grbim='git rebase -i master'
+alias gai='git status --short | fzf --height 20 --reverse | xargs git add'
+
+# misc
+alias open='xdg-open '
