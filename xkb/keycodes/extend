@@ -11,7 +11,7 @@ xkb_keycodes "aliases" {
 	alias <ULTR> = <FK15>; # Ultra
 	alias <TERM> = <FK16>; # Terminal
 	alias <TMUX> = <FK17>; # Tmux
-	alias <HDIR> = <FK17>; # Home folder
+	alias <HDIR> = <FK18>; # Home folder
 	alias <QUIT> = <FK19>; # Quit application
 	alias <CLSE> = <FK20>; # Close window/tab
 	alias <MVPT> = <FK21>; # Move mouse pointer
