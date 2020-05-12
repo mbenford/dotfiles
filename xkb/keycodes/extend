@@ -1,0 +1,18 @@
+default default
+xkb_keycodes "aliases" {
+	alias <EXT> = <CAPS>; # Activate the extended overlay
+
+	alias <PLAY> = <I208>; # Play/Pause
+	alias <PREV> = <I173>; # Previous track
+	alias <NEXT> = <I171>; # Next track
+
+	alias <CAPL> = <FK13>; # Caps Lock
+	alias <ALTG> = <FK14>; # AltGr
+	alias <ULTR> = <FK15>; # Ultra
+	alias <TERM> = <FK16>; # Terminal
+	alias <TMUX> = <FK17>; # Tmux
+	alias <HDIR> = <FK17>; # Home folder
+	alias <QUIT> = <FK19>; # Quit application
+	alias <CLSE> = <FK20>; # Close window/tab
+	alias <MVPT> = <FK21>; # Move mouse pointer
+};

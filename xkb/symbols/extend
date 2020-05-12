@@ -1,0 +1,182 @@
+default partial alphanumeric_keys
+xkb_symbols "base" {
+	key <EXT> {
+		symbols = [ Overlay1_Enable ],
+		actions = [ SetControls(controls=Overlay1+MouseKeys) ]
+	};
+};
+
+partial alphanumeric_keys
+xkb_symbols "modifiers" {
+	key <LatS> { Overlay1 = <LFSH> };
+	key <LatD> { Overlay1 = <LCTL> };
+
+	key <LatA> { Overlay1 = <ALTG> };
+	key <ALTG> {
+		symbols = [ VoidSymbol ],
+		actions = [ LatchMods(mods=AltGr) ]
+	};
+	
+	key <RTSH> { Overlay1 = <HYPR> };
+	key <HYPR> {
+		symbols = [ VoidSymbol ],
+		actions = [ LatchMods(mods=Control+Shift+Alt)]
+	};
+
+	key <RTRN> { Overlay1 = <ULTR> };
+	key <ULTR> { 
+		symbols = [ VoidSymbol ],
+		actions = [ LatchMods(mods=Control+Shift+Alt+Super)]
+	};
+
+	key <BKSL> { Overlay1 = <CAPL> };
+	key <CAPL> {
+		symbols = [ VoidSymbol ],
+		actions = [ LockMods(mods=Lock) ]
+	};
+};
+
+partial alphanumeric_keys
+xkb_symbols "navigation" {
+	key <LatI> { Overlay1 = <UP>   };
+	key <LatJ> { Overlay1 = <LEFT> };
+	key <LatK> { Overlay1 = <DOWN> };
+	key <LatL> { Overlay1 = <RGHT> };
+
+	key <AD11> { Overlay1 = <PGUP> };
+	key <AC11> { Overlay1 = <PGDN> };
+
+	key <LatU> { Overlay1 = <HOME> };
+	key <LatO> { Overlay1 = <END>  };
+};
+
+partial alphanumeric_keys
+xkb_symbols "editing" {
+	key <LatP> { Overlay1 = <DELE> };
+	key <AC10> { Overlay1 = <BKSP> };
+};
+
+partial alphanumeric_keys
+xkb_symbols "function_keys" {
+	key <AE01> { Overlay1 = <FK01> };
+	key <AE02> { Overlay1 = <FK02> };
+	key <AE03> { Overlay1 = <FK03> };
+	key <AE04> { Overlay1 = <FK04> };
+	key <AE05> { Overlay1 = <FK05> };
+	key <AE06> { Overlay1 = <FK06> };
+	key <AE07> { Overlay1 = <FK07> };
+	key <AE08> { Overlay1 = <FK08> };
+	key <AE09> { Overlay1 = <FK09> };
+	key <AE10> { Overlay1 = <FK10> };
+	key <AE11> { Overlay1 = <FK11> };
+	key <AE12> { Overlay1 = <FK12> };
+};
+
+partial alphanumeric_keys
+xkb_symbols "media" {
+	key <LatB> { Overlay1 = <PLAY> };
+	key <LatN> { Overlay1 = <PREV> };
+	key <LatM> { Overlay1 = <NEXT> };
+
+	key <AB08> { Overlay1 = <VOL-> };
+	key <AB09> { Overlay1 = <VOL+> };
+	key <AB10> { Overlay1 = <MUTE> };
+};
+
+partial alphanumeric_keys
+xkb_symbols "clipboard" {
+	key <LatX> { Overlay1 = <CUT> };
+	key <CUT> {
+		symbols = [ VoidSymbol ],
+		actions = [ Redirect(key=<DELE>, mods=Shift) ]
+	};
+
+	key <LatC> { Overlay1 = <COPY> };
+	key <COPY> {
+		symbols = [ VoidSymbol ],
+		actions = [ Redirect(key=<INS>, mods=Control) ]
+	};
+
+	key <LatV> { Overlay1 = <PAST> };
+	key <PAST> {
+		symbols = [ VoidSymbol ],
+		actions = [ Redirect(key=<INS>, mods=Shift) ]
+	};
+};
+
+partial alphanumeric_keys
+xkb_symbols "actions" {
+	key <LatZ> { Overlay1 = <UNDO> };
+	key <UNDO> {
+		symbols = [ VoidSymbol ],
+		actions = [ Redirect(key=<LatZ>, mods=Control) ]
+	};
+
+	key <LatQ> { Overlay1 = <QUIT> };
+	key <QUIT> {
+		symbols = [ VoidSymbol ],
+		actions = [ Redirect(key=<FK04>, mods=Alt) ]
+	};
+
+	key <LatW> { Overlay1 = <CLSE> };
+	key <CLSE> {
+		symbols = [ VoidSymbol ],
+		actions = [ Redirect(key=<FK04>, mods=Control)]
+	};
+};
+
+partial alphanumeric_keys
+xkb_symbols "mouse" {
+	key <AD12> { Overlay1 = <MVPT> };
+	key <MVPT> {
+		type = "TWO_LEVEL",
+		symbols = [ VoidSymbol, VoidSymbol ],
+		actions = [ MovePtr(x=+0,y=+50), MovePtr(x=-0,y=-50) ]
+	};
+};
+
+partial alphanumeric_keys
+xkb_symbols "misc" {
+	key <LatE> { Overlay1 = <ESC>  };
+	key <LatR> { Overlay1 = <MENU> };
+	key <LatY> { Overlay1 = <INS>  };
+	key <SPCE> { Overlay1 = <RTRN> };
+
+	key <LatT> { Overlay1 = <TERM> };
+	key <TERM> { 
+		symbols = [ VoidSymbol ],
+		actions = [ Redirect(key=<LatT>, mods=Control+Alt)] 
+	};
+	
+	key <LatF> { Overlay1 = <FIND> };
+	key <FIND> {
+		symbols = [ VoidSymbol ],
+		actions = [ Redirect(key=<SPCE>, mods=Control+Shift+Alt+Super)]
+	};
+
+	key <LatG> { Overlay1 = <TMUX> };
+	key <TMUX> {
+		symbols = [ VoidSymbol ],
+		actions = [ Redirect(key=<LatB>, mods=Control) ]
+	};
+
+	key <LatH> { Overlay1 = <HDIR> };
+	key <HDIR> { 
+		symbols = [ VoidSymbol ],
+		actions = [ Redirect(key=<LatH>, mods=Control+Shift+Alt+Super)] 
+	};
+};
+
+partial alphanumeric_keys
+xkb_symbols "complete" {
+	include "extend(base)"
+	include "extend(modifiers)"
+	include "extend(navigation)"
+	include "extend(editing)"
+	include "extend(function_keys)"
+	include "extend(media)"
+	include "extend(clipboard)"
+	include "extend(actions)"
+	include "extend(mouse)"
+	include "extend(misc)"
+};
