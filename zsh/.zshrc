@@ -27,7 +27,7 @@ setopt hist_save_no_dups
 
 # plugins
 plugins=(
-  tmux
+	tmux
 	dircycle
 	zsh-autosuggestions
 	fast-syntax-highlighting
