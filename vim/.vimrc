@@ -20,6 +20,9 @@ set encoding=utf-8
 
 set tabstop=2
 
+set ttymouse=xterm2
+set mouse=a
+
 " Plugin manager
 call plug#begin('~/.vim/plugged')
 call plug#end()
