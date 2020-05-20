@@ -1,6 +1,8 @@
 " Turn off vi compatibility
 set nocompatible
 
+set background=dark
+
 " Show line numbers
 set number
 
