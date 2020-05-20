@@ -2,6 +2,7 @@
 export EDITOR=vim
 
 # path
+path+=$HOME/bin
 typeset -U path
 
 # tmux
