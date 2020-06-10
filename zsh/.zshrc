@@ -34,7 +34,7 @@ plugins=(
 	common-aliases
 	asdf
 	git
-	z
+	fasd
 	bgnotify
 	web-search
 	sudo
