@@ -1,0 +1,21 @@
+{
+  "settingsVersion": "1.66",
+  "exclusionRules": [],
+  "filterLinkHints": false,
+  "waitForEnterForFilteredHints": true,
+  "hideHud": false,
+  "keyMappings": "unmapAll\nmap o Vomnibar.activateTabSelection\nmap t createTab\nmap T createTab incognito\nmap w removeTab\nmap W restoreTab\nmap r reload\nmap f LinkHints.activateMode\nmap F LinkHints.activateModeToOpenInNewForegroundTab\nmap / enterFindMode\nmap n performFind\nmap N performBackwardsFind\nmap j goBack\nmap l goForward\nmap J previousTab\nmap L nextTab\nmap i scrollUp\nmap k scrollDown\nmap I scrollToTop\nmap K scrollToBottom\nmap <a-j> moveTabLeft\nmap <a-l> moveTabRight\nmap d duplicateTab\nmap p togglePinTab\nmap m toggleMuteTab\nmap < goPrevious\nmap > goNext\nmap e focusInput\nmap s enterVisualMode\nmap c copyCurrentUrl\nmap v openCopiedUrlInCurrentTab\nmap V openCopiedUrlInNewTab",
+  "linkHintCharacters": "sadfjklewcmpgh",
+  "linkHintNumbers": "0123456789",
+  "newTabUrl": "about:newtab",
+  "nextPatterns": "next,more,newer,>,›,→,»,≫,>>",
+  "previousPatterns": "prev,previous,back,older,<,‹,←,«,≪,<<",
+  "regexFindMode": false,
+  "ignoreKeyboardLayout": false,
+  "scrollStepSize": 60,
+  "smoothScroll": true,
+  "grabBackFocus": true,
+  "searchEngines": "",
+  "searchUrl": "https://www.google.com/search?q=",
+  "userDefinedLinkHintCss": "div > .vimiumHintMarker {\n/* linkhint boxes */\nbackground: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFF785),\n  color-stop(100%,#FFC542));\nborder: 1px solid #E3BE23;\n}\n\ndiv > .vimiumHintMarker span {\n/* linkhint text */\ncolor: black;\nfont-weight: bold;\nfont-size: 12px;\n}\n\ndiv > .vimiumHintMarker > .matchingCharacter {\n}"
+}
