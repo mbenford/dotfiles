@@ -45,7 +45,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# custom scripts
+# custom aliases
 source $HOME/.zsh_aliases
 
 # fix for tilix
