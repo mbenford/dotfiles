@@ -1,0 +1,23 @@
+[user]
+	name = Michael Benford
+[core]
+	editor = /usr/bin/vim
+	pager = diff-so-fancy | less --tabs=4 -RFX 
+[pull]
+	rebase = true
+[push]
+	default = simple
+[rebase]
+	autosquash=true
+[color]
+	ui = always
+[color "diff"]
+	meta = yellow
+	frag = magenta
+	commit = yellow
+	old = red
+	new = green
+	whitespace = red reverse
+[includeIf "gitdir:~/dev/work/"]
+	path = ~/dev/work/.gitconfig
+
