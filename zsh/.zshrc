@@ -48,6 +48,10 @@ source $ZSH/oh-my-zsh.sh
 # custom aliases
 source $HOME/.zsh_aliases
 
+# custom functions
+fpath=($HOME/.zfunc "${fpath[@]}")
+autoload -U $fpath[1]/*(.:t)
+
 # fix for tilix
 if [[ $TILIX_ID ]]; then
 	source /etc/profile.d/vte-2.91.sh
