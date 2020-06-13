@@ -27,18 +27,18 @@ setopt hist_save_no_dups
 
 # plugins
 plugins=(
-	tmux
-	zsh-autosuggestions
-	fast-syntax-highlighting
-	common-aliases
 	asdf
-	git
-	fasd
 	bgnotify
-	sudo
 	colored-man-pages
 	command-not-found
+	common-aliases
+	fasd
+	fast-syntax-highlighting
+	git
+	sudo
+	tmux
 	ubuntu
+	zsh-autosuggestions
 )
 
 source $ZSH/oh-my-zsh.sh
