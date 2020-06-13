@@ -28,7 +28,6 @@ setopt hist_save_no_dups
 # plugins
 plugins=(
 	tmux
-	dircycle
 	zsh-autosuggestions
 	fast-syntax-highlighting
 	common-aliases
@@ -36,7 +35,6 @@ plugins=(
 	git
 	fasd
 	bgnotify
-	web-search
 	sudo
 	colored-man-pages
 	command-not-found
