@@ -5,6 +5,9 @@ export EDITOR=vim
 path+=$HOME/bin
 typeset -U path
 
+# cdpath
+cdpath=(. $HOME)
+
 # tmux
 ZSH_TMUX_AUTOSTART=true
 
