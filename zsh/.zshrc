@@ -39,6 +39,7 @@ plugins=(
 	tmux
 	ubuntu
 	zsh-autosuggestions
+	zsh-tmux-auto-title
 )
 
 source $ZSH/oh-my-zsh.sh
