@@ -80,3 +80,13 @@ nnoremap <C-l> :wincmd l<CR>
 nnoremap <C-n> :NERDTreeToggle %<CR>
 
 nnoremap <silent><Space> :nohlsearch<Bar>:echo<CR>
+
+" autocmds
+
+" spell-check markdown files and git commit messages
+autocmd FileType markdown setlocal spell
+autocmd FileType gitcommit setlocal spell
+
+" enable dictionary auto-completion in markdown files and git commit messages
+autocmd FileType markdown setlocal complete+=kspell
+autocmd FileType gitcommit setlocal complete+=kspell
