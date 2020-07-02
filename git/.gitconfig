@@ -2,7 +2,7 @@
 	name = Michael Benford
 [core]
 	editor = /usr/bin/vim
-	pager = diff-so-fancy | less --tabs=4 -RFX 
+	pager = diff-so-fancy | less --tabs=2 -RFX 
 [pull]
 	rebase = true
 [push]
