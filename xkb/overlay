@@ -1,6 +1,6 @@
 default partial alphanumeric_keys
 xkb_symbols "base" {
-	key <EXT> {
+	key <CAPS> {
 		symbols = [ Overlay1_Enable ],
 		actions = [ SetControls(controls=Overlay1+MouseKeys) ]
 	};
@@ -11,9 +11,8 @@ xkb_symbols "modifiers" {
 	key <LatS> { Overlay1 = <LFSH> };
 	key <LatD> { Overlay1 = <LCTL> };
 
-	key <LatA> { Overlay1 = <ALTG> };
-	key <ALTG> {
-		symbols = [ VoidSymbol ],
+	key <RALT> {
+		symbols = [ ISO_Level3_Shift ],
 		actions = [ LatchMods(mods=AltGr) ]
 	};
 	
@@ -23,14 +22,14 @@ xkb_symbols "modifiers" {
 		actions = [ LatchMods(mods=Control+Shift+Alt)]
 	};
 
-	key <RTRN> { Overlay1 = <ULTR> };
-	key <ULTR> { 
+	key <RTRN> { Overlay1 = <FK14> };
+	key <FK14> { 
 		symbols = [ VoidSymbol ],
 		actions = [ LatchMods(mods=Control+Shift+Alt+Super)]
 	};
 
-	key <BKSL> { Overlay1 = <CAPL> };
-	key <CAPL> {
+	key <BKSL> { Overlay1 = <FK13> };
+	key <FK13> {
 		symbols = [ VoidSymbol ],
 		actions = [ LockMods(mods=Lock) ]
 	};
@@ -74,9 +73,9 @@ xkb_symbols "function_keys" {
 
 partial alphanumeric_keys
 xkb_symbols "media" {
-	key <LatB> { Overlay1 = <PLAY> };
-	key <LatN> { Overlay1 = <PREV> };
-	key <LatM> { Overlay1 = <NEXT> };
+	key <LatB> { Overlay1 = <I208> };
+	key <LatN> { Overlay1 = <I173> };
+	key <LatM> { Overlay1 = <I171> };
 
 	key <AB08> { Overlay1 = <VOL-> };
 	key <AB09> { Overlay1 = <VOL+> };
@@ -112,14 +111,14 @@ xkb_symbols "actions" {
 		actions = [ Redirect(key=<LatZ>, mods=Control) ]
 	};
 
-	key <LatQ> { Overlay1 = <QUIT> };
-	key <QUIT> {
+	key <LatQ> { Overlay1 = <FK15> };
+	key <FK15> {
 		symbols = [ VoidSymbol ],
 		actions = [ Redirect(key=<FK04>, mods=Alt) ]
 	};
 
-	key <LatW> { Overlay1 = <CLSE> };
-	key <CLSE> {
+	key <LatW> { Overlay1 = <FK16> };
+	key <FK16> {
 		symbols = [ VoidSymbol ],
 		actions = [ Redirect(key=<FK04>, mods=Control)]
 	};
@@ -127,8 +126,8 @@ xkb_symbols "actions" {
 
 partial alphanumeric_keys
 xkb_symbols "mouse" {
-	key <AD12> { Overlay1 = <MVPT> };
-	key <MVPT> {
+	key <AD12> { Overlay1 = <FK17> };
+	key <FK17> {
 		type = "TWO_LEVEL",
 		symbols = [ VoidSymbol, VoidSymbol ],
 		actions = [ MovePtr(x=+0,y=+50), MovePtr(x=-0,y=-50) ]
@@ -142,26 +141,26 @@ xkb_symbols "misc" {
 	key <LatY> { Overlay1 = <INS>  };
 	key <SPCE> { Overlay1 = <RTRN> };
 
-	key <LatT> { Overlay1 = <TERM> };
-	key <TERM> { 
+	key <LatT> { Overlay1 = <FK20> };
+	key <FK20> { 
 		symbols = [ VoidSymbol ],
 		actions = [ Redirect(key=<LatT>, mods=Control+Alt)] 
 	};
 	
-	key <LatF> { Overlay1 = <FIND> };
-	key <FIND> {
+	key <LatF> { Overlay1 = <FK21> };
+	key <FK21> {
 		symbols = [ VoidSymbol ],
 		actions = [ Redirect(key=<SPCE>, mods=Control+Shift+Alt+Super)]
 	};
 
-	key <LatG> { Overlay1 = <TMUX> };
-	key <TMUX> {
+	key <LatG> { Overlay1 = <FK22> };
+	key <FK22> {
 		symbols = [ VoidSymbol ],
 		actions = [ Redirect(key=<LatB>, mods=Control) ]
 	};
 
-	key <LatH> { Overlay1 = <HDIR> };
-	key <HDIR> { 
+	key <LatH> { Overlay1 = <FK23> };
+	key <FK23> { 
 		symbols = [ VoidSymbol ],
 		actions = [ Redirect(key=<LatH>, mods=Control+Shift+Alt+Super)] 
 	};
@@ -169,14 +168,14 @@ xkb_symbols "misc" {
 
 partial alphanumeric_keys
 xkb_symbols "complete" {
-	include "extend(base)"
-	include "extend(modifiers)"
-	include "extend(navigation)"
-	include "extend(editing)"
-	include "extend(function_keys)"
-	include "extend(media)"
-	include "extend(clipboard)"
-	include "extend(actions)"
-	include "extend(mouse)"
-	include "extend(misc)"
+	include "overlay(base)"
+	include "overlay(modifiers)"
+	include "overlay(navigation)"
+	include "overlay(editing)"
+	include "overlay(function_keys)"
+	include "overlay(media)"
+	include "overlay(clipboard)"
+	include "overlay(actions)"
+	include "overlay(mouse)"
+	include "overlay(misc)"
 };
