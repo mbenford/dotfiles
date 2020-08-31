@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+echo -n "\
+This script will perform the following actions:
+
+1. Copy the overlay symbols to XKB folder (requires sudo)
+2. Edit evdev and evdev.lst (requires sudo)
+3. Set gnome-shell to use the overlay
+
+Press ENTER to continue or CTRL-C to abort"; read
+
+XKB_DIR="/usr/share/X11/xkb"
+SYMBOLS_DIR="$XKB_DIR/symbols"
+RULES_DIR="$XKB_DIR/rules"
+
+sudo /bin/cp --backup=simple --force ./overlay "$SYMBOLS_DIR"
+sudo sed --in-place=.bak '/!\s*option\s*=\s*symbols\s*/a \  overlay:complete = +overlay(complete)' "$RULES_DIR/evdev"
+sudo sed --in-place=.bak '/!\s*option/a \  overlay:complete     Custom overlay' "$RULES_DIR/evdev.lst"
+
+GS_SCHEMA="org.gnome.desktop.input-sources"
+GS_KEY="xkb-options"
+GS_VALUE=$(gsettings get $GS_SCHEMA $GS_KEY)
+OPTION="'overlay:complete'"
+
+if [ "$GS_VALUE" = "@as []" ]; then
+	GS_VALUE="[$OPTION]"
+else
+	GS_VALUE=$(echo $GS_VALUE | sed "s/\]/,$OPTION]/")
+fi
+
+gsettings set $GS_SCHEMA $GS_KEY $GS_VALUE
+
+echo "All done. Restart gnome-shell for the changes to take effect"
