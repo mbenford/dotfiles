@@ -31,8 +31,10 @@ set laststatus=2
 " set default encoding
 set encoding=utf-8
 
-" set tabstop
+" set indentation
 set tabstop=2
+set shiftwidth=2
+set noexpandtab
 
 " enable mouse support
 set ttymouse=xterm2
