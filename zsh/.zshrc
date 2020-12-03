@@ -17,13 +17,6 @@ SAVEHIST=10000
 HISTORY_IGNORE="(ls|ll|cd|\.\.|\.\.\.|\.\.\.\.|gc|gst|gau|ga|gco|gup)"
 HIST_STAMPS="yyyy-mm-dd"
 
-setopt extended_history
-setopt hist_ignore_space
-setopt hist_expire_dups_first
-setopt hist_ignore_dups
-setopt hist_ignore_all_dups
-setopt hist_find_no_dups
-setopt hist_save_no_dups
 
 # plugins
 plugins=(
@@ -42,7 +35,14 @@ plugins=(
 	zsh-tmux-auto-title
 )
 
+# Oh My ZSH
 source $ZSH/oh-my-zsh.sh
+
+# custom zsh options
+setopt hist_ignore_all_dups
+setopt hist_find_no_dups
+setopt hist_save_no_dups
+unsetopt share_history
 
 # custom aliases
 source $HOME/.zsh_aliases
