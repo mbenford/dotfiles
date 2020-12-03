@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+[ -z "$1" ] && (echo "error: missing connection name"; exit 1;)
+[ -z "$2" ] && (echo "error: missing IPSec secret"; exit 1;)
+[ -z "$3" ] && (echo "error: missing Xauth password"; exit 1;)
+
+temp_file=$(mktemp)
+
+function cleanup() {
+	rm -rf "$temp_file"
+}
+trap cleanup EXIT SIGINT SIGTERM
+
+echo "vpn.secrets.IPSec secret:$2" > "$temp_file"
+echo "vpn.secrets.Xauth password:$3" >> "$temp_file"
+nmcli --pretty con up id $1 passwd-file "$temp_file"
