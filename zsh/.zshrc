@@ -56,5 +56,9 @@ if [[ $TILIX_ID ]]; then
 	source /etc/profile.d/vte-2.91.sh
 fi
 
+# fzf initialization
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # to customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
