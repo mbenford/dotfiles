@@ -20,4 +20,6 @@
 	whitespace = red reverse
 [includeIf "gitdir:~/dev/work/"]
 	path = ~/dev/work/.gitconfig
-
+[fancy-status]
+	showtitles = false
+	mergeUntracked = true
