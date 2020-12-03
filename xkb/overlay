@@ -42,8 +42,8 @@ xkb_symbols "navigation" {
 	key <LatK> { Overlay1 = <DOWN> };
 	key <LatL> { Overlay1 = <RGHT> };
 
-	key <AD11> { Overlay1 = <PGUP> };
-	key <AC11> { Overlay1 = <PGDN> };
+	key <LatP> { Overlay1 = <PGUP> };
+	key <AD11> { Overlay1 = <PGDN> };
 
 	key <LatU> { Overlay1 = <HOME> };
 	key <LatO> { Overlay1 = <END>  };
@@ -51,8 +51,8 @@ xkb_symbols "navigation" {
 
 partial alphanumeric_keys
 xkb_symbols "editing" {
-	key <LatP> { Overlay1 = <DELE> };
 	key <AC10> { Overlay1 = <BKSP> };
+	key <AC11> { Overlay1 = <DELE> };
 };
 
 partial alphanumeric_keys
