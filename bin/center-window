@@ -1,0 +1,7 @@
+#!/bin/bash
+
+! [[ -x "$(command -v xdotool)" ]] && (logger "error: xdotool not found"; exit 1)
+
+window=$(xdotool getwindowfocus)
+xdotool windowsize "$window" 1920 1037
+xdotool windowmove "$window" 320 35
