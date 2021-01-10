@@ -188,7 +188,7 @@
   # /foo/bar/git_repo/nested_git_repo/baz, prompt will display git_repo/nested_git_repo/baz (first)
   # or nested_git_repo/baz (last). This assumes that git_repo and nested_git_repo contain markers
   # and other directories don't.
-  typeset -g POWERLEVEL9K_DIR_TRUNCATE_BEFORE_MARKER=true
+  typeset -g POWERLEVEL9K_DIR_TRUNCATE_BEFORE_MARKER="last"
   # Don't shorten this many last directory segments. They are anchors.
   typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
   # Shorten directory if it's longer than this even if there is space for it. The value can
