@@ -8,10 +8,7 @@ alias gcfu='git commit --fixup'
 alias grbim='git rebase -i master'
 alias gs='git fancy-status '
 alias gcopa='git checkout -p'
-alias glr='git --no-pager log -100 --reverse --no-merges \
-	--pretty='\''%C(yellow)%h%Creset %C(bold blue)%<(15,trunc)%ae%Creset%C(auto)%d%Creset %s %Cgreen(%cr)'\'' \
-	| less -RFX -S +G'
-
+alias glr='git-log-fzf'
 # exa
 alias ls='exa --group-directories-first --time-style long-iso'
 alias la='ls -la'
