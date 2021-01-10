@@ -3,6 +3,7 @@ export EDITOR=vim
 
 # path
 path+=$HOME/bin
+path+=$HOME/.local/bin
 typeset -U path
 
 # cdpath
