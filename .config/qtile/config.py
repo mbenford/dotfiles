@@ -107,6 +107,7 @@ floating_layout = layout.Floating(
 		Match(wm_class="jetbrains-goland", title="win0"),
 		Match(wm_class="jetbrains-goland", title="Welcome to GoLand"),
 		Match(wm_class="microsoft teams - preview", title="Microsoft Teams - Preview"),
+		Match(wm_class="Enpass", title="Enpass Assistant"),
 	]
 )
 
