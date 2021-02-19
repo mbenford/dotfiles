@@ -27,6 +27,11 @@ layout_indicator = dict(
     bg=bar["bg"],
 )
 
+screen_indicator = dict(
+    active_fg="#ffffff",
+    inactive_fg="#5c6370"
+)
+
 systray = dict(
     bg=None,
 )
@@ -39,6 +44,8 @@ clock = dict(
 windows = dict(
     title_fg="#ffffff",
     title_bg=None,
-    border="#ffffff",
+    border="#000000",
     border_focus="#61afef",
+    border_stack="#d55fde",
+    border_stack_focus="#2bbac5",
 )
