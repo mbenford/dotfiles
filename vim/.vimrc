@@ -1,94 +1,72 @@
-" plugins
+set encoding=utf-8
+set termguicolors
+set guicursor=
+set wildmenu wildmode=full
+set number relativenumber
+set colorcolumn=120
+set hidden
+set shortmess-=S
+set scrolloff=10
+set sidescroll=1
+set sidescrolloff=10
+set title
+set splitbelow
+set splitright
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set noexpandtab
+set ttimeoutlen=0
+set virtualedit=all
+set laststatus=2
+set smartindent
+set smarttab
+set incsearch
+set nohlsearch
+set nocompatible
+set noshowmode
+set nowrap
+set noswapfile
+set nobackup
+set undodir=~/.vim/undodir
+set undofile
+
 call plug#begin('~/.vim/plugged')
+Plug 'joshdick/onedark.vim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
+Plug 'preservim/nerdcommenter'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'jeffkreeftmeijer/vim-numbertoggle'
-Plug 'joshdick/onedark.vim'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'terryma/vim-expand-region'
+Plug 'mg979/vim-visual-multi'
+Plug 'vimwiki/vimwiki'
 call plug#end()
 
-" turn off vi compatibility
-set nocompatible
-
-" set encoding
-set encoding=utf-8
-
-" disable delay on escape
-set ttimeoutlen=0
-
-" enable virtual editing
-set virtualedit=all
-
-" show line numbers
-set number relativenumber
-
-" show file stats
-set ruler
-
-" show status bar
-set laststatus=2
-
-" set default encoding
-set encoding=utf-8
-
-" set indentation
-set tabstop=2
-set shiftwidth=2
-set noexpandtab
-
-" enable mouse support
-set ttymouse=xterm2
-set mouse=a
-
-" disable show mode
-set noshowmode
-
-" disable changing window title
-set notitle
-
-" highlight search terms
-set hlsearch
-
-" change split direction
-set splitbelow
-set splitright
-
-" turn on syntax highlighting
 syntax on
-
-" set colorscheme
 colorscheme onedark
 
-" set background as transparent
-highlight Normal ctermbg=NONE
+let mapleader="\<Space>"
+let g:airline_theme='violet'
+let g:airline_powerline_fonts=1
+let g:airline_skip_empty_sections=1
+let g:airline_section_z=airline#section#create(['%3p%% ', '%3l:%-3v'])
+let g:airline#extensions#tabline#enabled=1
 
-" airline
-let g:airline_powerline_fonts = 1
-let g:airline_skip_empty_sections = 1
-let g:airline_section_z = airline#section#create(['%3p%% ', '%3l:%-3v'])
-
-" nerdtree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
+let NERDTreeDirArrows=1
 let NERDTreeShowHidden=1
 
-" keybindings
-nnoremap <C-j> :wincmd h<CR>
-nnoremap <C-k> :wincmd j<CR>
-nnoremap <C-i> :wincmd k<CR>
-nnoremap <C-l> :wincmd l<CR>
+nnoremap <C-t> :NERDTreeToggle %<CR>
+nnoremap <silent> <Leader>f :Files<CR>
 
-nnoremap <C-n> :NERDTreeToggle %<CR>
+augroup CUSTOM
+	autocmd!
+	autocmd FileType markdown setlocal spell
+	autocmd FileType gitcommit setlocal spell
+	autocmd FileType markdown setlocal complete+=kspell
+	autocmd FileType gitcommit setlocal complete+=kspell
+augroup END
 
-nnoremap <silent><Space> :nohlsearch<Bar>:echo<CR>
-
-" autocmds
-
-" spell-check markdown files and git commit messages
-autocmd FileType markdown setlocal spell
-autocmd FileType gitcommit setlocal spell
-
-" enable dictionary auto-completion in markdown files and git commit messages
-autocmd FileType markdown setlocal complete+=kspell
-autocmd FileType gitcommit setlocal complete+=kspell
