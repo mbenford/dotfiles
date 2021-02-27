@@ -9,6 +9,8 @@ importlib.reload(onedark)
 from themes import onedark as theme
 from commands import WindowCommands
 from float_rules import rules as custom_float_rules
+import layouts
+importlib.reload(layouts)
 import layouts as custom_layouts
 import widgets as custom_widget
 import util
@@ -81,6 +83,7 @@ keys = bind_keys(
     # Applications
     ("M-<Return>", lazy.spawn(terminal), "Launch terminal"),
     ("M-b", lazy.spawn(browser), "Launch browser"),
+    ("M-S-b", lazy.spawn(f"{browser} --incognito"), "Launch browser (incognito)"),
 
     # Launcher
     ("M-<space>", lazy.spawn("rofi -show drun"), "Launch rofi (drun)"),
@@ -100,10 +103,12 @@ keys = bind_keys(
     ("<XF86AudioPrev>", lazy.spawn("./.dotfiles/bin/spotifyctl prev"), "Launch rofi (window)"),
     ("<XF86AudioNext>", lazy.spawn("./.dotfiles/bin/spotifyctl next"), "Launch rofi (window)"),
 
+    # Misc
+    ("<Print>", lazy.spawn("flameshot gui"), "Launch flameshot"),
+
     # Qtile
     ("M-C-r", lazy.restart(), "Restart qtile"),
     ("M-C-q", lazy.shutdown(), "Shutdown qtile"),
-
 )
 
 # GROUPS
@@ -173,6 +178,10 @@ layouts = [
         **layout_defaults,
         name="max",
         num_stacks=1,
+    ),
+    custom_layouts.ThreeColumns(
+        **layout_defaults,
+        main_size=50,
     ),
 ]
 
