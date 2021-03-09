@@ -1,3 +1,4 @@
+set nocompatible
 set encoding=utf-8
 set termguicolors
 set guicursor=
@@ -23,7 +24,6 @@ set smartindent
 set smarttab
 set incsearch
 set nohlsearch
-set nocompatible
 set noshowmode
 set nowrap
 set noswapfile
@@ -44,12 +44,15 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'terryma/vim-expand-region'
 Plug 'mg979/vim-visual-multi'
 Plug 'vimwiki/vimwiki'
+Plug 'fatih/vim-go'
+Plug 'easymotion/vim-easymotion'
+Plug 'machakann/vim-highlightedyank'
+Plug 'tpope/vim-surround'
 call plug#end()
 
 syntax on
 colorscheme onedark
 
-let mapleader="\<Space>"
 let g:airline_theme='violet'
 let g:airline_powerline_fonts=1
 let g:airline_skip_empty_sections=1
@@ -59,8 +62,21 @@ let g:airline#extensions#tabline#enabled=1
 let NERDTreeDirArrows=1
 let NERDTreeShowHidden=1
 
+let g:highlightedyank_highlight_duration = 300
+
+let mapleader="\<Space>"
 nnoremap <C-t> :NERDTreeToggle %<CR>
-nnoremap <silent> <Leader>f :Files<CR>
+nnoremap <silent> <Leader>x :bd<CR>
+nnoremap <silent> <Leader>q :x<CR>
+nnoremap <silent> <Leader>p :Files<CR>
+nnoremap <silent> <Leader>d Yp
+nnoremap <silent> <C-j> :bprevious<CR>
+nnoremap <silent> <C-k> :bnext<CR>
+nnoremap <silent> <Leader>o mao<ESC>`a
+nnoremap <silent> <Leader>O maO<ESC>`a
+nnoremap <silent> <C-down> :m+1<CR>
+nnoremap <silent> <C-up> :m-2<CR>
+"map s <Plug>(easymotion-sl)
 
 augroup CUSTOM
 	autocmd!
