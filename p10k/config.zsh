@@ -26,6 +26,7 @@
     dir                     # current directory
     vcs                     # git status
     asdf                    # asdf version manager (https://github.com/asdf-vm/asdf)
+		virtualenv              # python virtual environment
     command_execution_time  # duration of the last command
     # =========================[ Line #2 ]=========================
     newline                 # \n
@@ -131,7 +132,7 @@
   # Prompt symbol in command vi mode.
   typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VICMD_CONTENT_EXPANSION='❮'
   # Prompt symbol in visual vi mode.
-  typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIVIS_CONTENT_EXPANSION='Ⅴ'
+  typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIVIS_CONTENT_EXPANSION='V'
   # Prompt symbol in overwrite vi mode.
   typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIOWR_CONTENT_EXPANSION='▶'
   typeset -g POWERLEVEL9K_PROMPT_CHAR_OVERWRITE_STATE=true
