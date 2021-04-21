@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -e
+
+[[ -z "$TERMINAL" ]] && { >&2 echo "TERMINAL not set"; exit 1; }
+[[ -z "$EDITOR" ]] && { >&2 echo "EDITOR not set"; exit 1; }
+
+programs=(
+	$TERMINAL
+	$EDITOR
+	"/usr/bin/code"
+	"$HOME/.local/bin/goland"
+	"$HOME/.local/bin/webstorm"
+	"$HOME/.local/bin/pycharm"
+)
+
+menu() {
+	prompt=$1
+	shift
+	items=$@
+
+	printf "%s\n" "$items" | xargs -n1 basename | rofi -dmenu -p $prompt -format i -no-custom
+}
+
+projects=($(find $HOME/dev -type d -execdir test -d "{}/.git" \; -prune -print | sort))
+selected=$(menu "projects" "${projects[@]}")
+project=${projects[selected]}
+
+selected=$(menu "programs" "${programs[@]}")
+program=${programs[selected]}
+
+cd $project
+case $program in
+	$TERMINAL)
+		$TERMINAL
+		;;
+	$EDITOR)
+		$TERMINAL $EDITOR $project
+		;;
+	*)
+		$program $project
+		;;
+esac
