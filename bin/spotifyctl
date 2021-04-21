@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e
+
+if ! command -v dbus-send > /dev/null; then
+	echo "error: dbus-send not found"
+	exit 1
+fi
+
+if [[ -z "$1" ]]; then
+	echo "error: action not provided"
+	exit 1
+fi
+
+case ${1,,} in
+	play)
+		action="Play"
+		;;
+	pause)
+		action="Pause"
+		;;
+	play-pause)
+		action="PlayPause"
+		;;
+	next)
+		action="Next"
+		;;
+	prev)
+		action="Previous"
+		;;
+	*)
+		echo "error: invalid action: $1"
+		exit 1
+esac
+
+dbus-send \
+	--print-reply \
+	--dest=org.mpris.MediaPlayer2.spotify \
+	/org/mpris/MediaPlayer2 \
+	org.mpris.MediaPlayer2.Player.$action > /dev/null
