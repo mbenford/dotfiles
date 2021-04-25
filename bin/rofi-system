@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+
+import sys
+from subprocess import Popen, DEVNULL
+from rofi import Rofi
+
+actions = [
+    dict(name="suspend", cmd="systemctl suspend"),
+    dict(name="logout", cmd="qtile cmd-obj -o cmd -f shutdown"),
+    dict(name="reboot", cmd="systemctl reboot"),
+    dict(name="shutdown", cmd="systemctl poweroff"),
+]
+
+
+def generate(rofi):
+    for idx, action in enumerate(actions):
+        rofi.row(action.get("name"), info=idx)
+
+
+def process(rofi):
+    if len(rofi.info()) == 1:
+        action = actions[int(rofi.info(0))]
+        rofi.prompt(f"confirm {action.get('name')}?")
+        rofi.row("yes", info="y")
+        rofi.row("no", info="n")
+    else:
+        if rofi.info(1) == "n":
+            return
+
+        action = actions[int(rofi.info(0))]
+        Popen(action.get("cmd"), shell=True, stdout=DEVNULL)
+
+
+if __name__ == "__main__":
+    rofi = Rofi()
+    rofi.custom_entry(False)
+
+    if len(sys.argv) == 1:
+        generate(rofi)
+    else:
+        process(rofi)

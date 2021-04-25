@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+
+import sys
+from subprocess import Popen, DEVNULL
+from os import getenv, path
+from pathlib import Path
+from functools import partial
+
+from rofi import Rofi
+
+terminal = getenv("TERMINAL")
+editor = getenv("EDITOR")
+home = Path.home()
+basedir = f"{home}/dev"
+apps = [
+    terminal,
+    editor,
+    "/usr/bin/code",
+    f"{home}/.local/bin/goland",
+    f"{home}/.local/bin/webstorm",
+    f"{home}/.local/bin/pycharm",
+]
+
+
+def generate(rofi):
+    def walk(root):
+        for entry in Path(root).iterdir():
+            if entry.is_file():
+                continue
+
+            if path.isdir(path.join(entry, ".git")):
+                yield entry
+            else:
+                yield from walk(entry)
+
+    for project in sorted(walk(basedir)):
+        rofi.row(f"{path.basename(project): <20} {path.dirname(project)}", info=project)
+
+
+def process(rofi):
+    if len(rofi.info()) == 1:
+        rofi.prompt("apps")
+        rofi.message(f"project: {rofi.info(0)}")
+
+        for app in apps:
+            rofi.row(f"{path.basename(app): <20} {path.dirname(app)}", info=app)
+    else:
+        project, app = rofi.info()
+        popen = partial(Popen, cwd=project, shell=True, stdout=DEVNULL)
+
+        if app == terminal:
+            popen(terminal)
+        elif app == editor:
+            popen(f"{terminal} {editor} {project}")
+        else:
+            popen(f"{app} {project}")
+
+
+if __name__ == "__main__":
+    rofi = Rofi()
+    rofi.custom_entry(False)
+
+    if len(sys.argv) == 1:
+        generate(rofi)
+    else:
+        process(rofi)
