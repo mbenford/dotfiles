@@ -1,0 +1,12 @@
+configuration {
+	theme: "themes/onedark.rasi";
+	modi: "drun,run";
+	monitor: "-4";
+	matching: "fuzzy";
+	sort: true;
+	sorting-method: "fzf";
+	drun-match-fields: "name,generic";
+	drun-display-format: "{name}";
+	kb-row-tab: "";
+	kb-mode-next: "Tab";
+}
