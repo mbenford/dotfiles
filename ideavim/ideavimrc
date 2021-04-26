@@ -1,0 +1,60 @@
+" plugins
+set NERDTree
+set highlightedyank
+set commentary
+set surround
+set argtextobj
+set textobj-entire
+
+" settings
+set ideajoin
+set idearefactormode=keep
+set number
+set relativenumber
+set incsearch
+set scrolloff=5
+set sidescrolloff=5
+set showmode
+set noshowcmd
+
+" mappings
+let mapleader=" "
+map <leader>j <Action>(GotoFile)
+map <leader>k <Action>(GotoAction)
+map <leader>tt :NERDTreeToggle<CR>
+map <leader>tf :NERDTreeFind<CR>
+map <leader>a <Action>(Annotate)
+map <leader>r <Action>(Refactorings.QuickListPopupAction)
+map <leader>d <Action>(EditorDuplicate)
+map <leader>w <Action>(EditorSelectWord)
+map <leader>f <Action>(FindInPath)
+map <leader>x <Action>(CloseContent)
+map <leader>X <Action>(CloseAllEditorsButActive)
+map <leader>h <Action>(HighlightUsagesInFile)
+map <leader>n <Action>(Go.NewGoFile)
+map <leader>gi <Action>(GotoImplementation)
+map <leader>gd <Action>(GotoDeclarationOnly)
+map <leader>gs <Action>(GotoSuperMethod)
+map <leader>ge <Action>(GotoNextError)
+map <leader>gu <Action>(FindUsages)
+map <leader>vp <Action>(ParameterInfo)
+map <leader>vr <Action>(RecentFiles)
+map <leader>vd <Action>(QuickJavaDoc)
+map <leader>vt <Action>(QuickTypeDefinition)
+map <leader>ve <Action>(ShowErrorDescription)
+nmap <leader>i i<SPACE><ESC>r
+nmap <leader>cc <Plug>(CommentMotion)
+nmap <leader>c<SPACE> <Plug>(CommentLine)
+vmap <leader>cc <Plug>(CommentMotionV)
+nmap <C-O> <Action>(Forward)
+nmap <C-I> <Action>(Back)
+nmap <C-J> <Action>(PreviousTab)
+nmap <C-K> <Action>(NextTab)
+nmap <C-down> <Action>(MoveLineDown)
+nmap <C-up> <Action>(MoveLineUp)
+map <C-N> <Action>(SelectNextOccurrence)
+map <C-S-N> <Action>(SelectAllOccurrences)
+map <A-P> <Action>(UnselectPreviousOccurrence)
+map <A-X> <Action>(FindNext)
+nmap <leader>o mao<ESC>`a
+nmap <leader>O maO<ESC>`a
