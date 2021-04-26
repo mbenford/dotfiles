@@ -1,0 +1,7 @@
+files = [emojis]
+skin-tone = light
+prompt = emoji
+max-recent = 10
+action = clipboard
+clipboarder = xsel
+typer = xdotool
