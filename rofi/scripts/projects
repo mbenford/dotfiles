@@ -1,11 +1,8 @@
 #!/usr/bin/env python
-
-import sys
 from subprocess import Popen, DEVNULL
 from os import getenv, path
 from pathlib import Path
 from functools import partial
-
 from rofi import Rofi
 
 terminal = getenv("TERMINAL")
@@ -13,12 +10,13 @@ editor = getenv("EDITOR")
 home = Path.home()
 basedir = f"{home}/dev"
 apps = [
-    terminal,
-    editor,
-    "/usr/bin/code",
-    f"{home}/.local/bin/goland",
-    f"{home}/.local/bin/webstorm",
-    f"{home}/.local/bin/pycharm",
+    dict(path=terminal, name="Terminal"),
+    dict(path=editor, name="Default editor"),
+    dict(path="/usr/bin/xdg-open", name="Default file manager"),
+    dict(path="/usr/bin/code", name="Visual Studio Code"),
+    dict(path=f"{home}/.local/bin/goland", name="JetBrains GoLand"),
+    dict(path=f"{home}/.local/bin/webstorm", name="JetBrains WebStorm"),
+    dict(path=f"{home}/.local/bin/pycharm", name="JetBrains PyCharm"),
 ]
 
 
@@ -33,7 +31,7 @@ def generate(rofi):
             else:
                 yield from walk(entry)
 
-    for project in sorted(walk(basedir)):
+    for project in sorted(walk(basedir), key=path.basename):
         rofi.row(f"{path.basename(project): <20} {path.dirname(project)}", info=project)
 
 
@@ -43,7 +41,7 @@ def process(rofi):
         rofi.message(f"project: {rofi.info(0)}")
 
         for app in apps:
-            rofi.row(f"{path.basename(app): <20} {path.dirname(app)}", info=app)
+            rofi.row(f"{path.basename(app['path']): <20} {app['name']}", info=app["path"])
     else:
         project, app = rofi.info()
         popen = partial(Popen, cwd=project, shell=True, stdout=DEVNULL)
@@ -57,10 +55,6 @@ def process(rofi):
 
 
 if __name__ == "__main__":
-    rofi = Rofi()
-    rofi.custom_entry(False)
-
-    if len(sys.argv) == 1:
-        generate(rofi)
-    else:
-        process(rofi)
+    r = Rofi()
+    r.custom_entry(False)
+    r.handle_startup(generate, process)

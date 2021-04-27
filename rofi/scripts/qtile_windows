@@ -1,6 +1,4 @@
 #!/bin/env python
-
-import sys
 from libqtile.command.client import InteractiveCommandClient
 from rofi import Rofi
 
@@ -14,7 +12,6 @@ def generate(rofi):
         if w["group"] is not None
     ]
 
-    import time
     for win in windows:
         rofi.row(f"{win['group']: <10} {win['wm_class'][0]: <20} {win['name']}", info=win["id"])
 
@@ -26,7 +23,10 @@ def process(rofi):
 
     if group.info()['name'] == "scratchpad":
         dropdowns = [group.dropdown_info(d) for d in group.dropdown_info()["dropdowns"]]
-        dropdown = next((d for d in dropdowns if d.get("window", {}).get("id", None) == win_id), None)
+        dropdown = next((
+            d for d in dropdowns
+            if d.get("window", {}).get("id", None) == win_id
+        ), None)
         group.dropdown_toggle(dropdown["name"])
     else:
         group.toscreen(toggle=False)
@@ -34,10 +34,6 @@ def process(rofi):
 
 
 if __name__ == "__main__":
-    rofi = Rofi()
-    rofi.custom_entry(False)
-
-    if len(sys.argv) == 1:
-        generate(rofi)
-    else:
-        process(rofi)
+    r = Rofi()
+    r.custom_entry(False)
+    r.handle_startup(generate, process)
