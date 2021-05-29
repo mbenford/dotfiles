@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ! [[ -x "$(command -v xdotool)" ]] && (logger "error: xdotool not found"; exit 1)
 

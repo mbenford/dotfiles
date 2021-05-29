@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 git --no-pager log -100 \
   --pretty='%C(yellow)%h%Creset %C(bold blue)%<(15,trunc)%ae%Creset%C(auto)%d%Creset %s %Cgreen(%cr)' \
-	| fzf --ansi --no-height \
-	| awk '{printf $1}' \
-	| xclip -in -selection clipboard
+	| fzf --ansi --no-height --bind 'ctrl-y:execute-silent(echo {1} | xclip -in -selection clipboard)' \
+	| awk '{printf $1}'
