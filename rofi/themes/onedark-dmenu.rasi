@@ -41,3 +41,5 @@ element {
 element selected {
 	background-color:	#d55fde;
 }
+
+/* vim: set ft=css: */

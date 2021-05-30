@@ -20,6 +20,7 @@ window {
 inputbar {
 	border-color: @primary-color;
 	border: 0px solid 0px 1px;
+	children: [prompt, entry, num-filtered-rows];
 }
 
 prompt {
@@ -30,11 +31,17 @@ prompt {
 }
 
 entry {
-	expand:	false;
-	width: 100%;
+	expand:	true;
 	padding: 5px;
 	vertical-align: 0.5;
 	width: 100%;
+}
+
+num-filtered-rows {
+	text-color: @primary-color;
+	horizontal-align: 0.5;
+	vertical-align: 0.5;
+	padding: 0px 5px;
 }
 
 listview {
@@ -42,6 +49,7 @@ listview {
 	lines: 10;
 	dynamic: true;
 	fixed-height: false;
+	cycle: false;
 }
 
 element {
@@ -57,3 +65,5 @@ message {
 	border-color: @primary-color;
 	border: 0px solid 0px 1px;
 }
+
+/* vim: set ft=css: */

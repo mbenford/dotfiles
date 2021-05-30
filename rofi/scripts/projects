@@ -32,7 +32,7 @@ def generate(rofi):
                 yield from walk(entry)
 
     for project in sorted(walk(basedir), key=path.basename):
-        rofi.row(f"{path.basename(project): <20} {path.dirname(project)}", info=project)
+        rofi.row(f"{path.basename(project): <20}{path.dirname(project)}", info=project, meta=project)
 
 
 def process(rofi):

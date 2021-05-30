@@ -2,20 +2,32 @@
 from os import getenv, path
 from pathlib import Path
 from subprocess import Popen, DEVNULL
+from functools import partial
 from rofi import Rofi
+import fnmatch
+import re
 
 home = getenv("HOME")
 terminal = getenv("TERMINAL")
 editor = getenv("EDITOR")
 
 basedir = f"{home}/.dotfiles"
-ignored_extensions = [
-    ".pyc",
-    ".png",
+ignored_rules = [
+    ".idea/*",
+    "*.pyc",
+    "*.png",
 ]
 
 
 def generate(rofi):
+    def is_ignored(file):
+        for rule in ignored_rules:
+            if re.search(fnmatch.translate(rule), str(file)) is not None:
+                return True
+
+        return False
+
+
     files = []
     for entry in Path(basedir).glob("[!.git]*"):
         if not entry.is_dir():
@@ -25,17 +37,21 @@ def generate(rofi):
             file
             for file
             in Path(entry).rglob("*")
-            if not file.is_dir() and file.suffix not in ignored_extensions
+            if not file.is_dir() and not is_ignored(file)
         ])
 
     for file in sorted(files):
-        rofi.row(file.relative_to(basedir), info=file)
+        rofi.row(f"{path.basename(file): <25} {path.dirname(file.relative_to(home))}", info=file, meta=file)
 
 
 def process(rofi):
     file = rofi.info(0)
-    Popen(f"{terminal} {editor} {file}", cwd=path.dirname(file), shell=True,
-          stdout=DEVNULL)
+    popen = partial(Popen, cwd=path.dirname(file), shell=True, stdout=DEVNULL)
+
+    if rofi.retv() == 10:
+        popen(terminal)
+    else:
+        popen(f"{terminal} {editor} {file}")
 
 
 if __name__ == "__main__":
