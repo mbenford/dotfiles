@@ -2,4 +2,4 @@ ACTION=="change"\
 	, SUBSYSTEM=="power_supply"\
 	,	ENV{POWER_SUPPLY_MODEL_NAME}=="M720 Triathlon Multi-Device Mouse"\
 	, ENV{POWER_SUPPLY_STATUS}=="Discharging"\
-	, RUN+="/usr/bin/su michael -c '$HOME/bin/setup-mouse'"
+	, RUN+="/usr/local/bin/setup-logitech-m720"
