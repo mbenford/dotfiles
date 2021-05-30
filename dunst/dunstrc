@@ -1,0 +1,101 @@
+[global]
+monitor = 0
+follow = none
+geometry = "350x10-5+34"
+indicate_hidden = yes
+shrink = no
+transparency = 0
+notification_height = 0
+separator_height = 1
+padding = 8
+horizontal_padding = 8
+frame_width = 2
+frame_color = "#61afef"
+separator_color = frame
+sort = yes
+idle_threshold = 5m
+
+### Text ###
+font = Ubuntu Mono 12
+line_height = 0
+markup = full
+format = "<b>%s</b>\n%b%n"
+alignment = left
+vertical_alignment = center
+show_age_threshold = 600
+word_wrap = no
+ellipsize = end
+ignore_newline = no
+stack_duplicates = true
+hide_duplicate_count = false
+show_indicators = no
+
+### Icons ###
+icon_position = left
+min_icon_size = 0
+max_icon_size = 64
+icon_path = /usr/share/icons/Adwaita/16x16/status/:/usr/share/icons/Adwaita/16x16/devices/
+
+### History ###
+sticky_history = yes
+history_length = 20
+
+### Misc/Advanced ###
+dmenu = /usr/bin/rofi -dmenu -p dunst
+browser = /usr/bin/brave
+always_run_script = true
+title = Dunst
+class = Dunst
+startup_notification = false
+verbosity = mesg
+corner_radius = 0
+ignore_dbusclose = false
+
+### Legacy
+force_xinerama = false
+
+### mouse
+mouse_left_click = do_action, close_current
+mouse_middle_click =
+mouse_right_click = close_all
+
+[experimental]
+per_monitor_dpi = false
+
+[urgency_low]
+background = "#282c34"
+foreground = "#ffffff"
+timeout = 3
+
+[urgency_normal]
+background = "#282c34"
+foreground = "#ffffff"
+timeout = 3
+
+[urgency_critical]
+background = "#282c34"
+foreground = "#f44747"
+frame_color = "#f44747"
+timeout = 0
+
+[transient_history_ignore]
+match_transient = yes
+history_ignore = yes
+
+[fullscreen_delay_everything]
+fullscreen = pushback
+
+[fullscreen_show_critical]
+msg_urgency = critical
+fullscreen = show
+
+[brave]
+desktop_entry = brave-browser
+new_icon =
+
+[spotify]
+appname = Spotify
+set_transient = 1
+history_ignore = yes
+
+# vim: ft=cfg
