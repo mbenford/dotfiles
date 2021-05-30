@@ -1,0 +1,20 @@
+# autorepeat
+xset r rate 200 30
+
+# compositor
+picom --experimental-backend &
+
+# network manager applet
+nm-applet &
+
+# wallpaper
+nitrogen --restore &
+
+# redshift
+redshift-gtk &
+
+# hides the mouse pointer
+xbanish &
+
+# power management
+xfce4-power-manager --daemon
