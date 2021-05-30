@@ -1,0 +1,10 @@
+watch-line() {
+	BUFFER="watch '$BUFFER'"
+}
+
+zle -N push-line-and-insert
+zle -N watch-line
+
+bindkey -M viins '^[e' edit-command-line
+bindkey -M viins '^[q' push-line
+bindkey -M viins '^[w' watch-line

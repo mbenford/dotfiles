@@ -1,7 +1,7 @@
 # zsh
 alias zshreload='exec zsh'
-alias zshalias='$EDITOR $HOME/.zsh_aliases'
-alias zshenv='$EDITOR $HOME/.zshenv'
+alias zshalias='$EDITOR $ZDOTDIR/.zsh_aliases'
+alias zshenv='$EDITOR $ZDOTDIR/.zshenv'
 
 # git
 alias gcfu='git commit --fixup'
@@ -9,6 +9,7 @@ alias grbim='git rebase -i master'
 alias gs='git fancy-status '
 alias gcopa='git checkout -p'
 alias glr='git-log-fzf'
+
 # exa
 alias ls='exa --group-directories-first --time-style long-iso'
 alias la='ls -la'
@@ -19,3 +20,5 @@ alias trash='gio trash '
 alias trashls='gio list trash://'
 alias lzg='lazygit '
 alias lzd='lazydocker '
+alias sudoe='sudoedit '
+alias r='ranger'
