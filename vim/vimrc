@@ -30,28 +30,38 @@ set noswapfile
 set nobackup
 set undodir=~/.vim/undodir
 set undofile
+set ignorecase
+set smartcase
+set cursorline
 
 call plug#begin('~/.vim/plugged')
 Plug 'joshdick/onedark.vim'
+Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-eunuch'
 Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'terryma/vim-expand-region'
 Plug 'mg979/vim-visual-multi'
-Plug 'vimwiki/vimwiki'
-Plug 'fatih/vim-go'
 Plug 'easymotion/vim-easymotion'
 Plug 'machakann/vim-highlightedyank'
-Plug 'tpope/vim-surround'
+Plug 'chaoren/vim-wordmotion'
+"Plug 'fatih/vim-go'
 call plug#end()
 
 syntax on
 colorscheme onedark
+
+let &t_SI = "\e[5 q"
+let &t_rR = "\e[4 r"
+let &t_EI = "\e[1 q"
 
 let g:airline_theme='violet'
 let g:airline_powerline_fonts=1
@@ -64,24 +74,35 @@ let NERDTreeShowHidden=1
 
 let g:highlightedyank_highlight_duration = 300
 
+let g:fzf_layout = { 'down': '40%' }
+let g:fzf_files_options = '--no-exact --tiebreak=end --prompt="> "'
+
 let mapleader="\<Space>"
-nnoremap <C-t> :NERDTreeToggle %<CR>
-nnoremap <silent> <Leader>x :bd<CR>
-nnoremap <silent> <Leader>q :x<CR>
-nnoremap <silent> <Leader>p :Files<CR>
-nnoremap <silent> <Leader>d Yp
-nnoremap <silent> <C-j> :bprevious<CR>
+nnoremap <silent> <leader>tt :NERDTreeToggle %<CR>
+nnoremap <silent> <leader>tf :NERDTreeFind %<CR>
+nnoremap <silent> <leader>w :w<CR>
+nnoremap <silent> <leader>x :bd<CR>
+nnoremap <silent> <leader>q :x<CR>
+nnoremap <silent> <leader>j :Files<CR>
+nnoremap <silent> <leader>f :Rg<CR>
+nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <silent> <leader>d Yp
+nnoremap <silent> <leader>i i<SPACE><ESC>r
+
 nnoremap <silent> <C-k> :bnext<CR>
-nnoremap <silent> <Leader>o mao<ESC>`a
-nnoremap <silent> <Leader>O maO<ESC>`a
+nnoremap <silent> <C-j> :bprevious<CR>
+nnoremap <silent> <leader>o mao<ESC>`a
+nnoremap <silent> <leader>O maO<ESC>`a
 nnoremap <silent> <C-down> :m+1<CR>
 nnoremap <silent> <C-up> :m-2<CR>
+nnoremap <silent> U <C-R>
 "map s <Plug>(easymotion-sl)
 
 augroup CUSTOM
 	autocmd!
-	autocmd FileType markdown setlocal spell
-	autocmd FileType gitcommit setlocal spell
+	autocmd FocusLost * silent! wa
+	autocmd FileType markdown setlocal spell spelllang=en_us,pt_br
+	autocmd FileType gitcommit setlocal spell spelllang=en_us,pt_br
 	autocmd FileType markdown setlocal complete+=kspell
 	autocmd FileType gitcommit setlocal complete+=kspell
 augroup END
