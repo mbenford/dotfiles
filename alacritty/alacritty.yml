@@ -1,0 +1,81 @@
+import:
+  - ~/.config/alacritty/themes/onedark.yml
+
+env:
+  TERM: xterm-256color
+
+window:
+  padding:
+    x: 3
+    y: 3
+  title: Alacritty
+  dynamic_title: true
+  gtk_theme_variant: dark
+
+scrolling:
+  history: 10000
+
+font:
+  size: 12.0
+  normal:
+    family: JetBrainsMono Nerd Font
+  offset:
+    x: 0
+
+
+bell:
+  duration: 0
+
+background_opacity: 1.0
+
+selection:
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
+  save_to_clipboard: true
+
+cursor:
+  style:
+    shape: Block
+    blinking: On
+  vi_mode_style: None
+  blink_interval: 750
+  unfocused_hollow: true
+  thickness: 0.05
+
+live_config_reload: true
+working_directory: None
+alt_send_esc: true
+
+mouse:
+  hide_when_typing: false
+
+mouse_bindings:
+  - { mouse: Middle, action: Paste }
+
+key_bindings:
+  - { key: Insert, mods: Shift,   mode: ~Search, action: Paste }
+  - { key: Space,  mods: Control, mode: ~Search, action: ToggleViMode }
+  - { key: Return, mods: Alt,                    action: SpawnNewInstance }
+  - { key: Key4,                  mode: Vi,      action: Last }
+
+debug:
+  render_timer: false
+
+hints:
+  alphabet: "jfkdlsahgurieowpq"
+  enabled:
+    - regex: "(mailto:|https:|http:|file:|git:|ssh:|ftp:)\
+              [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+      command: xdg-open
+      post_processing: true
+      mouse:
+        enabled: true
+        mods: Control
+      binding:
+        key: U
+        mods: Alt
+    - regex: "[a-f0-9]{8,40}"
+      action: Copy
+      post_processing: true
+      binding:
+        key: H
+        mods: Alt
