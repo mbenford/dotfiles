@@ -2,26 +2,6 @@ from libqtile import layout
 from libqtile.log_utils import logger
 
 
-class Columns(layout.Columns):
-    def __init__(self, **config):
-        layout.Columns.__init__(self, **config)
-
-    def swap(self, src, dst):
-        self.columns[src], self.columns[dst] = self.columns[dst], self.columns[src]
-        self.current = dst
-        self.group.layout_all()
-
-    def cmd_swap_left(self):
-        src = self.current
-        dst = src - 1 if src > 0 else len(self.columns) - 1
-        self.swap(src, dst)
-
-    def cmd_swap_right(self):
-        src = self.current
-        dst = src + 1 if src < len(self.columns) - 1 else 0
-        self.swap(src, dst)
-
-
 class ThreeColumns(layout.Columns):
     defaults = [
         ("main_size", 50, "")
@@ -36,13 +16,21 @@ class ThreeColumns(layout.Columns):
     def add(self, client):
         super().add(client)
 
-        if len(self.columns) == 3:
+        if len(self.columns) == 1:
+            self.columns[0].width = 50
+            self.margin_on_single = 100
+            self.group.layout_all()
+        elif len(self.columns) == 3:
             main_width = 300 * self.main_size / 100
             other_width = (300 - main_width) / 2
             self.columns[0].width = other_width
             self.columns[1].width = main_width
             self.columns[2].width = other_width
             self.group.layout_all()
+        # elif len(self.columns) == 2:
+            # self.columns[0].width = 10
+            # self.columns[1].width = 50
+            # self.group.layout_all()
 
     def remove(self, client):
         super().remove(client)

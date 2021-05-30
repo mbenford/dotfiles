@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from libqtile import widget, bar
+from libqtile import widget, bar, hook
 from libqtile.log_utils import logger
 from libqtile.widget import base
 
@@ -148,3 +148,31 @@ class SensorFan(BaseMonitor):
             return None
 
         return value.current
+
+class ChordStatus(base._TextBox):
+    defaults = []
+
+    def __init__(self, width=bar.CALCULATED, **config):
+        base._TextBox.__init__(self, "", width, **config)
+        self.add_defaults(ChordStatus.defaults)
+
+    def _configure(self, qtile, bar):
+        base._TextBox._configure(self, qtile, bar)
+        self.text = self.inactive_text
+        self.foreground = self.inactive_color
+        self._setup_hooks()
+
+    def _setup_hooks(self):
+        def enter_chord(name):
+            self.text = self.active_text
+            self.foreground = self.active_color
+            self.bar.draw()
+
+        def leave_chord(*args):
+            self.text = self.inactive_text
+            self.foreground = self.inactive_color
+            self.bar.draw()
+
+        hook.subscribe.enter_chord(enter_chord)
+        hook.subscribe.leave_chord(leave_chord)
+
