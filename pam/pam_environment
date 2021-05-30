@@ -1,0 +1,12 @@
+XDG_CONFIG_HOME DEFAULT="@{HOME}/.config"
+XDG_DATA_HOME   DEFAULT="@{HOME}/.local/share"
+
+TERMINAL        DEFAULT="/usr/bin/kitty"
+EDITOR          DEFAULT="/usr/bin/vim"
+BROWSER         DEFAULT="/usr/bin/brave"
+
+ZDOTDIR         DEFAULT="${XDG_CONFIG_HOME}/zsh"
+SSH_AUTH_SOCK   DEFAULT="${XDG_RUNTIME_DIR}/ssh-agent.socket"
+
+_JAVA_AWT_WM_NONREPARENTING=1
+QT_STYLE_OVERRIDE=kvantum
