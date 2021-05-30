@@ -1,10 +1,19 @@
 {
   "settingsVersion": "1.66",
-  "exclusionRules": [],
+  "exclusionRules": [
+    {
+      "pattern": "https?://mail.google.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://app.slack.com/*",
+      "passKeys": ""
+    }
+  ],
   "filterLinkHints": false,
   "waitForEnterForFilteredHints": true,
   "hideHud": false,
-  "keyMappings": "unmapAll\nmap o Vomnibar.activateTabSelection\nmap t createTab\nmap T createTab incognito\nmap w removeTab\nmap W restoreTab\nmap r reload\nmap f LinkHints.activateMode\nmap F LinkHints.activateModeToOpenInNewForegroundTab\nmap / enterFindMode\nmap n performFind\nmap N performBackwardsFind\nmap j goBack\nmap l goForward\nmap J previousTab\nmap L nextTab\nmap i scrollUp\nmap k scrollDown\nmap I scrollToTop\nmap K scrollToBottom\nmap <a-j> moveTabLeft\nmap <a-l> moveTabRight\nmap d duplicateTab\nmap p togglePinTab\nmap m toggleMuteTab\nmap < goPrevious\nmap > goNext\nmap e focusInput\nmap s enterVisualMode\nmap c copyCurrentUrl\nmap v openCopiedUrlInCurrentTab\nmap V openCopiedUrlInNewTab",
+  "keyMappings": "map h goBack\nmap l goForward\nmap i focusInput\nmap I enterInsertMode",
   "linkHintCharacters": "sadfjklewcmpgh",
   "linkHintNumbers": "0123456789",
   "newTabUrl": "about:newtab",
@@ -13,9 +22,9 @@
   "regexFindMode": false,
   "ignoreKeyboardLayout": false,
   "scrollStepSize": 60,
-  "smoothScroll": true,
-  "grabBackFocus": true,
+  "smoothScroll": false,
+  "grabBackFocus": false,
   "searchEngines": "",
   "searchUrl": "https://www.google.com/search?q=",
-  "userDefinedLinkHintCss": "div > .vimiumHintMarker {\n/* linkhint boxes */\nbackground: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFF785),\n  color-stop(100%,#FFC542));\nborder: 1px solid #E3BE23;\n}\n\ndiv > .vimiumHintMarker span {\n/* linkhint text */\ncolor: black;\nfont-weight: bold;\nfont-size: 12px;\n}\n\ndiv > .vimiumHintMarker > .matchingCharacter {\n}"
+  "userDefinedLinkHintCss": "#vimiumHintMarkerContainer div.internalVimiumHintMarker, #vimiumHintMarkerContainer div.vimiumHintMarker {\n  padding: 3px 4px;\n  background: #FFC300;\n  border: none;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n}\n\n#vimiumHintMarkerContainer div span {\n  color: #000;\n  text-shadow: none;\n}\n\n#vimiumHintMarkerContainer div > .matchingCharacter {\n  opacity: 0.4;\n}\n\n#vimiumHintMarkerContainer div > .matchingCharacter ~ span {\n  color: #000;\n}\n\n#vomnibar {\n  background: #444;\n  border: none;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n}\n\n#vomnibar .vomnibarSearchArea,\n#vomnibar input {\n  color: #fff;\n  background: transparent;\n  border: none;\n}\n\n#vomnibar .vomnibarSearchArea {\n  padding: 10px 30px;\n}\n\n#vomnibar input {\n  padding: 0;\n}\n\n#vomnibar ul {\n  padding: 0;\n  background: #444;\n  border-top: 1px solid #333;\n}\n\n#vomnibar li {\n  padding: 10px;\n  border-bottom: 1px solid #333;\n}\n\n#vomnibar li .vomnibarTopHalf,\n#vomnibar li .vomnibarBottomHalf {\n  padding: 3px 0;\n}\n\n#vomnibar li .vomnibarSource {\n  color: #aaa;\n}\n\n#vomnibar li em,\n#vomnibar li .vomnibarTitle {\n  color: #aaa;\n}\n\n#vomnibar li .vomnibarUrl {\n  color: #777;\n}\n\n#vomnibar li .vomnibarMatch {\n  color: hotpink;\n  font-weight: normal;\n}\n\n#vomnibar li .vomnibarTitle .vomnibarMatch {\n  color: hotpink;\n}\n\n#vomnibar li.vomnibarSelected {\n  background-color: #333;\n}\n\ndiv.vimiumHUD {\n  background: #444;\n  border: none;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n}\n\ndiv.vimiumHUD span#hud-find-input,\ndiv.vimiumHUD .vimiumHUDSearchAreaInner {\n  color: #fff;\n}\n\ndiv.vimiumHUD .hud-find {\n  background-color: transparent;\n  border: none;\n}\n\ndiv.vimiumHUD .vimiumHUDSearchArea {\n  background-color: transparent;\n}\n\nbody.vimiumFindMode ::selection {\n  color: #000;\n  background-color: #fdec9f;\n}"
 }
