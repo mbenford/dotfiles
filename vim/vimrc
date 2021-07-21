@@ -7,7 +7,7 @@ set number relativenumber
 set colorcolumn=120
 set hidden
 set shortmess-=S
-set scrolloff=10
+set scrolloff=5
 set sidescroll=1
 set sidescrolloff=10
 set title
@@ -53,6 +53,7 @@ Plug 'mg979/vim-visual-multi'
 Plug 'easymotion/vim-easymotion'
 Plug 'machakann/vim-highlightedyank'
 Plug 'chaoren/vim-wordmotion'
+Plug 'wellle/targets.vim'
 "Plug 'fatih/vim-go'
 call plug#end()
 
@@ -96,6 +97,8 @@ nnoremap <silent> <leader>O maO<ESC>`a
 nnoremap <silent> <C-down> :m+1<CR>
 nnoremap <silent> <C-up> :m-2<CR>
 nnoremap <silent> U <C-R>
+map <Home> ^
+map <End> $
 "map s <Plug>(easymotion-sl)
 
 augroup CUSTOM
