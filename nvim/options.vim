@@ -2,6 +2,7 @@ set colorcolumn=120
 set cursorline
 set hidden
 set ignorecase
+set mouse=a
 set nobackup
 set noexpandtab
 set nohlsearch
@@ -9,12 +10,14 @@ set noshowcmd
 set noshowmode
 set noswapfile
 set nowrap
-set number relativenumber
+set relativenumber
+set numberwidth=2
 set scrolloff=5
 set shiftwidth=2
 set shortmess-=S
 set sidescroll=1
 set sidescrolloff=10
+set signcolumn=yes:1
 set smartcase
 set smartindent
 set softtabstop=2
@@ -25,5 +28,4 @@ set termguicolors
 set title
 set ttimeoutlen=0
 set undofile
-set virtualedit=all
 set wildmode=full
