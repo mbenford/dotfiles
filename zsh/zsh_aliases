@@ -22,3 +22,8 @@ alias lzg='lazygit '
 alias lzd='lazydocker '
 alias sudoe='sudoedit '
 alias r='ranger'
+alias nv='nvim'
+alias vim='nvim'
+
+# work
+[[ ! -f "$ZDOTDIR/.zsh_aliases_work" ]] || source "$ZDOTDIR/.zsh_aliases_work"

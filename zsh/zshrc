@@ -27,13 +27,12 @@ HIST_STAMPS="yyyy-mm-dd"
 
 # plugins
 plugins=(
+	z
 	vi-mode
 	asdf
 	bgnotify
 	colored-man-pages
-	command-not-found
 	common-aliases
-	fasd
 	fast-syntax-highlighting
 	fzf
 	git
@@ -60,11 +59,6 @@ source $ZDOTDIR/.zsh_bindings
 # custom functions
 fpath=($ZDOTDIR/.zfunc "${fpath[@]}")
 autoload -U $fpath[1]/*(.:t)
-
-# fix for tilix
-if [[ $TILIX_ID ]]; then
-	source /etc/profile.d/vte-2.91.sh
-fi
 
 # powerlevel10k
 [[ ! -f $XDG_CONFIG_HOME/p10k/config.zsh ]] || source $XDG_CONFIG_HOME/p10k/config.zsh
