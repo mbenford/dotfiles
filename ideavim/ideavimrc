@@ -8,7 +8,7 @@ set textobj-entire
 
 " settings
 set ideajoin
-set idearefactormode=keep
+set idearefactormode=visual
 set number
 set relativenumber
 set incsearch
@@ -18,43 +18,50 @@ set showmode
 set noshowcmd
 
 " mappings
-let mapleader=" "
-map <leader>j <Action>(GotoFile)
-map <leader>k <Action>(GotoAction)
-map <leader>tt :NERDTreeToggle<CR>
-map <leader>tf :NERDTreeFind<CR>
-map <leader>a <Action>(Annotate)
-map <leader>r <Action>(Refactorings.QuickListPopupAction)
-map <leader>d <Action>(EditorDuplicate)
-map <leader>w <Action>(EditorSelectWord)
-map <leader>f <Action>(FindInPath)
-map <leader>x <Action>(CloseContent)
-map <leader>X <Action>(CloseAllEditorsButActive)
-map <leader>h <Action>(HighlightUsagesInFile)
-map <leader>n <Action>(Go.NewGoFile)
-map <leader>gi <Action>(GotoImplementation)
-map <leader>gd <Action>(GotoDeclarationOnly)
-map <leader>gs <Action>(GotoSuperMethod)
-map <leader>ge <Action>(GotoNextError)
-map <leader>gu <Action>(FindUsages)
-map <leader>vp <Action>(ParameterInfo)
-map <leader>vr <Action>(RecentFiles)
-map <leader>vd <Action>(QuickJavaDoc)
-map <leader>vt <Action>(QuickTypeDefinition)
-map <leader>ve <Action>(ShowErrorDescription)
+let mapleader="\<Space>"
+nmap <leader>j <Action>(GotoFile)
+nmap <leader>k <Action>(GotoAction)
+nmap <leader>tt :NERDTreeToggle<CR>
+nmap <leader>tf :NERDTreeFind<CR>
+nmap <leader>a <Action>(Annotate)
+nmap <leader>r <Action>(Refactorings.QuickListPopupAction)
+nmap <leader>d <Action>(EditorDuplicate)
+nmap <leader>w <Action>(SaveAll)
+nmap <leader>f <Action>(FindInPath)
+nmap <leader>x <Action>(CloseContent)
+nmap <leader>X <Action>(CloseAllEditorsButActive)
+nmap <leader>h <Action>(HighlightUsagesInFile)
+nmap <leader>n <Action>(Go.NewGoFile)
+nmap <leader>gi <Action>(GotoImplementation)
+nmap <leader>gd <Action>(GotoDeclarationOnly)
+nmap <leader>gs <Action>(GotoSuperMethod)
+nmap <leader>ge <Action>(GotoNextError)
+nmap <leader>gu <Action>(FindUsages)
+nmap <leader>vp <Action>(ParameterInfo)
+nmap <leader>vr <Action>(RecentFiles)
+nmap <leader>vd <Action>(QuickJavaDoc)
+nmap <leader>vt <Action>(QuickTypeDefinition)
+nmap <leader>ve <Action>(ShowErrorDescription)
 nmap <leader>i i<SPACE><ESC>r
 nmap <leader>cc <Plug>(CommentMotion)
 nmap <leader>c<SPACE> <Plug>(CommentLine)
 vmap <leader>cc <Plug>(CommentMotionV)
+vmap <leader>c<SPACE> <Plug>(CommentMotionV)
 nmap <C-O> <Action>(Forward)
 nmap <C-I> <Action>(Back)
 nmap <C-J> <Action>(PreviousTab)
 nmap <C-K> <Action>(NextTab)
 nmap <C-down> <Action>(MoveLineDown)
 nmap <C-up> <Action>(MoveLineUp)
-map <C-N> <Action>(SelectNextOccurrence)
-map <C-S-N> <Action>(SelectAllOccurrences)
-map <A-P> <Action>(UnselectPreviousOccurrence)
-map <A-X> <Action>(FindNext)
+nmap <C-N> <Action>(SelectNextOccurrence)
+nmap <C-S-N> <Action>(SelectAllOccurrences)
+nmap <A-P> <Action>(UnselectPreviousOccurrence)
+nmap <A-X> <Action>(FindNext)
 nmap <leader>o mao<ESC>`a
 nmap <leader>O maO<ESC>`a
+nmap <Home> ^
+nmap <End> $
+nmap <A-j> <Action>(PrevSplitter)
+nmap <A-k> <Action>(NextSplitter)
+
+map <leader>y <Action>($Copy)
