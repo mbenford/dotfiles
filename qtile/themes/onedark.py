@@ -1,3 +1,19 @@
+palette=dict(
+ chalky="#e5c07b",
+ coral="#ef596f",
+ dark="#5c6370",
+ error="#f44747",
+ fountainBlue="#2bbac5",
+ green="#89ca78",
+ invalid="#ffffff",
+ lightDark="#7f848e",
+ lightWhite="#abb2bf",
+ malibu="#61afef",
+ purple="#d55fde",
+ whiskey="#d19a66",
+ deepRed="#be5046",
+)
+
 bar = dict(
     fg="#ffffff",
     bg="#282c34",

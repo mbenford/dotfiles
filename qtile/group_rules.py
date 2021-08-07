@@ -15,14 +15,3 @@ rules = [
     Match(wm_class="qalculate-gtk"),
 ]
 
-# Jetbrains IDEs
-rules += [
-    Match(wm_class=f"jetbrains-{app[0]}", title="win0")
-    for app in [
-        ("goland", "GoLand"),
-        ("webstorm", "WebStorm"),
-        ("pycharm", "PyCharm"),
-        ("clion", "CLion"),
-    ]
-]
-

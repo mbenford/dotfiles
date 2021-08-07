@@ -7,10 +7,16 @@ from libqtile.log_utils import logger
 
 from themes import onedark as theme
 from float_rules import rules as custom_float_rules
+from importlib import reload
+import commands
+import widgets
+reload(commands)
+reload(widgets)
 from commands import WindowCommands
 from util import get_displays, bind_keys, Rofi
 import layouts as custom_layouts
 import widgets as custom_widget
+reload(custom_layouts)
 
 # CONSTANTS
 terminal = getenv("TERMINAL")
@@ -40,43 +46,45 @@ keys = bind_keys(
     ("M-S-j", lazy.layout.shuffle_down(), "Shuffle window down"),
     ("M-S-k", lazy.layout.shuffle_up(), "Shuffle window up"),
     ("M-S-l", lazy.layout.shuffle_right(), "Shuffle window right"),
+    ("M-S-i", win_cmds.to_next_screen(), "Shuffle window right"),
+    ("M-S-y", win_cmds.to_empty_group(), "Shuffle window right"),
 
     # Windows
     ("M-f", lazy.window.toggle_floating(), "Toggle floating"),
     ("M-m", win_cmds.toggle_maximized(layout="mono"), "Toggle mono layout"),
     ("M-S-m", win_cmds.toggle_maximized(layout="max"), "Toggle max layout"),
     # ("M-S-n", win_cmds.to_inactive_group(), "Move window to first inactive group"),
-    ("M-x", lazy.window.kill(), "Kill focused window"),
+    ("M-q", lazy.window.kill(), "Kill focused window"),
     ("M-<bracketleft>", lazy.window.down_opacity(), "Kill focused window"),
     ("M-<bracketright>", lazy.window.up_opacity(), "Kill focused window"),
     ("M-<equal>", lazy.window.opacity(1), "Kill focused window"),
 
     # Layout specific
     ("M-C-h", [
-        lazy.layout.shrink_main().when(layout="tall"),
+        lazy.layout.shrink_main().when(layout=["tall", "mid"]),
         lazy.layout.grow_left().when(layout="cols"),
     ], "Grow window left"),
     ("M-C-j", [
-        lazy.layout.grow().when(layout="tall"),
+        lazy.layout.grow().when(layout=["tall", "mid"]),
         lazy.layout.grow_down().when(layout="cols"),
     ], "Grow window down"),
     ("M-C-k", [
-        lazy.layout.shrink().when(layout="tall"),
+        lazy.layout.shrink().when(layout=["tall", "mid"]),
         lazy.layout.grow_up().when(layout="cols"),
     ], "Grow window up"),
     ("M-C-l", [
-        lazy.layout.grow_main().when(layout="tall"),
+        lazy.layout.grow_main().when(layout=["tall", "mid"]),
         lazy.layout.grow_right().when(layout="cols"),
     ], "Grow window right"),
 
     ("M-C-m", [
-        lazy.layout.maximize().when(layout="tall")
+        lazy.layout.maximize().when(layout=["tall", "mid"]),
     ], "Maximize window"),
     ("M-C-s", [
         lazy.layout.toggle_split().when(layout="cols")
     ], "Toggle split"),
     ("M-C-n", [
-        lazy.layout.reset().when(layout="tall"),
+        lazy.layout.reset().when(layout=["tall", "mid"]),
         lazy.layout.normalize().when(layout="cols"),
     ], "Reset layout"),
     ("M-C-i", [
@@ -103,7 +111,7 @@ keys = bind_keys(
         ('b', lazy.spawn(rofi.show("bookmarks")), "Launch rofi (bookmarks)"),
         ('e', lazy.spawn("rofimoji"), "Launch rofi (emoji)"),
     ], ""),
-    ("M-q", lazy.spawn(rofi.show("system")), "Launch rofi (power menu)"),
+    ("M-S-q", lazy.spawn(rofi.show("system")), "Launch rofi (power menu)"),
 
     # Volume
     ("<XF86AudioRaiseVolume>", lazy.spawn("pamixer --increase 10"), "Increase volume"),
@@ -177,6 +185,7 @@ layouts = [
     layout.MonadTall(
         **layout_defaults,
         name="tall",
+        new_client_position="top",
         single_margin=margin_single_window,
     ),
     layout.Columns(
@@ -195,10 +204,10 @@ layouts = [
         name="max",
         num_stacks=1,
     ),
-    custom_layouts.ThreeColumns(
+    custom_layouts.MonadThreeCol(
         **layout_defaults,
-        main_size=50,
-        border_on_single=True,
+        name="mid",
+        single_margin=margin_single_window,
     ),
 ]
 
@@ -261,30 +270,14 @@ def widgets_left():
             highlight_color=theme.groups["bg"],
             active=theme.groups["active_fg"],
             inactive=theme.groups["inactive_fg"],
-            this_current_screen_border=theme.groups["current_screen_bg"],
+            # this_current_screen_border=theme.groups["current_screen_bg"],
+            this_current_screen_border="#d55fde",
             this_screen_border=theme.groups["current_screen_bg"],
             other_screen_border=theme.groups["other_screens_bg"],
             other_current_screen_border=theme.groups["other_screens_bg"],
             urgent_alert_method="text",
             urgent_text="#f44747",
             margin_y=5,
-        ),
-        widget.Sep(**sep_defaults),
-        widget.CurrentScreen(
-            font="Material Icons",
-            padding=5,
-            active_text="\ue055",
-            inactive_text="\ue055",
-            active_color=theme.screen_indicator["active_fg"],
-            inactive_color=theme.screen_indicator["inactive_fg"],
-        ),
-        custom_widget.ChordStatus(
-            font="Material Icons",
-            padding=5,
-            active_text="\ue312",
-            inactive_text="\ue312",
-            active_color=theme.screen_indicator["active_fg"],
-            inactive_color=theme.screen_indicator["inactive_fg"],
         ),
         widget.Sep(**sep_defaults),
         widget.CurrentLayout(
@@ -372,6 +365,13 @@ def widgets_right():
             '\ue0da',
             custom_widget.VPN(
                 update_interval=widget_short_update_interval,
+            ),
+        ),
+        *with_glyph(
+            '\ue3e7',
+            custom_widget.PowerManagementStatus(
+                update_interval=widget_short_update_interval,
+                off_foreground="#f44747",
             ),
         ),
         *with_glyph(

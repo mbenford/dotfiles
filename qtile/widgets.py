@@ -7,6 +7,10 @@ from libqtile.widget import base
 import time
 import psutil
 
+from dbus_next.glib import MessageBus
+from dbus_next.message import Message
+from dbus_next.constants import BusType
+
 
 class Uptime(base.ThreadPoolText):
     defaults = [
@@ -176,3 +180,30 @@ class ChordStatus(base._TextBox):
         hook.subscribe.enter_chord(enter_chord)
         hook.subscribe.leave_chord(leave_chord)
 
+
+class PowerManagementStatus(base.ThreadPoolText):
+    defaults = [
+        ("on_text", "on", ""),
+        ("off_text", "off", ""),
+        ("off_foreground", "#ff0000", ""),
+    ]
+
+    def __init__(self, **config):
+        base.ThreadPoolText.__init__(self, "", **config)
+        self.add_defaults(PowerManagementStatus.defaults)
+        self.bus = MessageBus(bus_type=BusType.SESSION).connect_sync()
+
+    def poll(self):
+        reply = self.bus.call_sync(Message(
+            destination="org.freedesktop.PowerManagement",
+            path="/org/freedesktop/PowerManagement/Inhibit",
+            interface="org.freedesktop.PowerManagement.Inhibit",
+            member="GetInhibitors",
+        ))
+
+        body = reply.body
+        inhibitors = body[0] if body is not None and len(body) > 0 else []
+        if len(inhibitors) > 0:
+            return f"<span foreground='{self.off_foreground}'>{self.off_text}</span>"
+
+        return self.on_text

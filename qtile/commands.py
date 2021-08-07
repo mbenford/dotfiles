@@ -21,13 +21,42 @@ class WindowCommands:
 
         return lazy.function(cmd)
 
-    def to_inactive_group(self):
+    def to_empty_group(self, switch=True):
         def cmd(qtile):
-            for g in qtile.groups:
-                if len(g.windows) == 0:
-                    qtile.current_window.togroup(g.name)
+            index = qtile.groups.index(qtile.current_group)
+            visited = 0
+            while visited < len(qtile.groups):
+                index += 1
+                if index >= len(qtile.groups):
+                    index = 0
+
+                group = qtile.groups[index]
+                if len(group.windows) == 0:
+                    qtile.current_window.togroup(group.name, switch_group=switch)
                     return
+
+                visited += 1
 
         return lazy.function(cmd)
 
+    def to_next_screen(self, focus=True):
+        return self._to_screen(+1, focus)
 
+    def to_prev_screen(self, focus=True):
+        return self._to_screen(-1, focus)
+
+    def _to_screen(self, offset, focus=True):
+        def cmd(qtile):
+            index = qtile.current_screen.index + offset
+            if index >= len(qtile.screens):
+                index = 0
+            elif index < 0:
+                index = len(qtile.screens) - 1
+
+            curr_window = qtile.current_window
+            if curr_window is not None:
+                curr_window.toscreen(index=index)
+                if focus:
+                    qtile.focus_screen(index)
+
+        return lazy.function(cmd)
