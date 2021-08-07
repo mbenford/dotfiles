@@ -2,7 +2,7 @@ XDG_CONFIG_HOME DEFAULT="@{HOME}/.config"
 XDG_DATA_HOME   DEFAULT="@{HOME}/.local/share"
 
 TERMINAL        DEFAULT="/usr/bin/kitty"
-EDITOR          DEFAULT="/usr/bin/vim"
+EDITOR          DEFAULT="/usr/bin/nvim"
 BROWSER         DEFAULT="/usr/bin/brave"
 
 ZDOTDIR         DEFAULT="${XDG_CONFIG_HOME}/zsh"
