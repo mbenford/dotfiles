@@ -2,8 +2,8 @@
 	name = Michael Benford
 	signingKey = AD5AE395
 [core]
-	editor = /usr/bin/vim
 	pager = diff-so-fancy | less --tabs=2 -RFX
+	editor = /usr/bin/nvim
 [pull]
 	rebase = true
 [push]
