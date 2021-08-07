@@ -2,8 +2,8 @@
 	name = Michael Benford
 	signingKey = AD5AE395
 [core]
-	pager = diff-so-fancy | less --tabs=2 -RFX
 	editor = /usr/bin/nvim
+	pager = delta
 [pull]
 	rebase = true
 [push]
@@ -12,15 +12,22 @@
 	autosquash=true
 [color]
 	ui = always
-[color "diff"]
-	meta = yellow
-	frag = magenta
-	commit = yellow
-	old = red
-	new = green
-	whitespace = red reverse
+[interactive]
+    diffFilter = delta --color-only
 [includeIf "gitdir:~/dev/work/"]
 	path = ~/dev/work/.gitconfig
 [fancy-status]
 	showtitles = false
 	mergeUntracked = true
+[delta]
+	navigate = true
+	tabs = 2
+	line-numbers = true
+	syntax-theme = OneHalfDark
+	file-decoration-style = blue box
+	file-modified-label = modified:
+	hunk-header-style = omit
+	plus-style = syntax "#1f3623"
+	minus-style = syntax "#4a2324"
+	line-numbers-plus-style = green
+	line-numbers-minus-style = red
