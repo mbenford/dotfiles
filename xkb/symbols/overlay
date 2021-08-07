@@ -15,7 +15,7 @@ xkb_symbols "modifiers" {
 		symbols = [ ISO_Level3_Shift ],
 		actions = [ LatchMods(mods=AltGr) ]
 	};
-	
+
 	key <RTSH> { Overlay1 = <HYPR> };
 	key <HYPR> {
 		symbols = [ VoidSymbol ],
@@ -23,7 +23,7 @@ xkb_symbols "modifiers" {
 	};
 
 	key <RTRN> { Overlay1 = <FK14> };
-	key <FK14> { 
+	key <FK14> {
 		symbols = [ VoidSymbol ],
 		actions = [ LatchMods(mods=Control+Shift+Alt+Super)]
 	};
@@ -142,11 +142,11 @@ xkb_symbols "misc" {
 	key <SPCE> { Overlay1 = <RTRN> };
 
 	key <LatT> { Overlay1 = <FK20> };
-	key <FK20> { 
+	key <FK20> {
 		symbols = [ VoidSymbol ],
-		actions = [ Redirect(key=<LatT>, mods=Control+Alt)] 
+		actions = [ Redirect(key=<LatT>, mods=Control+Alt)]
 	};
-	
+
 	key <LatF> { Overlay1 = <FK21> };
 	key <FK21> {
 		symbols = [ VoidSymbol ],
@@ -160,9 +160,9 @@ xkb_symbols "misc" {
 	};
 
 	key <LatH> { Overlay1 = <FK23> };
-	key <FK23> { 
+	key <FK23> {
 		symbols = [ VoidSymbol ],
-		actions = [ Redirect(key=<LatH>, mods=Control+Shift+Alt+Super)] 
+		actions = [ Redirect(key=<LatH>, mods=Control+Shift+Alt+Super)]
 	};
 };
 

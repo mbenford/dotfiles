@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -e
+
+XKB_DIR="/usr/share/X11/xkb"
+SYMBOLS_SRC="./symbols"
+SYMBOLS_DST="$XKB_DIR/symbols"
+RULES_FILE="$XKB_DIR/rules/evdev"
+
+echo -n "\
+This script will perform the following actions (requires sudo):
+
+1. Copy symbol files to $SYMBOLS_DST.
+2. Backup $RULES_FILE.
+3. Add new options to $RULES_FILE.
+
+Press ENTER to continue or CTRL-C to abort"; read
+
+sudo /usr/bin/cp --update --verbose $SYMBOLS_SRC/* $SYMBOLS_DST
+if ! [[ -f $RULES_FILE.bak ]]; then
+	sudo /usr/bin/cp $RULES_FILE $RULES_FILE.bak
+fi
+
+for file in $SYMBOLS_SRC/*; do
+	groups=( $(grep -Po 'xkb_symbols "\K.*?(?=")' $file) )
+
+	name=$(basename $file)
+	for group in ${groups[@]}; do
+		option="$name:$group = +$name($group)"
+		if grep "$option" $RULES_FILE > /dev/null; then
+			echo "skipping $option"
+			continue
+		fi
+
+		sudo sed --in-place "/\!\s*option\s*=\s*symbols\s*/a \   $option" $RULES_FILE
+	done
+done
