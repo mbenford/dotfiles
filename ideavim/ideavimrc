@@ -24,7 +24,7 @@ nmap <leader>k <Action>(GotoAction)
 nmap <leader>tt :NERDTreeToggle<CR>
 nmap <leader>tf :NERDTreeFind<CR>
 nmap <leader>a <Action>(Annotate)
-nmap <leader>r <Action>(Refactorings.QuickListPopupAction)
+map <leader>r <Action>(Refactorings.QuickListPopupAction)
 nmap <leader>d <Action>(EditorDuplicate)
 nmap <leader>w <Action>(SaveAll)
 nmap <leader>f <Action>(FindInPath)
