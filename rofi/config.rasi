@@ -9,4 +9,11 @@ configuration {
 	drun-display-format: "{name}";
 	kb-row-tab: "";
 	kb-mode-next: "Tab";
+
+	timeout {
+		delay: 15;
+		action: "kb-cancel";
+	}
 }
+
+/* vim: set ft=css: */

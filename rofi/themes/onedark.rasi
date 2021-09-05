@@ -56,7 +56,8 @@ element {
 	padding: 5px 10px;
 }
 
-element selected {
+element selected,
+element-text selected {
 	background-color:	@secondary-color;
 }
 
