@@ -136,7 +136,7 @@ keys = bind_keys(
 )
 
 # GROUPS
-groups = [Group(i) for i in "123890"]
+groups = [Group(i) for i in "12347890"]
 
 for g in groups:
     keys += bind_keys(
