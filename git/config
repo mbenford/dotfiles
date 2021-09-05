@@ -13,12 +13,9 @@
 [color]
 	ui = always
 [interactive]
-    diffFilter = delta --color-only
+  diffFilter = delta --color-only
 [includeIf "gitdir:~/dev/work/"]
 	path = ~/dev/work/.gitconfig
-[fancy-status]
-	showtitles = false
-	mergeUntracked = true
 [delta]
 	navigate = true
 	tabs = 2
