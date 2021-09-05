@@ -1,4 +1,6 @@
 set colorcolumn=120
+set completeopt=menuone,noselect
+set confirm
 set cursorline
 set hidden
 set ignorecase
@@ -15,6 +17,7 @@ set numberwidth=2
 set scrolloff=5
 set shiftwidth=2
 set shortmess-=S
+set shortmess+=I
 set sidescroll=1
 set sidescrolloff=10
 set signcolumn=yes:1
@@ -28,4 +31,5 @@ set termguicolors
 set title
 set ttimeoutlen=0
 set undofile
+set updatetime=500
 set wildmode=full

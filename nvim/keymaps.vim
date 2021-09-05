@@ -17,7 +17,8 @@ nnoremap <silent> <leader>f :Rg<CR>
 nnoremap <silent> <leader>b :Buffers<CR>
 nnoremap <silent> <leader>d Yp
 nnoremap <silent> <leader>i i<SPACE><ESC>r
-noremap <silent> <leader>y "+Y
+noremap <silent> <leader>y "+y
+noremap <silent> <leader>Y "+Y
 
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
@@ -47,3 +48,10 @@ nnoremap <silent> <M-L>	:vertical resize +2<CR>
 
 vnoremap < <gv
 vnoremap > >gv
+
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
