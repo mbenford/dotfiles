@@ -13,7 +13,12 @@ ZSH_AUTOSUGGEST_HISTORY_IGNORE="?(#c100,)"
 
 # fzf
 export FZF_DEFAULT_COMMAND="rg --files --hidden"
-export FZF_DEFAULT_OPTS='--no-info --height=30%'
+export FZF_DEFAULT_OPTS='
+	--no-info
+	--height=20%
+	--reverse
+	--color=bg+:#31353f,hl:magenta,hl+:magenta
+	--color=prompt:magenta,pointer:magenta'
 
 # golang
 export GOPATH=$HOME/.go

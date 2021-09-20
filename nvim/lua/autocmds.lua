@@ -1,3 +1,4 @@
+vim.cmd[[
 augroup CUSTOM
 	autocmd!
 	au FocusLost * silent! wa
@@ -9,3 +10,4 @@ augroup CUSTOM
 	au FileType fzf setlocal signcolumn=no nonumber norelativenumber
 	au FileType help setlocal signcolumn=no nonumber norelativenumber
 augroup END
+]]

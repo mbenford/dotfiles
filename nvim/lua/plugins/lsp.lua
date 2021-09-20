@@ -24,5 +24,10 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
 	}
 )
 
-vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
+local map = require'utils'.map
+map{'n', 'gd', ':lua vim.lsp.buf.definition()<cr>'}
+map{'n', 'gi', ':lua vim.lsp.buf.implementation()<cr>'}
 
+vim.cmd[[
+	autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})
+]]

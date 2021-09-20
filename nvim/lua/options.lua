@@ -1,0 +1,36 @@
+local o = vim.opt
+o.colorcolumn = '120'
+o.completeopt = {'menuone', 'noselect'}
+o.confirm = true
+o.cursorline = true
+o.hidden = true
+o.ignorecase = true
+o.mouse = 'a'
+o.backup = false
+o.expandtab = false
+o.hlsearch = false
+o.showcmd = false
+o.showmode = false
+o.swapfile = false
+o.wrap = false
+o.relativenumber = true
+o.numberwidth = 2
+o.scrolloff = 5
+o.shiftwidth = 2
+o.shortmess:remove('S')
+o.shortmess:append('I')
+o.sidescroll = 1
+o.sidescrolloff = 10
+o.signcolumn = 'yes:1'
+o.smartcase = true
+o.smartindent = true
+o.softtabstop = 2
+o.splitbelow = true
+o.splitright = true
+o.tabstop = 2
+o.termguicolors = true
+o.title = true
+o.ttimeoutlen = 0
+o.undofile = true
+o.updatetime = 500
+o.wildmode = 'full'

@@ -1,0 +1,5 @@
+require'plugins'
+require'theme'
+require'options'
+require'keymaps'
+require'autocmds'
