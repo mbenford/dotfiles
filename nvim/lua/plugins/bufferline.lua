@@ -1,114 +1,88 @@
+local colors = require'onedark.colors'
+
 require"bufferline".setup{
 	options = {
+		enforce_regular_tabs = false,
+		tab_size = 5,
+		show_buffer_icons = false,
 		show_close_icon = false,
 		show_buffer_close_icons = false,
 		indicator_icon = ' ',
 		modified_icon = '',
+		left_trunc_marker = '',
+		right_trunc_marker = '',
 		separator_style = {'',''},
-		tab_size = 5,
 		offsets = {
 			{
-					filetype = 'NvimTree',
-					text = 'NvimTree',
+				filetype = 'NvimTree',
+				text = 'NvimTree',
 			}
 		},
 		diagnostics = 'nvim_lsp',
 		diagnostics_indicator = function(count, level, dict, context)
 			return ''
 		end,
-		custom_areas = {
-			right = function()
-				local error = vim.lsp.diagnostic.get_count(0, [[Error]])
-				local warning = vim.lsp.diagnostic.get_count(0, [[Warning]])
-				local info = vim.lsp.diagnostic.get_count(0, [[Information]])
-				local hint = vim.lsp.diagnostic.get_count(0, [[Hint]])
-				local result = {}
-
-				if error ~= 0 then
-					table.insert(result, {text = "  " .. error, guifg = "#EC5241"})
-				end
-
-				if warning ~= 0 then
-					table.insert(result, {text = "  " .. warning, guifg = "#EFB839"})
-				end
-
-				if hint ~= 0 then
-					table.insert(result, {text = "  " .. hint, guifg = "#A3BA5E"})
-				end
-
-				if info ~= 0 then
-					table.insert(result, {text = "  " .. info, guifg = "#7EA9A7"})
-				end
-
-				return result
-			end,
-		},
 	},
 	highlights = {
 		fill = {
-			guibg = { attribute = 'bg', highlight = 'NvimTreeNormal' },
+			guibg = colors.bg_d
 		},
 		background = {
-			guibg = { attribute = 'bg', highlight = 'NvimTreeNormal' },
+			guibg = colors.bg_d
+		},
+		indicator_selected = {
+			guibg = colors.bg0,
 		},
 		buffer_selected = {
 			gui = 'none',
-			guibg = { attribute = 'bg', highlight = 'CursorLine' }
+			guifg = colors.blue,
+			guibg = colors.bg0,
 		},
 		buffer_visible = {
-			guibg = { attribute = 'bg', highlight = 'CursorLine' }
-		},
-		indicator_selected = {
-			guibg = { attribute = 'bg', highlight = 'CursorLine' }
+			guibg = colors.bg0,
 		},
 		modified = {
-			guibg = { attribute = 'bg', highlight = 'NvimTreeNormal' }
+			guibg = colors.bg_d,
 		},
 		modified_selected = {
-			guibg = { attribute = 'bg', highlight = 'CursorLine' }
+			guibg = colors.bg0,
 		},
 		modified_visible = {
-			guibg = { attribute = 'bg', highlight = 'CursorLine' }
+			guibg = colors.bg0,
 		},
 		duplicate = {
 			gui = 'none',
-			guibg = { attribute = 'bg', highlight = 'NvimTreeNormal' },
+			guibg = colors.bg_d,
 		},
 		duplicate_selected = {
 			gui = 'none',
-			guibg = { attribute = 'bg', highlight = 'CursorLine' },
+			guibg = colors.bg0,
 		},
 		duplicate_visible = {
 			gui = 'none',
-			guibg = { attribute = 'bg', highlight = 'CursorLine' },
+			guibg = colors.bg0,
 		},
 		error = {
 			gui = 'undercurl',
-			guibg = { attribute = 'bg', highlight = 'NvimTreeNormal' },
-			guisp = { attribute = 'fg', highlight = 'LspDiagnosticsDefaultError' },
+			guisp = {attribute = 'fg', highlight = 'LspDiagnosticsDefaultError'},
 		},
 		error_selected = {
 			gui = 'undercurl',
-			guifg = 'none',
-			guibg = { attribute = 'bg', highlight = 'CursorLine' },
-			guisp = { attribute = 'fg', highlight = 'LspDiagnosticsDefaultError' },
+			guisp = {attribute = 'fg', highlight = 'LspDiagnosticsDefaultError'},
 		},
 		error_visible = {
-			guibg = { attribute = 'bg', highlight = 'CursorLine' },
+			guibg = {attribute = 'bg', highlight = 'CursorLine'},
 		},
 		warning = {
 			gui = 'undercurl',
-			guibg = { attribute = 'bg', highlight = 'NvimTreeNormal' },
-			guisp = { attribute = 'fg', highlight = 'LspDiagnosticsDefaultWarning' },
+			guisp = {attribute = 'fg', highlight = 'LspDiagnosticsDefaultWarning'},
 		},
 		warning_selected = {
 			gui = 'undercurl',
-			guifg = 'none',
-			guibg = { attribute = 'bg', highlight = 'CursorLine' },
-			guisp = { attribute = 'fg', highlight = 'LspDiagnosticsDefaultWarning' },
+			guisp = {attribute = 'fg', highlight = 'LspDiagnosticsDefaultWarning'},
 		},
 		warning_visible = {
-			guibg = { attribute = 'bg', highlight = 'CursorLine' },
+			guibg = {attribute = 'bg', highlight = 'CursorLine'},
 		},
 	}
 }

@@ -1,4 +1,4 @@
-require('gitsigns').setup{
+require'gitsigns'.setup{
   signs = {
     add          = {text = '▋'},
     change       = {text = '▋'},
@@ -7,3 +7,7 @@ require('gitsigns').setup{
     changedelete = {text = '▋'},
   },
 }
+
+vim.cmd[[
+	hi GitSignsChange guifg=#d19a66
+]]

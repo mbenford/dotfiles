@@ -1,24 +1,24 @@
 local o = vim.opt
+o.backup = false
 o.colorcolumn = '120'
 o.completeopt = {'menuone', 'noselect'}
 o.confirm = true
 o.cursorline = true
-o.hidden = true
-o.ignorecase = true
-o.mouse = 'a'
-o.backup = false
 o.expandtab = false
+o.hidden = true
 o.hlsearch = false
-o.showcmd = false
-o.showmode = false
-o.swapfile = false
-o.wrap = false
-o.relativenumber = true
+o.ignorecase = true
+o.list = true
+o.listchars = {trail = '·', tab = '  '}
+o.mouse = 'a'
 o.numberwidth = 2
+o.relativenumber = true
 o.scrolloff = 5
 o.shiftwidth = 2
-o.shortmess:remove('S')
 o.shortmess:append('I')
+o.shortmess:remove('S')
+o.showcmd = false
+o.showmode = false
 o.sidescroll = 1
 o.sidescrolloff = 10
 o.signcolumn = 'yes:1'
@@ -27,10 +27,13 @@ o.smartindent = true
 o.softtabstop = 2
 o.splitbelow = true
 o.splitright = true
+o.swapfile = false
 o.tabstop = 2
 o.termguicolors = true
 o.title = true
+o.titlestring = '%{substitute(getcwd(),$HOME,"~","")} - Neovim'
 o.ttimeoutlen = 0
 o.undofile = true
 o.updatetime = 500
 o.wildmode = 'full'
+o.wrap = false

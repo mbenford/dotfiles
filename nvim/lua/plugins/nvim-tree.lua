@@ -13,6 +13,7 @@ g.nvim_tree_icons = {
 	symlink = '',
 }
 
+require'nvim-tree'.setup()
 require'nvim-tree.view'.View.winopts.signcolumn = 'no'
 
 local map = require'utils'.map
