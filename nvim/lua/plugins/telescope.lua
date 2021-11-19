@@ -1,6 +1,7 @@
 local actions = require'telescope.actions'
 
-require'telescope'.setup{
+local telescope = require'telescope'
+telescope.setup{
 	defaults = {
 		filesize_limit = 1,
 		path_display = {'smart'},
@@ -18,13 +19,23 @@ require'telescope'.setup{
 			},
 		},
 	},
+	extensions = {
+		fzf = {
+			fuzzy = true,
+			override_generic_sorter = true,
+			override_file_sorter = true,
+			case_mode = 'smart_case',
+		},
+	},
 }
+
+telescope.load_extension('fzf')
 
 local function project_files()
 	local ok = pcall(require'telescope.builtin'.git_files)
 	if not ok then require'telescope.builtin'.find_files() end
 end
 
-local map = require'utils'.map
-map{'n', '<leader>j', project_files}
-map{'n', '<leader>f', ':Telescope live_grep<cr>'}
+local map = require'map'
+map.n{'<leader>j', project_files}
+map.n{'<leader>f', '<cmd>Telescope live_grep<cr>'}

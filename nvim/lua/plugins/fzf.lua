@@ -18,13 +18,13 @@ g.fzf_colors = {
 	header = {'fg', 'Comment'}
 }
 
-local map = require'utils'.map
+local map = require'map'
 vim.cmd 'silent !git rev-parse --is-inside-work-tree'
 if vim.v.shell_error == 0 then
-	map{'n', '<leader>j', ':GFiles --cached --others --exclude-standard<cr>'}
+	map.n{'<leader>j', ':GFiles --cached --others --exclude-standard<cr>'}
 else
-	map{'n', '<leader>j', ':Files<cr>'}
+	map.n{'<leader>j', ':Files<cr>'}
 end
 
-map{'n', '<leader>f', ':Rg<cr>'}
+map.n{'<leader>f', ':Rg<cr>'}
 --nnoremap <silent> <leader>b :Buffers<CR>

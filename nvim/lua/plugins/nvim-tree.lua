@@ -13,9 +13,9 @@ g.nvim_tree_icons = {
 	symlink = '',
 }
 
-require'nvim-tree'.setup()
+require'nvim-tree'.setup{}
 require'nvim-tree.view'.View.winopts.signcolumn = 'no'
 
-local map = require'utils'.map
-map{'n', '<leader>tt', ':NvimTreeToggle<cr>'}
-map{'n', '<leader>tf', ':NvimTreeFindFile<cr>'}
+local map = require'map'
+map.n{'<leader>tt', '<cmd>NvimTreeToggle<cr>'}
+map.n{'<leader>tf', '<cmd>NvimTreeFindFile<cr>'}

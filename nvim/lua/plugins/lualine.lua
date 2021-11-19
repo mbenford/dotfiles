@@ -1,3 +1,29 @@
+local colors = require'onedark.colors'
+local theme = {
+	normal = {
+		a = {fg = colors.bg0, bg = colors.green, gui = 'bold'},
+		b = {fg = colors.fg, bg = colors.bg3},
+		c = {fg = colors.fg, bg = colors.bg_d},
+	},
+	visual = {
+		a = {fg = colors.bg0, bg = colors.purple, gui = 'bold'},
+	},
+	replace = {
+		a = {fg = colors.bg0, bg = colors.red, gui = 'bold'},
+	},
+	insert = {
+		a = {fg = colors.bg0, bg = colors.blue, gui = 'bold'},
+	},
+	command = {
+		a = {fg = colors.bg0, bg = colors.yellow, gui = 'bold'},
+	},
+	inactive = {
+		a = {fg = colors.fg, bg = colors.bg_d, gui = 'bold'},
+		b = {fg = colors.fg, bg = colors.bg_d},
+		c = {fg = colors.fg, bg = colors.bg_d},
+	},
+}
+
 local function lsp_clients()
 	local clients = {}
 	for _, client in pairs(vim.lsp.buf_get_clients()) do
@@ -23,9 +49,9 @@ end
 
 require'lualine'.setup{
 	options = {
-		theme = 'onedark',
+		theme = theme,
 		section_separators = {left = '', right = ''},
-		component_separators = {left = '|', right = '|'},
+		component_separators = {left = '', right = ''},
 	},
 	sections = {
 		lualine_b = {
@@ -49,6 +75,13 @@ require'lualine'.setup{
 		lualine_z = {
 			'location',
 		},
+	},
+	inactive_sections = {
+		lualine_a = {},
+		lualine_b = {
+			{'filename', path = 1},
+		},
+		lualine_c = {},
 	},
 	extensions = {'nvim-tree', 'quickfix'},
 }

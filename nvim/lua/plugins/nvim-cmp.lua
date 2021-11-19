@@ -4,6 +4,7 @@ cmp.setup {
 		{ name = 'buffer' },
 		{ name = 'nvim_lsp' },
 		{ name = 'vsnip' },
+		{ name = 'orgmode'},
 	},
 	documentation = false,
 	mapping = {

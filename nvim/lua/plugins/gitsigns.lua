@@ -6,8 +6,8 @@ require'gitsigns'.setup{
     topdelete    = {text = '▋'},
     changedelete = {text = '▋'},
   },
+	keymaps = {},
 }
 
-vim.cmd[[
-	hi GitSignsChange guifg=#d19a66
-]]
+local hl = require'utils'.hl
+hl{'GitSignsChange', guifg=require'onedark.colors'.orange}
