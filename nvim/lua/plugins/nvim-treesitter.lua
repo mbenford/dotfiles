@@ -1,13 +1,3 @@
-local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
-
-parser_configs.norg = {
-	install_info = {
-		url = "https://github.com/nvim-neorg/tree-sitter-norg",
-		files = { "src/parser.c", "src/scanner.cc" },
-		branch = "main"
-	},
-}
-
 require'nvim-treesitter.configs'.setup{
 	ensure_installed = {
 		'go',
@@ -27,11 +17,10 @@ require'nvim-treesitter.configs'.setup{
 		'rust',
 		'yaml',
 		'toml',
-		'norg',
 	},
 	highlight = { enable= true },
 	indent = { enabled = true },
-	incremental_selection = { enabled = true },
+	incremental_selection = { enabled = false },
 }
 
 vim.wo.foldmethod = 'expr'

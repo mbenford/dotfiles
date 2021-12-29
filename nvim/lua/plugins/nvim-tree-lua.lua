@@ -1,6 +1,5 @@
 local g = vim.g
-g.nvim_tree_ignore = {'.git', '.idea', '.vscode', 'node_modules', '.cache'}
-g.nvim_tree_special_files = { Makefile = 1 }
+g.nvim_tree_special_files = {}
 g.nvim_tree_git_hl = 1
 g.nvim_tree_show_icons = {
 	git = 0,
@@ -13,8 +12,14 @@ g.nvim_tree_icons = {
 	symlink = '',
 }
 
-require'nvim-tree'.setup{}
-require'nvim-tree.view'.View.winopts.signcolumn = 'no'
+require'nvim-tree'.setup{
+	filters = {
+		custom = {'.git'},
+	},
+	view = {
+		signcolumn = 'no',
+	}
+}
 
 local map = require'map'
 map.n{'<leader>tt', '<cmd>NvimTreeToggle<cr>'}

@@ -1,4 +1,4 @@
-local colors = require'onedark.colors'
+ocal colors = require'onedark.colors'
 
 require"bufferline".setup{
 	options = {
@@ -86,3 +86,7 @@ require"bufferline".setup{
 		},
 	}
 }
+
+local map = require'map'
+map.n{'<C-j>', '<cmd>BufferLineCyclePrev<cr>'}
+map.n{'<C-k>', '<cmd>BufferLineCycleNext<cr>'}

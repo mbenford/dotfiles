@@ -37,5 +37,7 @@ local function project_files()
 end
 
 local map = require'map'
-map.n{'<leader>j', project_files}
-map.n{'<leader>f', '<cmd>Telescope live_grep<cr>'}
+map.n{'<leader>ff', project_files}
+map.n{'<leader>fg', '<cmd>Telescope live_grep<cr>'}
+map.n{'<leader>fb', '<cmd>Telescope buffers<cr>'}
+map.n{'<leader>fr', '<cmd>Telescope resume<cr>'}

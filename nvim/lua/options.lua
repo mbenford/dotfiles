@@ -15,14 +15,14 @@ o.listchars = {trail = '·', tab = '  '}
 o.mouse = 'a'
 o.numberwidth = 2
 o.relativenumber = true
-o.scrolloff = 5
+o.scrolloff = 3
 o.shiftwidth = 2
 o.shortmess:append('I')
 o.shortmess:remove('S')
 o.showcmd = false
 o.showmode = false
 o.sidescroll = 1
-o.sidescrolloff = 10
+o.sidescrolloff = 5
 o.signcolumn = 'yes:1'
 o.smartcase = true
 o.smartindent = true
@@ -36,6 +36,6 @@ o.title = true
 o.titlestring = '%{substitute(getcwd(),$HOME,"~","")} - Neovim'
 o.ttimeoutlen = 0
 o.undofile = true
-o.updatetime = 500
+o.updatetime = 250
 o.wildmode = 'full'
 o.wrap = false

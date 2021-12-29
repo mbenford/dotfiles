@@ -1,12 +1,16 @@
 local cmp = require'cmp'
 cmp.setup {
 	sources = {
-		{ name = 'buffer' },
+		{ name = 'nvim_lua' },
 		{ name = 'nvim_lsp' },
 		{ name = 'vsnip' },
-		{ name = 'orgmode'},
+		{ name = 'path', keyword_length = 5 },
+		{ name = 'buffer', keyword_length = 5 },
 	},
-	documentation = false,
+	completion = {
+		completeopt = 'menu,menuone,noinsert',
+	},
+	documentation = true,
 	mapping = {
 		['<C-d>'] = cmp.mapping.scroll_docs(-4),
 		['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -18,16 +22,22 @@ cmp.setup {
 		})
 	},
 	formatting = {
-		format = function(entry, item)
-			item.menu = ({
-				buffer = '[B]',
-				nvim_lsp = '[L]',
-				vsnip = '[S]',
-			})[entry.source.name]
-			return item
-		end
+		format = require'lspkind'.cmp_format({
+			with_text = true,
+			menu = {
+				buffer = '[Buffer]',
+				path = '[Path]',
+				nvim_lsp = '[LSP]',
+				vsnip = '[Snippet]',
+				nvim_lua = '[API]',
+			},
+		}),
 	},
 	snippet = {
 		expand = function(args) vim.fn['vsnip#anonymous'](args.body) end,
+	},
+	experimental = {
+		native_menu = false,
+		ghost_text = true,
 	},
 }

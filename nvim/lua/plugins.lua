@@ -1,77 +1,86 @@
-vim.cmd 'packadd packer.nvim'
+vim.cmd'packadd packer.nvim'
 
 local packer = require'packer'
-packer.startup(function(use)
-	use {'wbthomason/packer.nvim', opt = true}
+local startup = require'autoconfig'(packer.startup)
+return startup({{
+	{'wbthomason/packer.nvim', opt = true},
 
 	-- Treesitter
-	use {
-		'nvim-treesitter/nvim-treesitter',
-		run = ':TSUpdate',
-		config_file = 'plugins/treesitter'
-	}
+	{'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'},
 
-	-- IDE-like features
-	use {'neovim/nvim-lspconfig', config_file = 'plugins/lsp'}
-	use {'williamboman/nvim-lsp-installer', config_file = 'plugins/lsp-installer'}
-	use {'hrsh7th/nvim-cmp', config_file = 'plugins/nvim-cmp'}
-	use 'hrsh7th/cmp-buffer'
-	use 'hrsh7th/cmp-nvim-lsp'
-	use 'hrsh7th/cmp-vsnip'
-	use {'hrsh7th/vim-vsnip', config_file = 'plugins/vim-vsnip'}
-	use 'rafamadriz/friendly-snippets'
-	use {'ray-x/lsp_signature.nvim', config_file = 'plugins/lsp-signature'}
-	use 'folke/trouble.nvim'
+	-- LSP
+	{'neovim/nvim-lspconfig'},
+	{'williamboman/nvim-lsp-installer'},
+	{'ray-x/lsp_signature.nvim'},
+	{'onsails/lspkind-nvim'},
+	{'jose-elias-alvarez/null-ls.nvim'},
+	{'kosayoda/nvim-lightbulb'},
+
+	-- completion
+	{'hrsh7th/nvim-cmp'},
+	{'hrsh7th/cmp-buffer'},
+	{'hrsh7th/cmp-path'},
+	{'hrsh7th/cmp-nvim-lsp'},
+	{'hrsh7th/cmp-nvim-lua'},
+	{'hrsh7th/cmp-vsnip'},
+
+	-- snippets
+	{'hrsh7th/vim-vsnip'},
+	{'rafamadriz/friendly-snippets'},
 
 	-- theme
-	use {'navarasu/onedark.nvim', config_file = 'plugins/onedark'}
+	{'navarasu/onedark.nvim'},
 
 	-- fuzzy search
-	use {'nvim-telescope/telescope.nvim', config_file = 'plugins/telescope'}
-	use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+	{'nvim-telescope/telescope.nvim'},
+	{'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
 
 	-- UI
-	use {'kyazdani42/nvim-web-devicons', config_file = 'plugins/web-devicons'}
-	use {'kyazdani42/nvim-tree.lua', commit = 'f92b7e7627c5a36f4af6814c408211539882c4f3', after = 'onedark.nvim', config_file = 'plugins/nvim-tree'}
-	use {'noib3/cokeline.nvim', after = 'onedark.nvim', config_file = 'plugins/cokeline'}
-	use {'nvim-lualine/lualine.nvim', after = 'onedark.nvim', config_file = 'plugins/lualine'}
-	use {'lukas-reineke/indent-blankline.nvim', config_file = 'plugins/indent-blankline'}
-	use {'lewis6991/gitsigns.nvim', after = 'onedark.nvim', config_file = 'plugins/gitsigns'}
-	use {'norcalli/nvim-colorizer.lua', config_file = 'plugins/colorizer'}
-	use 'famiu/bufdelete.nvim'
-	use 'kevinhwang91/nvim-bqf'
-	use {'romgrk/nvim-treesitter-context', after = 'onedark.nvim', config_file = 'plugins/treesitter-context'}
-	use {'folke/todo-comments.nvim', config_file = 'plugins/todo-comments'}
+	{'kyazdani42/nvim-web-devicons'},
+	{'kyazdani42/nvim-tree.lua', after = 'onedark.nvim'},
+	{'noib3/cokeline.nvim', after = 'onedark.nvim'},
+	{'nvim-lualine/lualine.nvim', after = 'onedark.nvim'},
+	{'lukas-reineke/indent-blankline.nvim'},
+	{'lewis6991/gitsigns.nvim', after = 'onedark.nvim'},
+	{'norcalli/nvim-colorizer.lua'},
+	{'kevinhwang91/nvim-bqf'},
+	{'romgrk/nvim-treesitter-context', after = 'onedark.nvim'},
+	{'folke/todo-comments.nvim'},
+	{'folke/trouble.nvim'},
 
 	-- languages
-	use {'hashivim/vim-terraform', ft = 'terraform'}
-	use {'folke/lua-dev.nvim', ft = 'lua'}
-	use {'chr4/nginx.vim', ft = 'nginx'}
+	{'hashivim/vim-terraform', ft = 'terraform'},
+	{'folke/lua-dev.nvim', ft = 'lua'},
+	{'chr4/nginx.vim', ft = 'nginx'},
 
 	-- editing
-	use 'wellle/targets.vim'
-	use {'numToStr/Comment.nvim', config_file = 'plugins/comment'}
-	use 'tpope/vim-surround'
-	use 'mg979/vim-visual-multi'
-	use {'windwp/nvim-autopairs', config_file = 'plugins/autopairs'}
+	{'wellle/targets.vim'},
+	{'numToStr/Comment.nvim'},
+	{'tpope/vim-surround'},
+	{'mg979/vim-visual-multi'},
+	{'windwp/nvim-autopairs'},
 
 	-- navigation
-	use {'phaazon/hop.nvim', config_file = 'plugins/hop'}
-	use 'chaoren/vim-wordmotion'
+	{'phaazon/hop.nvim', after = 'onedark.nvim'},
+	{'chaoren/vim-wordmotion'},
 
 	-- misc
-	use 'nvim-lua/plenary.nvim'
-	use 'dstein64/vim-startuptime'
-	use 'tpope/vim-eunuch'
-	use 'terryma/vim-expand-region'
-	use 'editorconfig/editorconfig-vim'
-	use {'ntpeters/vim-better-whitespace', config_file = 'plugins/better-whitespace'}
-	use 'mtth/scratch.vim'
-	use {'nvim-neorg/neorg', ft = 'norg', config_file = 'plugins/neorg'}
-end)
+	{'nvim-lua/plenary.nvim'},
+	{'dstein64/vim-startuptime'},
+	{'tpope/vim-eunuch'},
+	{'editorconfig/editorconfig-vim'},
+	{'McAuleyPenney/tidy.nvim'},
+	{'famiu/bufdelete.nvim'},
+	{"akinsho/toggleterm.nvim"},
 
-packer.set_handler('config_file', function(plugins, plugin, value)
-	if value and plugin.config == nil then
-		plugin.config = string.format('require"%s"', value)
-	end
-end)
+	},
+
+	-- packer config
+	config = {
+		display = {
+			open_fn = function()
+				return require'packer.util'.float({border = 'none'})
+			end,
+		},
+	},
+})

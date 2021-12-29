@@ -31,4 +31,20 @@ function M.c(args)
 	map('c', args)
 end
 
+function M.o(args)
+	map('o', args)
+end
+
+function M.i(args)
+	map('i', args)
+end
+
+function M.t(args)
+	map('t', args)
+end
+
+function M.a(args)
+	map('', args)
+end
+
 return M
