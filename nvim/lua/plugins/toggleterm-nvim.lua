@@ -2,7 +2,7 @@ require'toggleterm'.setup{
 	shade_terminals = false,
 }
 
-local map = require'map'
+local map = require'utils.map'
 map.n{'<leader><cr>', '<cmd>ToggleTerm<cr>'}
 
 vim.cmd[[

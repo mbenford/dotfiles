@@ -1,18 +1,21 @@
 local null_ls = require'null-ls'
-null_ls.setup({
+local diagnostics = null_ls.builtins.diagnostics
+local formatting = null_ls.builtins.formatting
+local code_actions = null_ls.builtins.code_actions
+
+null_ls.setup{
 	sources = {
 		-- diagnostics
-		null_ls.builtins.diagnostics.eslint.with({
-			command = './node_modules/.bin/eslint',
+		diagnostics.eslint_d.with({
+			extra_args = {'--parser-options=codeFrame:false'},
 		}),
-		null_ls.builtins.diagnostics.flake8,
+		diagnostics.flake8,
 
 		-- formatting
-		null_ls.builtins.formatting.autopep8,
+		formatting.eslint_d,
+		formatting.autopep8,
 
 		-- code actions
-		null_ls.builtins.code_actions.eslint.with({
-			command = './node_modules/.bin/eslint',
-		}),
-	}
-})
+		code_actions.eslint_d,
+	},
+}

@@ -1,4 +1,4 @@
-local map = require'map'
+local map = require'utils.map'
 vim.g.mapleader = ' '
 
 map.n{';', ':', silent = false}
@@ -11,7 +11,8 @@ map.n{'U', '<C-r>'}
 
 map.n{'<leader>w', '<cmd>wa<cr>'}
 map.n{'<leader>x', '<cmd>bd<cr>'}
-map.n{'<leader>q', '<cmd>qa<cr>'}
+map.n{'<leader>qq', '<cmd>qa<cr>'}
+map.n{'<leader>Q', '<cmd>qa!<cr>'}
 map.n{'<leader>d', 'Y`]p'}
 map.v{'<leader>d', 'Y`]p'}
 map.n{'<leader>i', 'i<space><esc>r'}
@@ -42,13 +43,8 @@ map.n{'<M-K>', '<cmd>resize +2<cr>'}
 map.n{'<M-L>', '<cmd>vertical resize +2<cr>'}
 
 
---nnoremap <silent> <C-down> :m+1<CR>
---nnoremap <silent> <C-up> :m-2<CR>
-
 map.c{'<up>', 'pumvisible() ? "\\<left>" : "\\<up>"', expr = true, silent = false}
 map.c{'<down>', 'pumvisible() ? "\\<right>" : "\\<down>"', expr = true, silent = false}
-
-map.n{'<F2>', '<cmd>lua require"renamer".rename()<cr>'}
 
 map.n{'<leader>gd', '<cmd>lua vim.lsp.buf.definition()<cr>'}
 map.n{'<leader>gi', '<cmd>lua vim.lsp.buf.implementation()<cr>'}

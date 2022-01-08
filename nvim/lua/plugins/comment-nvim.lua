@@ -7,7 +7,7 @@ require'Comment'.setup{
 	ignore = '^$',
 }
 
-local map = require'map'
+local map = require'utils.map'
 map.n{'<leader>cc', '<cmd>lua require"Comment.api".call("toggle_current_linewise_op")<cr>g@$'}
 map.n{'<leader>cb', '<cmd>lua require"Comment.api".call("toggle_current_blockwise_op")<cr>g@$'}
 map.n{'<leader>c', '<cmd>lua require"Comment.api".call("toggle_linewise_op")<cr>g@'}

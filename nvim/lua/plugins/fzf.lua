@@ -18,7 +18,7 @@ g.fzf_colors = {
 	header = {'fg', 'Comment'}
 }
 
-local map = require'map'
+local map = require'utils.map'
 vim.cmd 'silent !git rev-parse --is-inside-work-tree'
 if vim.v.shell_error == 0 then
 	map.n{'<leader>j', ':GFiles --cached --others --exclude-standard<cr>'}

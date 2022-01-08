@@ -36,8 +36,9 @@ local function project_files()
 	if not ok then require'telescope.builtin'.find_files() end
 end
 
-local map = require'map'
+local map = require'utils.map'
 map.n{'<leader>ff', project_files}
 map.n{'<leader>fg', '<cmd>Telescope live_grep<cr>'}
 map.n{'<leader>fb', '<cmd>Telescope buffers<cr>'}
 map.n{'<leader>fr', '<cmd>Telescope resume<cr>'}
+map.n{'<leader>fo', '<cmd>Telescope oldfiles<cr>'}

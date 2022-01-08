@@ -26,12 +26,12 @@ vim.g.bufferline = {
   no_name_title = '[No Name]',
 }
 
-local map = require'map'
+local map = require'utils.map'
 map.n{'<C-j>', '<cmd>BufferPrevious<cr>'}
 map.n{'<C-k>', '<cmd>BufferNext<cr>'}
 
 local colors = require'onedark.colors'
-local hl = require'highlight'
+local hl = require'utils.highlight'
 hl.link{'BufferOffset', 'BufferTabpageFill'}
 hl.link{'BufferVisible', 'BufferInactive'}
 hl.link{'BufferVisibleSign', 'BufferInactive'}

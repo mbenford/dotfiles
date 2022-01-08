@@ -8,16 +8,16 @@ require'gitsigns'.setup{
   },
 	keymaps = {},
 	preview_config = {
-		border = '',
+		border = 'single',
 	},
 }
 
-local map = require'map'
+local map = require'utils.map'
 map.n{'<leader><leader>gp', '<cmd>Gitsigns preview_hunk<cr>'}
 map.n{'<leader><leader>gr', '<cmd>Gitsigns reset_hunk<cr>'}
 map.n{'<leader><leader>gn', '<cmd>Gitsigns next_hunk<cr>'}
 map.n{'<leader><leader>gN', '<cmd>Gitsigns prev_hunk<cr>'}
 map.n{'<leader><leader>gb', '<cmd>Gitsigns blame_line<cr>'}
 
-local hl = require'highlight'
+local hl = require'utils.highlight'
 hl.add{'GitSignsChange', guifg=require'onedark.colors'.orange, guibg='none'}

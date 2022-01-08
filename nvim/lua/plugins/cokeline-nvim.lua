@@ -1,5 +1,4 @@
 local colors = require'onedark.colors'
-
 require'cokeline'.setup{
 	components = {
 		{text = ' '},
@@ -30,6 +29,21 @@ require'cokeline'.setup{
 		},
 		{text = ' '},
 	},
+	rendering = {
+		left_sidebar = {
+			filetype = 'NvimTree',
+			components = {
+				{
+					text = '',
+					hl = {
+						fg = colors.yellow,
+						bg = colors.bg_d,
+						style = 'bold',
+					},
+				},
+			},
+		},
+	},
 	mappings = {
 		cycle_prev_next = true,
 	},
@@ -43,6 +57,6 @@ require'cokeline'.setup{
 	}
 }
 
-local map = require'map'
+local map = require'utils.map'
 map.n{'<C-j>', '<Plug>(cokeline-focus-prev)', noremap = false}
 map.n{'<C-k>', '<Plug>(cokeline-focus-next)', noremap = false}

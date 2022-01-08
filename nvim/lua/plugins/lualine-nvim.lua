@@ -2,70 +2,60 @@ local colors = require'onedark.colors'
 local theme = {
 	normal = {
 		a = {fg = colors.bg0, bg = colors.green, gui = 'bold'},
-		b = {fg = colors.fg, bg = colors.bg3},
+		b = {fg = colors.fg, bg = colors.bg_d},
 		c = {fg = colors.fg, bg = colors.bg_d},
+		x = {fg = colors.fg, bg = colors.bg_d},
+		y = {fg = colors.fg, bg = colors.bg_d},
+		z = {fg = colors.fg, bg = colors.bg_d},
 	},
 	visual = {
 		a = {fg = colors.bg0, bg = colors.purple, gui = 'bold'},
+		z = {fg = colors.fg, bg = colors.bg_d},
 	},
 	replace = {
 		a = {fg = colors.bg0, bg = colors.red, gui = 'bold'},
+		z = {fg = colors.fg, bg = colors.bg_d},
 	},
 	insert = {
 		a = {fg = colors.bg0, bg = colors.blue, gui = 'bold'},
+		z = {fg = colors.fg, bg = colors.bg_d},
 	},
 	command = {
 		a = {fg = colors.bg0, bg = colors.yellow, gui = 'bold'},
+		z = {fg = colors.fg, bg = colors.bg_d},
 	},
 	inactive = {
-		a = {fg = colors.fg, bg = colors.bg_d, gui = 'bold'},
-		b = {fg = colors.fg, bg = colors.bg_d},
-		c = {fg = colors.fg, bg = colors.bg_d},
+		a = {fg = colors.grey, bg = colors.bg_d},
+		b = {fg = colors.grey, bg = colors.bg_d},
+		c = {fg = colors.grey, bg = colors.bg_d},
 	},
 }
 
-local function null_ls_sources()
-	local sources = {}
-	local active_sources = require'null-ls.info'.get_active_sources()
-	for _, source in pairs(active_sources[require'null-ls'.methods.DIAGNOSTICS]) do
-		table.insert(sources, source)
-	end
-	return table.concat(sources, ',')
-end
-
 local function lsp_clients()
-	local clients = {}
-	for _, client in pairs(vim.lsp.buf_get_clients()) do
-		if client.name == 'null-ls' then
-			table.insert(clients, null_ls_sources())
-		else
-			table.insert(clients, client.name)
-		end
-	end
+	local clients = vim.lsp.get_active_clients()
 	if #clients > 0 then
-		return table.concat(clients, ' ')
+		return ' '
 	end
 	return ''
 end
 
-local function line_ending()
-	local formats = {dos='CRLF', unix='LF'}
-	return formats[vim.bo.fileformat]
+local function file_format()
+	return vim.bo.fileformat
 end
 
 local function encoding()
 	if vim.bo.fenc ~= '' then
-		return string.upper(vim.bo.fenc)
+		return vim.bo.fenc
 	end
-	return string.upper(vim.o.enc)
+	return vim.o.enc
 end
 
 local function indentation()
 	local size = vim.bo.shiftwidth
 	if vim.bo.expandtab then
-		return 'SPC:' .. size
+		return 'spaces:' .. size
 	end
-	return 'TAB:' .. size
+	return 'tabs:' .. size
 end
 
 local function gitsigns_status()
@@ -84,7 +74,7 @@ local function gitsigns_status()
 	return table.concat(result, ' ')
 end
 
-local hl = require'highlight'
+local hl = require'utils.highlight'
 hl.add{'LualineGitSignsAdd', guifg=colors.green, guibg=theme.normal.c.bg}
 hl.add{'LualineGitSignsChange', guifg=colors.orange, guibg=theme.normal.c.bg}
 hl.add{'LualineGitSignsDelete', guifg=colors.red, guibg=theme.normal.c.bg}
@@ -100,27 +90,27 @@ require'lualine'.setup{
 			{'mode', fmt = function(str) return str:sub(1,1) end},
 		},
 		lualine_b = {
-		},
-		lualine_c = {
 			{'branch', icon = ''},
 			{gitsigns_status, padding = {left = 0, right = 1}},
+		},
+		lualine_c = {
 		},
 		lualine_x = {
 			{
 				'diagnostics',
 				sources = {'nvim_diagnostic'},
-				symbols = {error = ' ', warn = ' ', hint = ' ', info = ' '}
+				symbols = {error = ' ', warn = ' ', info = ' ', hint = '硫'},
 			},
-			{ lsp_clients, color = {fg = colors.blue}},
-			{'filetype', colored = false},
-			encoding,
-			line_ending,
-			indentation,
-			'location',
+			{lsp_clients, color = {fg = colors.blue}},
 		},
 		lualine_y = {
+			{'filetype', colored = false},
+			indentation,
+			encoding,
+			file_format
 		},
 		lualine_z = {
+			'location',
 		},
 	},
 	inactive_sections = {

@@ -87,6 +87,6 @@ require"bufferline".setup{
 	}
 }
 
-local map = require'map'
+local map = require'utils.map'
 map.n{'<C-j>', '<cmd>BufferLineCyclePrev<cr>'}
 map.n{'<C-k>', '<cmd>BufferLineCycleNext<cr>'}

@@ -9,7 +9,7 @@ local function map(mode, args)
 	local keymap, action = args[1], args[2]
 	if type(action) == 'function' then
 		table.insert(M.lua_funcs, action)
-		action = string.format([[<cmd>lua require'map'.lua_funcs[%s]()<cr>]], #M.lua_funcs)
+		action = string.format([[<cmd>lua require'utils.map'.lua_funcs[%s]()<cr>]], #M.lua_funcs)
 	end
 
 	vim.api.nvim_set_keymap(mode, keymap, action, opts)

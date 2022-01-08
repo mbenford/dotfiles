@@ -21,6 +21,6 @@ require'nvim-tree'.setup{
 	}
 }
 
-local map = require'map'
+local map = require'utils.map'
 map.n{'<leader>tt', '<cmd>NvimTreeToggle<cr>'}
 map.n{'<leader>tf', '<cmd>NvimTreeFindFile<cr>'}
