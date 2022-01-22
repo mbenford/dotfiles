@@ -1,3 +1,6 @@
-require'treesitter-context'.setup{}
+require'treesitter-context'.setup{
+	max_lines = 1,
+}
 
-vim.cmd[[hi link TreesitterContext CursorLine]]
+local hl = require'utils.highlight'
+hl.link{'TreesitterContext', 'CursorLine'}

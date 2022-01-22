@@ -10,10 +10,12 @@ null_ls.setup{
 			extra_args = {'--parser-options=codeFrame:false'},
 		}),
 		diagnostics.flake8,
+		diagnostics.staticcheck,
 
 		-- formatting
 		formatting.eslint_d,
 		formatting.autopep8,
+		formatting.goimports,
 
 		-- code actions
 		code_actions.eslint_d,

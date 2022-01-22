@@ -5,8 +5,11 @@ o.completeopt = {'menuone', 'noselect'}
 o.confirm = true
 o.cursorline = true
 o.expandtab = false
+o.foldexpr = 'nvim_treesitter#foldexpr()'
 o.foldlevel = 99
-o.foldtext = [[substitute(getline(v:foldstart),'\\\\t',repeat('\\ ',&tabstop),'g').'...'.trim(getline(v:foldend)) . ' (' . (v:foldend - v:foldstart + 1) . ' lines)']]
+o.foldnestmax = 3
+-- o.foldtext = [[getline(v:foldstart) . '...'.trim(getline(v:foldend)) . ' (' . (v:foldend - v:foldstart + 1) . ' lines)']]
+-- o.foldmethod = 'marker'
 o.hidden = true
 o.hlsearch = false
 o.ignorecase = true
@@ -15,10 +18,14 @@ o.listchars = {trail = '·', tab = '  '}
 o.mouse = 'a'
 o.numberwidth = 2
 o.relativenumber = true
+o.ruler = false
 o.scrolloff = 3
 o.shiftwidth = 2
 o.shortmess:append('I')
-o.shortmess:remove('S')
+o.shortmess:append('S')
+o.shortmess:append('a')
+o.shortmess:append('s')
+o.shortmess:append('c')
 o.showcmd = false
 o.showmode = false
 o.sidescroll = 1
@@ -26,6 +33,8 @@ o.sidescrolloff = 5
 o.signcolumn = 'yes:1'
 o.smartcase = true
 o.smartindent = true
+o.spelllang = {'en_us', 'pt_br'}
+o.spelloptions = 'camel'
 o.softtabstop = 2
 o.splitbelow = true
 o.splitright = true

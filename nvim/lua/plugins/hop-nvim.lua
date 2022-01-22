@@ -11,7 +11,7 @@ map.a{'gL', '<cmd>HopLineStart<cr>'}
 
 local colors = require'onedark.colors'
 local hl = require'utils.highlight'
-hl.add{'HopNextKey', guifg=colors.bg0, guibg=colors.orange}
-hl.add{'HopNextKey1', guifg=colors.bg0, guibg=colors.orange, gui='none'}
-hl.add{'HopNextKey2', guifg=colors.bg0, guibg=colors.yellow}
-hl.add{'HopUnmatched', guifg='none', guibg='none'}
+hl.add{'HopNextKey', guifg = colors.bg0, guibg = colors.orange}
+hl.add{'HopNextKey1', guifg = colors.bg0, guibg = colors.orange, gui='none'}
+hl.add{'HopNextKey2', guifg = colors.bg0, guibg = colors.yellow}
+hl.add{'HopUnmatched', guifg = 'none', guibg = 'none'}

@@ -10,7 +10,7 @@ map.v{'>', '>gv'}
 map.n{'U', '<C-r>'}
 
 map.n{'<leader>w', '<cmd>wa<cr>'}
-map.n{'<leader>x', '<cmd>bd<cr>'}
+map.n{'<leader>xx', '<cmd>x<cr>'}
 map.n{'<leader>qq', '<cmd>qa<cr>'}
 map.n{'<leader>Q', '<cmd>qa!<cr>'}
 map.n{'<leader>d', 'Y`]p'}
@@ -22,6 +22,7 @@ map.n{'<leader>y', '"+y'}
 map.n{'<leader>Y', '"+Y'}
 map.v{'<leader>y', '"+y'}
 
+map.n{'<leader>xw', '<C-w>q'}
 map.n{'<M-h>', '<C-w>h'}
 map.n{'<M-j>', '<C-w>j'}
 map.n{'<M-k>', '<C-w>k'}
@@ -42,10 +43,5 @@ map.n{'<M-J>', '<cmd>resize -2<cr>'}
 map.n{'<M-K>', '<cmd>resize +2<cr>'}
 map.n{'<M-L>', '<cmd>vertical resize +2<cr>'}
 
-
 map.c{'<up>', 'pumvisible() ? "\\<left>" : "\\<up>"', expr = true, silent = false}
 map.c{'<down>', 'pumvisible() ? "\\<right>" : "\\<down>"', expr = true, silent = false}
-
-map.n{'<leader>gd', '<cmd>lua vim.lsp.buf.definition()<cr>'}
-map.n{'<leader>gi', '<cmd>lua vim.lsp.buf.implementation()<cr>'}
-map.n{'<leader>gr', '<cmd>lua vim.lsp.buf.references()<cr>'}

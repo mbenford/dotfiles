@@ -18,6 +18,9 @@ telescope.setup{
 				['<esc>'] = actions.close
 			},
 		},
+		file_ignore_patterns = {
+			'%.png',
+		}
 	},
 	extensions = {
 		fzf = {

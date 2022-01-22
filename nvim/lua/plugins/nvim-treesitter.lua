@@ -15,6 +15,7 @@ require'nvim-treesitter.configs'.setup{
 		'json',
 		'lua',
 		'markdown',
+		'make',
 		'python',
 		'query',
 		'rust',
@@ -43,6 +44,17 @@ require'nvim-treesitter.configs'.setup{
 		enable = true,
 		use_virtual_text = true,
 		lint_events = {'BufWrite', 'CursorHold'},
+	},
+	autotag = { enable = true },
+	textobjects = {
+		select = {
+			enable = true,
+			lookahead = false,
+			keymaps = {
+				['af'] = '@function.outer',
+				['if'] = '@function.inner',
+			},
+		},
 	},
 }
 

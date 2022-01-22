@@ -14,6 +14,7 @@ onedark.setup{
 		TablineFill = {bg = '$bg_d'},
 		StatusLine = {bg = '$bg_d'},
 		StatusLineNC = {bg = '$bg_d'},
+		SpellBad ={fg = 'none', bg = 'none', sp = 'green', fmt = 'undercurl'}
 	},
 }
 onedark.load()

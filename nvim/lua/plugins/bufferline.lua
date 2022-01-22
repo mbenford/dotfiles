@@ -1,4 +1,4 @@
-ocal colors = require'onedark.colors'
+local colors = require'onedark.colors'
 
 require"bufferline".setup{
 	options = {

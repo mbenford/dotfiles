@@ -22,16 +22,16 @@ cmp.setup {
 		})
 	},
 	formatting = {
-		format = require'lspkind'.cmp_format({
-			with_text = true,
-			menu = {
+		format = function(entry, item)
+			item.menu = ({
 				buffer = '[Buffer]',
 				path = '[Path]',
 				nvim_lsp = '[LSP]',
 				vsnip = '[Snippet]',
 				nvim_lua = '[API]',
-			},
-		}),
+			})[entry.source.name]
+			return item
+		end
 	},
 	snippet = {
 		expand = function(args) vim.fn['vsnip#anonymous'](args.body) end,

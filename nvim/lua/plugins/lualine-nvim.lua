@@ -31,33 +31,6 @@ local theme = {
 	},
 }
 
-local function lsp_clients()
-	local clients = vim.lsp.get_active_clients()
-	if #clients > 0 then
-		return ' '
-	end
-	return ''
-end
-
-local function file_format()
-	return vim.bo.fileformat
-end
-
-local function encoding()
-	if vim.bo.fenc ~= '' then
-		return vim.bo.fenc
-	end
-	return vim.o.enc
-end
-
-local function indentation()
-	local size = vim.bo.shiftwidth
-	if vim.bo.expandtab then
-		return 'spaces:' .. size
-	end
-	return 'tabs:' .. size
-end
-
 local function gitsigns_status()
 	local status = vim.api.nvim_buf_get_var(0, 'gitsigns_status_dict')
 	local result = {}
@@ -74,10 +47,38 @@ local function gitsigns_status()
 	return table.concat(result, ' ')
 end
 
+local function lsp_clients()
+	local clients = vim.lsp.buf_get_clients()
+	if #clients > 0 then
+		return string.format('  %s', #clients)
+	end
+	return ''
+end
+
+local function indentation()
+	local size = vim.bo.shiftwidth
+	if vim.bo.expandtab then
+		return 'spaces:' .. size
+	end
+	return 'tabs:' .. size
+end
+
+local function file_format()
+	if vim.bo.fileformat ~= 'unix' then
+		return '%#LualineExoticFileFormat#' .. vim.bo.fileformat
+	end
+	return ''
+end
+
+local function location()
+	return '%2l:%-2v'
+end
+
 local hl = require'utils.highlight'
-hl.add{'LualineGitSignsAdd', guifg=colors.green, guibg=theme.normal.c.bg}
-hl.add{'LualineGitSignsChange', guifg=colors.orange, guibg=theme.normal.c.bg}
-hl.add{'LualineGitSignsDelete', guifg=colors.red, guibg=theme.normal.c.bg}
+hl.add{'LualineExoticFileFormat', guifg = colors.red, guibg = theme.normal.c.bg}
+hl.add{'LualineGitSignsAdd', guifg = colors.green, guibg = theme.normal.c.bg}
+hl.add{'LualineGitSignsChange', guifg = colors.orange, guibg = theme.normal.c.bg}
+hl.add{'LualineGitSignsDelete', guifg = colors.red, guibg = theme.normal.c.bg}
 
 require'lualine'.setup{
 	options = {
@@ -106,11 +107,11 @@ require'lualine'.setup{
 		lualine_y = {
 			{'filetype', colored = false},
 			indentation,
-			encoding,
+			'encoding',
 			file_format
 		},
 		lualine_z = {
-			'location',
+			location,
 		},
 	},
 	inactive_sections = {

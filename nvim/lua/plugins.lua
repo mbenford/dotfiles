@@ -1,85 +1,94 @@
 function _G.__load_packer()
 	vim.cmd'packadd packer.nvim'
+
 	local packer = require'packer'
 	local startup = require'utils.autoconfig'(packer.startup)
 	return startup{{
 		{'wbthomason/packer.nvim', opt = true},
+		{'nvim-lua/plenary.nvim'},
+
+		-- theme
+		{'navarasu/onedark.nvim'},
 
 		-- Treesitter
 		{'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'},
-		{'nvim-treesitter/playground'},
+		{'nvim-treesitter/playground', after = 'nvim-treesitter', cmd = 'TSPlayground'},
 
-		-- LSP
-		{'neovim/nvim-lspconfig'},
-		{'williamboman/nvim-lsp-installer'},
-		{'ray-x/lsp_signature.nvim'},
-		{'onsails/lspkind-nvim'},
-		{'jose-elias-alvarez/null-ls.nvim'},
-		{'kosayoda/nvim-lightbulb'},
+		-- fuzzy search
+		{'nvim-telescope/telescope.nvim'},
+		{'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+
+		-- navigation
+		{'phaazon/hop.nvim', after = 'onedark.nvim', event = 'BufRead'},
+		{'chaoren/vim-wordmotion', event = 'BufRead'},
 
 		-- completion
 		{'hrsh7th/nvim-cmp'},
-		{'hrsh7th/cmp-buffer'},
-		{'hrsh7th/cmp-path'},
-		{'hrsh7th/cmp-nvim-lsp'},
-		{'hrsh7th/cmp-nvim-lua'},
-		{'hrsh7th/cmp-vsnip'},
+		{'hrsh7th/cmp-buffer', after = 'nvim-cmp'},
+		{'hrsh7th/cmp-path', after = 'nvim-cmp'},
+		{'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp'},
+		{'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp'},
+		{'hrsh7th/cmp-vsnip', after = 'nvim-cmp'},
+
+		-- editing
+		{'wellle/targets.vim', event = 'BufRead'},
+		{'numToStr/Comment.nvim', event = 'BufRead'},
+		{'tpope/vim-surround', event = 'BufRead'},
+		{'mg979/vim-visual-multi', event = 'BufRead'},
+		{'windwp/nvim-autopairs', event = 'BufRead'},
+		{'windwp/nvim-ts-autotag', event = 'BufRead'},
+		{'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter', event = 'BufRead'},
+
+		-- LSP
+		{'neovim/nvim-lspconfig'},
+		{'williamboman/nvim-lsp-installer', after = 'nvim-cmp'},
+		{'jose-elias-alvarez/null-ls.nvim', event = 'BufRead'},
+		{'ray-x/lsp_signature.nvim', event = 'BufRead'},
+		{'kosayoda/nvim-lightbulb', event = 'BufRead'},
+		{'folke/trouble.nvim', event = 'BufRead'},
 
 		-- debugging
 		{'mfussenegger/nvim-dap'},
 		{'Pocco81/DAPInstall.nvim'},
 
 		-- snippets
-		{'hrsh7th/vim-vsnip'},
-		{'rafamadriz/friendly-snippets'},
-
-		-- theme
-		{'navarasu/onedark.nvim'},
-
-		-- fuzzy search
-		{'nvim-telescope/telescope.nvim'},
-		{'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+		{'hrsh7th/vim-vsnip', after = 'nvim-cmp'},
+		{'rafamadriz/friendly-snippets', after = 'nvim-cmp'},
 
 		-- UI
 		{'kyazdani42/nvim-web-devicons'},
 		{'kyazdani42/nvim-tree.lua', after = 'onedark.nvim'},
 		{'noib3/cokeline.nvim', after = 'onedark.nvim'},
 		{'nvim-lualine/lualine.nvim', after = 'onedark.nvim'},
-		{'lukas-reineke/indent-blankline.nvim'},
-		{'lewis6991/gitsigns.nvim', after = 'onedark.nvim'},
-		{'norcalli/nvim-colorizer.lua'},
-		{'kevinhwang91/nvim-bqf'},
-		{'romgrk/nvim-treesitter-context', after = 'onedark.nvim'},
-		{'folke/todo-comments.nvim'},
-		{'folke/trouble.nvim'},
+		{'lukas-reineke/indent-blankline.nvim', event = 'BufRead'},
+		{'lewis6991/gitsigns.nvim', after = 'onedark.nvim', event = 'BufRead'},
+		{'norcalli/nvim-colorizer.lua', event = 'BufRead'},
+		{'kevinhwang91/nvim-bqf', event = 'BufRead'},
+		{'romgrk/nvim-treesitter-context', after = 'onedark.nvim', event = 'BufRead'},
+		{'folke/todo-comments.nvim', event = 'BufRead'},
 		{'stevearc/dressing.nvim'},
 
-		-- languages
+		-- file types
 		{'hashivim/vim-terraform', ft = 'terraform'},
 		{'folke/lua-dev.nvim', ft = 'lua'},
 		{'chr4/nginx.vim', ft = 'nginx'},
 
-		-- editing
-		{'wellle/targets.vim'},
-		{'numToStr/Comment.nvim'},
-		{'tpope/vim-surround'},
-		{'mg979/vim-visual-multi'},
-		{'windwp/nvim-autopairs'},
-
-		-- navigation
-		{'phaazon/hop.nvim', after = 'onedark.nvim'},
-		{'chaoren/vim-wordmotion'},
-
 		-- misc
-		{'nvim-lua/plenary.nvim'},
 		{'dstein64/vim-startuptime'},
 		{'tpope/vim-eunuch'},
-		{'editorconfig/editorconfig-vim'},
+		{'editorconfig/editorconfig-vim', event = 'BufRead'},
 		{'McAuleyPenney/tidy.nvim'},
-		{'famiu/bufdelete.nvim'},
-		{'akinsho/toggleterm.nvim'},
+		{'kazhala/close-buffers.nvim'},
+		{'akinsho/toggleterm.nvim', keys = '<leader><cr>'},
 		{'AckslD/nvim-neoclip.lua', after = 'telescope.nvim'},
+		{'sudormrfbin/cheatsheet.nvim', after = 'telescope.nvim', keys = '<leader>?'},
+		{'lewis6991/spellsitter.nvim', event = 'BufRead'},
 	},
+	config = {
+		display = {
+			open_fn = function() return require'packer.util'.float({border = 'single'}) end
+		}
+	}
 	}
 end
 

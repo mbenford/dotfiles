@@ -18,7 +18,7 @@ return function(startup)
 
 				local config_file = string.format('%s/lua/%s.lua', vim.fn.stdpath('config'), config_module)
 				if file_exists(config_file) then
-					v.config = string.format('pcall(require, "%s")', config_module)
+					v.config = string.format('require "%s"', config_module)
 				end
 			end
 		end

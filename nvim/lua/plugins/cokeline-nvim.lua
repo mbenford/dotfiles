@@ -35,11 +35,7 @@ require'cokeline'.setup{
 			components = {
 				{
 					text = '',
-					hl = {
-						fg = colors.yellow,
-						bg = colors.bg_d,
-						style = 'bold',
-					},
+					hl = {bg = colors.bg_d, style = 'none'},
 				},
 			},
 		},

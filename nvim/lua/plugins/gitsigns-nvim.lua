@@ -20,4 +20,4 @@ map.n{'<leader><leader>gN', '<cmd>Gitsigns prev_hunk<cr>'}
 map.n{'<leader><leader>gb', '<cmd>Gitsigns blame_line<cr>'}
 
 local hl = require'utils.highlight'
-hl.add{'GitSignsChange', guifg=require'onedark.colors'.orange, guibg='none'}
+hl.add{'GitSignsChange', guifg = require'onedark.colors'.orange, guibg = 'none'}
