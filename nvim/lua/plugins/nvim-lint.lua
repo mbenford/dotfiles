@@ -1,3 +1,3 @@
-require'lint'.linter_by_ft = {
-	javascript = {'eslint'}
+require('lint').linter_by_ft = {
+	javascript = { 'eslint' },
 }

@@ -1,1 +1,1 @@
-require'spellsitter'.setup{}
+require('spellsitter').setup({})

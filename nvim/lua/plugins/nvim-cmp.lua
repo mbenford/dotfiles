@@ -1,5 +1,5 @@
-local cmp = require'cmp'
-cmp.setup {
+local cmp = require('cmp')
+cmp.setup({
 	sources = {
 		{ name = 'nvim_lua' },
 		{ name = 'nvim_lsp' },
@@ -19,7 +19,7 @@ cmp.setup {
 		['<CR>'] = cmp.mapping.confirm({
 			behavior = cmp.ConfirmBehavior.Replace,
 			select = true,
-		})
+		}),
 	},
 	formatting = {
 		format = function(entry, item)
@@ -31,13 +31,15 @@ cmp.setup {
 				nvim_lua = '[API]',
 			})[entry.source.name]
 			return item
-		end
+		end,
 	},
 	snippet = {
-		expand = function(args) vim.fn['vsnip#anonymous'](args.body) end,
+		expand = function(args)
+			vim.fn['vsnip#anonymous'](args.body)
+		end,
 	},
 	experimental = {
 		native_menu = false,
 		ghost_text = true,
 	},
-}
+})

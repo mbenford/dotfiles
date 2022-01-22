@@ -1,6 +1,6 @@
-require'colorizer'.setup{
+require('colorizer').setup({
 	'css',
 	'scss',
 	'pcss',
 	'html',
-}
+})

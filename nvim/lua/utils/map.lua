@@ -1,9 +1,11 @@
-local M = {lua_funcs = {}}
+local M = { lua_funcs = {} }
 
 local function map(mode, args)
-	local opts = {noremap = true, silent = true}
+	local opts = { noremap = true, silent = true }
 	for k, v in pairs(args) do
-		if type(k) == 'string' then opts[k] = v end
+		if type(k) == 'string' then
+			opts[k] = v
+		end
 	end
 
 	local keymap, action = args[1], args[2]

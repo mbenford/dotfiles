@@ -1,7 +1,7 @@
-require'plugins'
-require'theme'
-require'options'
-require'keymaps'
-require'autocmds'
-require'diagnostics'
-require'lsp'
+require('plugins')
+require('theme')
+require('options')
+require('keymaps')
+require('autocmds')
+require('diagnostics')
+require('lsp')

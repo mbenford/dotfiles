@@ -1,33 +1,33 @@
-local colors = require'onedark.colors'
+local colors = require('onedark.colors')
 local theme = {
 	normal = {
-		a = {fg = colors.bg0, bg = colors.green, gui = 'bold'},
-		b = {fg = colors.fg, bg = colors.bg_d},
-		c = {fg = colors.fg, bg = colors.bg_d},
-		x = {fg = colors.fg, bg = colors.bg_d},
-		y = {fg = colors.fg, bg = colors.bg_d},
-		z = {fg = colors.fg, bg = colors.bg_d},
+		a = { fg = colors.bg0, bg = colors.green, gui = 'bold' },
+		b = { fg = colors.fg, bg = colors.bg_d },
+		c = { fg = colors.fg, bg = colors.bg_d },
+		x = { fg = colors.fg, bg = colors.bg_d },
+		y = { fg = colors.fg, bg = colors.bg_d },
+		z = { fg = colors.fg, bg = colors.bg_d },
 	},
 	visual = {
-		a = {fg = colors.bg0, bg = colors.purple, gui = 'bold'},
-		z = {fg = colors.fg, bg = colors.bg_d},
+		a = { fg = colors.bg0, bg = colors.purple, gui = 'bold' },
+		z = { fg = colors.fg, bg = colors.bg_d },
 	},
 	replace = {
-		a = {fg = colors.bg0, bg = colors.red, gui = 'bold'},
-		z = {fg = colors.fg, bg = colors.bg_d},
+		a = { fg = colors.bg0, bg = colors.red, gui = 'bold' },
+		z = { fg = colors.fg, bg = colors.bg_d },
 	},
 	insert = {
-		a = {fg = colors.bg0, bg = colors.blue, gui = 'bold'},
-		z = {fg = colors.fg, bg = colors.bg_d},
+		a = { fg = colors.bg0, bg = colors.blue, gui = 'bold' },
+		z = { fg = colors.fg, bg = colors.bg_d },
 	},
 	command = {
-		a = {fg = colors.bg0, bg = colors.yellow, gui = 'bold'},
-		z = {fg = colors.fg, bg = colors.bg_d},
+		a = { fg = colors.bg0, bg = colors.yellow, gui = 'bold' },
+		z = { fg = colors.fg, bg = colors.bg_d },
 	},
 	inactive = {
-		a = {fg = colors.grey, bg = colors.bg_d},
-		b = {fg = colors.grey, bg = colors.bg_d},
-		c = {fg = colors.grey, bg = colors.bg_d},
+		a = { fg = colors.grey, bg = colors.bg_d },
+		b = { fg = colors.grey, bg = colors.bg_d },
+		c = { fg = colors.grey, bg = colors.bg_d },
 	},
 }
 
@@ -74,41 +74,45 @@ local function location()
 	return '%2l:%-2v'
 end
 
-local hl = require'utils.highlight'
-hl.add{'LualineExoticFileFormat', guifg = colors.red, guibg = theme.normal.c.bg}
-hl.add{'LualineGitSignsAdd', guifg = colors.green, guibg = theme.normal.c.bg}
-hl.add{'LualineGitSignsChange', guifg = colors.orange, guibg = theme.normal.c.bg}
-hl.add{'LualineGitSignsDelete', guifg = colors.red, guibg = theme.normal.c.bg}
+local hl = require('utils.highlight')
+hl.add({ 'LualineExoticFileFormat', guifg = colors.red, guibg = theme.normal.c.bg })
+hl.add({ 'LualineGitSignsAdd', guifg = colors.green, guibg = theme.normal.c.bg })
+hl.add({ 'LualineGitSignsChange', guifg = colors.orange, guibg = theme.normal.c.bg })
+hl.add({ 'LualineGitSignsDelete', guifg = colors.red, guibg = theme.normal.c.bg })
 
-require'lualine'.setup{
+require('lualine').setup({
 	options = {
 		theme = theme,
-		section_separators = {left = '', right = ''},
-		component_separators = {left = '', right = ''},
+		section_separators = { left = '', right = '' },
+		component_separators = { left = '', right = '' },
 	},
 	sections = {
 		lualine_a = {
-			{'mode', fmt = function(str) return str:sub(1,1) end},
+			{
+				'mode',
+				fmt = function(str)
+					return str:sub(1, 1)
+				end,
+			},
 		},
 		lualine_b = {
-			{'branch', icon = ''},
-			{gitsigns_status, padding = {left = 0, right = 1}},
+			{ 'branch', icon = '' },
+			{ gitsigns_status, padding = { left = 0, right = 1 } },
 		},
-		lualine_c = {
-		},
+		lualine_c = {},
 		lualine_x = {
 			{
 				'diagnostics',
-				sources = {'nvim_diagnostic'},
-				symbols = {error = ' ', warn = ' ', info = ' ', hint = '硫'},
+				sources = { 'nvim_diagnostic' },
+				symbols = { error = ' ', warn = ' ', info = ' ', hint = '硫' },
 			},
-			{lsp_clients, color = {fg = colors.blue}},
+			{ lsp_clients, color = { fg = colors.blue } },
 		},
 		lualine_y = {
-			{'filetype', colored = false},
+			{ 'filetype', colored = false },
 			indentation,
 			'encoding',
-			file_format
+			file_format,
 		},
 		lualine_z = {
 			location,
@@ -117,9 +121,9 @@ require'lualine'.setup{
 	inactive_sections = {
 		lualine_a = {},
 		lualine_b = {
-			{'filename', path = 0},
+			{ 'filename', path = 0 },
 		},
 		lualine_c = {},
 	},
-	extensions = {'nvim-tree', 'quickfix'},
-}
+	extensions = { 'nvim-tree', 'quickfix' },
+})

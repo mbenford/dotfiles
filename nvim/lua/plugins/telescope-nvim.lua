@@ -1,10 +1,10 @@
-local actions = require'telescope.actions'
+local actions = require('telescope.actions')
 
-local telescope = require'telescope'
-telescope.setup{
+local telescope = require('telescope')
+telescope.setup({
 	defaults = {
 		filesize_limit = 1,
-		path_display = {'smart'},
+		path_display = { 'smart' },
 		prompt_prefix = ' ',
 		selection_caret = '',
 		entry_prefix = '',
@@ -15,12 +15,12 @@ telescope.setup{
 		},
 		mappings = {
 			i = {
-				['<esc>'] = actions.close
+				['<esc>'] = actions.close,
 			},
 		},
 		file_ignore_patterns = {
 			'%.png',
-		}
+		},
 	},
 	extensions = {
 		fzf = {
@@ -30,18 +30,20 @@ telescope.setup{
 			case_mode = 'smart_case',
 		},
 	},
-}
+})
 
 telescope.load_extension('fzf')
 
 local function project_files()
-	local ok = pcall(require'telescope.builtin'.git_files)
-	if not ok then require'telescope.builtin'.find_files() end
+	local ok = pcall(require('telescope.builtin').git_files)
+	if not ok then
+		require('telescope.builtin').find_files()
+	end
 end
 
-local map = require'utils.map'
-map.n{'<leader>ff', project_files}
-map.n{'<leader>fg', '<cmd>Telescope live_grep<cr>'}
-map.n{'<leader>fb', '<cmd>Telescope buffers<cr>'}
-map.n{'<leader>fr', '<cmd>Telescope resume<cr>'}
-map.n{'<leader>fo', '<cmd>Telescope oldfiles<cr>'}
+local map = require('utils.map')
+map.n({ '<leader>ff', project_files })
+map.n({ '<leader>fg', '<cmd>Telescope live_grep<cr>' })
+map.n({ '<leader>fb', '<cmd>Telescope buffers<cr>' })
+map.n({ '<leader>fr', '<cmd>Telescope resume<cr>' })
+map.n({ '<leader>fo', '<cmd>Telescope oldfiles<cr>' })

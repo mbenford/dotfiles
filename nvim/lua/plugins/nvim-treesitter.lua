@@ -1,4 +1,4 @@
-require'nvim-treesitter.configs'.setup{
+require('nvim-treesitter.configs').setup({
 	ensure_installed = {
 		'bash',
 		'c',
@@ -33,9 +33,9 @@ require'nvim-treesitter.configs'.setup{
 		enable = true,
 		keymaps = {
 			init_selection = 'gnn',
-			node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
+			node_incremental = 'grn',
+			scope_incremental = 'grc',
+			node_decremental = 'grm',
 		},
 	},
 	indent = { enable = true },
@@ -43,7 +43,7 @@ require'nvim-treesitter.configs'.setup{
 	query_linter = {
 		enable = true,
 		use_virtual_text = true,
-		lint_events = {'BufWrite', 'CursorHold'},
+		lint_events = { 'BufWrite', 'CursorHold' },
 	},
 	autotag = { enable = true },
 	textobjects = {
@@ -56,7 +56,7 @@ require'nvim-treesitter.configs'.setup{
 			},
 		},
 	},
-}
+})
 
 vim.wo.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'

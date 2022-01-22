@@ -1,8 +1,12 @@
-local colors = require'onedark.colors'
-require'cokeline'.setup{
+local colors = require('onedark.colors')
+require('cokeline').setup({
 	components = {
-		{text = ' '},
-		{text = function(buffer) return buffer.unique_prefix end},
+		{ text = ' ' },
+		{
+			text = function(buffer)
+				return buffer.unique_prefix
+			end,
+		},
 		{
 			text = function(buffer)
 				local status = ''
@@ -25,9 +29,10 @@ require'cokeline'.setup{
 					else
 						return colors.grey
 					end
-				end},
+				end,
+			},
 		},
-		{text = ' '},
+		{ text = ' ' },
 	},
 	rendering = {
 		left_sidebar = {
@@ -35,7 +40,7 @@ require'cokeline'.setup{
 			components = {
 				{
 					text = '',
-					hl = {bg = colors.bg_d, style = 'none'},
+					hl = { bg = colors.bg_d, style = 'none' },
 				},
 			},
 		},
@@ -50,9 +55,9 @@ require'cokeline'.setup{
 		unfocused = {
 			bg = colors.bg_d,
 		},
-	}
-}
+	},
+})
 
-local map = require'utils.map'
-map.n{'<C-j>', '<Plug>(cokeline-focus-prev)', noremap = false}
-map.n{'<C-k>', '<Plug>(cokeline-focus-next)', noremap = false}
+local map = require('utils.map')
+map.n({ '<C-j>', '<Plug>(cokeline-focus-prev)', noremap = false })
+map.n({ '<C-k>', '<Plug>(cokeline-focus-next)', noremap = false })

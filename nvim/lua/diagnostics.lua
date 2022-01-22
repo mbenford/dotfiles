@@ -21,6 +21,6 @@ vim.diagnostic.config({
 	},
 })
 
-local map = require'.utils.map'
-map.n{'<leader>ge', '<cmd>lua vim.diagnostic.goto_next()<cr>'}
-map.n{'<leader>ve', '<cmd>lua vim.diagnostic.open_float()<cr>'}
+local map = require('.utils.map')
+map.n({ '<leader>ge', '<cmd>lua vim.diagnostic.goto_next()<cr>' })
+map.n({ '<leader>ve', '<cmd>lua vim.diagnostic.open_float()<cr>' })

@@ -1,6 +1,6 @@
-local colors = require'onedark.colors'
+local colors = require('onedark.colors')
 
-require"bufferline".setup{
+require('bufferline').setup({
 	options = {
 		enforce_regular_tabs = false,
 		tab_size = 5,
@@ -11,12 +11,12 @@ require"bufferline".setup{
 		modified_icon = '',
 		left_trunc_marker = '',
 		right_trunc_marker = '',
-		separator_style = {'',''},
+		separator_style = { '', '' },
 		offsets = {
 			{
 				filetype = 'NvimTree',
 				text = 'NvimTree',
-			}
+			},
 		},
 		diagnostics = 'nvim_lsp',
 		diagnostics_indicator = function(count, level, dict, context)
@@ -25,10 +25,10 @@ require"bufferline".setup{
 	},
 	highlights = {
 		fill = {
-			guibg = colors.bg_d
+			guibg = colors.bg_d,
 		},
 		background = {
-			guibg = colors.bg_d
+			guibg = colors.bg_d,
 		},
 		indicator_selected = {
 			guibg = colors.bg0,
@@ -64,29 +64,29 @@ require"bufferline".setup{
 		},
 		error = {
 			gui = 'undercurl',
-			guisp = {attribute = 'fg', highlight = 'LspDiagnosticsDefaultError'},
+			guisp = { attribute = 'fg', highlight = 'LspDiagnosticsDefaultError' },
 		},
 		error_selected = {
 			gui = 'undercurl',
-			guisp = {attribute = 'fg', highlight = 'LspDiagnosticsDefaultError'},
+			guisp = { attribute = 'fg', highlight = 'LspDiagnosticsDefaultError' },
 		},
 		error_visible = {
-			guibg = {attribute = 'bg', highlight = 'CursorLine'},
+			guibg = { attribute = 'bg', highlight = 'CursorLine' },
 		},
 		warning = {
 			gui = 'undercurl',
-			guisp = {attribute = 'fg', highlight = 'LspDiagnosticsDefaultWarning'},
+			guisp = { attribute = 'fg', highlight = 'LspDiagnosticsDefaultWarning' },
 		},
 		warning_selected = {
 			gui = 'undercurl',
-			guisp = {attribute = 'fg', highlight = 'LspDiagnosticsDefaultWarning'},
+			guisp = { attribute = 'fg', highlight = 'LspDiagnosticsDefaultWarning' },
 		},
 		warning_visible = {
-			guibg = {attribute = 'bg', highlight = 'CursorLine'},
+			guibg = { attribute = 'bg', highlight = 'CursorLine' },
 		},
-	}
-}
+	},
+})
 
-local map = require'utils.map'
-map.n{'<C-j>', '<cmd>BufferLineCyclePrev<cr>'}
-map.n{'<C-k>', '<cmd>BufferLineCycleNext<cr>'}
+local map = require('utils.map')
+map.n({ '<C-j>', '<cmd>BufferLineCyclePrev<cr>' })
+map.n({ '<C-k>', '<cmd>BufferLineCycleNext<cr>' })

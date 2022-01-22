@@ -1,4 +1,4 @@
-vim.cmd[[
+vim.cmd([[
 aug MY_AUTOCMDS
 	au!
 	au FocusLost * silent! wa
@@ -8,4 +8,4 @@ aug MY_AUTOCMDS
 	au FileType help setlocal signcolumn=no nonumber norelativenumber
 	au VimResized * wincmd =
 aug END
-]]
+]])

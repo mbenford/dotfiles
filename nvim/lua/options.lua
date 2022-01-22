@@ -1,7 +1,7 @@
 local o = vim.opt
 o.backup = false
 o.colorcolumn = '120'
-o.completeopt = {'menuone', 'noselect'}
+o.completeopt = { 'menuone', 'noselect' }
 o.confirm = true
 o.cursorline = true
 o.expandtab = false
@@ -14,7 +14,7 @@ o.hidden = true
 o.hlsearch = false
 o.ignorecase = true
 o.list = true
-o.listchars = {trail = '·', tab = '  '}
+o.listchars = { trail = '·', tab = '  ' }
 o.mouse = 'a'
 o.numberwidth = 2
 o.relativenumber = true
@@ -33,7 +33,7 @@ o.sidescrolloff = 5
 o.signcolumn = 'yes:1'
 o.smartcase = true
 o.smartindent = true
-o.spelllang = {'en_us', 'pt_br'}
+o.spelllang = { 'en_us', 'pt_br' }
 o.spelloptions = 'camel'
 o.softtabstop = 2
 o.splitbelow = true

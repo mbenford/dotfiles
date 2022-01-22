@@ -1,5 +1,5 @@
-local onedark = require'onedark'
-onedark.setup{
+local onedark = require('onedark')
+onedark.setup({
 	style = 'dark',
 	code_style = {
 		comments = 'none',
@@ -9,17 +9,17 @@ onedark.setup{
 		darker = false,
 	},
 	highlights = {
-		Pmenu = {bg = '$bg3'},
-		FloatBorder = {fg = '$light_grey', bg = '$bg3'},
-		TablineFill = {bg = '$bg_d'},
-		StatusLine = {bg = '$bg_d'},
-		StatusLineNC = {bg = '$bg_d'},
-		SpellBad ={fg = 'none', bg = 'none', sp = 'green', fmt = 'undercurl'}
+		Pmenu = { bg = '$bg3' },
+		FloatBorder = { fg = '$light_grey', bg = '$bg3' },
+		TablineFill = { bg = '$bg_d' },
+		StatusLine = { bg = '$bg_d' },
+		StatusLineNC = { bg = '$bg_d' },
+		SpellBad = { fg = 'none', bg = 'none', sp = 'green', fmt = 'undercurl' },
 	},
-}
+})
 onedark.load()
 
-local hl = require'utils.highlight'
-hl.link{'LspReferenceRead', 'Visual'}
-hl.link{'LspReferenceWrite', 'Visual'}
-hl.link{'LspReferenceText', 'CursorLine'}
+local hl = require('utils.highlight')
+hl.link({ 'LspReferenceRead', 'Visual' })
+hl.link({ 'LspReferenceWrite', 'Visual' })
+hl.link({ 'LspReferenceText', 'CursorLine' })
