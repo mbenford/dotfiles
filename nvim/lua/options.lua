@@ -46,5 +46,6 @@ o.titlestring = '%{substitute(getcwd(),$HOME,"~","")} - Neovim'
 o.ttimeoutlen = 0
 o.undofile = true
 o.updatetime = 250
+o.virtualedit = 'all'
 o.wildmode = 'full'
 o.wrap = false

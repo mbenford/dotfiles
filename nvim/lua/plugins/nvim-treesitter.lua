@@ -24,6 +24,7 @@ require('nvim-treesitter.configs').setup({
 		'typescript',
 		'vim',
 		'yaml',
+		'norg',
 	},
 	highlight = {
 		enable = true,
@@ -49,12 +50,19 @@ require('nvim-treesitter.configs').setup({
 	textobjects = {
 		select = {
 			enable = true,
-			lookahead = false,
+			lookahead = true,
 			keymaps = {
 				['af'] = '@function.outer',
 				['if'] = '@function.inner',
+				['ab'] = '@block.inner',
 			},
 		},
+		lsp_interop = {
+			enable = true,
+		peek_definition_code = {
+			["DF"] = "@function.outer",
+		}
+			}
 	},
 })
 

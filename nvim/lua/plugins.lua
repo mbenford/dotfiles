@@ -11,8 +11,8 @@ function _G.__load_packer()
 		{ 'nvim-treesitter/playground', after = 'nvim-treesitter', cmd = 'TSPlayground' },
 
 		-- fuzzy search
-		{ 'nvim-telescope/telescope.nvim' },
-		{ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+		{ 'nvim-telescope/telescope.nvim', after = 'onedark.nvim' },
+		{ 'nvim-telescope/telescope-fzf-native.nvim', after = 'telescope.nvim', run = 'make' },
 
 		-- navigation
 		{ 'phaazon/hop.nvim', after = 'onedark.nvim', event = 'BufRead' },
@@ -39,7 +39,7 @@ function _G.__load_packer()
 		{ 'neovim/nvim-lspconfig' },
 		{ 'williamboman/nvim-lsp-installer', after = 'nvim-cmp' },
 		{ 'jose-elias-alvarez/null-ls.nvim', event = 'BufRead' },
-		{ 'ray-x/lsp_signature.nvim', event = 'BufRead', commit = '724d955915d64713fade35f98b96cf50a45e9f88' },
+		{ 'ray-x/lsp_signature.nvim', event = 'BufRead' },
 		{ 'kosayoda/nvim-lightbulb', event = 'BufRead' },
 		{ 'folke/trouble.nvim', event = 'BufRead' },
 
@@ -79,16 +79,17 @@ function _G.__load_packer()
 		{ 'AckslD/nvim-neoclip.lua', after = 'telescope.nvim' },
 		{ 'sudormrfbin/cheatsheet.nvim', after = 'telescope.nvim', keys = '<leader>?' },
 		{ 'lewis6991/spellsitter.nvim', event = 'BufRead' },
+		{ 'nvim-neorg/neorg', ft = 'norg' }
 	}
 
 	local config = {
-		display = { open_fn = function() return require('packer.util').float({ border = 'single' }) end, },
+		display = { open_fn = function() return require('packer.util').float({ border = require('utils.ui').border_float }) end, },
 	}
 
 	vim.cmd('packadd packer.nvim')
 	local packer = require('packer')
 	local startup = require('utils.autoconfig')(packer.startup)
-	return startup({ plugins, config })
+	return startup({ plugins, config = config })
 end
 
 vim.cmd([[

@@ -50,7 +50,7 @@ end
 local function lsp_clients()
 	local clients = vim.lsp.buf_get_clients()
 	if #clients > 0 then
-		return string.format('  %s', #clients)
+		return string.format('LSP:%s', #clients)
 	end
 	return ''
 end
@@ -58,14 +58,14 @@ end
 local function indentation()
 	local size = vim.bo.shiftwidth
 	if vim.bo.expandtab then
-		return 'spaces:' .. size
+		return 'SPC:' .. size
 	end
-	return 'tabs:' .. size
+	return 'TAB:' .. size
 end
 
 local function file_format()
 	if vim.bo.fileformat ~= 'unix' then
-		return '%#LualineExoticFileFormat#' .. vim.bo.fileformat
+		return '%#LualineExoticFileFormat#' .. string.upper(vim.bo.fileformat)
 	end
 	return ''
 end
@@ -109,9 +109,9 @@ require('lualine').setup({
 			{ lsp_clients, color = { fg = colors.blue } },
 		},
 		lualine_y = {
-			{ 'filetype', colored = false },
+			{ 'filetype', fmt = string.upper, colored = false },
 			indentation,
-			'encoding',
+			{'encoding', fmt = string.upper },
 			file_format,
 		},
 		lualine_z = {

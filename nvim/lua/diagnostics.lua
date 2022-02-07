@@ -9,7 +9,7 @@ vim.diagnostic.config({
 		focusable = false,
 		severity_sort = true,
 		source = 'always',
-		border = 'single',
+		border = require('utils.ui').border_float,
 		header = '',
 		prefix = '',
 		format = function(diagnostic)

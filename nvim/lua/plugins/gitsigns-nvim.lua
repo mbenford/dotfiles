@@ -8,7 +8,7 @@ require('gitsigns').setup({
 	},
 	keymaps = {},
 	preview_config = {
-		border = 'single',
+		border = require('utils.ui').border_float,
 	},
 })
 
