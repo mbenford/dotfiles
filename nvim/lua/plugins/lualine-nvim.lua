@@ -44,6 +44,7 @@ local function gitsigns_status()
 	if status['removed'] > 0 then
 		table.insert(result, '%#LualineGitSignsDelete#-' .. status['removed'])
 	end
+
 	return table.concat(result, ' ')
 end
 
@@ -65,7 +66,7 @@ end
 
 local function file_format()
 	if vim.bo.fileformat ~= 'unix' then
-		return '%#LualineExoticFileFormat#' .. string.upper(vim.bo.fileformat)
+		return '%#LualineExoticFileFormat#' .. vim.bo.fileformat
 	end
 	return ''
 end
@@ -83,6 +84,7 @@ hl.add({ 'LualineGitSignsDelete', guifg = colors.red, guibg = theme.normal.c.bg 
 require('lualine').setup({
 	options = {
 		theme = theme,
+		icons_enabled = false,
 		section_separators = { left = '', right = '' },
 		component_separators = { left = '', right = '' },
 	},
@@ -96,8 +98,9 @@ require('lualine').setup({
 			},
 		},
 		lualine_b = {
-			{ 'branch', icon = '' },
+			'branch',
 			{ gitsigns_status, padding = { left = 0, right = 1 } },
+			'lsp_progress',
 		},
 		lualine_c = {},
 		lualine_x = {
@@ -109,10 +112,10 @@ require('lualine').setup({
 			{ lsp_clients, color = { fg = colors.blue } },
 		},
 		lualine_y = {
-			{ 'filetype', fmt = string.upper, colored = false },
+			{ 'filetype', fmt = string.upper },
 			indentation,
-			{'encoding', fmt = string.upper },
-			file_format,
+			{ 'encoding', fmt = string.upper },
+			{ file_format, fmt = string.upper },
 		},
 		lualine_z = {
 			location,

@@ -1,13 +1,17 @@
-require('hop').setup({
+local hop = require('hop')
+hop.setup({
 	teasing = false,
 	char2_fallback_key = '<cr>',
 })
 
 local map = require('utils.map')
-map.a({ 'f', '<cmd>HopChar1CurrentLine<cr>' })
-map.a({ 'F', '<cmd>HopChar2<cr>' })
-map.a({ 'gl', '<cmd>HopLine<cr>' })
-map.a({ 'gL', '<cmd>HopLineStart<cr>' })
+map.a({ 's', function() hop.hint_char2() end })
+map.n({ 'f', function() hop.hint_char1({ current_line_only = true }) end })
+map.o({ 'f', function() hop.hint_char1({ current_line_only = true, inclusive_jump = true }) end })
+map.x({ 'f', function() hop.hint_char1({ current_line_only = true, inclusive_jump = true }) end })
+map.a({ 't', function() hop.hint_char1({ current_line_only = true }) end })
+map.a({ 'gl', function() hop.hint_lines() end })
+map.a({ 'gL', function() hop.hint_lines_skip_whitespace() end })
 
 local colors = require('onedark.colors')
 local hl = require('utils.highlight')

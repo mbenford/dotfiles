@@ -20,6 +20,9 @@ require('nvim-tree').setup({
 	view = {
 		signcolumn = 'no',
 	},
+	update_focused_file = {
+		enable = true,
+	}
 })
 
 local colors = require('onedark.colors')
@@ -29,5 +32,4 @@ hl.add({ 'NvimTreeEndOfBuffer', guifg = colors.bg0, guibg = colors.bg0 })
 hl.link({ 'NvimTreeVertSplit', 'VertSplit' })
 
 local map = require('utils.map')
-map.n({ '<leader>tt', '<cmd>NvimTreeToggle<cr>' })
-map.n({ '<leader>tf', '<cmd>NvimTreeFindFile<cr>' })
+map.n({ '<leader>e', '<cmd>NvimTreeToggle<cr>' })

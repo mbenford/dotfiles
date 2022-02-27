@@ -1,15 +1,13 @@
 local o = vim.opt
 o.backup = false
 o.colorcolumn = '120'
-o.completeopt = { 'menuone', 'noselect' }
+o.completeopt = { 'menu', 'menuone', 'noinsert' }
 o.confirm = true
 o.cursorline = true
 o.expandtab = false
-o.foldexpr = 'nvim_treesitter#foldexpr()'
 o.foldlevel = 99
 o.foldnestmax = 3
--- o.foldtext = [[getline(v:foldstart) . '...'.trim(getline(v:foldend)) . ' (' . (v:foldend - v:foldstart + 1) . ' lines)']]
--- o.foldmethod = 'marker'
+o.foldtext = [[substitute(getline(v:foldstart),'\t', repeat(' ', &tabstop), 'g') . '...' . trim(getline(v:foldend)) . ' ']]
 o.hidden = true
 o.hlsearch = false
 o.ignorecase = true
@@ -21,11 +19,7 @@ o.relativenumber = true
 o.ruler = false
 o.scrolloff = 3
 o.shiftwidth = 2
-o.shortmess:append('I')
-o.shortmess:append('S')
-o.shortmess:append('a')
-o.shortmess:append('s')
-o.shortmess:append('c')
+o.shortmess:append({ I = true, S = true, a = true, s = true, c = true })
 o.showcmd = false
 o.showmode = false
 o.sidescroll = 1

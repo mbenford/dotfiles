@@ -57,12 +57,6 @@ require('nvim-treesitter.configs').setup({
 				['ab'] = '@block.inner',
 			},
 		},
-		lsp_interop = {
-			enable = true,
-		peek_definition_code = {
-			["DF"] = "@function.outer",
-		}
-			}
 	},
 })
 

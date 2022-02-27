@@ -4,16 +4,11 @@ require('cokeline').setup({
 		{ text = ' ' },
 		{
 			text = function(buffer)
-				return buffer.unique_prefix
-			end,
-		},
-		{
-			text = function(buffer)
 				local status = ''
 				if buffer.is_readonly then
 					status = ' '
 				end
-				return buffer.filename .. status
+				return string.format('%s%s%s', buffer.unique_prefix, buffer.filename, status)
 			end,
 			hl = {
 				fg = function(buffer)

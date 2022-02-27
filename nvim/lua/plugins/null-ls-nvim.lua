@@ -10,7 +10,6 @@ null_ls.setup({
 
 		-- formatting
 		formatting.autopep8,
-		formatting.goimports,
 		formatting.stylua,
 
 		-- code actions

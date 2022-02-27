@@ -15,6 +15,7 @@ onedark.setup({
 		StatusLine = { bg = '$bg_d' },
 		StatusLineNC = { bg = '$bg_d' },
 		SpellBad = { fg = 'none', bg = 'none', sp = 'green', fmt = 'undercurl' },
+		Folded = { fg = '$grey', bg = 'none' },
 	},
 })
 onedark.load()

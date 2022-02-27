@@ -7,4 +7,8 @@ function M.bind(fn, ...)
 	end
 end
 
+function M.identity(...)
+	return unpack({...})
+end
+
 return M

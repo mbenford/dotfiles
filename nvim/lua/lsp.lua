@@ -1,8 +1,10 @@
 local map = require('utils.map')
-map.n({ '<leader>gd', '<cmd>lua vim.lsp.buf.definition()<cr>' })
-map.n({ '<leader>gi', '<cmd>lua vim.lsp.buf.implementation()<cr>' })
-map.n({ '<leader>gr', '<cmd>lua vim.lsp.buf.references()<cr>' })
-map.n({ '<leader>vs', '<cmd>lua vim.lsp.buf.signature_help()<cr>' })
+map.n({ '<leader>ld', function() vim.lsp.buf.definition() end })
+map.n({ '<leader>li', function() vim.lsp.buf.implementation() end })
+map.n({ '<leader>lr', function() vim.lsp.buf.references() end })
+map.n({ '<leader>ls', function() vim.lsp.buf.signature_help() end })
+map.n({ '<leader>lh', function() vim.lsp.buf.hover() end })
+map.n({ '<leader>lf', function() vim.lsp.buf.formatting_seq_sync() end })
 
 vim.cmd([[
 aug LSP

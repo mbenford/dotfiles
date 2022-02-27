@@ -11,13 +11,13 @@ local M = {
 	}
 }
 M.border_float = {
-	{ M.borders.top_left, 'FloatBorder' },
-	{ M.borders.top, 'FloatBorder' },
-	{ M.borders.top_right, 'FloatBorder' },
-	{ M.borders.right, 'FloatBorder' },
-	{ M.borders.bottom_right, 'FloatBorder' },
-	{ M.borders.bottom, 'FloatBorder' },
-	{ M.borders.bottom_left, 'FloatBorder' },
-	{ M.borders.left, 'FloatBorder' },
+	{ M.borders.top_left,},
+	{ M.borders.top, },
+	{ M.borders.top_right },
+	{ M.borders.right },
+	{ M.borders.bottom_right },
+	{ M.borders.bottom },
+	{ M.borders.bottom_left },
+	{ M.borders.left },
 }
 return M
