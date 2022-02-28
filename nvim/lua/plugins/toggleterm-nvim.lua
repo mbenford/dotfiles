@@ -3,7 +3,7 @@ require('toggleterm').setup({
 })
 
 local map = require('utils.map')
-map.n({ '<leader><cr>', '<cmd>ToggleTerm<cr>' })
+map.n('<leader><cr>', '<cmd>ToggleTerm<cr>')
 
 vim.cmd([[
 	au TermOpen term://* setlocal signcolumn=no nonumber norelativenumber

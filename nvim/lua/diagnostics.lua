@@ -22,5 +22,5 @@ vim.diagnostic.config({
 })
 
 local map = require('utils.map')
-map.n({ '<leader>ge', function() vim.diagnostic.goto_next() end })
-map.n({ '<leader>ve', function() vim.diagnostic.open_float() end })
+map.n('<leader>ge', function() vim.diagnostic.goto_next() end)
+map.n('<leader>ve', function() vim.diagnostic.open_float() end)

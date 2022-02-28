@@ -54,5 +54,5 @@ require('cokeline').setup({
 })
 
 local map = require('utils.map')
-map.n({ '<C-j>', '<Plug>(cokeline-focus-prev)', noremap = false })
-map.n({ '<C-k>', '<Plug>(cokeline-focus-next)', noremap = false })
+map.n('<C-j>', '<Plug>(cokeline-focus-prev)', { noremap = false })
+map.n('<C-k>', '<Plug>(cokeline-focus-next)', { noremap = false })
