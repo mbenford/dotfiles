@@ -10,33 +10,29 @@ require('cokeline').setup({
 				end
 				return string.format('%s%s%s', buffer.unique_prefix, buffer.filename, status)
 			end,
-			hl = {
-				fg = function(buffer)
-					local focused = buffer.is_focused
-					local modified = buffer.is_modified
+			fg = function(buffer)
+				local focused = buffer.is_focused
+				local modified = buffer.is_modified
 
-					if focused and modified then
-						return colors.yellow
-					elseif focused then
-						return colors.fg
-					elseif modified then
-						return colors.dark_yellow
-					else
-						return colors.grey
-					end
-				end,
-			},
+				if focused and modified then
+					return colors.yellow
+				elseif focused then
+					return colors.fg
+				elseif modified then
+					return colors.dark_yellow
+				else
+					return colors.grey
+				end
+			end,
 		},
 		{ text = ' ' },
 	},
-	rendering = {
-		left_sidebar = {
-			filetype = 'NvimTree',
-			components = {
-				{
-					text = '',
-					hl = { bg = colors.bg_d, style = 'none' },
-				},
+	sidebar = {
+		filetype = 'NvimTree',
+		components = {
+			{
+				text = '',
+				bg = colors.bg_d, style = 'none',
 			},
 		},
 	},
@@ -44,15 +40,16 @@ require('cokeline').setup({
 		cycle_prev_next = true,
 	},
 	default_hl = {
-		focused = {
-			bg = colors.bg0,
-		},
-		unfocused = {
-			bg = colors.bg_d,
-		},
+		bg = function(buffer)
+			if buffer.is_focused then
+				return colors.bg0
+			end
+
+			return colors.bg_d
+		end,
 	},
 })
 
-local map = require('utils.map')
-map.n('<C-j>', '<Plug>(cokeline-focus-prev)', { noremap = false })
-map.n('<C-k>', '<Plug>(cokeline-focus-next)', { noremap = false })
+local map = require('utils.map').map
+map('n', '<C-j>', '<Plug>(cokeline-focus-prev)', { noremap = false })
+map('n', '<C-k>', '<Plug>(cokeline-focus-next)', { noremap = false })

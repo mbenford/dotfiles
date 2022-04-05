@@ -1,46 +1,43 @@
-local M = { lua_funcs = {} }
-
-local function map(mode, keymap, action, opts)
+local function map(modes, keymap, command, opts)
 	opts = vim.tbl_deep_extend('force', { noremap = true, silent = true }, opts or {})
+	opts['desc'] = nil
 
-	if type(action) == 'function' then
-		table.insert(M.lua_funcs, action)
-		action = string.format([[<cmd>lua require('utils.map').lua_funcs[%s]()<cr>]], #M.lua_funcs)
+	if type(command) == 'function' then
+		command = require('utils.function').register(command, { as_cmd = true })
 	end
 
-	vim.api.nvim_set_keymap(mode, keymap, action, opts)
+	for _, mode in pairs(modes) do
+		if opts.buffer == nil then
+			vim.api.nvim_set_keymap(mode, keymap, command, opts)
+		else
+			opts.buffer = nil
+			vim.api.nvim_buf_set_keymap(0, mode, keymap, command, opts)
+		end
+	end
 end
 
-function M.n(keymap, action, opts)
-	map('n', keymap, action, opts)
+local function split(modes)
+	if modes == '' then
+		return {''}
+	end
+
+	local result = {}
+	for m in modes:gmatch('.') do
+		table.insert(result, m)
+	end
+	return result
 end
 
-function M.v(keymap, action, opts)
-	map('v', keymap, action, opts)
+local M = {}
+
+function M.map(modes, keymap, command, opts)
+	map(split(modes), keymap, command, opts)
 end
 
-function M.x(keymap, action, opts)
-	map('x', keymap, action, opts)
-end
-
-function M.c(keymap, action, opts)
-	map('c', keymap, action, opts)
-end
-
-function M.o(keymap, action, opts)
-	map('o', keymap, action, opts)
-end
-
-function M.i(keymap, action, opts)
-	map('i', keymap, action, opts)
-end
-
-function M.t(keymap, action, opts)
-	map('t', keymap, action, opts)
-end
-
-function M.a(keymap, action, opts)
-	map('', keymap, action, opts)
+function M.bmap(modes, keymap, command, opts)
+	opts = opts or {}
+	opts['buffer'] = true
+	M.map(modes, keymap, command, opts)
 end
 
 return M

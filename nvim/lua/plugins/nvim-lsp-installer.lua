@@ -33,14 +33,21 @@ lsp_installer.on_server_ready(function(server)
 		server_opts[server.name](opts)
 	end
 
-	opts.on_attach = function(client, _)
+	opts.on_attach = function(client)
+		local bmap = require('utils.map').bmap
+		-- bmap('n', '<leader>ls', vim.lsp.buf.signature_help)
+		bmap('n', 'K', vim.lsp.buf.hover)
+		bmap('n', '<leader>lf', vim.lsp.buf.formatting_seq_sync)
+		bmap('n', '<leader>rr', vim.lsp.buf.rename)
+
+		local autocmd = require('utils.autocmd').augroup('lsp')
+		if client.resolved_capabilities.document_highlight then
+			autocmd('CursorHold,CursorHoldI', '<buffer>', vim.lsp.buf.document_highlight)
+			autocmd('CursorMoved', '<buffer>', vim.lsp.buf.clear_references)
+		end
+
 		if client.resolved_capabilities.document_formatting then
-			vim.cmd([[
-				aug LSP
-					au!
-					au BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()
-				aug END
-			]])
+			autocmd('BufWritePre', '<buffer>', vim.lsp.buf.formatting_seq_sync)
 		end
 	end
 

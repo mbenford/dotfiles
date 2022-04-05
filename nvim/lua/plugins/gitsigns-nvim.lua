@@ -10,14 +10,17 @@ require('gitsigns').setup({
 	preview_config = {
 		border = require('utils.ui').border_float,
 	},
+	on_attach = function ()
+		local bmap = require('utils.map').bmap
+		local gitsigns = require('gitsigns')
+		bmap('n', '<leader>gp', gitsigns.preview_hunk)
+		bmap('n', '<leader>gr', gitsigns.reset_hunk)
+		bmap('n', '<leader>gn', gitsigns.next_hunk)
+		bmap('n', '<leader>gN', gitsigns.prev_hunk)
+		bmap('n', '<leader>gB', gitsigns.blame_line)
+	end
 })
 
-local map = require('utils.map')
-map.n('<leader><leader>gp', '<cmd>Gitsigns preview_hunk<cr>')
-map.n('<leader><leader>gr', '<cmd>Gitsigns reset_hunk<cr>')
-map.n('<leader><leader>gn', '<cmd>Gitsigns next_hunk<cr>')
-map.n('<leader><leader>gN', '<cmd>Gitsigns prev_hunk<cr>')
-map.n('<leader><leader>gb', '<cmd>Gitsigns blame_line<cr>')
 
 local hl = require('utils.highlight')
 hl.add({ 'GitSignsChange', guifg = require('onedark.colors').orange, guibg = 'none' })

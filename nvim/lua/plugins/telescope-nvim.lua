@@ -19,26 +19,36 @@ require('telescope').setup({
 })
 
 local builtin = require('telescope.builtin')
+local map = require('utils.map').map
+local themes = require('plugins.telescope-themes')
+local apply = require('utils.function').apply
+local papply = require('utils.function').papply
+
 local function project_files(opts)
-	local ok = pcall(builtin.git_files, opts)
-	if not ok then
+	if not pcall(builtin.git_files, opts) then
 		builtin.find_files(opts)
 	end
 end
 
-local map = require('utils.map')
-local themes = require('plugins.telescope-themes')
-map.n('<leader>ff', function() project_files(themes.default()) end)
-map.n('<leader>fg', function() builtin.live_grep(themes.default()) end)
-map.n('<leader>fb', function() builtin.buffers(themes.default()) end)
-map.n('<leader>fr', function() builtin.resume(themes.default()) end)
-map.n('<leader>fo', function() builtin.oldfiles(themes.default()) end)
-map.n('<leader>fhi', function() builtin.highlights(themes.default()) end)
-map.n('<leader>fhs', function() builtin.search_history(themes.center()) end)
-map.n('<leader>fhc', function() builtin.command_history(themes.center()) end)
-map.n('<leader>fv', function() builtin.vim_options(themes.center()) end)
-map.n('<leader>ft', function() builtin.filetypes(themes.center()) end)
-map.n('<leader>fs', function() builtin.spell_suggest(themes.cursor()) end)
+map('n', '<leader>ff', apply(project_files, themes.default()))
+map('n', '<leader>fg', apply(builtin.live_grep, themes.default()))
+map('n', '<leader>fb', apply(builtin.buffers, themes.default()))
+map('n', '<leader>fr', apply(builtin.resume, themes.default()))
+map('n', '<leader>fo', apply(builtin.oldfiles, themes.default()))
+map('n', '<leader>fhi', apply(builtin.highlights, themes.default()))
+map('n', '<leader>fhs', apply(builtin.search_history, themes.center()))
+map('n', '<leader>fhc', apply(builtin.command_history, themes.center()))
+map('n', '<leader>fv', apply(builtin.vim_options, themes.center()))
+map('n', '<leader>ft', apply(builtin.filetypes, themes.center()))
+map('n', '<leader>fs', apply(builtin.spell_suggest, themes.cursor()))
+map('n', '<leader>gb', papply(builtin.git_branches, themes.default()))
+map('n', '<leader>gs', papply(builtin.git_stash, themes.default()))
+map('n', '<leader>gc', papply(builtin.git_commits, themes.default()))
+map('n', '<leader>ld', apply(builtin.lsp_definitions, themes.default()))
+map('n', '<leader>li', apply(builtin.lsp_implementations, themes.default()))
+map('n', '<leader>lr', apply(builtin.lsp_references, themes.default()))
+map('n', '<leader>ls', apply(builtin.lsp_document_symbols, themes.default()))
+map('n', '<leader>la', apply(builtin.lsp_code_actions, themes.cursor()))
 
 local colors = require('onedark.colors')
 local hl = require('utils.highlight')

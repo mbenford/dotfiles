@@ -9,13 +9,13 @@ onedark.setup({
 		darker = false,
 	},
 	highlights = {
-		Pmenu = { bg = '$bg3' },
-		FloatBorder = { fg = '$light_grey', bg = '$bg3' },
+		FloatBorder = { fg = '$light_grey' },
 		TablineFill = { bg = '$bg_d' },
 		StatusLine = { bg = '$bg_d' },
 		StatusLineNC = { bg = '$bg_d' },
 		SpellBad = { fg = 'none', bg = 'none', sp = 'green', fmt = 'undercurl' },
 		Folded = { fg = '$grey', bg = 'none' },
+		TextYank = { fg = '$orange', bg='none', fmt = 'reverse' },
 	},
 })
 onedark.load()

@@ -31,5 +31,5 @@ hl.add({ 'NvimTreeNormal', guibg = colors.bg0 })
 hl.add({ 'NvimTreeEndOfBuffer', guifg = colors.bg0, guibg = colors.bg0 })
 hl.link({ 'NvimTreeVertSplit', 'VertSplit' })
 
-local map = require('utils.map')
-map.n('<leader>e', '<cmd>NvimTreeToggle<cr>')
+local map = require('utils.map').map
+map('n', '<leader>e', '<cmd>NvimTreeToggle<cr>')

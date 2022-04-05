@@ -65,7 +65,7 @@ function _G.__load_packer()
 		{ 'kevinhwang91/nvim-bqf', event = 'BufRead' },
 		{ 'romgrk/nvim-treesitter-context', after = 'onedark.nvim', event = 'BufRead' },
 		{ 'folke/todo-comments.nvim', event = 'BufRead' },
-		{ 'stevearc/dressing.nvim' },
+		{ 'stevearc/dressing.nvim', after = 'onedark.nvim' },
 
 		-- file types
 		{ 'hashivim/vim-terraform', ft = 'terraform' },
@@ -83,7 +83,7 @@ function _G.__load_packer()
 		{ 'lewis6991/spellsitter.nvim', event = 'BufRead' },
 		{ 'nvim-neorg/neorg', ft = 'norg' },
 		{ 'mbbill/undotree', event = 'BufRead' },
-		{ 'rmagatti/auto-session' },
+		{ 'axieax/urlview.nvim', event = 'BufRead' },
 	}
 
 	local config = {
@@ -104,9 +104,7 @@ vim.cmd([[
 	command! -nargs=0 PackerStatus lua _G.__load_packer();require'packer'.status()
 	command! -nargs=0 PackerClean lua _G.__load_packer();require'packer'.clean()
 	command! -nargs=0 PackerProfile lua _G.__load_packer();require'packer'.profile_output()
-
-	aug packer_auto_compile
-	  au!
-	  au BufWritePost plugins.lua source <afile>
-	aug END
 ]])
+
+local autocmd = require('utils.autocmd').augroup('packer_autocompile')
+autocmd('BufWritePost', 'plugins.lua', 'source <afile>')
