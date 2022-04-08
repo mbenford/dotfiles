@@ -107,4 +107,4 @@ vim.cmd([[
 ]])
 
 local autocmd = require('utils.autocmd').augroup('packer_autocompile')
-autocmd('BufWritePost', 'plugins.lua', 'source <afile>')
+autocmd('BufWritePost', { pattern = 'plugins.lua', command = 'source <afile>' })

@@ -1,6 +1,6 @@
-local map = require('utils.map').map
 vim.g.mapleader = ' '
 
+local map = require('utils.map').map
 map('nx', ';', ':', { silent = false, desc = 'Command line mode' })
 map('nxo', 'H', '^', { desc = 'Go to first non-blank character of the line' })
 map('nxo', 'L', '$', { desc = 'Go to end of the line' })
@@ -55,7 +55,9 @@ map('c', '<Up>', 'pumvisible() ? "\\<Left>" : "\\<Up>"', { expr = true, silent =
 map('c', '<Down>', 'pumvisible() ? "\\<Right>" : "\\<Down>"', { expr = true, silent = false, desc = '' })
 
 local autocmd = require('utils.autocmd').augroup('key_mappings')
-local bmap = require('utils.map').bmap
-autocmd('FileType', 'help,qf', function()
-	bmap('n', 'q', '<c-w>q')
-end)
+autocmd('FileType', {
+	pattern = 'help,qf',
+	callback = function()
+		require('utils.map').bmap('n', 'q', '<c-w>q')
+	end,
+})

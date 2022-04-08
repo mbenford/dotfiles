@@ -42,12 +42,12 @@ lsp_installer.on_server_ready(function(server)
 
 		local autocmd = require('utils.autocmd').augroup('lsp')
 		if client.resolved_capabilities.document_highlight then
-			autocmd('CursorHold,CursorHoldI', '<buffer>', vim.lsp.buf.document_highlight)
-			autocmd('CursorMoved', '<buffer>', vim.lsp.buf.clear_references)
+			autocmd({ 'CursorHold', 'CursorHoldI' }, { buffer = 0, callback = vim.lsp.buf.document_highlight })
+			autocmd('CursorMoved', { buffer = 0, callback = vim.lsp.buf.clear_references })
 		end
 
 		if client.resolved_capabilities.document_formatting then
-			autocmd('BufWritePre', '<buffer>', vim.lsp.buf.formatting_seq_sync)
+			autocmd('BufWritePre', { buffer = 0, callback = vim.lsp.buf.formatting_seq_sync })
 		end
 	end
 

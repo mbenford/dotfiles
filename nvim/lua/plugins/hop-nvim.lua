@@ -6,6 +6,7 @@ hop.setup({
 
 local map = require('utils.map').map
 map('', 's', function() hop.hint_char2() end)
+map('', 'S', function() hop.hint_char2({ multi_windows = true }) end)
 map('n', 'f', function() hop.hint_char1({ current_line_only = true }) end)
 map('o', 'f', function() hop.hint_char1({ current_line_only = true, inclusive_jump = true }) end)
 map('x', 'f', function() hop.hint_char1({ current_line_only = true, inclusive_jump = true }) end)

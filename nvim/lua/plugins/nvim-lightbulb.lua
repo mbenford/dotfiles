@@ -4,6 +4,6 @@ lightbulb.setup({
 })
 
 local autocmd = require('utils.autocmd').augroup('nvim-lightbulb')
-autocmd('CursorHold,CursorHoldI', '*', lightbulb.update_lightbulb)
+autocmd({ 'CursorHold', 'CursorHoldI' }, { pattern = '*', callback = lightbulb.update_lightbulb })
 
 vim.fn.sign_define('LightBulbSign', { text = '', texthl = 'DiagnosticWarn' })

@@ -30,17 +30,24 @@ local function project_files(opts)
 	end
 end
 
+local function project_oldfiles(opts)
+	opts = opts or {}
+	opts["only_cwd"] = true
+	builtin.oldfiles(opts)
+end
+
 map('n', '<leader>ff', apply(project_files, themes.default()))
+map('n', '<leader>fo', apply(project_oldfiles, themes.default()))
 map('n', '<leader>fg', apply(builtin.live_grep, themes.default()))
 map('n', '<leader>fb', apply(builtin.buffers, themes.default()))
 map('n', '<leader>fr', apply(builtin.resume, themes.default()))
-map('n', '<leader>fo', apply(builtin.oldfiles, themes.default()))
 map('n', '<leader>fhi', apply(builtin.highlights, themes.default()))
 map('n', '<leader>fhs', apply(builtin.search_history, themes.center()))
 map('n', '<leader>fhc', apply(builtin.command_history, themes.center()))
 map('n', '<leader>fv', apply(builtin.vim_options, themes.center()))
 map('n', '<leader>ft', apply(builtin.filetypes, themes.center()))
 map('n', '<leader>fs', apply(builtin.spell_suggest, themes.cursor()))
+map('n', '<leader>fa', apply(builtin.autocommands, themes.default()))
 map('n', '<leader>gb', papply(builtin.git_branches, themes.default()))
 map('n', '<leader>gs', papply(builtin.git_stash, themes.default()))
 map('n', '<leader>gc', papply(builtin.git_commits, themes.default()))
