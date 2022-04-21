@@ -14,8 +14,9 @@ require('nvim-treesitter.configs').setup({
 		'jsdoc',
 		'json',
 		'lua',
-		'markdown',
 		'make',
+		'markdown',
+		'norg',
 		'python',
 		'query',
 		'rust',
@@ -24,7 +25,6 @@ require('nvim-treesitter.configs').setup({
 		'typescript',
 		'vim',
 		'yaml',
-		'norg',
 	},
 	highlight = {
 		enable = true,
@@ -33,10 +33,10 @@ require('nvim-treesitter.configs').setup({
 	incremental_selection = {
 		enable = true,
 		keymaps = {
-			init_selection = 'gnn',
-			node_incremental = 'grn',
-			scope_incremental = 'grc',
-			node_decremental = 'grm',
+			init_selection = '<Leader>vv',
+			node_incremental = '<Leader>vv',
+			node_decremental = '<Leader>vd',
+			scope_incremental = '<Leader>vs',
 		},
 	},
 	indent = { enable = false },
@@ -54,7 +54,7 @@ require('nvim-treesitter.configs').setup({
 			keymaps = {
 				['af'] = '@function.outer',
 				['if'] = '@function.inner',
-				['ab'] = '@block.inner',
+				['ax'] = '@block.inner',
 			},
 		},
 	},

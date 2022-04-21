@@ -25,11 +25,12 @@ require('nvim-tree').setup({
 	}
 })
 
-local colors = require('onedark.colors')
-local hl = require('utils.highlight')
-hl.add({ 'NvimTreeNormal', guibg = colors.bg0 })
-hl.add({ 'NvimTreeEndOfBuffer', guifg = colors.bg0, guibg = colors.bg0 })
-hl.link({ 'NvimTreeVertSplit', 'VertSplit' })
+require('legendary').bind_keymaps({
+	{ '<Leader>e', '<Cmd>NvimTreeToggle<CR>', description = 'Toggles NvimTree' },
+})
 
-local map = require('utils.map').map
-map('n', '<leader>e', '<cmd>NvimTreeToggle<cr>')
+local colors = require('onedark.colors')
+local set_hl = vim.api.nvim_set_hl
+set_hl(0, 'NvimTreeNormal', { bg = colors.bg0 })
+set_hl(0, 'NvimTreeEndOfBuffer', { fg = colors.bg0, bg = colors.bg0 })
+set_hl(0, 'NvimTreeVertSplit', { link = 'VertSplit' })

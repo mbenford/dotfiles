@@ -4,19 +4,36 @@ hop.setup({
 	char2_fallback_key = '<cr>',
 })
 
-local map = require('utils.map').map
-map('', 's', function() hop.hint_char2() end)
-map('', 'S', function() hop.hint_char2({ multi_windows = true }) end)
-map('n', 'f', function() hop.hint_char1({ current_line_only = true }) end)
-map('o', 'f', function() hop.hint_char1({ current_line_only = true, inclusive_jump = true }) end)
-map('x', 'f', function() hop.hint_char1({ current_line_only = true, inclusive_jump = true }) end)
-map('', 't', function() hop.hint_char1({ current_line_only = true }) end)
-map('', 'gl', function() hop.hint_lines() end)
-map('', 'gL', function() hop.hint_lines_skip_whitespace() end)
+local curr_line_ac = { current_line_only = true, direction = require('hop.hint').HintDirection.AFTER_CURSOR }
+local curr_line_bc = { current_line_only = true, direction = require('hop.hint').HintDirection.BEFORE_CURSOR }
+
+local lazy = require('legendary.helpers').lazy
+require('legendary').bind_keymaps({
+	{ 's', hop.hint_char2, mode = { 'n', 'v' }, description = '' },
+	{ 'S', lazy(hop.hint_char2, { multi_windows = true }), mode = { 'n', 'v' }, description = '' },
+	{ 'f', lazy(hop.hint_char1, curr_line_ac), description = '' },
+	{ 'F', lazy(hop.hint_char1, curr_line_bc), description = '' },
+	{
+		'f',
+		lazy(hop.hint_char1, vim.tbl_extend('force', curr_line_ac, { inclusive_jump = true })),
+		mode = { 'x', 'o' },
+		description = '',
+	},
+	{
+		'F',
+		lazy(hop.hint_char1, vim.tbl_extend('force', curr_line_bc, { inclusive_jump = true })),
+		mode = { 'x', 'o' },
+		description = '',
+	},
+	{ 't', lazy(hop.hint_char1, curr_line_bc), mode = { 'n', 'x', 'o' }, description = '' },
+	{ 'T', lazy(hop.hint_char1, curr_line_ac), mode = { 'n', 'x', 'o' }, description = '' },
+	{ 'gl', hop.hint_lines, mode = { 'n', 'v' }, description = '' },
+	{ 'gL', lazy(hop.hint_lines, { multi_windows = true }), mode = { 'n', 'v' }, description = '' },
+})
 
 local colors = require('onedark.colors')
-local hl = require('utils.highlight')
-hl.add({ 'HopNextKey', guifg = colors.bg0, guibg = colors.orange })
-hl.add({ 'HopNextKey1', guifg = colors.bg0, guibg = colors.orange, gui = 'none' })
-hl.add({ 'HopNextKey2', guifg = colors.bg0, guibg = colors.yellow })
-hl.add({ 'HopUnmatched', guifg = 'none', guibg = 'none' })
+local set_hl = vim.api.nvim_set_hl
+set_hl(0, 'HopNextKey', { fg = colors.bg0, bg = colors.orange })
+set_hl(0, 'HopNextKey1', { fg = colors.bg0, bg = colors.orange  })
+set_hl(0, 'HopNextKey2', { fg = colors.bg0, bg = colors.yellow })
+set_hl(0, 'HopUnmatched', { fg = 'none', bg = 'none' })

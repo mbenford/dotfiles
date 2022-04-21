@@ -1,63 +1,88 @@
-vim.g.mapleader = ' '
+vim.g.mapleader = ' ' -- space as the leader key
 
-local map = require('utils.map').map
-map('nx', ';', ':', { silent = false, desc = 'Command line mode' })
-map('nxo', 'H', '^', { desc = 'Go to first non-blank character of the line' })
-map('nxo', 'L', '$', { desc = 'Go to end of the line' })
-map('nxo', 'M', '%', { desc = 'Go to matching pair' })
-map('n', 'Q', '<cmd>execute "noautocmd normal! " . v:count1 . "@" . getcharstr()<cr>', { desc = 'Execute the contents of a register' })
-map('v', '<', '<gv', { desc = 'Shift left and keep selection' })
-map('v', '>', '>gv', { desc = 'Shift right and keep selection' })
-map('n', 'U', '<C-R>', { desc = 'Redo' })
-map('n', 'j', 'gj', { desc = 'Go down (non-linewise)' })
-map('n', 'k', 'gk', { desc = 'Go up (non-linewise)' })
-map('n', 'n', 'nzz', { desc = 'Go to next occurrence and center' })
-map('n', 'N', 'Nzz', { desc = 'Go to previous occurrence and center' })
-map('n', '*', '*zz', { desc = 'Search forward and center' })
-map('n', '#', '#zz', { desc = 'Search backward and center' })
-map('n', 'J', 'maJ`a', { desc = 'Join lines and keep the cursor at its position' })
-map('nx', 'c', '"_c', { desc = 'Same as c but using the black hole register' })
-map('nx', 'C', '"_C', { desc = 'Same as C but using the black hole register' })
-map('nx', 'x', '"_x', { desc = 'Same as x but using the black hole register' })
-map('n', 'X', '"_dd', { desc = 'Delete the current line into the black hole register' })
-map('n', 'gx', '<Cmd>call jobstart(["xdg-open", expand("<cfile>")], {"detach": v:true})<CR>', { desc = '' })
-map('n', '<Leader>w', '<Cmd>wa<CR>', { desc = 'Write all changed buffers' })
-map('n', '<Leader>qx', '<Cmd>xa<CR>', { desc = 'Write all changed buffers and exit' })
-map('n', '<Leader>qq', '<Cmd>qa<CR>', { desc = 'Exit' })
-map('n', '<Leader>qw', '<C-w>q', { desc = '' })
-map('n', '<Leader>Q', '<Cmd>qa!<CR>', { desc = 'Exit without writing' })
-map('n', '<Leader>d', '<Cmd>copy .<CR>', { desc = 'Duplicate current line' })
-map('x', '<Leader>d', ":copy '><CR>", { desc = 'Duplicate selected lines' })
-map('n', '<Leader>i', 'i<Space><Esc>r', { desc = 'Insert one character' })
-map('n', '<Leader>o', 'mao<Esc>`a', { desc = 'Insert empty line below' })
-map('n', '<Leader>O', 'maO<Esc>`a', { desc = 'Insert empty line above' })
-map('n', '<Leader>y', '"+yy', { desc = 'Yank current line to clipboard' })
-map('x', '<Leader>y', '"+y', { desc = 'Yank selected lines to clipboard' })
-map('n', '<Leader>p', '"+p', { desc = 'Paste from clipboard after the cursor' })
-map('n', '<Leader>P', '"+P', { desc = 'Paste from clipboard before the cursor' })
-map('n', '<Leader>sn', '<Cmd>set number! | set relativenumber!<CR>', { desc = 'Toggle relative numbers' })
-map('n', '<Leader>sw', '<Cmd>set wrap!<CR>', { desc = 'Toggle line wrap' })
-map('n', '<Leader>sh', '<Cmd>set hlsearch!<CR>', { desc = 'Toggle search highlight' })
-map('n', '<Leader>ss', '<Cmd>set spell!<CR>', { desc = 'Toggle spell checking' })
-map('n', '<M-h>', '<C-w>h', { desc = 'Go to left window' })
-map('n', '<M-j>', '<C-w>j', { desc = 'Go to bottom window' })
-map('n', '<M-k>', '<C-w>k', { desc = 'Go to top window' })
-map('n', '<M-l>', '<C-w>l', { desc = 'Go to right window' })
-map('it', '<M-h>', '<C-\\><C-n><C-w>h', { desc = 'Go to left window' })
-map('it', '<M-j>', '<C-\\><C-n><C-w>j', { desc = 'Go to bottom window' })
-map('it', '<M-k>', '<C-\\><C-n><C-w>k', { desc = 'Go to top window' })
-map('it', '<M-l>', '<C-\\><C-n><C-w>l', { desc = 'Go to right window' })
-map('n', '<M-H>', '<Cmd>vertical resize -2<CR>', { desc = '' })
-map('n', '<M-J>', '<Cmd>resize -2<CR>', { desc = '' })
-map('n', '<M-K>', '<Cmd>resize +2<CR>', { desc = '' })
-map('n', '<M-L>', '<Cmd>vertical resize +2<CR>', { desc = '' })
-map('c', '<Up>', 'pumvisible() ? "\\<Left>" : "\\<Up>"', { expr = true, silent = false, desc = '' })
-map('c', '<Down>', 'pumvisible() ? "\\<Right>" : "\\<Down>"', { expr = true, silent = false, desc = '' })
+require('legendary').bind_keymaps({
+	{ ';', ':', mode = { 'n', 'x' }, opts = { silent = false }, description = 'Command line mode' },
+	{ 'H', '^', mode = { 'n', 'x', 'o' }, description = 'Go to first non-blank character of the line' },
+	{ 'L', '$', mode = { 'n', 'x', 'o' }, description = 'Go to end of the line' },
+	{ 'M', '%', mode = { 'n', 'x', 'o' }, description = 'Go to matching pair' },
+	{ 'Q', '<cmd>execute "noautocmd normal! " . v:count1 . "@" . getcharstr()<cr>', description = 'Alias for @' },
+	{ '<', '<gv', mode = { 'v' }, description = 'Shift left and keep selection' },
+	{ '>', '>gv', mode = { 'v' }, description = 'Shift right and keep selection' },
+	{ 'U', '<C-R>', description = 'Redo' },
+	{ 'j', 'gj', description = 'Go down (non-linewise)' },
+	{ 'k', 'gk', description = 'Go up (non-linewise)' },
+	{ 'n', 'nzz', description = 'Go to next occurrence and center' },
+	{ 'N', 'Nzz', description = 'Go to previous occurrence and center' },
+	{ '*', '*zz', description = 'Search forward and center' },
+	{ '#', '#zz', description = 'Search backward and center' },
+	{ 'J', 'maJ`a', description = 'Join lines and keep the cursor at its position' },
+	{ 'c', '"_c', mode = { 'n', 'x' }, description = 'Same as c but using the black hole register' },
+	{ 'C', '"_C', mode = { 'n', 'x' }, description = 'Same as C but using the black hole register' },
+	{ 'x', '"_x', mode = { 'n', 'x' }, description = 'Same as x but using the black hole register' },
+	{ 'X', '"_dd', description = 'Delete the current line into the black hole register' },
+	{ '<Leader>w', '<Cmd>wa<CR>', description = 'Write all changed buffers' },
+	{ '<Leader>qx', '<Cmd>xa<CR>', description = 'Write all changed buffers and exit' },
+	{ '<Leader>qq', '<Cmd>qa<CR>', description = 'Exit' },
+	{ '<Leader>qw', '<C-w>q', description = '' },
+	{ '<Leader>Q', '<Cmd>qa!<CR>', description = 'Exit without writing' },
+	{ '<Leader>i', 'i<Space><Esc>r', description = 'Insert one character' },
+	{ '<Leader>o', 'mao<Esc>`a', description = 'Insert empty line below' },
+	{ '<Leader>O', 'maO<Esc>`a', description = 'Insert empty line above' },
+	{ '<Leader>y', '"+yy', description = 'Yank current line to clipboard' },
+	{ '<Leader>y', '"+y', mode = { 'x' }, description = 'Yank selected lines to clipboard' },
+	{ '<Leader>p', '"+p', description = 'Paste from clipboard after the cursor' },
+	{ '<Leader>P', '"+P', description = 'Paste from clipboard before the cursor' },
+	{ '<M-h>', '<C-w>h', description = 'Go to left window' },
+	{ '<M-j>', '<C-w>j', description = 'Go to bottom window' },
+	{ '<M-k>', '<C-w>k', description = 'Go to top window' },
+	{ '<M-l>', '<C-w>l', description = 'Go to right window' },
+	{ '<M-h>', '<C-\\><C-n><C-w>h', mode = { 'i', 't' }, description = 'Go to left window' },
+	{ '<M-j>', '<C-\\><C-n><C-w>j', mode = { 'i', 't' }, description = 'Go to bottom window' },
+	{ '<M-k>', '<C-\\><C-n><C-w>k', mode = { 'i', 't' }, description = 'Go to top window' },
+	{ '<M-l>', '<C-\\><C-n><C-w>l', mode = { 'i', 't' }, description = 'Go to right window' },
+	{
+		'gx',
+		'<Cmd>call jobstart(["xdg-open", expand("<cfile>")], {"detach": v:true})<CR>',
+		description = '',
+	},
+	{ '<Leader>d', '<Cmd>copy .<CR>', description = 'Duplicate current line' },
+	{ '<Leader>d', ":copy '><CR>", mode = { 'x' }, description = 'Duplicate selected lines' },
+	{
+		'<Leader>sn',
+		'<Cmd>set number! | set relativenumber!<CR>',
+		description = 'Toggle relative numbers',
+	},
+	{ '<Leader>sw', '<Cmd>set wrap!<CR>', description = 'Toggle line wrap' },
+	{ '<Leader>sh', '<Cmd>set hlsearch!<CR>', description = 'Toggle search highlight' },
+	{ '<Leader>ss', '<Cmd>set spell!<CR>', description = 'Toggle spell checking' },
+	{ '<M-H>', '<Cmd>vertical resize -2<CR>', description = '' },
+	{ '<M-J>', '<Cmd>resize -2<CR>', description = '' },
+	{ '<M-K>', '<Cmd>resize +2<CR>', description = '' },
+	{ '<M-L>', '<Cmd>vertical resize +2<CR>', description = '' },
+	{
+		'<Up>',
+		'pumvisible() ? "\\<Left>" : "\\<Up>"',
+		mode = { 'c' },
+		opts = { expr = true, silent = false },
+		description = '',
+	},
+	{
+		'<Down>',
+		'pumvisible() ? "\\<Right>" : "\\<Down>"',
+		mode = { 'c' },
+		opts = { expr = true, silent = false },
+		description = '',
+	},
+})
 
-local autocmd = require('utils.autocmd').augroup('key_mappings')
-autocmd('FileType', {
-	pattern = 'help,qf',
-	callback = function()
-		require('utils.map').bmap('n', 'q', '<c-w>q')
-	end,
+require('legendary').bind_autocmds({
+	{
+		'FileType',
+		function()
+			require('legendary').bind_keymaps({
+				{ 'q', '<C-w>q', opts = { buffer = true }, description = '' },
+			})
+		end,
+		opts = { pattern = 'help,qf' },
+	},
 })

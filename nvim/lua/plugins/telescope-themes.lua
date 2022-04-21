@@ -7,7 +7,6 @@ function M.default(opts)
 
 	local theme_opts = {
 		theme = 'default',
-		results_title = false,
 		layout_strategy = 'vertical',
 		layout_config = {
 			prompt_position = 'top',
@@ -15,8 +14,8 @@ function M.default(opts)
 		},
 		borderchars = {
 			prompt = { border.top, border.right, ' ', border.left, border.top_left, border.top_right, border.right, border.left },
-			results = { border.top, border.right, ' ', border.left, border.top_left, border.top_right, border.right, border.left },
-			preview = { border.top, border.right, border.bottom, border.left, border.top_left, border.top_right, border.bottom_right, border.bottom_left },
+			results = { border.top, border.right, border.bottom, border.left, border.top_left, border.top_right, border.bottom_right, border.bottom_left },
+			preview = { ' ', border.right, border.bottom, border.left, border.left, border.right, border.bottom_right, border.bottom_left },
 		},
 	}
 
@@ -28,7 +27,6 @@ function M.center(opts)
 
 	local theme_opts = {
 		theme = "center",
-		results_title = false,
 		layout_strategy = "center",
 		layout_config = { width = 0.3, height = 0.4 },
 		borderchars = {
@@ -46,7 +44,6 @@ function M.cursor(opts)
 	local theme_opts = {
 		theme = "cursor",
 		prompt_title = false,
-		results_title = false,
 		previewer = false,
 		layout_strategy = "cursor",
 		layout_config = { width = 0.2, height = 0.3 },

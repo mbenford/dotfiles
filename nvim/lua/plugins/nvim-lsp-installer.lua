@@ -34,20 +34,25 @@ lsp_installer.on_server_ready(function(server)
 	end
 
 	opts.on_attach = function(client)
-		local bmap = require('utils.map').bmap
-		-- bmap('n', '<leader>ls', vim.lsp.buf.signature_help)
-		bmap('n', 'K', vim.lsp.buf.hover)
-		bmap('n', '<leader>lf', vim.lsp.buf.formatting_seq_sync)
-		bmap('n', '<leader>rr', vim.lsp.buf.rename)
+		local legendary = require('legendary')
+		legendary.bind_keymaps({
+			{ 'K', vim.lsp.buf.hover, opts = { buffer = true }, description = '' },
+			{ '<leader>lh', vim.lsp.buf.signature_help, opts = { buffer = true }, description = '' },
+			{ '<leader>lf', vim.lsp.buf.formatting_seq_sync, opts = { buffer = true }, description = '' },
+			{ '<leader>rr', vim.lsp.buf.rename, opts = { buffer = true }, description = '' },
+		})
 
-		local autocmd = require('utils.autocmd').augroup('lsp')
 		if client.resolved_capabilities.document_highlight then
-			autocmd({ 'CursorHold', 'CursorHoldI' }, { buffer = 0, callback = vim.lsp.buf.document_highlight })
-			autocmd('CursorMoved', { buffer = 0, callback = vim.lsp.buf.clear_references })
+			legendary.bind_autocmds({
+				{ { 'CursorHold', 'CursorHoldI' }, vim.lsp.buf.document_highlight, opts = { buffer = 0 } },
+				{ 'CursorMoved', vim.lsp.buf.clear_references, opts = { buffer = 0 } },
+			})
 		end
 
 		if client.resolved_capabilities.document_formatting then
-			autocmd('BufWritePre', { buffer = 0, callback = vim.lsp.buf.formatting_seq_sync })
+			legendary.bind_autocmds({
+				{ 'BufWritePre', vim.lsp.buf.formatting_seq_sync, opts = { buffer = 0 } },
+			})
 		end
 	end
 

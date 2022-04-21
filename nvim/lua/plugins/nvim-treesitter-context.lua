@@ -2,5 +2,4 @@ require('treesitter-context').setup({
 	max_lines = 1,
 })
 
-local hl = require('utils.highlight')
-hl.link({ 'TreesitterContext', 'CursorLine' })
+vim.api.nvim_set_hl(0, 'TreesitterContext', { link = 'CursorLine' })

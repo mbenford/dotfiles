@@ -75,18 +75,27 @@ local function location()
 	return '%2l:%-2v'
 end
 
-local hl = require('utils.highlight')
-hl.add({ 'LualineExoticFileFormat', guifg = colors.red, guibg = theme.normal.c.bg })
-hl.add({ 'LualineGitSignsAdd', guifg = colors.green, guibg = theme.normal.c.bg })
-hl.add({ 'LualineGitSignsChange', guifg = colors.orange, guibg = theme.normal.c.bg })
-hl.add({ 'LualineGitSignsDelete', guifg = colors.red, guibg = theme.normal.c.bg })
+local function diagnostic_symbol(name, default)
+	local symbol = vim.fn.sign_getdefined(name)
+	return #symbol == 0 and default or symbol[1]['text']
+end
 
 require('lualine').setup({
 	options = {
 		theme = theme,
+		globalstatus = true,
 		icons_enabled = false,
 		section_separators = { left = '', right = '' },
 		component_separators = { left = '', right = '' },
+		disabled_filetypes = {
+			'packer',
+			'lspinfo',
+			'lsp-installer',
+			'startuptime',
+			'TelescopePrompt',
+			'Trouble',
+			'DressingInput',
+		},
 	},
 	sections = {
 		lualine_a = {
@@ -107,7 +116,12 @@ require('lualine').setup({
 			{
 				'diagnostics',
 				sources = { 'nvim_diagnostic' },
-				symbols = { error = ' ', warn = ' ', info = ' ', hint = '硫' },
+				symbols = {
+					error = diagnostic_symbol('DiagnosticSignError', 'E:'),
+					warn = diagnostic_symbol('DiagnosticSignWarn', 'W:'),
+					info = diagnostic_symbol('DiagnosticSignInfo', 'I:'),
+					hint = diagnostic_symbol('DiagnosticSignHint', 'H:'),
+				},
 			},
 			{ lsp_clients, color = { fg = colors.blue } },
 		},
@@ -130,3 +144,10 @@ require('lualine').setup({
 	},
 	extensions = { 'nvim-tree', 'quickfix' },
 })
+
+local set_hl = vim.api.nvim_set_hl
+set_hl(0, 'LualineExoticFileFormat', { fg = colors.red, bg = theme.normal.c.bg })
+set_hl(0, 'LualineExoticFileFormat', { fg = colors.red, bg = theme.normal.c.bg })
+set_hl(0, 'LualineGitSignsAdd', { fg = colors.green, bg = theme.normal.c.bg })
+set_hl(0, 'LualineGitSignsChange', { fg = colors.orange, bg = theme.normal.c.bg })
+set_hl(0, 'LualineGitSignsDelete', { fg = colors.red, bg = theme.normal.c.bg })

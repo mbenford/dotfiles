@@ -32,7 +32,8 @@ require('cokeline').setup({
 		components = {
 			{
 				text = '',
-				bg = colors.bg_d, style = 'none',
+				bg = colors.bg_d,
+				style = 'none',
 			},
 		},
 	},
@@ -50,6 +51,7 @@ require('cokeline').setup({
 	},
 })
 
-local map = require('utils.map').map
-map('n', '<C-j>', '<Plug>(cokeline-focus-prev)', { noremap = false })
-map('n', '<C-k>', '<Plug>(cokeline-focus-next)', { noremap = false })
+require('legendary').bind_keymaps({
+	{ '<C-j>', '<Plug>(cokeline-focus-prev)', opts = { noremap = false }, description = '' },
+	{ '<C-k>', '<Plug>(cokeline-focus-next)', opts = { noremap = false }, description = '' },
+})

@@ -5,6 +5,7 @@ require('telescope').setup({
 		prompt_prefix = ' ',
 		selection_caret = '',
 		entry_prefix = '',
+		results_title = false,
 		sorting_strategy = 'ascending',
 		mappings = {
 			i = {
@@ -19,44 +20,40 @@ require('telescope').setup({
 })
 
 local builtin = require('telescope.builtin')
-local map = require('utils.map').map
-local themes = require('plugins.telescope-themes')
-local apply = require('utils.function').apply
-local papply = require('utils.function').papply
-
 local function project_files(opts)
 	if not pcall(builtin.git_files, opts) then
 		builtin.find_files(opts)
 	end
 end
-
-local function project_oldfiles(opts)
-	opts = opts or {}
-	opts["only_cwd"] = true
-	builtin.oldfiles(opts)
+local function git_cmd(command, opts)
+	pcall(builtin['git_' .. command], opts)
 end
 
-map('n', '<leader>ff', apply(project_files, themes.default()))
-map('n', '<leader>fo', apply(project_oldfiles, themes.default()))
-map('n', '<leader>fg', apply(builtin.live_grep, themes.default()))
-map('n', '<leader>fb', apply(builtin.buffers, themes.default()))
-map('n', '<leader>fr', apply(builtin.resume, themes.default()))
-map('n', '<leader>fhi', apply(builtin.highlights, themes.default()))
-map('n', '<leader>fhs', apply(builtin.search_history, themes.center()))
-map('n', '<leader>fhc', apply(builtin.command_history, themes.center()))
-map('n', '<leader>fv', apply(builtin.vim_options, themes.center()))
-map('n', '<leader>ft', apply(builtin.filetypes, themes.center()))
-map('n', '<leader>fs', apply(builtin.spell_suggest, themes.cursor()))
-map('n', '<leader>fa', apply(builtin.autocommands, themes.default()))
-map('n', '<leader>gb', papply(builtin.git_branches, themes.default()))
-map('n', '<leader>gs', papply(builtin.git_stash, themes.default()))
-map('n', '<leader>gc', papply(builtin.git_commits, themes.default()))
-map('n', '<leader>ld', apply(builtin.lsp_definitions, themes.default()))
-map('n', '<leader>li', apply(builtin.lsp_implementations, themes.default()))
-map('n', '<leader>lr', apply(builtin.lsp_references, themes.default()))
-map('n', '<leader>ls', apply(builtin.lsp_document_symbols, themes.default()))
-map('n', '<leader>la', apply(builtin.lsp_code_actions, themes.cursor()))
+local themes = require('plugins.telescope-themes')
+local lazy = require('legendary.helpers').lazy
+require('legendary').bind_keymaps({
+	{ '<leader>ff', lazy(project_files, themes.default()), description = '' },
+	{ '<leader>fo', lazy(builtin.oldfiles, themes.default({ only_cwd = true })), description = '' },
+	{ '<leader>fg', lazy(builtin.live_grep, themes.default()), description = '' },
+	{ '<leader>fb', lazy(builtin.buffers, themes.default()), description = '' },
+	{ '<leader>fr', lazy(builtin.resume, themes.default()), description = '' },
+	{ '<leader>fd', lazy(builtin.diagnostics, themes.default({ bufnr = 0 })), description = '' },
+	{ '<leader>fhi', lazy(builtin.highlights, themes.default()), description = '' },
+	{ '<leader>fhs', lazy(builtin.search_history, themes.center()), description = '' },
+	{ '<leader>fhc', lazy(builtin.command_history, themes.center()), description = '' },
+	{ '<leader>fv', lazy(builtin.vim_options, themes.center()), description = '' },
+	{ '<leader>ft', lazy(builtin.filetypes, themes.center()), description = '' },
+	{ '<leader>fs', lazy(builtin.spell_suggest, themes.cursor()), description = '' },
+	{ '<leader>fa', lazy(builtin.autocommands, themes.default()), description = '' },
+	{ '<leader>gb', lazy(git_cmd, 'branches', themes.default()), description = '' },
+	{ '<leader>gs', lazy(git_cmd, 'stash', themes.default()), description = '' },
+	{ '<leader>gc', lazy(git_cmd, 'commits', themes.default()), description = '' },
+	{ '<leader>ld', lazy(builtin.lsp_definitions, themes.default()), description = '' },
+	{ '<leader>li', lazy(builtin.lsp_implementations, themes.default()), description = '' },
+	{ '<leader>lr', lazy(builtin.lsp_references, themes.default()), description = '' },
+	{ '<leader>ls', lazy(builtin.lsp_document_symbols, themes.default()), description = '' },
+	{ '<leader>la', lazy(builtin.lsp_code_actions, themes.cursor()), description = '' },
+})
 
 local colors = require('onedark.colors')
-local hl = require('utils.highlight')
-hl.add({ 'TelescopeTitle', guifg = 'white', guibg = colors.cyan })
+vim.api.nvim_set_hl(0, 'TelescopeTitle', { fg = 'white', bg = colors.cyan })

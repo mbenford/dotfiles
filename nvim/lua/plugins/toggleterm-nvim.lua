@@ -2,9 +2,10 @@ require('toggleterm').setup({
 	shade_terminals = false,
 })
 
-local map = require('utils.map').map
-map('n', '<leader><cr>', '<cmd>ToggleTerm<cr>')
-
-vim.cmd([[
-	au TermOpen term://* setlocal signcolumn=no nonumber norelativenumber
-]])
+local legendary = require('legendary')
+legendary.bind_keymaps({
+	{ '<leader><cr>', '<cmd>ToggleTerm<cr>', description = '' },
+})
+legendary.bind_autocmds({
+	{ 'TermOpen', 'setlocal signcolumn=no nonumber norelativenumber', opts = { pattern = 'term://*' } },
+})

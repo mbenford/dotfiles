@@ -10,17 +10,17 @@ require('gitsigns').setup({
 	preview_config = {
 		border = require('utils.ui').border_float,
 	},
-	on_attach = function ()
-		local bmap = require('utils.map').bmap
+	on_attach = function()
 		local gitsigns = require('gitsigns')
-		bmap('n', '<leader>gp', gitsigns.preview_hunk)
-		bmap('n', '<leader>gr', gitsigns.reset_hunk)
-		bmap('n', '<leader>gn', gitsigns.next_hunk)
-		bmap('n', '<leader>gN', gitsigns.prev_hunk)
-		bmap('n', '<leader>gB', gitsigns.blame_line)
-	end
+		require('legendary').bind_keymaps({
+			{ '<leader>gp', gitsigns.preview_hunk, opts = { buffer = true }, description = '' },
+			{ '<leader>gr', gitsigns.reset_hunk, opts = { buffer = true }, description = '' },
+			{ '<leader>gn', gitsigns.next_hunk, opts = { buffer = true }, description = '' },
+			{ '<leader>gN', gitsigns.prev_hunk, opts = { buffer = true }, description = '' },
+			{ '<leader>gB', gitsigns.blame_line, opts = { buffer = true }, description = '' },
+		})
+	end,
 })
 
-
-local hl = require('utils.highlight')
-hl.add({ 'GitSignsChange', guifg = require('onedark.colors').orange, guibg = 'none' })
+local set_hl = vim.api.nvim_set_hl
+set_hl(0, 'GitSignsChange', { fg = require('onedark.colors').orange, bg = 'none' })

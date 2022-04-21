@@ -1,7 +1,6 @@
-function _G.__load_packer()
+local function load_packer()
 	local plugins = {
 		{ 'wbthomason/packer.nvim', opt = true },
-		{ 'nvim-lua/plenary.nvim' },
 
 		-- theme
 		{ 'navarasu/onedark.nvim' },
@@ -31,7 +30,7 @@ function _G.__load_packer()
 		{ 'numToStr/Comment.nvim', event = 'BufRead' },
 		{ 'tpope/vim-surround', event = 'BufRead' },
 		{ 'mg979/vim-visual-multi', event = 'BufRead' },
-		{ 'windwp/nvim-autopairs', event = 'BufRead' },
+		{ 'windwp/nvim-autopairs', after = 'nvim-cmp' },
 		{ 'windwp/nvim-ts-autotag', event = 'BufRead' },
 		{ 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter', event = 'BufRead' },
 		{ 'ThePrimeagen/refactoring.nvim' },
@@ -43,7 +42,6 @@ function _G.__load_packer()
 		{ 'williamboman/nvim-lsp-installer', after = 'cmp-nvim-lsp' },
 		{ 'jose-elias-alvarez/null-ls.nvim', event = 'BufRead' },
 		{ 'ray-x/lsp_signature.nvim', event = 'BufRead' },
-		{ 'kosayoda/nvim-lightbulb', event = 'BufRead' },
 		{ 'folke/trouble.nvim', event = 'BufRead' },
 
 		-- debugging
@@ -51,8 +49,8 @@ function _G.__load_packer()
 		-- { 'Pocco81/DAPInstall.nvim' },
 
 		-- snippets
-		{ 'rafamadriz/friendly-snippets', after = 'nvim-cmp' },
-		{ 'L3MON4D3/LuaSnip', after = 'friendly-snippets' },
+		{ 'L3MON4D3/LuaSnip', after = 'nvim-cmp' },
+		{ 'rafamadriz/friendly-snippets', after = 'LuaSnip' },
 
 		-- UI
 		{ 'kyazdani42/nvim-web-devicons' },
@@ -73,6 +71,7 @@ function _G.__load_packer()
 		{ 'chr4/nginx.vim', ft = 'nginx' },
 
 		-- misc
+		{ 'nvim-lua/plenary.nvim' },
 		{ 'dstein64/vim-startuptime' },
 		{ 'tpope/vim-eunuch' },
 		{ 'tpope/vim-repeat' },
@@ -83,12 +82,14 @@ function _G.__load_packer()
 		{ 'lewis6991/spellsitter.nvim', event = 'BufRead' },
 		{ 'nvim-neorg/neorg', ft = 'norg' },
 		{ 'mbbill/undotree', event = 'BufRead' },
-		{ 'axieax/urlview.nvim', event = 'BufRead' },
+		{ 'mrjones2014/legendary.nvim' },
 	}
 
 	local config = {
 		display = {
-			open_fn = function() return require('packer.util').float({ border = require('utils.ui').border_float }) end,
+			open_fn = function()
+				return require('packer.util').float({ border = require('utils.ui').border_float })
+			end,
 		},
 	}
 
@@ -98,13 +99,53 @@ function _G.__load_packer()
 	return startup({ plugins, config = config })
 end
 
-vim.cmd([[
-	command! -nargs=* PackerCompile lua _G.__load_packer();require'packer'.compile(<q-args>)
-	command! -nargs=0 PackerSync lua _G.__load_packer();require'packer'.sync()
-	command! -nargs=0 PackerStatus lua _G.__load_packer();require'packer'.status()
-	command! -nargs=0 PackerClean lua _G.__load_packer();require'packer'.clean()
-	command! -nargs=0 PackerProfile lua _G.__load_packer();require'packer'.profile_output()
-]])
+local legendary = require('legendary')
+legendary.bind_commands({
+	{
+		':PackerCompile',
+		function(opts)
+			load_packer()
+			require('packer').compile(opts.args)
+		end,
+		opts = { nargs = '*' },
+	},
+	{
+		':PackerStatus',
+		function()
+			load_packer()
+			require('packer').status()
+		end
+	},
+	{
+		':PackerClean',
+		function()
+			load_packer()
+			require('packer').clean()
+		end
+	},
+	{
+		':PackerProfile',
+		function()
+			load_packer()
+			require('packer').profile_output()
+		end
+	},
+})
 
-local autocmd = require('utils.autocmd').augroup('packer_autocompile')
-autocmd('BufWritePost', { pattern = 'plugins.lua', command = 'source <afile>' })
+legendary.bind_autocmds({
+	{ 'BufWritePost', 'source <afile>', opts = { pattern = 'plugins.lua' } },
+})
+
+-- Disable builtin plugins
+local builtin_plugins = {
+	'2html_plugin',
+	'gzip',
+	'netrwPlugin',
+	'tarPlugin',
+	'tutor_mode_plugin',
+	'zipPlugin',
+	'remote_plugins',
+}
+for _, name in ipairs(builtin_plugins) do
+	vim.g['loaded_' .. name] = true
+end
