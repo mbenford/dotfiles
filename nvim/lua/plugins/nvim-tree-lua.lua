@@ -22,8 +22,12 @@ require('nvim-tree').setup({
 	},
 	update_focused_file = {
 		enable = true,
-	}
+	},
 })
+
+require('nvim-tree.events').on_file_created(function(file)
+	vim.cmd('edit ' .. file.fname)
+end)
 
 require('legendary').bind_keymaps({
 	{ '<Leader>e', '<Cmd>NvimTreeToggle<CR>', description = 'Toggles NvimTree' },

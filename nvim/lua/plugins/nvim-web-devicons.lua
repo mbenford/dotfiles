@@ -1,4 +1,5 @@
 require('nvim-web-devicons').setup({
+	default = true,
 	override = {
 		css = {
 			icon = '',
@@ -8,7 +9,7 @@ require('nvim-web-devicons').setup({
 		tf = {
 			icon = '',
 			color = '#8956c4',
-			name = "terraform",
-		}
+			name = 'terraform',
+		},
 	},
 })

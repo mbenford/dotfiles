@@ -1,3 +1,8 @@
+local g = vim.g
+g.do_filetype_lua = 1
+g.did_load_filetypes = 0
+g.mapleader = ' ' -- space as the leader key
+
 local o = vim.opt
 o.backup = false
 o.colorcolumn = '120'
@@ -36,7 +41,6 @@ o.swapfile = false
 o.tabstop = 2
 o.termguicolors = true
 o.title = true
-o.titlestring = '%{substitute(getcwd(),$HOME,"~","")} - Neovim'
 o.ttimeoutlen = 0
 o.undofile = true
 o.updatetime = 250

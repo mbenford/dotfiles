@@ -37,9 +37,9 @@ local function load_packer()
 		{ 'abecodes/tabout.nvim', after = 'nvim-cmp', event = 'BufRead' },
 
 		-- LSP
-		{ 'neovim/nvim-lspconfig' },
+		{ 'williamboman/nvim-lsp-installer' },
+		{ 'neovim/nvim-lspconfig', after = 'nvim-lsp-installer' },
 		{ 'hrsh7th/cmp-nvim-lsp' },
-		{ 'williamboman/nvim-lsp-installer', after = 'cmp-nvim-lsp' },
 		{ 'jose-elias-alvarez/null-ls.nvim', event = 'BufRead' },
 		{ 'ray-x/lsp_signature.nvim', event = 'BufRead' },
 		{ 'folke/trouble.nvim', event = 'BufRead' },
@@ -99,42 +99,29 @@ local function load_packer()
 	return startup({ plugins, config = config })
 end
 
-local legendary = require('legendary')
-legendary.bind_commands({
-	{
-		':PackerCompile',
-		function(opts)
-			load_packer()
-			require('packer').compile(opts.args)
-		end,
-		opts = { nargs = '*' },
-	},
-	{
-		':PackerStatus',
-		function()
-			load_packer()
-			require('packer').status()
-		end
-	},
-	{
-		':PackerClean',
-		function()
-			load_packer()
-			require('packer').clean()
-		end
-	},
-	{
-		':PackerProfile',
-		function()
-			load_packer()
-			require('packer').profile_output()
-		end
-	},
-})
+local user_command = vim.api.nvim_create_user_command
+user_command('PackerCompile', function(opts)
+	load_packer()
+	require('packer').compile(opts.args)
+end, { nargs = '*' })
+user_command('PackerSync', function()
+	load_packer()
+	require('packer').sync()
+end, {})
+user_command('PackerStatus', function()
+	load_packer()
+	require('packer').status()
+end, {})
+user_command('PackerClean', function()
+	load_packer()
+	require('packer').clean()
+end, {})
+user_command('PackerProfile', function()
+	load_packer()
+	require('packer').profile_output()
+end, {})
 
-legendary.bind_autocmds({
-	{ 'BufWritePost', 'source <afile>', opts = { pattern = 'plugins.lua' } },
-})
+vim.api.nvim_create_autocmd('BufWritePost', { pattern = 'plugins.lua', command = 'source <afile>' })
 
 -- Disable builtin plugins
 local builtin_plugins = {

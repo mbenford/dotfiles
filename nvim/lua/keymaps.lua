@@ -1,13 +1,13 @@
-vim.g.mapleader = ' ' -- space as the leader key
-
-require('legendary').bind_keymaps({
+local legendary = require('legendary')
+local lazy = require('legendary.helpers').lazy
+legendary.bind_keymaps({
 	{ ';', ':', mode = { 'n', 'x' }, opts = { silent = false }, description = 'Command line mode' },
 	{ 'H', '^', mode = { 'n', 'x', 'o' }, description = 'Go to first non-blank character of the line' },
 	{ 'L', '$', mode = { 'n', 'x', 'o' }, description = 'Go to end of the line' },
 	{ 'M', '%', mode = { 'n', 'x', 'o' }, description = 'Go to matching pair' },
 	{ 'Q', '<cmd>execute "noautocmd normal! " . v:count1 . "@" . getcharstr()<cr>', description = 'Alias for @' },
-	{ '<', '<gv', mode = { 'v' }, description = 'Shift left and keep selection' },
-	{ '>', '>gv', mode = { 'v' }, description = 'Shift right and keep selection' },
+	{ '<', '<gv', mode = { 'x' }, description = 'Shift left and keep selection' },
+	{ '>', '>gv', mode = { 'x' }, description = 'Shift right and keep selection' },
 	{ 'U', '<C-R>', description = 'Redo' },
 	{ 'j', 'gj', description = 'Go down (non-linewise)' },
 	{ 'k', 'gk', description = 'Go up (non-linewise)' },
@@ -23,7 +23,7 @@ require('legendary').bind_keymaps({
 	{ '<Leader>w', '<Cmd>wa<CR>', description = 'Write all changed buffers' },
 	{ '<Leader>qx', '<Cmd>xa<CR>', description = 'Write all changed buffers and exit' },
 	{ '<Leader>qq', '<Cmd>qa<CR>', description = 'Exit' },
-	{ '<Leader>qw', '<C-w>q', description = '' },
+	{ '<Leader>qw', '<C-w>q', description = 'Close window' },
 	{ '<Leader>Q', '<Cmd>qa!<CR>', description = 'Exit without writing' },
 	{ '<Leader>i', 'i<Space><Esc>r', description = 'Insert one character' },
 	{ '<Leader>o', 'mao<Esc>`a', description = 'Insert empty line below' },
@@ -42,47 +42,53 @@ require('legendary').bind_keymaps({
 	{ '<M-l>', '<C-\\><C-n><C-w>l', mode = { 'i', 't' }, description = 'Go to right window' },
 	{
 		'gx',
-		'<Cmd>call jobstart(["xdg-open", expand("<cfile>")], {"detach": v:true})<CR>',
-		description = '',
+		function()
+			vim.loop.spawn('xdg-open', { args = { vim.fn.expand('<cfile>') }, detached = true })
+		end,
+		description = 'Open the URL under the cursor',
 	},
 	{ '<Leader>d', '<Cmd>copy .<CR>', description = 'Duplicate current line' },
 	{ '<Leader>d', ":copy '><CR>", mode = { 'x' }, description = 'Duplicate selected lines' },
 	{
-		'<Leader>sn',
+		'<Leader>tn',
 		'<Cmd>set number! | set relativenumber!<CR>',
 		description = 'Toggle relative numbers',
 	},
-	{ '<Leader>sw', '<Cmd>set wrap!<CR>', description = 'Toggle line wrap' },
-	{ '<Leader>sh', '<Cmd>set hlsearch!<CR>', description = 'Toggle search highlight' },
-	{ '<Leader>ss', '<Cmd>set spell!<CR>', description = 'Toggle spell checking' },
-	{ '<M-H>', '<Cmd>vertical resize -2<CR>', description = '' },
-	{ '<M-J>', '<Cmd>resize -2<CR>', description = '' },
-	{ '<M-K>', '<Cmd>resize +2<CR>', description = '' },
-	{ '<M-L>', '<Cmd>vertical resize +2<CR>', description = '' },
+	{ '<Leader>tw', '<Cmd>set wrap!<CR>', description = 'Toggle line wrap' },
+	{ '<Leader>th', '<Cmd>set hlsearch!<CR>', description = 'Toggle search highlight' },
+	{ '<Leader>ts', '<Cmd>set spell!<CR>', description = 'Toggle spell checking' },
+	{ '<Leader>sh', '<Cmd>split<CR>', description = 'Split window horizontally' },
+	{ '<Leader>sv', '<Cmd>vsplit<CR>', description = 'Split window vertically' },
+	{ '<M-H>', '<Cmd>vertical resize -2<CR>', description = 'Resize window left' },
+	{ '<M-J>', '<Cmd>resize -2<CR>', description = 'Resize window down' },
+	{ '<M-K>', '<Cmd>resize +2<CR>', description = 'Resize window up' },
+	{ '<M-L>', '<Cmd>vertical resize +2<CR>', description = 'Resize window right' },
 	{
 		'<Up>',
-		'pumvisible() ? "\\<Left>" : "\\<Up>"',
+		function()
+			return vim.fn.pumvisible() == 1 and '<Left>' or '<Up>'
+		end,
 		mode = { 'c' },
 		opts = { expr = true, silent = false },
-		description = '',
+		description = 'Up when PMenu is visible',
 	},
 	{
 		'<Down>',
-		'pumvisible() ? "\\<Right>" : "\\<Down>"',
+		function()
+			return vim.fn.pumvisible() == 1 and '<Right>' or '<Down>'
+		end,
 		mode = { 'c' },
 		opts = { expr = true, silent = false },
-		description = '',
+		description = 'Down when PMenu is visible',
 	},
 })
 
-require('legendary').bind_autocmds({
+legendary.bind_autocmds({
 	{
 		'FileType',
-		function()
-			require('legendary').bind_keymaps({
-				{ 'q', '<C-w>q', opts = { buffer = true }, description = '' },
-			})
-		end,
+		lazy(legendary.bind_keymaps, {
+			{ 'q', '<C-w>q', opts = { buffer = true }, description = 'Close window' },
+		}),
 		opts = { pattern = 'help,qf' },
 	},
 })

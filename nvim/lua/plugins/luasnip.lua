@@ -15,7 +15,7 @@ require('legendary').bind_keymaps({
 		description = 'Expand snippet or jump to next placeholder',
 	},
 	{
-		'<C-k>',
+		'<C-j>',
 		function()
 			if luasnip.jumpable(-1) then
 				luasnip.jump(-1)

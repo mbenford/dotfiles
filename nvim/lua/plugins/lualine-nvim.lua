@@ -48,27 +48,18 @@ local function gitsigns_status()
 	return table.concat(result, ' ')
 end
 
-local function lsp_clients()
+local function lsp_status()
 	local clients = vim.lsp.buf_get_clients()
-	if #clients > 0 then
-		return string.format('LSP:%s', #clients)
-	end
-	return ''
+	return #clients > 0 and 'LSP' or ''
 end
 
 local function indentation()
 	local size = vim.bo.shiftwidth
-	if vim.bo.expandtab then
-		return 'SPC:' .. size
-	end
-	return 'TAB:' .. size
+	return vim.bo.expandtab and ('SPC:' .. size) or ('TAB:' .. size)
 end
 
 local function file_format()
-	if vim.bo.fileformat ~= 'unix' then
-		return '%#LualineExoticFileFormat#' .. vim.bo.fileformat
-	end
-	return ''
+	return vim.bo.fileformat ~= 'unix' and ('%#LualineExoticFileFormat#' .. vim.bo.fileformat) or ''
 end
 
 local function location()
@@ -84,7 +75,7 @@ require('lualine').setup({
 	options = {
 		theme = theme,
 		globalstatus = true,
-		icons_enabled = false,
+		icons_enabled = true,
 		section_separators = { left = '', right = '' },
 		component_separators = { left = '', right = '' },
 		disabled_filetypes = {
@@ -107,7 +98,7 @@ require('lualine').setup({
 			},
 		},
 		lualine_b = {
-			'branch',
+			{ 'branch', icon = '' },
 			{ gitsigns_status, padding = { left = 0, right = 1 } },
 			'lsp_progress',
 		},
@@ -123,7 +114,7 @@ require('lualine').setup({
 					hint = diagnostic_symbol('DiagnosticSignHint', 'H:'),
 				},
 			},
-			{ lsp_clients, color = { fg = colors.blue } },
+			{ lsp_status, icon = { '' }, color = { fg = colors.blue } },
 		},
 		lualine_y = {
 			{ 'filetype', fmt = string.upper },
