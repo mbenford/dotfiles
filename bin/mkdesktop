@@ -2,9 +2,10 @@
 
 name="$1"
 exec="$2"
+comment="$3"
 
 if [ -z "$name" ] || [ -z "$exec" ]; then
-	>&2 echo "USAGE: mkdesktop <name> <exec>"
+	>&2 echo "USAGE: mkdesktop <name> <exec> [<comment>]"
 	exit 1
 fi
 
@@ -12,4 +13,6 @@ echo -n "[Desktop Entry]
 Type=Application
 Name=$name
 Exec=$exec
+Comment=$comment
+Icon=${name,,}
 StartupNotify=true"
