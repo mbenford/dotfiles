@@ -4,6 +4,8 @@
 [core]
 	editor = /usr/bin/nvim
 	pager = delta
+[init]
+	defaultBranch = main
 [pull]
 	rebase = true
 [push]
@@ -11,12 +13,11 @@
 [rebase]
 	autosquash=true
 [color]
-	ui = always
+	ui = auto
 [interactive]
   diffFilter = delta --color-only
-[includeIf "gitdir:~/dev/work/"]
-	path = ~/dev/work/.gitconfig
 [delta]
+	word-diff-regex = "\\s+"
 	navigate = true
 	tabs = 2
 	line-numbers = true
@@ -28,3 +29,5 @@
 	minus-style = syntax "#4a2324"
 	line-numbers-plus-style = green
 	line-numbers-minus-style = red
+[include]
+	path = ~/dev/work/.gitconfig
