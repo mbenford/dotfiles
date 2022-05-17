@@ -5,21 +5,26 @@ set -e
 hash=$(
 	git \
 	--no-pager log -100 \
-	--pretty='%C(yellow)%h%Creset %C(bold blue)%<(15,trunc)%ae%Creset%C(auto)%d%Creset %s %Cgreen(%cr)' \
+	--pretty='%C(yellow)%h%Creset %C(bold blue)%<(15,trunc)%ae%Creset %Cgreen%cs %C(auto)%d%Creset %s' \
+	--color=always \
 	| fzf \
+	--height=60% \
 	--ansi \
 	--preview 'git show --name-status {1}' \
-	--preview-window hidden \
+	--preview-window down,40%,border-sharp,hidden \
 	--bind 'ctrl-p:toggle-preview' \
-	| awk '{printf $1}')
+	| awk '{printf $1}'
+)
 
 [[ -z "$hash" ]] && exit 1
 
 actions=(
 	"Copy"
-	"Show"
 	"Checkout"
+	"Fix up"
 	"Rebase"
+	"Reset"
+	"Show"
 )
 action=$(printf "%s\n" "${actions[@]}" | fzf --height=$((${#actions[@]} + 1)))
 [[ -z "$action" ]] && exit 1
@@ -28,14 +33,20 @@ case $action in
 	Copy)
 		printf $hash | xclip -in -selection clipboard
 		;;
-	Show)
-		git show $hash
-		;;
 	Checkout)
 		git checkout $hash
 		;;
+	"Fix up")
+		git commit --fixup $hash
+		;;
 	Rebase)
 		git rebase -i $hash
+		;;
+	Reset)
+		git reset --soft $hash
+		;;
+	Show)
+		git show $hash
 		;;
 	*)
 		echo "unknow action"
