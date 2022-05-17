@@ -1,11 +1,12 @@
 [global]
 monitor = 0
 follow = none
-geometry = "350x10-5+34"
+width = (200,400)
+height = 100
+origin = top-right
+offset = 5x35
 indicate_hidden = yes
-shrink = no
 transparency = 0
-notification_height = 0
 separator_height = 1
 padding = 8
 horizontal_padding = 8
@@ -23,7 +24,7 @@ format = "<b>%s</b>\n%b%n"
 alignment = left
 vertical_alignment = center
 show_age_threshold = 600
-word_wrap = no
+word_wrap = yes
 ellipsize = end
 ignore_newline = no
 stack_duplicates = true
@@ -34,7 +35,7 @@ show_indicators = no
 icon_position = left
 min_icon_size = 0
 max_icon_size = 64
-icon_path = /usr/share/icons/Adwaita/16x16/status/:/usr/share/icons/Adwaita/16x16/devices/
+icon_path = /usr/share/icons/Papirus/32x32/apps:/usr/share/icons/Papirus/32x32/devices:/usr/share/icons/Papirus/32x32/status
 
 ### History ###
 sticky_history = yes
@@ -46,8 +47,6 @@ browser = /usr/bin/brave
 always_run_script = true
 title = Dunst
 class = Dunst
-startup_notification = false
-verbosity = mesg
 corner_radius = 0
 ignore_dbusclose = false
 
@@ -56,24 +55,24 @@ force_xinerama = false
 
 ### mouse
 mouse_left_click = do_action, close_current
-mouse_middle_click =
+mouse_middle_click = none
 mouse_right_click = close_all
 
 [experimental]
 per_monitor_dpi = false
 
 [urgency_low]
-background = "#282c34"
+background = "#22252c"
 foreground = "#ffffff"
 timeout = 3
 
 [urgency_normal]
-background = "#282c34"
+background = "#22252c"
 foreground = "#ffffff"
 timeout = 3
 
 [urgency_critical]
-background = "#282c34"
+background = "#22252c"
 foreground = "#f44747"
 frame_color = "#f44747"
 timeout = 0
@@ -91,7 +90,7 @@ fullscreen = show
 
 [brave]
 desktop_entry = brave-browser
-new_icon =
+new_icon = none
 
 [spotify]
 appname = Spotify
