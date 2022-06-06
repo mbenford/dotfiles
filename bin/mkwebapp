@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+name="$1"
+url="$2"
+comment="${3:-$name Web App}"
+
+if [ -z "$name" ] || [ -z "$url" ]; then
+	>&2 echo "USAGE: mkwebapp <name> <url> [<comment>]"
+	exit 1
+fi
+
+mkdesktop $name "$BROWSER --new-window --app=$url" "$comment"
