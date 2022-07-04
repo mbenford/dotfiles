@@ -5,22 +5,24 @@ from pathlib import Path
 from functools import partial
 from rofi import Rofi
 
-terminal = getenv("TERMINAL")
-editor = getenv("EDITOR")
-home = Path.home()
+terminal = getenv("TERMINAL", "")
+editor = getenv("EDITOR", "")
+home = str(Path.home())
 basedir = f"{home}/dev"
-apps = [
-    dict(path=terminal, name="Terminal"),
-    dict(path=editor, name="Default editor"),
-    dict(path="/usr/bin/xdg-open", name="Default file manager"),
-    dict(path="/usr/bin/code", name="Visual Studio Code"),
-    dict(path=f"{home}/.local/bin/goland", name="JetBrains GoLand"),
-    dict(path=f"{home}/.local/bin/webstorm", name="JetBrains WebStorm"),
-    dict(path=f"{home}/.local/bin/pycharm", name="JetBrains PyCharm"),
-]
+apps = [app for app in [
+    dict(path=terminal, name="Terminal", icon=path.basename(terminal)),
+    dict(path=editor, name="Neovim", icon=path.basename(editor)),
+    dict(path="/usr/bin/pcmanfm", name="File Manager", icon="system-file-manager"),
+    dict(path="/usr/bin/code", name="Visual Studio Code", icon="visual-studio-code"),
+    dict(path=f"{home}/.local/bin/goland", name="GoLand", icon="goland"),
+    dict(path=f"{home}/.local/bin/webstorm", name="WebStorm", icon="webstorm"),
+    dict(path=f"{home}/.local/bin/pycharm", name="PyCharm", icon="pycharm"),
+] if path.isfile(app['path'])]
 
+def shorten_home(path):
+    return path.replace(home, '~')
 
-def generate(rofi):
+def generate(rofi, args):
     def walk(root):
         for entry in Path(root).iterdir():
             if entry.is_file():
@@ -32,16 +34,19 @@ def generate(rofi):
                 yield from walk(entry)
 
     for project in sorted(walk(basedir), key=path.basename):
-        rofi.row(f"{path.basename(project): <20}{path.dirname(project)}", info=project, meta=project)
+        name = path.basename(project)
+        location = shorten_home(path.dirname(project))
+        rofi.row(f"<b>{name: <20}</b>&#10;<small>{location}</small>", icon='folder-development',
+                info=project, meta=project)
 
 
-def process(rofi):
+def process(rofi, selected, args):
     if len(rofi.info()) == 1:
         rofi.prompt("apps")
-        rofi.message(f"project: {rofi.info(0)}")
+        rofi.message(shorten_home(rofi.info(0)))
 
         for app in apps:
-            rofi.row(f"{path.basename(app['path']): <20} {app['name']}", info=app["path"])
+            rofi.row(f"{app['name']}&#10;<small>{shorten_home(app['path'])}</small>", icon=app['icon'], info=app["path"])
     else:
         project, app = rofi.info()
         popen = partial(Popen, cwd=project, shell=True, stdout=DEVNULL)
@@ -57,4 +62,5 @@ def process(rofi):
 if __name__ == "__main__":
     r = Rofi()
     r.custom_entry(False)
+    r.markup_rows(True)
     r.handle_startup(generate, process)

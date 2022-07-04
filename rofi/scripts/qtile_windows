@@ -1,39 +1,58 @@
 #!/bin/env python
+import argparse
 from libqtile.command.client import InteractiveCommandClient
 from rofi import Rofi
 
 client = InteractiveCommandClient()
 
 
-def generate(rofi):
+def generate(rofi, args):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--current-group', default=False, action='store_true')
+    args = parser.parse_args(args)
+
     windows = [
         w | client.window[w["id"]].inspect()
         for w in client.windows()
-        if w["group"] is not None
+        if not args.current_group or w['group'] == client.group.info()['name']
     ]
 
     for win in windows:
-        rofi.row(f"{win['group']: <10} {win['wm_class'][0]: <20} {win['name']}", info=win["id"])
+        state = ''
+        if win['minimized']:
+            state = '[minimized]'
+        elif win['fullscreen']:
+            state = '[fullscreen]'
+        elif win['floating']:
+            state = '[floating]'
+
+        row = f'<b>{win["name"]}</b>&#10;<small>{win["wm_class"][0]}</small> <small>{state}</small>'
+        rofi.row(row, icon=win['wm_class'][0], info=win['id'])
 
 
-def process(rofi):
+def process(rofi, selected, args):
     win_id = int(rofi.info(0))
     win = client.window[win_id]
     group = win.group
 
-    if group.info()['name'] == "scratchpad":
+    if group.info()['label'] == '':
         dropdowns = [group.dropdown_info(d) for d in group.dropdown_info()["dropdowns"]]
         dropdown = next((
             d for d in dropdowns
             if d.get("window", {}).get("id", None) == win_id
         ), None)
         group.dropdown_toggle(dropdown["name"])
-    else:
-        group.toscreen(toggle=False)
-        group.focus_by_name(win.info()["name"])
+        return
+
+    if win.info()['minimized']:
+        win.toggle_minimize()
+
+    group.toscreen(toggle=False)
+    group.focus_by_name(win.info()["name"])
 
 
 if __name__ == "__main__":
     r = Rofi()
     r.custom_entry(False)
+    r.markup_rows(True)
     r.handle_startup(generate, process)

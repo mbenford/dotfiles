@@ -1,19 +1,26 @@
 configuration {
-	theme: "themes/onedark.rasi";
-	modi: "drun,run";
-	monitor: "-4";
+	modi: "drun";
+	monitor: "-5";
 	matching: "fuzzy";
 	sort: true;
 	sorting-method: "fzf";
 	drun-match-fields: "name,generic";
-	drun-display-format: "{name}";
+	drun-display-format: "<b>{name}</b>&#10;<small>{comment}</small>";
+	window-format: "<b>{t}</b>&#10;<small>{n}</small>";
 	kb-row-tab: "";
 	kb-mode-next: "Tab";
+	eh: 2;
+	show-icons: true;
+	application-fallback-icon: "emblem-question";
 
 	timeout {
 		delay: 15;
 		action: "kb-cancel";
 	}
+
+	inputchange {
+		action: "kb-row-first";
+	}
 }
 
-/* vim: set ft=css: */
+@theme "themes/onedark.rasi"

@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 from os import getenv, path
 from pathlib import Path
-from subprocess import Popen, DEVNULL
+from subprocess import run, Popen, DEVNULL
 from functools import partial
 from rofi import Rofi
 import fnmatch
 import re
 
-home = getenv("HOME")
 terminal = getenv("TERMINAL")
 editor = getenv("EDITOR")
+home = str(Path.home())
 
 basedir = f"{home}/.dotfiles"
 ignored_rules = [
@@ -18,8 +18,30 @@ ignored_rules = [
     "*.png",
 ]
 
+mimetypes = {
+    " ": "text/x-script",
+    ".c": "text/x-csrc",
+    ".desktop": "application/x-desktop",
+    ".h": "text/x-chdr",
+    ".js": "application/javascript",
+    ".json": "application/json",
+    ".lua": "text/x-lua",
+    ".md": "text/x-markdown",
+    ".py": "text/x-python",
+    ".toml": "application/toml",
+    ".yml": "application/x-yaml",
+}
 
-def generate(rofi):
+
+def get_mimetype(filename):
+    _, ext = path.splitext(filename)
+    if ext == "":
+        return "text/x-script"
+
+    return mimetypes[ext] if ext in mimetypes else 'text/plain'
+
+
+def generate(rofi, args):
     def is_ignored(file):
         for rule in ignored_rules:
             if re.search(fnmatch.translate(rule), str(file)) is not None:
@@ -41,10 +63,11 @@ def generate(rofi):
         ])
 
     for file in sorted(files):
-        rofi.row(f"{path.basename(file): <25} {path.dirname(file.relative_to(home))}", info=file, meta=file)
+        rofi.row(f"{path.basename(file)}&#10;<small>{path.dirname(file).replace(home, '~')}</small>",
+                icon=get_mimetype(file).replace("/", "-"), info=file, meta=file)
 
 
-def process(rofi):
+def process(rofi, selected, args):
     file = rofi.info(0)
     popen = partial(Popen, cwd=path.dirname(file), shell=True, stdout=DEVNULL)
 
@@ -57,4 +80,5 @@ def process(rofi):
 if __name__ == "__main__":
     r = Rofi()
     r.custom_entry(False)
+    r.markup_rows(True)
     r.handle_startup(generate, process)

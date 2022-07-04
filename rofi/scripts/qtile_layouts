@@ -1,0 +1,20 @@
+#!/bin/env python
+from libqtile.command.client import InteractiveCommandClient
+from rofi import Rofi
+
+client = InteractiveCommandClient()
+
+
+def generate(rofi, args):
+    for layout in client.group.info()['layouts']:
+        rofi.row(layout, info=layout)
+
+def process(rofi, selected, args):
+    layout = rofi.info(0)
+    client.group.setlayout(layout)
+
+
+if __name__ == "__main__":
+    r = Rofi()
+    r.custom_entry(False)
+    r.handle_startup(generate, process)

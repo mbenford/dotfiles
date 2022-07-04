@@ -38,8 +38,17 @@ element {
 	padding: 6px 10px;
 }
 
-element selected {
-	background-color:	#d55fde;
+element-icon {
+	size: 0;
 }
 
-/* vim: set ft=css: */
+element selected,
+element-icon selected,
+element-text selected {
+	background-color:	#5c6370;
+}
+
+element-text,
+element-text selected {
+  highlight: #d19a66;
+}

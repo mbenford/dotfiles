@@ -1,4 +1,5 @@
 import sys
+import argparse
 from os import getenv
 
 
@@ -10,14 +11,21 @@ class Rofi:
         self.__info = [] if info == "" else info.split(";")
 
     def handle_startup(self, generate, process):
-        if len(sys.argv) == 1:
-            generate(self)
-        else:
-            process(self)
+        parser = argparse.ArgumentParser()
+        parser.add_argument('selected', nargs='?', default='')
+        args, rest = parser.parse_known_args()
 
-    def row(self, text, meta=None, info=None, selectable=True):
+        if args.selected == '':
+            generate(self, args=rest)
+        else:
+            process(self, selected=args.selected, args=rest)
+
+    def row(self, text, icon=None, meta=None, info=None, selectable=True):
         opts = []
         opt_fmt = "{name}\x1f{value}"
+
+        if icon is not None:
+            opts.append(opt_fmt.format(name="icon", value=icon))
 
         if meta is not None:
             opts.append(opt_fmt.format(name="meta", value=meta))

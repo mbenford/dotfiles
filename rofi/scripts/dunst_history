@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+import subprocess
+import json
+from rofi import Rofi
+
+def generate(rofi, args):
+    notifications = json.loads(subprocess.check_output("dunstctl history", shell=True, text=True))
+
+    for notification in notifications["data"][0]:
+        rofi.row(notification["message"]["data"], icon=notification["icon_path"]["data"])
+
+
+def process(rofi, selected, args):
+    pass
+
+if __name__ == "__main__":
+    r = Rofi()
+    r.custom_entry(False)
+    r.markup_rows(True)
+    r.handle_startup(generate, process)

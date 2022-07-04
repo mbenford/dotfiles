@@ -2,12 +2,13 @@
 import json
 from subprocess import Popen, DEVNULL
 from xdg.BaseDirectory import xdg_config_home
+from html import escape
 from rofi import Rofi
 
 filename = f"{xdg_config_home}/BraveSoftware/Brave-Browser/Default/Bookmarks"
 
 
-def generate(rofi):
+def generate(rofi, args):
     def walk(node):
         for item in node:
             if "children" in item:
@@ -20,10 +21,12 @@ def generate(rofi):
 
     root = data.get("roots", {}).get("bookmark_bar", {}).get("children", [])
     for bookmark in sorted(walk(root), key=lambda b: b.get("name")):
-        rofi.row(bookmark.get("name"), info=bookmark.get("url"))
+        name = bookmark.get('name')
+        url = bookmark.get('url')
+        rofi.row(f"{escape(name)}&#10;<small>{escape(url)}</small>", icon="text-html", info=url)
 
 
-def process(rofi):
+def process(rofi, selected, args):
     url = rofi.info(0)
     Popen(f"xdg-open {url}", shell=True, stdout=DEVNULL)
 
@@ -31,4 +34,5 @@ def process(rofi):
 if __name__ == "__main__":
     r = Rofi()
     r.custom_entry(False)
+    r.markup_rows(True)
     r.handle_startup(generate, process)
