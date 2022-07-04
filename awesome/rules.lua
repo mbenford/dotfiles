@@ -38,22 +38,32 @@ ruled.client.connect_signal("request::rules", function()
 				placement = awful.placement.centered,
 			},
 		},
+		-- Apps
+		{
+			id = "work",
+			rule_any = {
+				instance = {
+					".*.slack.com",
+					"teams.microsoft.com",
+					"outlook.office.com",
+				},
+			},
+			properties = {
+				screen = 2,
+				tag = "1",
+				switch_to_tags = true,
+			},
+		},
 	})
 end)
 
-ruled.notification.connect_signal('request::rules', function()
-    -- All notifications will match this rule.
-    ruled.notification.append_rule {
-        rule       = { },
-        properties = {
-            screen           = awful.screen.preferred,
-            implicit_timeout = 5,
-        }
-    }
+ruled.notification.connect_signal("request::rules", function()
+	-- All notifications will match this rule.
+	ruled.notification.append_rule({
+		rule = {},
+		properties = {
+			screen = awful.screen.preferred,
+			implicit_timeout = 5,
+		},
+	})
 end)
-
--- local naughty = require("naughty")
--- naughty.connect_signal("request::display", function(n)
---     naughty.layout.box { notification = n }
--- end)
-
