@@ -30,4 +30,6 @@
 	line-numbers-plus-style = green
 	line-numbers-minus-style = red
 [include]
-	path = ~/dev/work/.gitconfig
+	path = ./config.work
+
+; vim: set ft=gitconfig:
