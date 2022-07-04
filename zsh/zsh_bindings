@@ -2,9 +2,18 @@ watch-line() {
 	BUFFER="watch '$BUFFER'"
 }
 
+ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+		BUFFER="fg"
+		zle accept-line
+  fi
+}
+
 zle -N push-line-and-insert
 zle -N watch-line
+zle -N ctrl-z
 
 bindkey -M viins '^[e' edit-command-line
 bindkey -M viins '^[q' push-line
 bindkey -M viins '^[w' watch-line
+bindkey '^Z' ctrl-z

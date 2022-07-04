@@ -5,25 +5,35 @@ alias zshenv='$EDITOR $ZDOTDIR/.zshenv'
 
 # git
 alias gcfu='git commit --fixup'
-alias grbim='git rebase -i master'
-alias gs='git fancy-status '
+alias grbmi='git rebase -i $(git_main_branch)'
 alias gcopa='git checkout -p'
+alias gbsort='git branch --sort=-committerdate'
+alias gs='git fancy-status '
 alias glr='git-log-fzf'
+alias gcol='git checkout -'
 
 # exa
 alias ls='exa --group-directories-first --time-style long-iso'
 alias la='ls -la'
 
+# paru
+alias parin='paru -S '
+alias parre='paru -R '
+alias parloc='paru -Qi '
+alias parreps='paru -Ss '
+alias parclean='paru -Sccd --noconfirm'
+
 # misc
-alias open='gio open '
+alias open='mimeo '
 alias trash='gio trash '
 alias trashls='gio list trash://'
 alias lzg='lazygit '
 alias lzd='lazydocker '
 alias sudoe='sudoedit '
 alias r='ranger'
-alias nv='nvim'
+alias vi='nvim'
 alias vim='nvim'
+alias pdf='devour llpp '
 
 # work
-[[ ! -f "$ZDOTDIR/.zsh_aliases_work" ]] || source "$ZDOTDIR/.zsh_aliases_work"
+[[ -f "$ZDOTDIR/.zsh_aliases_work" ]] && source "$ZDOTDIR/.zsh_aliases_work"

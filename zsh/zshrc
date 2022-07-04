@@ -22,10 +22,9 @@ DISABLE_UNTRACKED_FILES_DIRTY=true
 HISTFILE="$XDG_CONFIG_HOME/zsh/.zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000
-HISTORY_IGNORE="(ls|ll|cd|\.\.|\.\.\.|\.\.\.\.|gc|gst|gau|ga|gco|gup)"
+HISTORY_IGNORE="(ls|ll|cd|fg|\.\.|\.\.\.|\.\.\.\.|gc|gst|gau|ga|gco|gup|gs|glr)"
 HIST_STAMPS="yyyy-mm-dd"
 
-zstyle ':completion:complete:*:options' sort false
 # plugins
 plugins=(
 	z
@@ -40,11 +39,12 @@ plugins=(
 	sudo
 	archlinux
 	zsh-autosuggestions
-	fzf-tab
+	zsh-abbr
 )
 
 # Oh My ZSH
 source $ZSH/oh-my-zsh.sh
+ZSH_THEME_TERM_TITLE_IDLE="$(basename $SHELL):%~"
 
 # custom zsh options
 setopt hist_ignore_all_dups

@@ -1,7 +1,3 @@
-# fzf-tab
-zstyle ':fzf-tab:*' show-group none
-zstyle ':fzf-tab:*' switch-group ',' '.'
-zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:git-commit:*' sort false
 zstyle ':completion:*:git-rebase:*' sort false

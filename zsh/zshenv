@@ -1,10 +1,13 @@
 # path
+typeset -U path
 path+=$HOME/.local/bin
 path+=$HOME/.dotfiles/bin
-typeset -U path
 
 # cdpath
 cdpath=(. $HOME)
+
+# oh my zsh
+ZSH_THEME_TERM_TITLE_IDLE="%~"
 
 # zsh-autosuggest plugin
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=245'
@@ -26,3 +29,9 @@ path+=$GOPATH/bin
 
 # rust
 source "$HOME/.cargo/env"
+
+# poetry
+path+=$HOME/.poetry/bin
+
+# work
+[[ -f "$ZDOTDIR/.zshenv_work" ]] && source "$ZDOTDIR/.zshenv_work"
