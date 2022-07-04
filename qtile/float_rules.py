@@ -13,6 +13,7 @@ rules = [
     Match(wm_class="xfce4-power-manager-settings"),
     Match(wm_class="lxappearance"),
     Match(wm_class="qalculate-gtk"),
+    Match(wm_class="guvcview"),
 ]
 
 # Jetbrains IDEs
@@ -25,4 +26,3 @@ rules += [
         ("clion", "CLion"),
     ]
 ]
-

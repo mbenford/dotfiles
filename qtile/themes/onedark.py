@@ -1,4 +1,4 @@
-palette=dict(
+palette = dict(
  chalky="#e5c07b",
  coral="#ef596f",
  dark="#5c6370",
@@ -16,7 +16,7 @@ palette=dict(
 
 bar = dict(
     fg="#ffffff",
-    bg="#282c34",
+    bg="#21252b",
 )
 
 groups = dict(
@@ -26,6 +26,7 @@ groups = dict(
     inactive_fg="#5c6370",
     current_screen_bg="#61afef",
     other_screens_bg="#7f848e",
+    urgent_fg=palette['coral'],
 )
 
 sep = dict(
@@ -64,4 +65,5 @@ windows = dict(
     border_focus="#61afef",
     border_stack="#d55fde",
     border_stack_focus="#2bbac5",
+    border_urgent=palette['coral'],
 )

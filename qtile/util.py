@@ -13,7 +13,7 @@ class Rofi:
     def __init__(self, scripts_dir):
         self.scripts_dir = scripts_dir
 
-    def show(self, mode, script=None):
+    def script(self, mode, script=None):
         if script is None:
             script = mode
 

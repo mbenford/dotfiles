@@ -32,7 +32,7 @@ class WindowCommands:
 
                 group = qtile.groups[index]
                 if len(group.windows) == 0:
-                    qtile.current_window.togroup(group.name, switch_group=switch)
+                    qtile.current_window.cmd_togroup(group.name, switch_group=switch)
                     return
 
                 visited += 1
@@ -55,7 +55,7 @@ class WindowCommands:
 
             curr_window = qtile.current_window
             if curr_window is not None:
-                curr_window.toscreen(index=index)
+                curr_window.cmd_toscreen(index=index)
                 if focus:
                     qtile.focus_screen(index)
 

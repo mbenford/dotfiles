@@ -5,18 +5,15 @@ from libqtile.config import EzClick, EzDrag, Group, ScratchPad, DropDown, Screen
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger
 
-from themes import onedark as theme
 from float_rules import rules as custom_float_rules
-from importlib import reload
-import commands
-import widgets
-reload(commands)
-reload(widgets)
 from commands import WindowCommands
 from util import get_displays, bind_keys, Rofi
-import layouts as custom_layouts
 import widgets as custom_widget
-reload(custom_layouts)
+
+from importlib import reload
+import themes
+reload(themes)
+from themes import onedark as theme
 
 # CONSTANTS
 terminal = getenv("TERMINAL")
@@ -39,8 +36,6 @@ keys = bind_keys(
     ("M-i", lazy.next_screen(), "Focus next screen"),
     ("M-u", lazy.next_urgent(), "Focus next urgent window"),
 
-    ("M-<Tab>", lazy.next_layout(), "Select next layout"),
-
     # Positioning
     ("M-S-h", lazy.layout.shuffle_left(), "Shuffle window left"),
     ("M-S-j", lazy.layout.shuffle_down(), "Shuffle window down"),
@@ -58,8 +53,20 @@ keys = bind_keys(
     ("M-<bracketleft>", lazy.window.down_opacity(), "Kill focused window"),
     ("M-<bracketright>", lazy.window.up_opacity(), "Kill focused window"),
     ("M-<equal>", lazy.window.opacity(1), "Kill focused window"),
+    ("M-w", [
+        ("f", lazy.window.toggle_fullscreen(), "Toggle fullscreen"),
+        ("h", lazy.window.toggle_minimize(), "Toggle minimize"),
+    ], ""),
+    ("M-<Tab>", lazy.spawn('rofi -modi window,windowcd -show window'), "Rofi (windows)"),
 
-    # Layout specific
+    # Layouts
+    ("M-g", [
+        ("t", lazy.group.setlayout("tall"), "Monad tall layout"),
+        ("m", lazy.group.setlayout("mid"), "Monad 3-column mid layout"),
+        ("d", lazy.group.setlayout("dual"), "Dual layout"),
+        ("c", lazy.group.setlayout("cols"), "Columns layout"),
+    ], ""),
+
     ("M-C-h", [
         lazy.layout.shrink_main().when(layout=["tall", "mid"]),
         lazy.layout.grow_left().when(layout="cols"),
@@ -100,23 +107,23 @@ keys = bind_keys(
     # Applications
     ("M-<Return>", lazy.spawn(terminal), "Launch terminal"),
     ("M-e", lazy.spawn(f"{terminal} {editor}"), "Launch editor"),
-    ("M-b", lazy.spawn(f"{browser} --disable-features=SendMouseLeaveEvents"), "Launch browser"),
+    ("M-b", lazy.spawn(browser), "Launch browser"),
     ("M-S-b", lazy.spawn(f"{browser} --incognito"), "Launch browser (incognito)"),
 
     # Launchers
-    ("M-<space>", lazy.spawn("rofi -show drun"), "Launch rofi"),
+    ("M-<space>", lazy.spawn("rofi -show drun"), "Rofi (drun)"),
     ("M-S-<space>", [
-        ('p', lazy.spawn(rofi.show("projects")), "Launch rofi (projects)"),
-        ('d', lazy.spawn(rofi.show("dotfiles")), "Launch rofi (dotfiles)"),
-        ('b', lazy.spawn(rofi.show("bookmarks")), "Launch rofi (bookmarks)"),
-        ('e', lazy.spawn("rofimoji"), "Launch rofi (emoji)"),
+        ("p", lazy.spawn(rofi.script("projects")), "Rofi (projects)"),
+        ("d", lazy.spawn(rofi.script("dotfiles")), "Rofi (dotfiles)"),
+        ("b", lazy.spawn(rofi.script("bookmarks")), "Rofi (bookmarks)"),
+        ("e", lazy.spawn("rofimoji"), "Rofi (emoji)"),
+        ("s", lazy.spawn(rofi.script("system")), "Rofi (system)"),
     ], ""),
-    ("M-S-q", lazy.spawn(rofi.show("system")), "Launch rofi (power menu)"),
 
     # Volume
-    ("<XF86AudioRaiseVolume>", lazy.spawn("pamixer --increase 10"), "Increase volume"),
-    ("<XF86AudioLowerVolume>", lazy.spawn("pamixer --decrease 10"), "Decrease volume"),
-    ("<XF86AudioMute>", lazy.spawn("pamixer --toggle-mute"), "Mute volume"),
+    ("<XF86AudioRaiseVolume>", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +10%"), "Increase volume"),
+    ("<XF86AudioLowerVolume>", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -10%"), "Decrease volume"),
+    ("<XF86AudioMute>", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), "Mute volume"),
 
     # Media
     ("<XF86AudioPlay>", lazy.spawn(f"{bin_dir}/spotifyctl play-pause"), "Play/Pause media"),
@@ -132,7 +139,6 @@ keys = bind_keys(
 
     # Qtile
     ("M-C-r", lazy.restart(), "Restart qtile"),
-    ("M-C-q", lazy.shutdown(), "Shutdown qtile"),
 )
 
 # GROUPS
@@ -148,9 +154,8 @@ for g in groups:
 groups += [
     ScratchPad("scratchpad", [
         DropDown("terminal", terminal, x=0.3, y=0.2, width=0.4, height=0.6, opacity=1.0),
-        DropDown("qalc", f"{terminal} qalc", x=0.4, y=0.3, width=0.2, height=0.4, opacity=1.0),
+        DropDown("qalc", "qalculate-gtk", x=0.4, y=0.3, width=0.2, height=0.1, opacity=1.0),
         DropDown("notes", f"{terminal} {bin_dir}/scratchpad", x=0.3, y=0.2, width=0.4, height=0.6, opacity=1.0),
-        DropDown("spotify", "spotify", x=0.25, y=0.1, width=0.5, height=0.8, opacity=1.0),
     ]),
 ]
 
@@ -159,7 +164,6 @@ keys += bind_keys(
     ("M-S-<Return>", scratchpad.dropdown_toggle("terminal"), ""),
     ("M-c", scratchpad.dropdown_toggle("qalc"), ""),
     ("M-v", scratchpad.dropdown_toggle("notes"), ""),
-    ("M-s", scratchpad.dropdown_toggle("spotify"), ""),
 )
 
 # MOUSE
@@ -176,8 +180,10 @@ layout_defaults = dict(
     border_width=2,
     border_normal=theme.windows["border"],
     border_focus=theme.windows["border_focus"],
-    border_normal_stack=theme.windows["border_stack"],
-    border_focus_stack=theme.windows["border_stack_focus"],
+    border_on_single=True,
+    border_normal_stack=theme.windows["border"],
+    border_focus_stack=theme.windows["border_focus"],
+    split=False,
 )
 margin_single_window = [5, 290, 5, 290]
 
@@ -188,26 +194,33 @@ layouts = [
         new_client_position="top",
         single_margin=margin_single_window,
     ),
-    layout.Columns(
-        **layout_defaults,
-        name="cols",
-        num_columns=3,
-        border_on_single=True,
-    ),
-    layout.Stack(
-        **(layout_defaults | dict(margin=margin_single_window)),
-        name="mono",
-        num_stacks=1,
-    ),
-    layout.Stack(
-        **layout_defaults,
-        name="max",
-        num_stacks=1,
-    ),
-    custom_layouts.MonadThreeCol(
+    layout.MonadThreeCol(
         **layout_defaults,
         name="mid",
         single_margin=margin_single_window,
+    ),
+    layout.Columns(
+        **layout_defaults,
+        name="dual",
+        num_columns=2,
+        margin_on_single=margin_single_window,
+    ),
+    layout.Columns(
+        **(layout_defaults | dict(
+            border_normal_stack=theme.windows["border_stack"],
+            border_focus_stack=theme.windows["border_stack_focus"],
+            split=True,
+        )),
+        name="cols",
+        num_columns=3,
+    ),
+    layout.Max(
+        **(layout_defaults | dict(margin=margin_single_window)),
+        name="mono",
+    ),
+    layout.Max(
+        **layout_defaults,
+        name="max",
     ),
 ]
 
@@ -243,7 +256,7 @@ def with_glyph(glyph, w):
             length=5,
         ),
         widget.TextBox(
-            font='Material Icons',
+            font="Material Icons",
             foreground=theme.widgets["label_fg"],
             text=glyph,
             padding=0,
@@ -276,7 +289,7 @@ def widgets_left():
             other_screen_border=theme.groups["other_screens_bg"],
             other_current_screen_border=theme.groups["other_screens_bg"],
             urgent_alert_method="text",
-            urgent_text="#f44747",
+            urgent_text=theme.groups['urgent_fg'],
             margin_y=5,
         ),
         widget.Sep(**sep_defaults),
@@ -285,55 +298,51 @@ def widgets_left():
             background=theme.layout_indicator["bg"],
         ),
         widget.Sep(**sep_defaults),
-        widget.WindowName(
-            width=500,
-            padding=10,
-            show_state=False,
-            max_chars=60,
-            format="{name}",
-            foreground=theme.windows["title_fg"],
-            background=theme.windows["title_bg"],
+        widget.TaskList(
+            highlight_method='block',
+            title_width_method='uniform',
+            # borderwidth=2,
+            rounded=False,
+            spacing=5,
+            # margin=0,
+            # padding_x=5,
+            max_title_width=350,
+            txt_minimized='[H] ',
+            txt_floating='',
+            foreground=theme.windows['title_fg'],
+            border=theme.windows['border'],
+            unfocused_border='#31353f',
+            urgent_border=theme.windows['border_urgent'],
         ),
-    ]
-
-
-def widgets_center():
-    return [
-        widget.Spacer(),
-        widget.Clock(
-            format="%a %d %H:%M",
-            foreground=theme.clock["fg"],
-            background=theme.clock["bg"],
-        ),
-        widget.Spacer(),
     ]
 
 
 def widgets_right():
     return [
+        widget.Sep(**sep_defaults),
         *with_glyph(
-            '\ue9e4',
+            "\ue9e4",
             widget.CPU(
                 update_interval=widget_short_update_interval,
                 format="{load_percent:.0f}%",
             ),
         ),
         *with_glyph(
-            '\ue322',
+            "\ue322",
             widget.Memory(
                 update_interval=widget_short_update_interval,
                 format="{MemPercent:.0f}%",
             ),
         ),
         *with_glyph(
-            '\ue623',
+            "\ue623",
             widget.DF(
                 visible_on_warn=False,
                 format="{uf}{m}",
             ),
         ),
         *with_glyph(
-            '\ue1ff',
+            "\ue1ff",
             custom_widget.SensorTemp(
                 update_interval=widget_short_update_interval,
                 sensor="coretemp",
@@ -343,7 +352,7 @@ def widgets_right():
             ),
         ),
         *with_glyph(
-            '\ue332',
+            "\ue332",
             custom_widget.SensorFan(
                 update_interval=widget_short_update_interval,
                 sensor="dell_smm",
@@ -353,7 +362,7 @@ def widgets_right():
             ),
         ),
         *with_glyph(
-            '\ue63e',
+            "\ue63e",
             widget.Wlan(
                 update_interval=widget_short_update_interval,
                 interface="wlp2s0",
@@ -362,52 +371,55 @@ def widgets_right():
             ),
         ),
         *with_glyph(
-            '\ue0da',
+            "\ue0da",
             custom_widget.VPN(
+                interface="vpn0",
                 update_interval=widget_short_update_interval,
             ),
         ),
         *with_glyph(
-            '\ue3e7',
+            "\ue3e7",
             custom_widget.PowerManagementStatus(
                 update_interval=widget_short_update_interval,
                 off_foreground="#f44747",
             ),
         ),
         *with_glyph(
-            '\ue191',
+            "\ue191",
             custom_widget.Uptime(
                 update_interval=widget_short_update_interval,
             ),
         ),
         *with_glyph(
-            '\ue149',
+            "\ue149",
             widget.CheckUpdates(
-                distro="Arch_checkupdates",
+                custom_command="checkupdates; paru -Qu;",
                 display_format="{updates}",
                 no_update_string="0",
-                colour_have_updates=theme.widgets["value_fg"],
+                colour_have_updates="#d19a66",
                 colour_no_updates=theme.widgets["value_fg"],
+                update_interval=60*60*2,
             ),
         ),
         *with_glyph(
-            '\ue050',
+            "\ue050",
             widget.PulseVolume(
                 limit_max_volume=True,
             ),
         ),
-        *with_glyph(
-            '\ue1a4',
-            widget.Battery(
-                format="{percent:2.0%}",
-                show_short_text=False,
-            ),
-        ),
+        widget.Sep(**sep_defaults),
         widget.Systray(
             padding=5,
         ),
-        widget.Spacer(
-            length=10,
+    ]
+
+
+def widget_clock():
+    return [
+        widget.Sep(**sep_defaults),
+        widget.Clock(
+            format="%b %d %H:%M",
+            foreground=theme.clock["fg"],
         ),
     ]
 
@@ -420,10 +432,10 @@ spacing_fix = [widget.Spacer(length=1)]
 screens = [
     Screen(
         top=bar.Bar(
-            widgets_left() + widgets_center() + widgets_right() + spacing_fix,
+            widgets_left() + widgets_right() + widget_clock() + spacing_fix,
             size=bar_height,
-            background=theme.bar["bg"]
-        )
+            background=theme.bar["bg"],
+            )
     )
 ]
 
@@ -432,9 +444,10 @@ for i in range(0, get_displays() - 1):
     screens.append(
         Screen(
             top=bar.Bar(
-                widgets_left() + widgets_center() + spacing_fix,
+                widgets_left() + widget_clock() + spacing_fix,
                 size=bar_height,
-                background=theme.bar["bg"])
+                background=theme.bar["bg"],
+            )
         )
     )
 
