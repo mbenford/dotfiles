@@ -1,22 +1,24 @@
 [global]
 monitor = 0
 follow = none
-width = (200,400)
-height = 100
+width = (300, 400)
+height = 200
 origin = top-right
-offset = 5x35
-indicate_hidden = yes
+offset = 10x40
+indicate_hidden = true
 transparency = 0
-separator_height = 1
 padding = 8
 horizontal_padding = 8
-frame_width = 2
-frame_color = "#d19a66"
+frame_width = 1
+frame_color = "#5c6370"
+gap_size = 5
+separator_height = 1
 separator_color = frame
-sort = yes
+sort = true
 idle_threshold = 5m
+enable_posix_regex = true
 
-### Text ###
+# Text
 font = Ubuntu Mono 12
 line_height = 0
 markup = full
@@ -24,24 +26,24 @@ format = "<b>%s</b>\n%b%n"
 alignment = left
 vertical_alignment = center
 show_age_threshold = 600
-word_wrap = yes
+word_wrap = true
 ellipsize = end
-ignore_newline = no
+ignore_newline = false
 stack_duplicates = true
 hide_duplicate_count = false
-show_indicators = no
+show_indicators = false
 
-### Icons ###
+# Icons
 icon_position = left
 min_icon_size = 0
-max_icon_size = 64
-icon_path = /usr/share/icons/Papirus/32x32/apps:/usr/share/icons/Papirus/32x32/devices:/usr/share/icons/Papirus/32x32/status
+max_icon_size = 48
+icon_path = /usr/share/icons/Papirus/48x48/apps:/usr/share/icons/Papirus/48x48/devices:/usr/share/icons/Papirus/48x48/status
 
-### History ###
-sticky_history = yes
+# History
+sticky_history = true
 history_length = 20
 
-### Misc/Advanced ###
+# Misc
 dmenu = /usr/bin/rofi -dmenu -p dunst
 browser = /usr/bin/brave
 always_run_script = true
@@ -50,10 +52,10 @@ class = Dunst
 corner_radius = 0
 ignore_dbusclose = false
 
-### Legacy
+# Legacy
 force_xinerama = false
 
-### mouse
+# Mouse
 mouse_left_click = do_action, close_current
 mouse_middle_click = none
 mouse_right_click = close_all
@@ -62,24 +64,23 @@ mouse_right_click = close_all
 per_monitor_dpi = false
 
 [urgency_low]
-background = "#22252c"
+background = "#21252b"
 foreground = "#ffffff"
 timeout = 3
 
 [urgency_normal]
-background = "#22252c"
+background = "#21252b"
 foreground = "#ffffff"
 timeout = 3
 
 [urgency_critical]
 background = "#22252c"
-foreground = "#f44747"
 frame_color = "#f44747"
 timeout = 0
 
 [transient_history_ignore]
-match_transient = yes
-history_ignore = yes
+match_transient = true
+history_ignore = true
 
 [fullscreen_delay_everything]
 fullscreen = pushback
@@ -88,13 +89,18 @@ fullscreen = pushback
 msg_urgency = critical
 fullscreen = show
 
-[brave]
-desktop_entry = brave-browser
-new_icon = none
+[slack]
+body = "https://app\.slack\.com"
+new_icon = slack
+
+[whatsapp]
+body = "https://web\.whatsapp\.com"
+max_icon_size = 64
 
 [spotify]
 appname = Spotify
 set_transient = 1
-history_ignore = yes
+max_icon_size = 128
+history_ignore = true
 
 # vim: ft=cfg
