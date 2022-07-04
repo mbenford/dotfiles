@@ -1,0 +1,9 @@
+[Unit]
+Description=needrestart-notify
+
+[Service]
+Type=simple
+ExecStart=%h/.dotfiles/bin/needrestart-notify
+
+[Install]
+WantedBy=default.target

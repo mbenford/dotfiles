@@ -1,0 +1,11 @@
+[Unit]
+Description=needrestart-notify timer
+RefuseManualStart=no
+RefuseManualStop=no
+
+[Timer]
+OnUnitActiveSec=6h
+Unit=needrestart-notify.service
+
+[Install]
+WantedBy=timers.target
