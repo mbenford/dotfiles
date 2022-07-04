@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+function print_files() {
+	local status="$1"
+	shift
+	local files=("$@")
+
+	for file in "${files[@]}"; do
+		printf "%-12s%s\n" "$status:" "$file"
+	done
+}
+
+modified_idx=()
+modified_wrk=()
+
+added_idx=()
+added_wrk=()
+
+deleted_idx=()
+deleted_wrk=()
+
+renamed_idx=()
+renamed_wrk=()
+
+copied_idx=()
+copied_wrk=()
+
+unmerged_idx=()
+unmerged_wrk=()
+
+untracked=()
+ignored=()
+
+while IFS= read -r line; do
+	idx=${line:0:1}
+	wrk=${line:1:1}
+	file=${line:3}
+
+	[[ "$idx" = "M" ]] && modified_idx+=("$file")
+	[[ "$idx" = "A" ]] && added_idx+=("$file")
+	[[ "$idx" = "D" ]] && deleted_idx+=("$file")
+	[[ "$idx" = "R" ]] && renamed_idx+=("$file")
+	[[ "$idx" = "C" ]] && copied_idx+=("$file")
+	[[ "$idx" = "U" ]] && unmerged_idx+=("$file")
+
+	[[ "$wrk" = "M" ]] && modified_wrk+=("$file")
+	[[ "$wrk" = "A" ]] && added_wrk+=("$file")
+	[[ "$wrk" = "D" ]] && deleted_wrk+=("$file")
+	[[ "$wrk" = "R" ]] && renamed_wrk+=("$file")
+	[[ "$wrk" = "C" ]] && copied_wrk+=("$file")
+	[[ "$wrk" = "U" ]] && unmerged_wrk+=("$file")
+
+	[[ "$idx" = "?" ]] && untracked+=("$file")
+	[[ "$idx" = "!" ]] && ignored+=("$file")
+done < <(git status "$@" --porcelain)
+
+idx_count=$((${#modified_idx[@]}+${#added_idx[@]}+${#deleted_idx[@]}+${#renamed_idx[@]}+${#copied_idx[@]}+${#unmerged_idx[@]}))
+if [[ "$idx_count" -gt 0 ]]; then
+	tput setaf 2 # green
+	print_files "modified" "${modified_idx[@]}"
+	print_files "new file" "${added_idx[@]}"
+	print_files "deleted " "${deleted_idx[@]}"
+	print_files "renamed " "${renamed_idx[@]}"
+	print_files "copied  " "${copied_idx[@]}"
+	tput sgr0
+fi
+
+wrk_count=$((${#modified_wrk[@]}+${#added_wrk[@]}+${#deleted_wrk[@]}+${#renamed_wrk[@]}+${#copied_wrk[@]}+${#unmerged_wrk[@]}))
+if [[ "$wrk_count" -gt 0 ]]; then
+	tput setaf 1 # red
+	print_files "modified" "${modified_wrk[@]}"
+	print_files "new file" "${added_wrk[@]}"
+	print_files "deleted " "${deleted_wrk[@]}"
+	print_files "renamed " "${renamed_wrk[@]}"
+	print_files "copied  " "${copied_wrk[@]}"
+	print_files "unmerged" "${unmerged_wrk[@]}"
+	tput sgr0
+fi
+
+untracked_count="${#untracked[@]}"
+if [[ "$untracked_count" -gt 0 ]]; then
+	tput setaf 3 # yellow
+	print_files "untracked" "${untracked[@]}"
+	tput sgr0
+fi
+
+ignored_count="${#ignored[@]}"
+if [[ "$ignored_count" -gt 0 ]]; then
+	print_files "ignored " "${ignored[@]}"
+fi
