@@ -1,0 +1,5 @@
+local: true
+style: "$XDG_CONFIG_HOME/glow/onedark.json"
+pager: true
+#width: 120
+mouse: true
