@@ -19,6 +19,7 @@ require('nvim-treesitter.configs').setup({
 		'norg',
 		'python',
 		'query',
+		'rasi',
 		'rust',
 		'scss',
 		'toml',

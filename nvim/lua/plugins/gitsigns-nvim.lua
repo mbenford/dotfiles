@@ -22,5 +22,9 @@ require('gitsigns').setup({
 	end,
 })
 
-local set_hl = vim.api.nvim_set_hl
-set_hl(0, 'GitSignsChange', { fg = require('onedark.colors').orange, bg = 'none' })
+local hl = require('utils.highlight')
+local colors = require('onedark.colors')
+hl.set('GitSignsChange', { guifg = colors.orange, guibg = 'none' })
+hl.set('GitSignsAddLn', { guibg = colors.bg1 })
+hl.set('GitSignsChangeLn', { guibg = colors.bg1 })
+hl.set('GitSignsDeleteLn', { guibg = colors.bg1 })

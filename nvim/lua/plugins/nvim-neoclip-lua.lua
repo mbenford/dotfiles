@@ -6,7 +6,7 @@ require('legendary').bind_keymaps({
 	{
 		'<Leader>fc',
 		function()
-			require('telescope').extensions.neoclip.default(themes.default())
+			require('telescope').extensions.neoclip.default()
 		end,
 		description = 'Fuzzy search for clipboard registers',
 	},

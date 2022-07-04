@@ -64,11 +64,13 @@ local function load_packer()
 		{ 'romgrk/nvim-treesitter-context', after = 'onedark.nvim', event = 'BufRead' },
 		{ 'folke/todo-comments.nvim', event = 'BufRead' },
 		{ 'stevearc/dressing.nvim', after = 'onedark.nvim' },
+		{ 'rcarriga/nvim-notify', after = 'onedark.nvim' },
 
 		-- file types
-		{ 'hashivim/vim-terraform', ft = 'terraform' },
 		{ 'folke/lua-dev.nvim', ft = 'lua' },
 		{ 'chr4/nginx.vim', ft = 'nginx' },
+		{ 'hashivim/vim-terraform' },
+		{ 'fladson/vim-kitty' },
 
 		-- misc
 		{ 'nvim-lua/plenary.nvim' },

@@ -1,17 +1,3 @@
-local g = vim.g
-g.nvim_tree_special_files = {}
-g.nvim_tree_git_hl = 1
-g.nvim_tree_show_icons = {
-	git = 0,
-	folders = 1,
-	files = 1,
-	folder_arrows = 1,
-}
-g.nvim_tree_icons = {
-	default = '',
-	symlink = '',
-}
-
 require('nvim-tree').setup({
 	update_cwd = true,
 	filters = {
@@ -19,6 +5,19 @@ require('nvim-tree').setup({
 	},
 	view = {
 		signcolumn = 'no',
+	},
+	renderer = {
+		special_files = {},
+		highlight_git = true,
+		icons = {
+			symlink_arrow = ' -> ',
+			show = {
+				file = true,
+				folder = true,
+				folder_arrow = true,
+				git = false,
+			},
+		},
 	},
 	update_focused_file = {
 		enable = true,

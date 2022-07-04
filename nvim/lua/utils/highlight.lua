@@ -1,17 +1,15 @@
 local M = {}
 
-function M.add(args)
-	local cmd = 'hi ' .. args[1]
-	for k, v in pairs(args) do
-		if type(k) == 'string' then
-			cmd = cmd .. string.format(' %s=%s', k, v)
-		end
+function M.set(group, values)
+	local cmd = 'hi ' .. group
+	for k, v in pairs(values) do
+		cmd = cmd .. string.format(' %s=%s', k, v)
 	end
-	vim.cmd(cmd)
+	vim.api.nvim_command(cmd)
 end
 
-function M.link(args)
-	vim.cmd('hi! link ' .. args[1] .. ' ' .. args[2])
+function M.link(from_group, to_group)
+	vim.api.nvim_command(string.format('hi! link %s %s', from_group, to_group))
 end
 
 return M

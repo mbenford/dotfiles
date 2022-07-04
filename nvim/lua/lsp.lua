@@ -20,7 +20,7 @@ function M.on_attach(client)
 		{ '<leader>rr', vim.lsp.buf.rename, opts = { buffer = true }, description = 'LSP Rename' },
 	})
 
-	if client.resolved_capabilities.document_highlight then
+	if client.supports_method('textDocument/documentHighlight') then
 		legendary.bind_autocmds({
 			{
 				name = 'LspDocumentHighlight',
@@ -31,7 +31,7 @@ function M.on_attach(client)
 		})
 	end
 
-	if client.resolved_capabilities.document_formatting then
+	if client.supports_method('textDocument/formatting') then
 		legendary.bind_autocmds({
 			{
 				name = 'LspDocumentFormatting',

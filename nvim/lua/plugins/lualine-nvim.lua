@@ -53,6 +53,10 @@ local function lsp_status()
 	return #clients > 0 and 'LSP' or ''
 end
 
+local function filetype()
+	return vim.bo.filetype
+end
+
 local function indentation()
 	local size = vim.bo.shiftwidth
 	return vim.bo.expandtab and ('SPC:' .. size) or ('TAB:' .. size)
@@ -99,7 +103,7 @@ require('lualine').setup({
 		},
 		lualine_b = {
 			{ 'branch', icon = '' },
-			{ gitsigns_status, padding = { left = 0, right = 1 } },
+			gitsigns_status,
 			'lsp_progress',
 		},
 		lualine_c = {},
@@ -117,8 +121,8 @@ require('lualine').setup({
 			{ lsp_status, icon = { '' }, color = { fg = colors.blue } },
 		},
 		lualine_y = {
-			{ 'filetype', fmt = string.upper },
-			indentation,
+			{ filetype, fmt = string.upper },
+			{ indentation, fmt = string.upper },
 			{ 'encoding', fmt = string.upper },
 			{ file_format, fmt = string.upper },
 		},

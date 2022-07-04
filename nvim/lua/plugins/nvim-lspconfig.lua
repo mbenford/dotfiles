@@ -41,3 +41,16 @@ require('nvim-lsp-installer').setup({
 for server, opts in pairs(servers) do
 	require('lspconfig')[server].setup(require('lsp').setup_server(opts))
 end
+
+local lazy = require('legendary.helpers').lazy
+require('legendary').bind_autocmds({
+	{
+		name = 'LspConfig',
+		clear = true,
+		{
+			'FileType',
+			lazy(vim.api.nvim_win_set_config, 0, { border = require('utils.ui').border_float }),
+			opts = { pattern = { 'lspinfo', 'lsp-installer' } },
+		},
+	},
+})

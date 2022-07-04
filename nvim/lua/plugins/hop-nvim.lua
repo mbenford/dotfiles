@@ -4,12 +4,17 @@ hop.setup({
 	char2_fallback_key = '<cr>',
 })
 
-local curr_line_ac = { current_line_only = true, direction = require('hop.hint').HintDirection.AFTER_CURSOR }
-local curr_line_bc = { current_line_only = true, direction = require('hop.hint').HintDirection.BEFORE_CURSOR }
+local AFTER_CURSOR = require('hop.hint').HintDirection.AFTER_CURSOR
+local BEFORE_CURSOR = require('hop.hint').HintDirection.BEFORE_CURSOR
 
 local lazy = require('legendary.helpers').lazy
 require('legendary').bind_keymaps({
-	{ 's', hop.hint_char2, mode = { 'n', 'x' }, description = 'Hop 2-char mode' },
+	{
+		's',
+		lazy(hop.hint_char2, { multi_windows = false }),
+		mode = { 'n', 'x' },
+		description = 'Hop 2-char mode (current window)',
+	},
 	{
 		'S',
 		lazy(hop.hint_char2, { multi_windows = true }),
@@ -18,29 +23,34 @@ require('legendary').bind_keymaps({
 	},
 	{
 		'f',
-		lazy(hop.hint_char1, curr_line_ac),
+		lazy(hop.hint_char1, { direction = AFTER_CURSOR, current_line_only = true }),
 		mode = { 'n', 'x', 'o' },
 		description = 'Hop 1-char mode (current line forward)',
 	},
 	{
 		'F',
-		lazy(hop.hint_char1, curr_line_bc),
+		lazy(hop.hint_char1, { direction = BEFORE_CURSOR, current_line_only = true }),
 		mode = { 'n', 'x', 'o' },
 		description = 'Hop 1-char mode (current line backward)',
 	},
 	{
 		't',
-		lazy(hop.hint_char1, curr_line_ac),
+		lazy(hop.hint_char1, { direction = AFTER_CURSOR, current_line_only = true, hint_offset = -1 }),
 		mode = { 'n', 'x', 'o' },
 		description = 'Hop 1-char mode (exclusive, current line forward)',
 	},
 	{
 		'T',
-		lazy(hop.hint_char1, curr_line_bc),
+		lazy(hop.hint_char1, { direction = BEFORE_CURSOR, current_line_only = true, hint_offset = -1 }),
 		mode = { 'n', 'x', 'o' },
 		description = 'Hop 1-char mode (exclusive, current line backward)',
 	},
-	{ 'gl', hop.hint_lines, mode = { 'n', 'x' }, description = 'Hop line mode' },
+	{
+		'gl',
+		lazy(hop.hint_lines, { multi_windows = false }),
+		mode = { 'n', 'x' },
+		description = 'Hop line mode (current window)',
+	},
 	{
 		'gL',
 		lazy(hop.hint_lines, { multi_windows = true }),

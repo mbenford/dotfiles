@@ -2,58 +2,74 @@ local border = require('utils.ui').borders
 
 local M = {}
 
-function M.default(opts)
+function M.center(opts)
 	opts = opts or {}
 
 	local theme_opts = {
-		theme = 'default',
-		layout_strategy = 'vertical',
-		layout_config = {
-			prompt_position = 'top',
-			mirror = true,
-		},
+		theme = 'center',
+		layout_strategy = 'center',
+		layout_config = { width = 0.3, height = 0.4 },
 		borderchars = {
-			prompt = { border.top, border.right, ' ', border.left, border.top_left, border.top_right, border.right, border.left },
-			results = { border.top, border.right, border.bottom, border.left, border.top_left, border.top_right, border.bottom_right, border.bottom_left },
-			preview = { ' ', border.right, border.bottom, border.left, border.left, border.right, border.bottom_right, border.bottom_left },
+			prompt = {
+				border.top,
+				border.right,
+				' ',
+				border.left,
+				border.top_left,
+				border.top_right,
+				border.right,
+				border.left,
+			},
+			results = {
+				' ',
+				border.right,
+				border.bottom,
+				border.left,
+				border.left,
+				border.right,
+				border.bottom_right,
+				border.bottom_left,
+			},
 		},
 	}
 
 	return vim.tbl_deep_extend('force', theme_opts, opts)
 end
 
-function M.center(opts)
-	opts = opts or {}
-
-	local theme_opts = {
-		theme = "center",
-		layout_strategy = "center",
-		layout_config = { width = 0.3, height = 0.4 },
-		borderchars = {
-			prompt = { border.top, border.right, ' ', border.left, border.top_left, border.top_right, border.right, border.left },
-			results = { ' ', border.right, border.bottom, border.left, border.left, border.right, border.bottom_right, border.bottom_left },
-		},
-	}
-
-	return vim.tbl_deep_extend("force", theme_opts, opts)
-end
-
 function M.cursor(opts)
 	opts = opts or {}
 
 	local theme_opts = {
-		theme = "cursor",
+		theme = 'cursor',
 		prompt_title = false,
 		previewer = false,
-		layout_strategy = "cursor",
+		layout_strategy = 'cursor',
 		layout_config = { width = 0.2, height = 0.3 },
 		borderchars = {
-			prompt = { border.top, border.right, ' ', border.left, border.top_left, border.top_right, border.right, border.left },
-			results = { ' ', border.right, border.bottom, border.left, border.left, border.right, border.bottom_right, border.bottom_left, },
+			prompt = {
+				border.top,
+				border.right,
+				' ',
+				border.left,
+				border.top_left,
+				border.top_right,
+				border.right,
+				border.left,
+			},
+			results = {
+				' ',
+				border.right,
+				border.bottom,
+				border.left,
+				border.left,
+				border.right,
+				border.bottom_right,
+				border.bottom_left,
+			},
 		},
 	}
 
-	return vim.tbl_deep_extend("force", theme_opts, opts)
+	return vim.tbl_deep_extend('force', theme_opts, opts)
 end
 
 return M
