@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+status=`needrestart -b -k | grep NEEDRESTART-KSTA | awk -F ': ' '{print $2}'`
+
+if [[ $status == "0" ]]; then
+	logger --priority "local0.err" "needrestart-notify: failed to detect changes"
+	exit 1
+fi
+
+if [[ $status != "3" ]]; then
+	exit 0
+fi
+
+notify-send \
+	"Kernel upgrade pending" \
+	"A newer kernel version has been installed and a system restart is required" \
+	--expire-time 10000 --icon gtk-dialog-warning
