@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Reddit
+Exec=/usr/bin/brave --new-window --app=https://reddit.com
+Icon=reddit
+Comment=Reddit Web App
+StartupNotify=true

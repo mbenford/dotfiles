@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Outlook
+Exec=/usr/bin/brave --new-window --app=https://outlook.office.com
+Icon=ms-outlook
+Comment=Outlook Web App
+StartupNotify=true

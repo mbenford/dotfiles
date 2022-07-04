@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=DevDocs
+Exec=/usr/bin/brave --new-window --app=https://devdocs.io
+Icon=devdocs
+Comment=DevDocs Web App
+StartupNotify=true

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=YouTube
+Exec=/usr/bin/brave --new-window --app=https://youtube.com
+Icon=youtube
+Comment=YouTube Web App
+StartupNotify=true

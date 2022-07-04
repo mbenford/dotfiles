@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=WhatsApp
+Exec=/usr/bin/brave --new-window --app=https://web.whatsapp.com
+Icon=whatsapp
+Comment=WhatsApp Web App
+StartupNotify=true
