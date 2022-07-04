@@ -1,7 +1,8 @@
 files = [emojis]
 skin-tone = light
 prompt = emoji
-max-recent = 10
-action = clipboard
+max-recent = 5
+action = type
 clipboarder = xsel
 typer = xdotool
+selector-args = -eh 1 -matching normal -theme-str "#element{children:[element-text];}"
