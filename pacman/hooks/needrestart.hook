@@ -1,0 +1,11 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Operation = Remove
+Type = Package
+Target = linux-lts
+
+[Action]
+Description = Needrestart notification
+When = PostTransaction
+Exec = /etc/pacman.d/hooks.bin/needrestart-notify
