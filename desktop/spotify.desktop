@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Spotify
+Exec=/usr/bin/brave --new-window --app=https://open.spotify.com
+Comment=Spotify Web App
+Icon=spotify
+StartupNotify=true

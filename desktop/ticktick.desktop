@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=TickTick
+Exec=/usr/bin/brave --new-window --app=https://ticktick.com/webapp
+Comment=TickTick Web App
+Icon=ticktick
+StartupNotify=true
