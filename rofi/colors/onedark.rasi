@@ -1,0 +1,11 @@
+* {
+	foreground: #ffffff;
+	background:	#21252b;
+	background-alt:	#31353f;
+	border: #61afef;
+	item-selected-fg: #ffffff;
+	item-selected-bg: #31353f;
+	item-highlight: #d19a66;
+	button-selected-fg: #ffffff;
+	button-selected-bg: #61afef;
+}

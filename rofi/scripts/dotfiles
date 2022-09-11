@@ -9,6 +9,7 @@ import re
 
 terminal = getenv("TERMINAL")
 editor = getenv("EDITOR")
+shell = getenv("SHELL")
 home = str(Path.home())
 
 basedir = f"{home}/.dotfiles"
@@ -74,7 +75,7 @@ def process(rofi, selected, args):
     if rofi.retv() == 10:
         popen(terminal)
     else:
-        popen(f"{terminal} {editor} {file}")
+        popen(f"{terminal} {shell} -c '{editor} {file}'")
 
 
 if __name__ == "__main__":

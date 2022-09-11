@@ -1,17 +1,23 @@
 configuration {
-	modi: "drun";
 	monitor: "-5";
-	matching: "fuzzy";
 	sort: true;
 	sorting-method: "fzf";
-	drun-match-fields: "name,generic";
-	drun-display-format: "<b>{name}</b>&#10;<small>{comment}</small>";
-	window-format: "<b>{t}</b>&#10;<small>{n}</small>";
-	kb-row-tab: "";
-	kb-mode-next: "Tab";
-	eh: 2;
+	matching: "fuzzy";
 	show-icons: true;
 	application-fallback-icon: "emblem-question";
+	
+	modi: "drun,run";
+	display-drun: "apps";
+	drun-match-fields: "name,generic";
+	drun-display-format: "<b>{name}</b>";
+
+	kb-element-next: "";
+	kb-mode-next: "Tab";
+	kb-row-select: "Control-s";
+
+	run, drun {
+		fallback-icon: "application-x-addon";
+	}
 
 	timeout {
 		delay: 15;
@@ -23,4 +29,5 @@ configuration {
 	}
 }
 
-@theme "themes/onedark.rasi"
+@theme "themes/default.rasi"
+@import "colors/onedark.rasi"

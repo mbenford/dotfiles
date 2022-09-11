@@ -9,18 +9,7 @@ terminal = getenv("TERMINAL", "")
 editor = getenv("EDITOR", "")
 home = str(Path.home())
 basedir = f"{home}/dev"
-apps = [app for app in [
-    dict(path=terminal, name="Terminal", icon=path.basename(terminal)),
-    dict(path=editor, name="Neovim", icon=path.basename(editor)),
-    dict(path="/usr/bin/pcmanfm", name="File Manager", icon="system-file-manager"),
-    dict(path="/usr/bin/code", name="Visual Studio Code", icon="visual-studio-code"),
-    dict(path=f"{home}/.local/bin/goland", name="GoLand", icon="goland"),
-    dict(path=f"{home}/.local/bin/webstorm", name="WebStorm", icon="webstorm"),
-    dict(path=f"{home}/.local/bin/pycharm", name="PyCharm", icon="pycharm"),
-] if path.isfile(app['path'])]
 
-def shorten_home(path):
-    return path.replace(home, '~')
 
 def generate(rofi, args):
     def walk(root):
@@ -35,28 +24,15 @@ def generate(rofi, args):
 
     for project in sorted(walk(basedir), key=path.basename):
         name = path.basename(project)
-        location = shorten_home(path.dirname(project))
+        location = path.dirname(project).replace(home, '~')
         rofi.row(f"<b>{name: <20}</b>&#10;<small>{location}</small>", icon='folder-development',
                 info=project, meta=project)
 
 
 def process(rofi, selected, args):
-    if len(rofi.info()) == 1:
-        rofi.prompt("apps")
-        rofi.message(shorten_home(rofi.info(0)))
-
-        for app in apps:
-            rofi.row(f"{app['name']}&#10;<small>{shorten_home(app['path'])}</small>", icon=app['icon'], info=app["path"])
-    else:
-        project, app = rofi.info()
-        popen = partial(Popen, cwd=project, shell=True, stdout=DEVNULL)
-
-        if app == terminal:
-            popen(terminal)
-        elif app == editor:
-            popen(f"{terminal} {editor} {project}")
-        else:
-            popen(f"{app} {project}")
+    project = rofi.info(0)
+    popen = partial(Popen, cwd=project, shell=True, stdout=DEVNULL)
+    popen(terminal)
 
 
 if __name__ == "__main__":
