@@ -70,12 +70,10 @@ awful.keyboard.append_global_keybindings(ezkeys({
 	["M-space"] = lazy(awful.spawn, "rofi -show drun"),
 	["M-S-space"] = lazy(awful.spawn, "rofi -show projects -modes projects,dotfiles -eh 2"),
 
-	-- Volume
+	-- Media
 	["XF86AudioRaiseVolume"] = lazy(awful.spawn, "pactl set-sink-volume @DEFAULT_SINK@ +10%"),
 	["XF86AudioLowerVolume"] = lazy(awful.spawn, "pactl set-sink-volume @DEFAULT_SINK@ -10%"),
 	["XF86AudioMute"] = lazy(awful.spawn, "pactl set-sink-mute @DEFAULT_SINK@ toggle"),
-
-	-- Media
 	["XF86AudioPlay"] = lazy(awful.spawn, "playerctl play-pause"),
 	["XF86AudioPrev"] = lazy(awful.spawn, "playerctl previous"),
 	["XF86AudioNext"] = lazy(awful.spawn, "playerctl next"),
