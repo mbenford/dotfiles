@@ -30,6 +30,7 @@ ruled.client.connect_signal("request::rules", function()
 				instance = {
 					"flameshot",
 					"guvcview",
+					"system-config-printer",
 				},
 				floating = true,
 			},
@@ -49,8 +50,7 @@ ruled.client.connect_signal("request::rules", function()
 				},
 			},
 			properties = {
-				screen = 2,
-				tag = "1",
+				tag = "0",
 				switch_to_tags = true,
 			},
 		},

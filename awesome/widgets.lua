@@ -2,8 +2,11 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local vicious = require("vicious")
+local ezbuttons = require("util.ez").ezbuttons
+local util = require("util.func")
 vicious.contrib = require("vicious.contrib")
-local util = require("util")
+
+local capi = { client = client }
 
 local M = {}
 
@@ -14,11 +17,11 @@ end
 function M.taglist(screen)
 	return awful.widget.taglist({
 		screen = screen,
-		buttons = {
-			awful.button({}, 1, function(t)
+		buttons = ezbuttons({
+			["1"] = function(t)
 				t:view_only()
-			end),
-		},
+			end,
+		}),
 		filter = awful.widget.taglist.filter.all,
 		layout = {
 			spacing = 3,
@@ -51,15 +54,15 @@ function M.tasklist(screen)
 	return awful.widget.tasklist({
 		screen = screen,
 		filter = awful.widget.tasklist.filter.currenttags,
-		buttons = {
-			awful.button({}, 1, function(c)
-				if c == client.focus then
+		buttons = ezbuttons({
+			["1"] = function(c)
+				if c == capi.client.focus then
 					c.minimized = true
 				else
 					c:emit_signal("request::activate", "tasklist", { raise = true })
 				end
-			end),
-		},
+			end,
+		}),
 		style = {
 			spacing = 5,
 		},
@@ -164,19 +167,42 @@ function M.packages()
 end
 
 function M.volume()
-	-- local thresholds = {
-	-- 	{ 99, beautiful.threshold_critical_fg },
-	-- 	{ 90, beautiful.threshold_high_fg },
-	-- 	{ 70, beautiful.threshold_medium_fg },
-	-- 	normal = beautiful.threshold_normal_fg,
-	-- }
-	-- local widget = wibox.widget.textbox()
-	-- vicious.register(widget, vicious.contrib.pulse, function(_, args)
-	-- 	local color = util.map_threshold(args[1], thresholds)
-	-- 	return util.span(color, "VOL:%d%%", args[1])
-	-- end, 5)
-	-- return widget
-	return require("pulseaudio_widget")
+	local thresholds = {
+		{ 99, beautiful.threshold_critical_fg },
+		{ 90, beautiful.threshold_high_fg },
+		{ 70, beautiful.threshold_medium_fg },
+		normal = beautiful.threshold_normal_fg,
+	}
+	local widget = wibox.widget.textbox()
+	vicious.register(widget, vicious.contrib.pulse, function(_, args)
+		local color = util.map_threshold(args[1], thresholds)
+		return util.span(color, "VOL:%d%%", args[1])
+	end, 50)
+	return widget
+end
+
+function M.wifi()
+	local widget = wibox.widget.textbox()
+	vicious.register(widget, vicious.widgets.wifiiw, function (_, args)
+		return util.span(beautiful.threshold_normal_fg, "WIFI:%s%%", args["{linp}"])
+	end, 11, "wlan0")
+	return widget
+end
+
+function M.cpu_temp()
+	local thresholds = {
+		{ 90, beautiful.threshold_critical_fg },
+		{ 85, beautiful.threshold_high_fg },
+		{ 80, beautiful.threshold_medium_fg },
+		normal = beautiful.threshold_normal_fg,
+	}
+
+	local widget = wibox.widget.textbox()
+	vicious.register(widget, vicious.contrib.sensors, function (_, args)
+		local color = util.map_threshold(args[1], thresholds)
+		return util.span(color, "TEMP:%sC", args[1])
+	end, 7, "Package id 0")
+	return widget
 end
 
 function M.sep(width)

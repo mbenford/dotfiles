@@ -1,6 +1,8 @@
 local awful = require("awful")
 local naughty = require("naughty")
 
+local capi = { tag = tag }
+
 naughty.connect_signal("request::display_error", function(message, startup)
 	naughty.notification({
 		urgency = "critical",
@@ -9,7 +11,7 @@ naughty.connect_signal("request::display_error", function(message, startup)
 	})
 end)
 
-tag.connect_signal("request::default_layouts", function()
+capi.tag.connect_signal("request::default_layouts", function()
 	awful.layout.append_default_layouts({
 		awful.layout.suit.tile,
 		awful.layout.suit.max,
@@ -17,7 +19,14 @@ tag.connect_signal("request::default_layouts", function()
 end)
 
 local function set_padding(t)
-	if #t:clients() > 1 and t.layout ~= awful.layout.suit.max then
+	local static_clients = 0
+	for _, client in ipairs(t:clients()) do
+		if not client.floating then
+			static_clients = static_clients + 1
+		end
+	end
+
+	if static_clients > 1 and t.layout ~= awful.layout.suit.max then
 		t.screen.padding = { left = 0, right = 0 }
 		return
 	end
@@ -31,8 +40,9 @@ local function set_padding(t)
 	t.screen.padding = { left = padding / 2, right = padding / 2 }
 end
 
-tag.connect_signal("tagged", set_padding)
-tag.connect_signal("untagged", set_padding)
-tag.connect_signal("cleared", set_padding)
-tag.connect_signal("property::selected", set_padding)
-tag.connect_signal("property::layout", set_padding)
+capi.tag.connect_signal("tagged", set_padding)
+capi.tag.connect_signal("untagged", set_padding)
+capi.tag.connect_signal("cleared", set_padding)
+capi.tag.connect_signal("property::selected", set_padding)
+capi.tag.connect_signal("property::layout", set_padding)
+

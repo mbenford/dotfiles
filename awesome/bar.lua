@@ -2,10 +2,11 @@ local gears = require("gears")
 local awful = require("awful")
 local wibox = require("wibox")
 local widgets = require("widgets")
-local constants = require("constants")
 
-screen.connect_signal("request::desktop_decoration", function(s)
-	awful.tag(constants.tags, s, awful.layout.suit.tile)
+local capi = { screen = screen }
+
+capi.screen.connect_signal("request::desktop_decoration", function(s)
+	awful.tag({ "1", "2", "3", "4" }, s, awful.layout.suit.tile)
 
 	local padding = widgets.spacer(5)
 	local spacer = widgets.spacer(10)
@@ -30,7 +31,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 		layout = wibox.layout.fixed.horizontal,
 	}
 
-	if s == screen.primary then
+	if s == capi.screen.primary then
 		right = gears.table.join({
 			sep,
 			widgets.cpu(),
@@ -38,8 +39,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
 			widgets.memory(),
 			spacer,
 			widgets.disk(),
-			spacer,
-			widgets.packages(),
 			spacer,
 			widgets.volume(),
 			sep,

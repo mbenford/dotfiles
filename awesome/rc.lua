@@ -13,6 +13,3 @@ require("bar")
 require("keys")
 require("mouse")
 require("rules")
-
-
-
