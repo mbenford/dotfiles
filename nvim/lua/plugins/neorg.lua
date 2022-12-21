@@ -1,7 +1,11 @@
 require('neorg').setup({
 	load = {
-		['core.defaults'] = {}, -- Load all the default modules
-		['core.norg.concealer'] = {}, -- Allows for use of icons
+		['core.defaults'] = {},
+		['core.norg.concealer'] = {
+			config = {
+				icon_preset = 'varied',
+			},
+		},
 		['core.norg.completion'] = {
 			config = {
 				engine = 'nvim-cmp',

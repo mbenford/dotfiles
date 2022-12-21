@@ -1,18 +1,20 @@
-local notify = require('notify')
+ local notify = require('notify')
 notify.setup({
 	stages = 'static',
-	render = 'minimal',
+	render = 'simple',
+	top_down = false,
 	on_open = function(win)
 		if vim.api.nvim_win_is_valid(win) then
 			vim.api.nvim_win_set_config(win, { border = require('utils.ui').border_float })
+			vim.api.nvim_win_set_option(win, "wrap", true)
 		end
 	end,
 })
 
 local colors = require('onedark.colors')
-local set_hl = vim.api.nvim_set_hl
-set_hl(0, 'NotifyINFOBody', { bg = colors.bg_d })
-set_hl(0, 'NotifyINFOBorder', { fg = colors.cyan, bg = colors.bg_d })
-set_hl(0, 'NotifyINFOTitle', { fg = colors.fg, bg = colors.bg_d })
+local hl = require('utils.highlight')
+hl.set('NotifyINFOBody', { bg = colors.bg_d })
+hl.set('NotifyINFOBorder', { fg = colors.cyan, bg = colors.bg_d })
+hl.set('NotifyINFOTitle', { fg = colors.fg, bg = colors.bg_d })
 
 vim.notify = notify

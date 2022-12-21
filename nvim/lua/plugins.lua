@@ -5,7 +5,7 @@ local function load_packer()
 		-- theme
 		{ 'navarasu/onedark.nvim' },
 
-		-- Treesitter
+		-- treesitter
 		{ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' },
 		{ 'nvim-treesitter/playground', after = 'nvim-treesitter', cmd = 'TSPlayground' },
 
@@ -15,8 +15,10 @@ local function load_packer()
 		{ 'AckslD/nvim-neoclip.lua', after = 'telescope.nvim' },
 
 		-- navigation
-		{ 'phaazon/hop.nvim', after = 'onedark.nvim', event = 'BufRead' },
+		{ 'ggandor/leap.nvim', event = 'BufRead' },
+		{ 'ggandor/flit.nvim', after = 'leap.nvim' },
 		{ 'chaoren/vim-wordmotion', event = 'BufRead' },
+		{ 'andymass/vim-matchup', after = 'onedark.nvim' },
 
 		-- completion
 		{ 'hrsh7th/nvim-cmp', event = 'InsertEnter' },
@@ -28,29 +30,45 @@ local function load_packer()
 		-- editing
 		{ 'wellle/targets.vim', event = 'BufRead' },
 		{ 'numToStr/Comment.nvim', event = 'BufRead' },
-		{ 'tpope/vim-surround', event = 'BufRead' },
+		{ 'kylechui/nvim-surround', event = 'BufRead' },
 		{ 'mg979/vim-visual-multi', event = 'BufRead' },
 		{ 'windwp/nvim-autopairs', after = 'nvim-cmp' },
 		{ 'windwp/nvim-ts-autotag', event = 'BufRead' },
 		{ 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter', event = 'BufRead' },
 		{ 'ThePrimeagen/refactoring.nvim' },
 		{ 'abecodes/tabout.nvim', after = 'nvim-cmp', event = 'BufRead' },
+		{ 'Wansmer/treesj', after = 'nvim-treesitter' },
 
 		-- LSP
-		{ 'williamboman/nvim-lsp-installer' },
-		{ 'neovim/nvim-lspconfig', after = 'nvim-lsp-installer' },
+		{ 'williamboman/mason.nvim' },
+		{ 'williamboman/mason-lspconfig.nvim', after = 'mason.nvim' },
+		{ 'neovim/nvim-lspconfig', after = 'mason-lspconfig.nvim' },
 		{ 'hrsh7th/cmp-nvim-lsp' },
 		{ 'jose-elias-alvarez/null-ls.nvim', event = 'BufRead' },
 		{ 'ray-x/lsp_signature.nvim', event = 'BufRead' },
 		{ 'folke/trouble.nvim', event = 'BufRead' },
+		{ 'j-hui/fidget.nvim', after = 'mason-lspconfig.nvim' },
 
-		-- debugging
-		-- { 'mfussenegger/nvim-dap' },
-		-- { 'Pocco81/DAPInstall.nvim' },
+		-- DAP
+		{ 'mfussenegger/nvim-dap', module = 'dap' },
+		{ 'rcarriga/nvim-dap-ui', after = 'nvim-dap' },
+		{ 'nvim-telescope/telescope-dap.nvim', after = 'nvim-dap' },
+		{ 'leoluz/nvim-dap-go', after = 'nvim-dap' },
+
+		-- languages
+		{ 'ray-x/go.nvim', ft = 'go' },
+		{ 'folke/lua-dev.nvim', ft = 'lua' },
+		{ 'chr4/nginx.vim', ft = 'nginx' },
+		{ 'hashivim/vim-terraform' },
+		{ 'fladson/vim-kitty' },
 
 		-- snippets
 		{ 'L3MON4D3/LuaSnip', after = 'nvim-cmp' },
 		{ 'rafamadriz/friendly-snippets', after = 'LuaSnip' },
+
+		-- Git
+		{ 'lewis6991/gitsigns.nvim', after = 'onedark.nvim', event = 'BufRead' },
+		{ 'akinsho/git-conflict.nvim', event = 'BufRead' },
 
 		-- UI
 		{ 'kyazdani42/nvim-web-devicons' },
@@ -58,39 +76,40 @@ local function load_packer()
 		{ 'noib3/cokeline.nvim', after = 'onedark.nvim' },
 		{ 'nvim-lualine/lualine.nvim', after = 'onedark.nvim' },
 		{ 'lukas-reineke/indent-blankline.nvim', event = 'BufRead' },
-		{ 'lewis6991/gitsigns.nvim', after = 'onedark.nvim', event = 'BufRead' },
-		{ 'norcalli/nvim-colorizer.lua', event = 'BufRead' },
-		{ 'kevinhwang91/nvim-bqf', event = 'BufRead' },
+		{ 'NvChad/nvim-colorizer.lua', event = 'BufRead' },
+		{ 'kevinhwang91/nvim-bqf', after = 'onedark.nvim', event = 'BufRead' },
 		{ 'romgrk/nvim-treesitter-context', after = 'onedark.nvim', event = 'BufRead' },
 		{ 'folke/todo-comments.nvim', event = 'BufRead' },
 		{ 'stevearc/dressing.nvim', after = 'onedark.nvim' },
 		{ 'rcarriga/nvim-notify', after = 'onedark.nvim' },
-
-		-- file types
-		{ 'folke/lua-dev.nvim', ft = 'lua' },
-		{ 'chr4/nginx.vim', ft = 'nginx' },
-		{ 'hashivim/vim-terraform' },
-		{ 'fladson/vim-kitty' },
 
 		-- misc
 		{ 'nvim-lua/plenary.nvim' },
 		{ 'dstein64/vim-startuptime' },
 		{ 'tpope/vim-eunuch' },
 		{ 'tpope/vim-repeat' },
-		{ 'editorconfig/editorconfig-vim', event = 'BufRead' },
+		{ 'nmac427/guess-indent.nvim', event = 'BufRead' },
+		{ 'gpanders/editorconfig.nvim' },
 		{ 'McAuleyPenney/tidy.nvim' },
-		{ 'kazhala/close-buffers.nvim' },
-		{ 'akinsho/toggleterm.nvim', keys = '<leader><cr>' },
-		{ 'lewis6991/spellsitter.nvim', event = 'BufRead' },
-		{ 'nvim-neorg/neorg', ft = 'norg' },
+		{ 'akinsho/toggleterm.nvim', keys = '<C-Enter>' },
+		{ 'nvim-neorg/neorg', after = { 'nvim-treesitter', 'telescope.nvim' }, ft = 'norg' },
+		{ 'famiu/bufdelete.nvim' },
 		{ 'mbbill/undotree', event = 'BufRead' },
 		{ 'mrjones2014/legendary.nvim' },
+		{ 'antoinemadec/FixCursorHold.nvim' },
+		{ 'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async' },
+		{ 'rafcamlet/nvim-luapad', cmd = 'Luapad' },
+		{ 'm-demare/hlargs.nvim', after = 'nvim-treesitter' },
+		{ 'b0o/schemastore.nvim' },
 	}
 
+	local border = require('utils.ui').border_float
 	local config = {
 		display = {
+			compact = true,
+			prompt_border = border,
 			open_fn = function()
-				return require('packer.util').float({ border = require('utils.ui').border_float })
+				return require('packer.util').float({ border = border })
 			end,
 		},
 	}
@@ -109,6 +128,10 @@ end, { nargs = '*' })
 user_command('PackerSync', function()
 	load_packer()
 	require('packer').sync()
+end, {})
+user_command('PackerUpdate', function()
+	load_packer()
+	require('packer').update({ preview_updates = true })
 end, {})
 user_command('PackerStatus', function()
 	load_packer()
@@ -129,7 +152,6 @@ vim.api.nvim_create_autocmd('BufWritePost', { pattern = 'plugins.lua', command =
 local builtin_plugins = {
 	'2html_plugin',
 	'gzip',
-	'netrwPlugin',
 	'tarPlugin',
 	'tutor_mode_plugin',
 	'zipPlugin',

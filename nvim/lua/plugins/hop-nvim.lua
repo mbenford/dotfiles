@@ -7,16 +7,16 @@ hop.setup({
 local AFTER_CURSOR = require('hop.hint').HintDirection.AFTER_CURSOR
 local BEFORE_CURSOR = require('hop.hint').HintDirection.BEFORE_CURSOR
 
-local lazy = require('legendary.helpers').lazy
-require('legendary').bind_keymaps({
+local lazy = require('legendary.toolbox').lazy
+require('legendary').keymaps({
 	{
-		's',
+		'<Leader>h',
 		lazy(hop.hint_char2, { multi_windows = false }),
-		mode = { 'n', 'x' },
+		mode = { 'n', 'x', 'o' },
 		description = 'Hop 2-char mode (current window)',
 	},
 	{
-		'S',
+		'<Leader>H',
 		lazy(hop.hint_char2, { multi_windows = true }),
 		mode = { 'n', 'x' },
 		description = 'Hop 2-char mode (multi-windows)',
@@ -48,7 +48,7 @@ require('legendary').bind_keymaps({
 	{
 		'gl',
 		lazy(hop.hint_lines, { multi_windows = false }),
-		mode = { 'n', 'x' },
+		mode = { 'n', 'x', 'o' },
 		description = 'Hop line mode (current window)',
 	},
 	{
@@ -60,8 +60,8 @@ require('legendary').bind_keymaps({
 })
 
 local colors = require('onedark.colors')
-local set_hl = vim.api.nvim_set_hl
-set_hl(0, 'HopNextKey', { fg = colors.bg0, bg = colors.orange })
-set_hl(0, 'HopNextKey1', { fg = colors.bg0, bg = colors.orange })
-set_hl(0, 'HopNextKey2', { fg = colors.bg0, bg = colors.yellow })
-set_hl(0, 'HopUnmatched', { fg = 'none', bg = 'none' })
+local hl = require('utils.highlight')
+hl.set('HopNextKey', { fg = colors.bg0, bg = colors.orange })
+hl.set('HopNextKey1', { fg = colors.bg0, bg = colors.orange })
+hl.set('HopNextKey2', { fg = colors.bg0, bg = colors.yellow })
+hl.set('HopUnmatched', { fg = 'none', bg = 'none' })

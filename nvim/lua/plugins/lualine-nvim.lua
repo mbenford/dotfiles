@@ -104,7 +104,6 @@ require('lualine').setup({
 		lualine_b = {
 			{ 'branch', icon = '' },
 			gitsigns_status,
-			'lsp_progress',
 		},
 		lualine_c = {},
 		lualine_x = {
@@ -137,12 +136,17 @@ require('lualine').setup({
 		},
 		lualine_c = {},
 	},
-	extensions = { 'nvim-tree', 'quickfix' },
+	extensions = {
+		'nvim-tree',
+		'quickfix',
+		'nvim-dap-ui',
+		'toggleterm',
+	},
 })
 
-local set_hl = vim.api.nvim_set_hl
-set_hl(0, 'LualineExoticFileFormat', { fg = colors.red, bg = theme.normal.c.bg })
-set_hl(0, 'LualineExoticFileFormat', { fg = colors.red, bg = theme.normal.c.bg })
-set_hl(0, 'LualineGitSignsAdd', { fg = colors.green, bg = theme.normal.c.bg })
-set_hl(0, 'LualineGitSignsChange', { fg = colors.orange, bg = theme.normal.c.bg })
-set_hl(0, 'LualineGitSignsDelete', { fg = colors.red, bg = theme.normal.c.bg })
+local hl = require('utils.highlight')
+hl.set('LualineExoticFileFormat', { fg = colors.red, bg = theme.normal.c.bg })
+hl.set('LualineExoticFileFormat', { fg = colors.red, bg = theme.normal.c.bg })
+hl.set('LualineGitSignsAdd', { fg = colors.green, bg = theme.normal.c.bg })
+hl.set('LualineGitSignsChange', { fg = colors.orange, bg = theme.normal.c.bg })
+hl.set('LualineGitSignsDelete', { fg = colors.red, bg = theme.normal.c.bg })

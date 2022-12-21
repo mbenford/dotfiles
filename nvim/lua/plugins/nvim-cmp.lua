@@ -18,7 +18,8 @@ cmp.setup({
 		['<C-p>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
 		['<C-y>'] = cmp.config.disable,
 		['<C-e>'] = cmp.mapping.close({ i = cmp.mapping.abort(), c = cmp.mapping.close() }),
-		['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+		['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+		['<C-CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
 	}),
 	formatting = {
 		fields = { 'kind', 'abbr', 'menu' },

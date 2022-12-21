@@ -51,15 +51,17 @@ require('nvim-treesitter.configs').setup({
 	textobjects = {
 		select = {
 			enable = true,
-			lookahead = true,
+			lookahead = false,
 			keymaps = {
 				['af'] = '@function.outer',
 				['if'] = '@function.inner',
 				['ax'] = '@block.inner',
 			},
+			selection_modes = {
+				['@function.outer'] = 'V',
+				['@function.inner'] = 'V',
+			},
 		},
 	},
+	matchup = { enable = true },
 })
-
-vim.wo.foldmethod = 'expr'
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'

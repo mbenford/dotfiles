@@ -1,9 +1,11 @@
-require('close_buffers').setup({
+local close_buffers = require('close_buffers')
+close_buffers.setup({
 	preserve_window_layout = { 'this', 'nameless' },
 })
 
-require('legendary').bind_keymaps({
-	{ '<leader>qb', '<cmd>BDelete this<cr>', description = '' },
-	{ '<leader>qo', '<cmd>BDelete other<cr>', description = '' },
-	{ '<leader>qa', '<cmd>BDelete all<cr>', description = '' },
+local lazy = require('legendary.toolbox').lazy
+require('legendary').keymaps({
+	{ '<leader>q<Space>', lazy(close_buffers.delete, { type = 'this' }), description = '' },
+	{ '<leader>qo', lazy(close_buffers.delete, { type = 'other' }), description = '' },
+	{ '<leader>qa', lazy(close_buffers.delete, { type = 'all' }), description = '' },
 })

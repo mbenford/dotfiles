@@ -1,17 +1,36 @@
-local servers = {
-	bashls = {},
-	cssls = {
+require('mason-lspconfig').setup({
+	automatic_installation = true,
+	ensure_installed = {
+		'bashls',
+		'cssls',
+		'cssmodules_ls',
+		'dockerls',
+		'eslint',
+		'gopls',
+		'html',
+		'jsonls',
+		'pyright',
+		'rust_analyzer',
+		'sumneko_lua',
+		'terraformls',
+		'tsserver',
+		'yamlls',
+	},
+})
+
+local server_opts = {
+	['cssls'] = {
 		filetypes = { 'css', 'scss', 'less', 'pcss' },
 	},
-	cssmodules_ls = {},
-	dockerls = {},
-	eslint = {},
-	gopls = {},
-	html = {},
-	jsonls = {},
-	pyright = {},
-	rust_analyzer = {},
-	sumneko_lua = {
+	['jsonls'] = {
+		settings = {
+			json = {
+				schemas = require('schemastore').json.schemas(),
+				validate = { enable = true },
+			},
+		},
+	},
+	['summeko_lua'] = {
 		settings = {
 			diagnostics = {
 				globals = { 'vim' },
@@ -21,36 +40,13 @@ local servers = {
 			},
 		},
 	},
-	terraformls = {},
-	tsserver = {},
-	yamlls = {},
 }
 
-require('nvim-lsp-installer').setup({
-	ensure_installed = vim.tbl_keys(servers),
-	automatic_installation = true,
-	ui = {
-		icons = {
-			server_installed = ' ',
-			server_pending = ' ',
-			server_uninstalled = ' ',
-		},
-	},
-})
-
-for server, opts in pairs(servers) do
-	require('lspconfig')[server].setup(require('lsp').setup_server(opts))
+for _, server in pairs(require('mason-lspconfig').get_installed_servers()) do
+	require('lspconfig')[server].setup(require('lsp').setup_server(server_opts[server] or {}))
 end
 
-local lazy = require('legendary.helpers').lazy
-require('legendary').bind_autocmds({
-	{
-		name = 'LspConfig',
-		clear = true,
-		{
-			'FileType',
-			lazy(vim.api.nvim_win_set_config, 0, { border = require('utils.ui').border_float }),
-			opts = { pattern = { 'lspinfo', 'lsp-installer' } },
-		},
-	},
-})
+require('lspconfig.ui.windows').default_options.border = require('utils.ui').border_float
+
+local hl = require('utils.highlight')
+hl.set('LspInfoBorder', { link = 'FloatBorder' })

@@ -3,7 +3,7 @@ luasnip.config.setup({
 	history = true,
 })
 
-require('legendary').bind_keymaps({
+require('legendary').keymaps({
 	{
 		'<C-k>',
 		function()

@@ -1,6 +1,4 @@
 local g = vim.g
-g.do_filetype_lua = 1
-g.did_load_filetypes = 0
 g.mapleader = ' ' -- space as the leader key
 
 local o = vim.opt
@@ -11,11 +9,12 @@ o.confirm = true
 o.cursorline = true
 o.expandtab = false
 o.foldlevel = 99
-o.foldnestmax = 3
-o.foldtext = [[substitute(getline(v:foldstart),'\t', repeat(' ', &tabstop), 'g') . '...' . trim(getline(v:foldend)) . ' ']]
+o.foldlevelstart = -1
+o.foldenable = true
 o.hidden = true
 o.hlsearch = false
 o.ignorecase = true
+o.linebreak = true
 o.list = true
 o.listchars = { trail = '·', tab = '  ' }
 o.mouse = 'a'

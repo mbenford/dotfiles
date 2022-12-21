@@ -7,7 +7,7 @@ null_ls.setup({
 	sources = {
 		-- diagnostics
 		diagnostics.flake8,
-		diagnostics.staticcheck,
+		-- diagnostics.staticcheck,
 
 		-- formatting
 		formatting.goimports,

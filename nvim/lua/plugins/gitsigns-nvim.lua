@@ -5,6 +5,7 @@ require('gitsigns').setup({
 		delete = { text = '▁' },
 		topdelete = { text = '▔' },
 		changedelete = { text = '▋' },
+		untracked = { text = '▋' },
 	},
 	keymaps = {},
 	preview_config = {
@@ -12,7 +13,7 @@ require('gitsigns').setup({
 	},
 	on_attach = function()
 		local gitsigns = require('gitsigns')
-		require('legendary').bind_keymaps({
+		require('legendary').keymaps({
 			{ '<leader>gp', gitsigns.preview_hunk, opts = { buffer = true }, description = '' },
 			{ '<leader>gr', gitsigns.reset_hunk, opts = { buffer = true }, description = '' },
 			{ '<leader>gn', gitsigns.next_hunk, opts = { buffer = true }, description = '' },
@@ -24,7 +25,7 @@ require('gitsigns').setup({
 
 local hl = require('utils.highlight')
 local colors = require('onedark.colors')
-hl.set('GitSignsChange', { guifg = colors.orange, guibg = 'none' })
-hl.set('GitSignsAddLn', { guibg = colors.bg1 })
-hl.set('GitSignsChangeLn', { guibg = colors.bg1 })
-hl.set('GitSignsDeleteLn', { guibg = colors.bg1 })
+hl.set('GitSignsChange', { fg = colors.orange, bg = 'none' })
+hl.set('GitSignsAddLn', { bg = colors.bg1 })
+hl.set('GitSignsChangeLn', { bg = colors.bg1 })
+hl.set('GitSignsDeleteLn', { bg = colors.bg1 })

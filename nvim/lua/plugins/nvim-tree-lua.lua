@@ -1,7 +1,7 @@
 require('nvim-tree').setup({
 	update_cwd = true,
 	filters = {
-		custom = { '.git' },
+		custom = { '^\\.git$' },
 	},
 	view = {
 		signcolumn = 'no',
@@ -28,12 +28,12 @@ require('nvim-tree.events').on_file_created(function(file)
 	vim.cmd('edit ' .. file.fname)
 end)
 
-require('legendary').bind_keymaps({
+require('legendary').keymaps({
 	{ '<Leader>e', '<Cmd>NvimTreeToggle<CR>', description = 'Toggles NvimTree' },
 })
 
 local colors = require('onedark.colors')
-local set_hl = vim.api.nvim_set_hl
-set_hl(0, 'NvimTreeNormal', { bg = colors.bg0 })
-set_hl(0, 'NvimTreeEndOfBuffer', { fg = colors.bg0, bg = colors.bg0 })
-set_hl(0, 'NvimTreeVertSplit', { link = 'VertSplit' })
+local hl = require('utils.highlight')
+hl.set('NvimTreeNormal', { bg = colors.bg0 })
+hl.set('NvimTreeEndOfBuffer', { fg = colors.bg0, bg = colors.bg0 })
+hl.set('NvimTreeVertSplit', { link = 'VertSplit' })

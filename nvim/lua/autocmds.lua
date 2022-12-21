@@ -1,10 +1,11 @@
-local lazy = require('legendary.helpers').lazy
-require('legendary').bind_autocmds({
+local lazy = require('legendary.toolbox').lazy
+require('legendary').autocmds({
 	{
 		name = 'Custom',
 		clear = true,
 		{ 'FocusLost', 'silent! wa' },
 		{ 'TextYankPost', lazy(vim.highlight.on_yank, { higroup = 'TextYank', timeout = 150 }) },
+		{ 'VimResized', lazy(vim.api.nvim_command, 'wincmd =') },
 		{
 			{ 'BufEnter', 'BufWritePost' },
 			function(args)
@@ -19,15 +20,13 @@ require('legendary').bind_autocmds({
 				end
 
 				local name = ''
-				local directory = ''
+				local directory = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
 				if buffer.name == '' then
 					name = '[No Name]'
-					directory = vim.fn.fnamemodify(vim.fn.getcwd(), ':~')
 				else
 					name = vim.fn.fnamemodify(buffer.name, ':t')
-					directory = vim.fn.fnamemodify(buffer.name, ':~:h')
 				end
-				vim.opt.titlestring = string.format('%s (%s)', name, directory)
+				vim.opt.titlestring = string.format('%s - %s', name, directory)
 			end,
 		},
 	},

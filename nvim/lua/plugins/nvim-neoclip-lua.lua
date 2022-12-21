@@ -2,7 +2,7 @@ require('neoclip').setup({})
 require('telescope').load_extension('neoclip')
 
 local themes = require('plugins.telescope-themes')
-require('legendary').bind_keymaps({
+require('legendary').keymaps({
 	{
 		'<Leader>fc',
 		function()

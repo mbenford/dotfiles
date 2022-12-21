@@ -31,7 +31,10 @@ require('cokeline').setup({
 		filetype = 'NvimTree',
 		components = {
 			{
-				text = '',
+				text = ' File Explorer',
+				fg = function(buffer)
+					return buffer.is_focused and colors.fg or colors.grey
+				end,
 				bg = colors.bg_d,
 				style = 'none',
 			},
@@ -51,7 +54,7 @@ require('cokeline').setup({
 	},
 })
 
-require('legendary').bind_keymaps({
+require('legendary').keymaps({
 	{ '<C-j>', '<Plug>(cokeline-focus-prev)', opts = { noremap = false }, description = '' },
 	{ '<C-k>', '<Plug>(cokeline-focus-next)', opts = { noremap = false }, description = '' },
 })

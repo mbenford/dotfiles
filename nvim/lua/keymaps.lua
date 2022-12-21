@@ -1,10 +1,10 @@
 local legendary = require('legendary')
-local lazy = require('legendary.helpers').lazy
-legendary.bind_keymaps({
+local lazy = require('legendary.toolbox').lazy
+legendary.keymaps({
 	{ ';', ':', mode = { 'n', 'x' }, opts = { silent = false }, description = 'Command line mode' },
-	{ 'H', '^', mode = { 'n', 'x', 'o' }, description = 'Go to first non-blank character of the line' },
-	{ 'L', '$', mode = { 'n', 'x', 'o' }, description = 'Go to end of the line' },
-	{ 'M', '%', mode = { 'n', 'x', 'o' }, description = 'Go to matching pair' },
+	{ 'H', '^', mode = { 'n', 'x', 'o' }, opts = { remap = true }, description = 'Alias for ^' },
+	{ 'L', 'g_', mode = { 'n', 'x', 'o' }, opts = { remap = true }, description = 'Alias for g_' },
+	{ 'M', '%', mode = { 'n', 'x', 'o' }, opts = { remap = true }, description = 'Alias for %' },
 	{ 'Q', '<cmd>execute "noautocmd normal! " . v:count1 . "@" . getcharstr()<cr>', description = 'Alias for @' },
 	{ '<', '<gv', mode = { 'x' }, description = 'Shift left and keep selection' },
 	{ '>', '>gv', mode = { 'x' }, description = 'Shift right and keep selection' },
@@ -13,17 +13,27 @@ legendary.bind_keymaps({
 	{ 'k', 'gk', description = 'Go up (non-linewise)' },
 	{ 'n', 'nzz', description = 'Go to next occurrence and center' },
 	{ 'N', 'Nzz', description = 'Go to previous occurrence and center' },
+	{ '<C-d>', '<C-d>zz', description = 'Scroll down and center' },
+	{ '<C-u>', '<C-u>zz', description = 'Scroll up and center' },
 	{ '*', '*zz', description = 'Search forward and center' },
 	{ '#', '#zz', description = 'Search backward and center' },
 	{ 'J', 'maJ`a', description = 'Join lines and keep the cursor at its position' },
-	{ 'c', '"_c', mode = { 'n', 'x' }, description = 'Same as c but using the black hole register' },
-	{ 'C', '"_C', mode = { 'n', 'x' }, description = 'Same as C but using the black hole register' },
-	{ 'x', '"_x', mode = { 'n', 'x' }, description = 'Same as x but using the black hole register' },
-	{ 'X', '"_dd', description = 'Delete the current line into the black hole register' },
+	{ 'c', '"_c', mode = { 'n', 'x' }, description = 'Same as c but uses the black hole register' },
+	{ 'C', '"_C', mode = { 'n', 'x' }, description = 'Same as C but uses the black hole register' },
+	-- { 'x', '"_x', mode = { 'n', 'x' }, description = 'Same as x but uses the black hole register' },
+	-- { 'X', '"_dd', description = 'Delete the current line into the black hole register' },
+	{
+		'dd',
+		function()
+			return vim.api.nvim_get_current_line():match('^%s*$') and '"_dd' or 'dd'
+		end,
+		mode = { 'n' },
+		opts = { expr = true },
+		description = 'Same as dd but uses the black hole register for empty lines',
+	},
 	{ '<Leader>w', '<Cmd>wa<CR>', description = 'Write all changed buffers' },
 	{ '<Leader>qx', '<Cmd>xa<CR>', description = 'Write all changed buffers and exit' },
 	{ '<Leader>qq', '<Cmd>qa<CR>', description = 'Exit' },
-	{ '<Leader>qw', '<C-w>q', description = 'Close window' },
 	{ '<Leader>Q', '<Cmd>qa!<CR>', description = 'Exit without writing' },
 	{ '<Leader>i', 'i<Space><Esc>r', description = 'Insert one character' },
 	{ '<Leader>o', 'mao<Esc>`a', description = 'Insert empty line below' },
@@ -83,10 +93,10 @@ legendary.bind_keymaps({
 	},
 })
 
-legendary.bind_autocmds({
+legendary.autocmds({
 	{
 		'FileType',
-		lazy(legendary.bind_keymaps, {
+		lazy(legendary.keymaps, {
 			{ 'q', '<C-w>q', opts = { buffer = true }, description = 'Close window' },
 		}),
 		opts = { pattern = 'help,qf' },
