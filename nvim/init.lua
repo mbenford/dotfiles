@@ -1,6 +1,6 @@
-require('plugins')
-require('theme')
 require('options')
+require('plugin-manager')
+require('theme')
 require('keymaps')
 require('autocmds')
 require('diagnostics')
