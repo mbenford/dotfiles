@@ -1,5 +1,9 @@
 return {
 	'kyazdani42/nvim-tree.lua',
+	dependencies = {
+		'nvim-web-devicons',
+	},
+	keys = { '<Leader>e' },
 	config = function ()
 		require('nvim-tree').setup({
 			update_cwd = true,

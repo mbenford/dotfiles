@@ -1,4 +1,12 @@
 return {
 	'NvChad/nvim-colorizer.lua',
-	config = true,
+	event = 'BufRead',
+	config = {
+		filetypes = {
+			'css',
+			'scss',
+			'pcss',
+			'html',
+		},
+	},
 }

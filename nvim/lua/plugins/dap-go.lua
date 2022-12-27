@@ -3,5 +3,6 @@ return {
 	dependencies = {
 		'nvim-dap',
 	},
+	ft = 'go',
 	config = true,
 }

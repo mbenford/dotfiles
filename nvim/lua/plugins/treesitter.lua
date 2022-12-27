@@ -1,9 +1,7 @@
-local M = {
+return {
 	'nvim-treesitter/nvim-treesitter',
-}
-
-function M.config()
-	require('nvim-treesitter.configs').setup({
+	build = ':TSUpdate',
+	config = {
 		ensure_installed = {
 			'bash',
 			'c',
@@ -69,7 +67,5 @@ function M.config()
 			},
 		},
 		matchup = { enable = true },
-	})
-end
-
-return M
+	}
+}

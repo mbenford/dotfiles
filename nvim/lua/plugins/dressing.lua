@@ -1,5 +1,6 @@
 return {
 	'stevearc/dressing.nvim',
+	event = 'VeryLazy',
 	config = {
 		input = {
 			border = require('utils.ui').border_float,

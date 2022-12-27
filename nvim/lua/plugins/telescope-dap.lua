@@ -1,5 +1,6 @@
 return {
 	'nvim-telescope/telescope-dap.nvim',
+	lazy = true,
 	dependencies = {
 		'nvim-dap',
 		'telescope.nvim',

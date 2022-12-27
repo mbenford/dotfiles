@@ -1,8 +1,5 @@
 return {
 	'lewis6991/gitsigns.nvim',
-	dependencies = {
-		'onedark.nvim',
-	},
 	event = 'BufRead',
 	config = {
 		signs = {

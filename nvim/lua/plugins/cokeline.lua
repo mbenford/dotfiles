@@ -56,8 +56,7 @@ return {
 				end,
 			},
 		})
-	end,
-	init = function()
+
 		require('legendary').keymaps({
 			{ '<C-j>', '<Plug>(cokeline-focus-prev)', opts = { noremap = false }, description = '' },
 			{ '<C-k>', '<Plug>(cokeline-focus-next)', opts = { noremap = false }, description = '' },

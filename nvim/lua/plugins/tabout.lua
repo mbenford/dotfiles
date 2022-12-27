@@ -1,8 +1,6 @@
 return {
 	'abecodes/tabout.nvim',
-	dependencies = {
-		'nvim-cmp',
-	},
+	event = 'InsertEnter',
 	config = {
 		tabkey = '<tab>',
 	},

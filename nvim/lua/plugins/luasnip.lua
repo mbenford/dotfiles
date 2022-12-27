@@ -3,13 +3,13 @@ return {
 	dependencies = {
 		'nvim-cmp',
 	},
+	event = 'InsertEnter',
 	config = function()
-		require('luasnip').config.setup({
+		local luasnip = require('luasnip')
+		luasnip.config.setup({
 			history = true,
 		})
-	end,
-	init = function()
-		local luasnip = require('luasnip')
+
 		require('legendary').keymaps({
 			{
 				'<C-k>',

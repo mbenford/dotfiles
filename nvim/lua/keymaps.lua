@@ -91,6 +91,19 @@ legendary.keymaps({
 		opts = { expr = true, silent = false },
 		description = 'Down when PMenu is visible',
 	},
+	{ '<Leader>k', vim.diagnostic.open_float, description = 'Open diagnostic window for current line' },
+	{ '[d', vim.diagnostic.goto_prev, description = 'Go to previous diagnostic' },
+	{ ']d', vim.diagnostic.goto_next, description = 'Go to next diagnostic' },
+	{
+		'[e',
+		lazy(vim.diagnostic.goto_prev, { severity = vim.diagnostic.severity.ERROR }),
+		description = 'Go to previous diagnostic error',
+	},
+	{
+		']e',
+		lazy(vim.diagnostic.goto_next, { severity = vim.diagnostic.severity.ERROR }),
+		description = 'Go to next diagnostic error',
+	},
 })
 
 legendary.autocmds({

@@ -1,5 +1,6 @@
 return {
 	'ggandor/flit.nvim',
+	event = 'BufRead',
 	dependencies = {
 		'ggandor/leap.nvim',
 	},

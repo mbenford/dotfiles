@@ -3,4 +3,5 @@ return {
 	dependencies = {
 		'nvim-dap',
 	},
+	lazy = true,
 }

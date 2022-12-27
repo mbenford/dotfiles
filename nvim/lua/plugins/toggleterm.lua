@@ -1,20 +1,22 @@
 return {
 	'akinsho/toggleterm.nvim',
-	config = {
-		shade_terminals = false,
-		start_in_insert = true,
-		hide_humbers = true,
-		float_opts = {
-			border = require('utils.ui').border_float,
-			width = function()
-				return math.floor(vim.o.columns * 0.8)
-			end,
-			height = function()
-				return math.floor(vim.o.lines * 0.8)
-			end,
-		},
-	},
-	init = function()
+	keys = { '<C-Enter>' },
+	config = function()
+		require('toggleterm').setup({
+			shade_terminals = false,
+			start_in_insert = true,
+			hide_humbers = true,
+			float_opts = {
+				border = require('utils.ui').border_float,
+				width = function()
+					return math.floor(vim.o.columns * 0.8)
+				end,
+				height = function()
+					return math.floor(vim.o.lines * 0.8)
+				end,
+			},
+		})
+
 		local legendary = require('legendary')
 		legendary.keymaps({
 			{ '<C-Enter>', '<cmd>ToggleTerm direction=float<cr>', mode = { 'n', 't' }, description = 'Toggle terminal' },

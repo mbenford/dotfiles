@@ -1,14 +1,16 @@
 return {
 	'numToStr/Comment.nvim',
-	config = {
-		mappings = {
-			basic = false,
-			extra = false,
-			extended = false,
-		},
-		ignore = '^$',
-	},
-	init = function()
+	event = 'BufRead',
+	config = function()
+		require('Comment').setup({
+			mappings = {
+				basic = false,
+				extra = false,
+				extended = false,
+			},
+			ignore = '^$',
+		})
+
 		local comment = require('Comment.api')
 		require('legendary').keymaps({
 			{ '<leader>cc', comment.toggle.linewise.current },
