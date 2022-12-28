@@ -18,7 +18,7 @@ return {
 
 				code_actions.refactoring,
 			},
-			on_attach = require('lsp').on_attach,
+			on_attach = require('config.lsp').on_attach,
 		})
 	end,
 }

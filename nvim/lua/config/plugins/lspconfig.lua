@@ -3,6 +3,7 @@ return {
 	dependencies = {
 		'mason.nvim',
 	},
+	event = 'BufRead',
 	config = function()
 		local server_opts = {
 			['cssls'] = {
@@ -29,7 +30,7 @@ return {
 		}
 
 		for _, server in pairs(require('mason-lspconfig').get_installed_servers()) do
-			require('lspconfig')[server].setup(require('lsp').setup_server(server_opts[server] or {}))
+			require('lspconfig')[server].setup(require('config.lsp').setup_server(server_opts[server] or {}))
 		end
 
 		require('lspconfig.ui.windows').default_options.border = require('utils.ui').border_float

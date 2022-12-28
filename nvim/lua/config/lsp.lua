@@ -13,7 +13,6 @@ end
 
 function M.on_attach(client)
 	local legendary = require('legendary')
-	local lazy = require('legendary.toolbox').lazy
 
 	legendary.keymaps({
 		{ 'K', vim.lsp.buf.hover, opts = { buffer = true }, description = 'LSP Hover' },

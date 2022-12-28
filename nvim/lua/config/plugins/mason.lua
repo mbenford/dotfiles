@@ -3,6 +3,7 @@ return {
 	dependencies = {
 		'mason-lspconfig.nvim',
 	},
+	cmd = 'Mason',
 	config = {
 		ui = {
 			border = require('utils.ui').border_float,

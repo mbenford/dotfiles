@@ -1,5 +1,6 @@
 return {
 	'j-hui/fidget.nvim',
+	event = { 'LspAttach' },
 	config = {
 		text = {
 			spinner = 'dots_scrolling',
@@ -14,7 +15,7 @@ return {
 		sources = {
 			['null-ls'] = {
 				ignore = true,
-			}
-		}
-	}
+			},
+		},
+	},
 }

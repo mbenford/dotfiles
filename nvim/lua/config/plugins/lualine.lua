@@ -1,6 +1,6 @@
 return {
 	'nvim-lualine/lualine.nvim',
-	config = function ()
+	config = function()
 		local colors = require('onedark.colors')
 		local theme = {
 			normal = {
