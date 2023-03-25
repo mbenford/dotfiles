@@ -1,8 +1,8 @@
-local sign_define = vim.fn.sign_define
-sign_define('DiagnosticSignError', { text = ' ', texthl = 'DiagnosticSignError' })
-sign_define('DiagnosticSignWarn', { text = ' ', texthl = 'DiagnosticSignWarn' })
-sign_define('DiagnosticSignInfo', { text = ' ', texthl = 'DiagnosticSignInfo' })
-sign_define('DiagnosticSignHint', { text = '硫', texthl = 'DiagnosticSignHint' })
+local sign = vim.fn.sign_define
+sign('DiagnosticSignError', { text = ' ', texthl = 'DiagnosticSignError' })
+sign('DiagnosticSignWarn', { text = ' ', texthl = 'DiagnosticSignWarn' })
+sign('DiagnosticSignInfo', { text = ' ', texthl = 'DiagnosticSignInfo' })
+sign('DiagnosticSignHint', { text = '硫', texthl = 'DiagnosticSignHint' })
 
 vim.diagnostic.config({
 	virtual_text = false,
@@ -26,4 +26,3 @@ vim.diagnostic.config({
 		end,
 	},
 })
-

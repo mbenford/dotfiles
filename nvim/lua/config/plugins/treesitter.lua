@@ -2,16 +2,25 @@ return {
 	'nvim-treesitter/nvim-treesitter',
 	build = ':TSUpdate',
 	event = { 'BufRead', 'BufWritePost' },
+	dependencies = {
+		'nvim-treesitter/playground',
+	},
 	config = function()
 		require('nvim-treesitter.configs').setup({
 			ensure_installed = {
 				'bash',
 				'c',
+				'cmake',
 				'cpp',
 				'css',
 				'dockerfile',
+				'fennel',
+				'git_rebase',
+				'gitattributes',
+				'gitcommit',
 				'go',
 				'gomod',
+				'gosum',
 				'gowork',
 				'hcl',
 				'html',
@@ -20,15 +29,21 @@ return {
 				'jsdoc',
 				'json',
 				'lua',
+				'luap',
 				'make',
 				'markdown',
+				'markdown_inline',
 				'norg',
+				'proto',
 				'python',
 				'query',
 				'rasi',
+				'regex',
 				'rust',
 				'scss',
+				'terraform',
 				'toml',
+				'tsx',
 				'typescript',
 				'vim',
 				'yaml',
@@ -72,6 +87,7 @@ return {
 			matchup = { enable = true },
 		})
 
-		require('nvim-treesitter.parsers').filetype_to_parsername.pcss = 'scss'
+		local ts = vim.treesitter
+		ts.language.register('pcss', 'scss')
 	end,
 }

@@ -17,13 +17,15 @@ return {
 					},
 				},
 			},
-			['summeko_lua'] = {
+			['lua_ls'] = {
 				settings = {
-					diagnostics = {
-						globals = { 'vim' },
-					},
-					telemetry = {
-						enable = false,
+					Lua = {
+						diagnostics = {
+							globals = { 'vim' },
+						},
+						telemetry = {
+							enable = false,
+						},
 					},
 				},
 			},

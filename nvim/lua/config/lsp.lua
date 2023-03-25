@@ -11,7 +11,7 @@ function M.setup_server(opts)
 	return vim.tbl_deep_extend('force', default_opts, opts)
 end
 
-function M.on_attach(client)
+function M.on_attach(client, bufnr)
 	local legendary = require('legendary')
 
 	legendary.keymaps({

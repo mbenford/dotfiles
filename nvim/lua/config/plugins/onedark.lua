@@ -1,5 +1,6 @@
 return {
 	'navarasu/onedark.nvim',
+	enabled = false,
 	config = function ()
 		local onedark = require('onedark')
 		onedark.setup({
@@ -28,10 +29,5 @@ return {
 		})
 		onedark.load()
 
-		local hl = require('utils.highlight')
-		hl.set('LspReferenceRead', { link = 'Visual' })
-		hl.set('LspReferenceWrite', { link = 'Visual' })
-		hl.set('LspReferenceText', { link = 'CursorLine' })
-		hl.set('LspSignatureActiveParameter', { link = 'IncSearch' })
 	end
 }

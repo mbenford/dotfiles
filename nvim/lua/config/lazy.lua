@@ -18,12 +18,12 @@ require('lazy').setup('config.plugins', {
 	performance = {
 		rtp = {
 			disabled_plugins = {
-				'2html_plugin',
-				'gzip',
-				'tarPlugin',
-				'tutor_mode_plugin',
-				'zipPlugin',
-				'remote_plugins',
+				-- '2html_plugin',
+				-- 'gzip',
+				-- 'tarPlugin',
+				-- 'tutor_mode_plugin',
+				-- 'zipPlugin',
+				-- 'remote_plugins',
 			},
 		},
 	},

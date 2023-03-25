@@ -8,7 +8,6 @@ return {
 				prompt_align = 'center',
 				win_options = {
 					winblend = 0,
-					winhighlight = 'Normal:NormalInput,FloatBorder:FloatBorderInput',
 				},
 				get_config = function(opts)
 					local prompt = opts.prompt or ''
@@ -26,10 +25,5 @@ return {
 				telescope = require('config.plugins.telescope').center_theme(),
 			},
 		})
-
-		local colors = require('onedark.colors')
-		local hl = require('utils.highlight')
-		hl.set('NormalInput', { bg = colors.bg0 })
-		hl.set('FloatBorderInput', { fg = colors.cyan })
 	end,
 }

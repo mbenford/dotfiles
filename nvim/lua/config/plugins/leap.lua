@@ -6,10 +6,6 @@ return {
 		leap.setup({})
 		leap.add_default_mappings()
 
-		local colors = require('onedark.colors')
-		local hl = require('utils.highlight')
-		hl.set('LeapLabelPrimary', { fg = colors.bg0, bg = colors.orange })
-
 		local function get_line_starts(winid)
 			local wininfo = vim.fn.getwininfo(winid)[1]
 			local cur_line = vim.fn.line('.')

@@ -1,7 +1,7 @@
 return {
 	'noib3/cokeline.nvim',
+	enabled = false,
 	config = function()
-		local colors = require('onedark.colors')
 		require('cokeline').setup({
 			components = {
 				{ text = ' ' },
@@ -14,17 +14,18 @@ return {
 						return string.format('%s%s%s', buffer.unique_prefix, buffer.filename, status)
 					end,
 					fg = function(buffer)
+						local hl = require('utils.highlight')
 						local focused = buffer.is_focused
 						local modified = buffer.is_modified
 
 						if focused and modified then
-							return colors.yellow
+							return hl.get('CokelineFocusedModified').foreground
 						elseif focused then
-							return colors.fg
+							return hl.get('CokelineFocused').foreground
 						elseif modified then
-							return colors.dark_yellow
+							return hl.get('CokelineModified').foreground
 						else
-							return colors.grey
+							return hl.get('CokelineUnfocused').foreground
 						end
 					end,
 				},
@@ -34,11 +35,14 @@ return {
 				filetype = 'NvimTree',
 				components = {
 					{
-						text = ' File Explorer',
+						text = ' NvimTree',
 						fg = function(buffer)
-							return buffer.is_focused and colors.fg or colors.grey
+							local hl = require('utils.highlight')
+							if buffer.is_focused then
+								return hl.get('CokelineSidebarFocused').foreground
+							end
+							return hl.get('CokelineSidebarUnfocused').foreground
 						end,
-						bg = colors.bg_d,
 						style = 'none',
 					},
 				},
@@ -48,18 +52,15 @@ return {
 			},
 			default_hl = {
 				bg = function(buffer)
-					if buffer.is_focused then
-						return colors.bg0
-					end
-
-					return colors.bg_d
+					local hl = require('utils.highlight')
+					return hl.get('TabLineFill').background
 				end,
 			},
 		})
 
 		require('legendary').keymaps({
-			{ '<C-j>', '<Plug>(cokeline-focus-prev)', opts = { noremap = false }, description = '' },
-			{ '<C-k>', '<Plug>(cokeline-focus-next)', opts = { noremap = false }, description = '' },
+			{ '[b', '<Plug>(cokeline-focus-prev)', opts = { noremap = false }, description = '' },
+			{ ']b', '<Plug>(cokeline-focus-next)', opts = { noremap = false }, description = '' },
 		})
 	end,
 }

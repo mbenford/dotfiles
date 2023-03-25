@@ -20,12 +20,6 @@ return {
 			end,
 		})
 
-		local colors = require('onedark.colors')
-		local hl = require('utils.highlight')
-		hl.set('notifyinfobody', { bg = colors.bg_d })
-		hl.set('notifyinfoborder', { fg = colors.cyan, bg = colors.bg_d })
-		hl.set('notifyinfotitle', { fg = colors.fg, bg = colors.bg_d })
-
 		vim.notify = require('notify')
 	end,
 }

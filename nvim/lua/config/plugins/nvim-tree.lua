@@ -38,11 +38,5 @@ return {
 		require('legendary').keymaps({
 			{ '<Leader>e', '<Cmd>NvimTreeToggle<CR>', description = 'Toggles NvimTree' },
 		})
-
-		local colors = require('onedark.colors')
-		local hl = require('utils.highlight')
-		hl.set('NvimTreeNormal', { bg = colors.bg0 })
-		hl.set('NvimTreeEndOfBuffer', { fg = colors.bg0, bg = colors.bg0 })
-		hl.set('NvimTreeVertSplit', { link = 'VertSplit' })
  end
 }

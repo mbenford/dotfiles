@@ -9,7 +9,7 @@ local M = {
 local border = require('utils.ui').borders
 
 function M.config()
-	local actions = require('telescope.actions')
+	 local actions = require('telescope.actions')
 
 	require('telescope').setup({
 		defaults = {
@@ -77,6 +77,8 @@ function M.config()
 		},
 	})
 
+	require('telescope').load_extension('zf-native')
+
 	local builtin = require('telescope.builtin')
 	local lazy = require('legendary.toolbox').lazy
 	require('legendary').keymaps({
@@ -104,10 +106,6 @@ function M.config()
 		{ '<leader>lr', lazy(builtin.lsp_references, { include_declaration = false, show_line = false }), description = '' },
 		{ '<leader>ls', lazy(builtin.lsp_document_symbols, { symbol_width = 50 }), description = '' },
 	})
-
-	local colors = require('onedark.colors')
-	local hl = require('utils.highlight')
-	hl.set('TelescopeTitle', { fg = 'white', bg = colors.cyan })
 end
 
 function M.project_files(opts)

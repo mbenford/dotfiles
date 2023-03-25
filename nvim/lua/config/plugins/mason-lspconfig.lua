@@ -1,7 +1,7 @@
 return {
 	'williamboman/mason-lspconfig.nvim',
 	event = 'BufRead',
-	config = {
+	opts = {
 		automatic_installation = true,
 		ensure_installed = {
 			'bashls',
@@ -14,7 +14,7 @@ return {
 			'jsonls',
 			'pyright',
 			'rust_analyzer',
-			'sumneko_lua',
+			'lua_ls',
 			'terraformls',
 			'tsserver',
 			'yamlls',

@@ -1,39 +1,6 @@
 return {
 	'nvim-lualine/lualine.nvim',
 	config = function()
-		local colors = require('onedark.colors')
-		local theme = {
-			normal = {
-				a = { fg = colors.bg0, bg = colors.green, gui = 'bold' },
-				b = { fg = colors.fg, bg = colors.bg_d },
-				c = { fg = colors.fg, bg = colors.bg_d },
-				x = { fg = colors.fg, bg = colors.bg_d },
-				y = { fg = colors.fg, bg = colors.bg_d },
-				z = { fg = colors.fg, bg = colors.bg_d },
-			},
-			visual = {
-				a = { fg = colors.bg0, bg = colors.purple, gui = 'bold' },
-				z = { fg = colors.fg, bg = colors.bg_d },
-			},
-			replace = {
-				a = { fg = colors.bg0, bg = colors.red, gui = 'bold' },
-				z = { fg = colors.fg, bg = colors.bg_d },
-			},
-			insert = {
-				a = { fg = colors.bg0, bg = colors.blue, gui = 'bold' },
-				z = { fg = colors.fg, bg = colors.bg_d },
-			},
-			command = {
-				a = { fg = colors.bg0, bg = colors.yellow, gui = 'bold' },
-				z = { fg = colors.fg, bg = colors.bg_d },
-			},
-			inactive = {
-				a = { fg = colors.grey, bg = colors.bg_d },
-				b = { fg = colors.grey, bg = colors.bg_d },
-				c = { fg = colors.grey, bg = colors.bg_d },
-			},
-		}
-
 		local function gitsigns_status()
 			local status = vim.api.nvim_buf_get_var(0, 'gitsigns_status_dict')
 			local result = {}
@@ -53,7 +20,7 @@ return {
 
 		local function lsp_status()
 			local clients = vim.lsp.buf_get_clients()
-			return #clients > 0 and 'LSP' or ''
+			return #clients > 0 and '%#LualineLspStatus# LSP' or ''
 		end
 
 		local function filetype()
@@ -80,7 +47,7 @@ return {
 
 		require('lualine').setup({
 			options = {
-				theme = theme,
+				-- theme = theme,
 				globalstatus = true,
 				icons_enabled = true,
 				section_separators = { left = '', right = '' },
@@ -88,11 +55,17 @@ return {
 				disabled_filetypes = {
 					'packer',
 					'lspinfo',
-					'lsp-installer',
 					'startuptime',
 					'TelescopePrompt',
 					'Trouble',
 					'DressingInput',
+					winbar = {
+						'NvimTree',
+						'toggleterm',
+					},
+				},
+				ignore_focus = {
+					'NvimTree',
 				},
 			},
 			sections = {
@@ -104,11 +77,35 @@ return {
 						end,
 					},
 				},
-				lualine_b = {
+				lualine_c = {
 					{ 'branch', icon = '' },
 					gitsigns_status,
 				},
+				lualine_x = {
+					{ lsp_status },
+					{ filetype, fmt = string.upper },
+					{ indentation, fmt = string.upper },
+					{ 'encoding', fmt = string.upper },
+					{ file_format, fmt = string.upper },
+					location,
+				},
+				-- empty sections
+				lualine_b = {},
+				lualine_y = {},
+				lualine_z = {},
+			},
+			inactive_sections = {
+				lualine_a = {},
+				lualine_b = {},
 				lualine_c = {},
+			},
+			winbar = {
+				lualine_c = {
+					{
+						'filename',
+						color = 'LualineWinbar',
+					},
+				},
 				lualine_x = {
 					{
 						'diagnostics',
@@ -120,24 +117,15 @@ return {
 							hint = diagnostic_symbol('DiagnosticSignHint', 'H:'),
 						},
 					},
-					{ lsp_status, icon = { '' }, color = { fg = colors.blue } },
-				},
-				lualine_y = {
-					{ filetype, fmt = string.upper },
-					{ indentation, fmt = string.upper },
-					{ 'encoding', fmt = string.upper },
-					{ file_format, fmt = string.upper },
-				},
-				lualine_z = {
-					location,
 				},
 			},
-			inactive_sections = {
-				lualine_a = {},
-				lualine_b = {
-					{ 'filename', path = 0 },
+			inactive_winbar = {
+				lualine_c = {
+					{
+						'filename',
+						color = 'LualineWinbarInactive',
+					},
 				},
-				lualine_c = {},
 			},
 			extensions = {
 				'nvim-tree',
@@ -146,12 +134,5 @@ return {
 				'toggleterm',
 			},
 		})
-
-		local hl = require('utils.highlight')
-		hl.set('LualineExoticFileFormat', { fg = colors.red, bg = theme.normal.c.bg })
-		hl.set('LualineExoticFileFormat', { fg = colors.red, bg = theme.normal.c.bg })
-		hl.set('LualineGitSignsAdd', { fg = colors.green, bg = theme.normal.c.bg })
-		hl.set('LualineGitSignsChange', { fg = colors.orange, bg = theme.normal.c.bg })
-		hl.set('LualineGitSignsDelete', { fg = colors.red, bg = theme.normal.c.bg })
 	end,
 }

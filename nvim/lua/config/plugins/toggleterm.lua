@@ -6,6 +6,9 @@ return {
 			shade_terminals = false,
 			start_in_insert = true,
 			hide_humbers = true,
+			highlights = {
+				FloatBorder = { link = 'FloatBorder' },
+			},
 			float_opts = {
 				border = require('utils.ui').border_float,
 				width = function()

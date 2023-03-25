@@ -1,10 +1,7 @@
 return {
 	'williamboman/mason.nvim',
-	dependencies = {
-		'mason-lspconfig.nvim',
-	},
 	cmd = 'Mason',
-	config = {
+	opts = {
 		ui = {
 			border = require('utils.ui').border_float,
 			icons = {
