@@ -50,7 +50,7 @@ ruled.client.connect_signal("request::rules", function()
 				},
 			},
 			properties = {
-				tag = "0",
+				tag = "4",
 				switch_to_tags = true,
 			},
 		},

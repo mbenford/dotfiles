@@ -6,7 +6,7 @@ local ezbuttons = require("util.ez").ezbuttons
 local util = require("util.func")
 vicious.contrib = require("vicious.contrib")
 
-local capi = { client = client }
+local api = { client = client }
 
 local M = {}
 
@@ -56,7 +56,7 @@ function M.tasklist(screen)
 		filter = awful.widget.tasklist.filter.currenttags,
 		buttons = ezbuttons({
 			["1"] = function(c)
-				if c == capi.client.focus then
+				if c == api.client.focus then
 					c.minimized = true
 				else
 					c:emit_signal("request::activate", "tasklist", { raise = true })

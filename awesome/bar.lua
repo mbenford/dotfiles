@@ -3,9 +3,9 @@ local awful = require("awful")
 local wibox = require("wibox")
 local widgets = require("widgets")
 
-local capi = { screen = screen }
+local api = { screen = screen }
 
-capi.screen.connect_signal("request::desktop_decoration", function(s)
+api.screen.connect_signal("request::desktop_decoration", function(s)
 	awful.tag({ "1", "2", "3", "4" }, s, awful.layout.suit.tile)
 
 	local padding = widgets.spacer(5)
@@ -31,7 +31,7 @@ capi.screen.connect_signal("request::desktop_decoration", function(s)
 		layout = wibox.layout.fixed.horizontal,
 	}
 
-	if s == capi.screen.primary then
+	if s == api.screen.primary then
 		right = gears.table.join({
 			sep,
 			widgets.cpu(),

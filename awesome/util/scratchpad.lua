@@ -1,14 +1,14 @@
 local awful = require("awful")
 local ruled = require("ruled")
 
-local capi = { client = client }
+local api = { client = client }
 
 local function get_width(value)
-	return value > 1 and value or math.ceil(awful.screen.focused().geometry.width * value)
+	return value > 1 and value or math.ceil(awful.screen.focused().workarea.width * value)
 end
 
 local function get_height(value)
-	return value > 1 and value or math.ceil(awful.screen.focused().geometry.height * value)
+	return value > 1 and value or math.ceil(awful.screen.focused().workarea.height * value)
 end
 
 local function show_client(sp)
@@ -27,7 +27,7 @@ function M.register(name, opts)
 		client = nil,
 		command = opts.command,
 		rule = opts.rule,
-		placement = opts.placement or awful.placement.centered,
+		placement = (opts.placement or awful.placement.centered) + awful.placement.no_offscreen,
 		width = opts.width,
 		height = opts.height,
 		skip_taskbar = opts.skip_taskbar or true,
@@ -66,20 +66,20 @@ function M.toggle(name)
 	end
 end
 
-capi.client.connect_signal("request::manage", function(client)
+api.client.connect_signal("request::manage", function(client)
 	if client.scratchpad_id ~= "" and M.scratchpads[client.scratchpad_id].client == nil then
 		client.hidden = true
 		M.scratchpads[client.scratchpad_id].client = client
 	end
 end)
 
-capi.client.connect_signal("request::unmanage", function(client)
+api.client.connect_signal("request::unmanage", function(client)
 	if client.scratchpad_id ~= "" and M.scratchpads[client.scratchpad_id].client ~= nil then
 		M.scratchpads[client.scratchpad_id].client = nil
 	end
 end)
 
-capi.client.connect_signal("unfocus", function(client)
+api.client.connect_signal("unfocus", function(client)
 	if client.scratchpad_id ~= "" then
 		client:tags({})
 		client.hidden = true

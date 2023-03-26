@@ -1,7 +1,7 @@
 local awful = require("awful")
 local naughty = require("naughty")
 
-local capi = { tag = tag }
+local api = { client = client, tag = tag }
 
 naughty.connect_signal("request::display_error", function(message, startup)
 	naughty.notification({
@@ -11,38 +11,48 @@ naughty.connect_signal("request::display_error", function(message, startup)
 	})
 end)
 
-capi.tag.connect_signal("request::default_layouts", function()
+api.client.connect_signal("property::urgent", function(c)
+	if c.urgent then
+		c:jump_to()
+	end
+end)
+
+api.tag.connect_signal("request::default_layouts", function()
 	awful.layout.append_default_layouts({
 		awful.layout.suit.tile,
 		awful.layout.suit.max,
+		awful.layout.suit.fair,
 	})
 end)
 
-local function set_padding(t)
-	local static_clients = 0
-	for _, client in ipairs(t:clients()) do
-		if not client.floating then
-			static_clients = static_clients + 1
+local min_screen_width = 1920
+local function fix_screen_padding(tag)
+	local screen = tag.screen
+	screen.padding = { left = 0, right = 0 }
+
+	if screen.geometry.width <= min_screen_width then
+		return
+	end
+
+	local regular_clients_count = 0
+	for _, client in ipairs(tag:clients()) do
+		if not client.floating and not client.minimized then
+			regular_clients_count = regular_clients_count + 1
 		end
 	end
 
-	if static_clients > 1 and t.layout ~= awful.layout.suit.max then
-		t.screen.padding = { left = 0, right = 0 }
-		return
+	if regular_clients_count == 1 or tag.layout == awful.layout.suit.max then
+		local padding = screen.geometry.width - min_screen_width
+		screen.padding = { left = padding / 2, right = padding / 2 }
 	end
-
-	if t.screen.geometry.width <= 1920 then
-		t.screen.padding = { left = 0, right = 0 }
-		return
-	end
-
-	local padding = t.screen.geometry.width - 1920
-	t.screen.padding = { left = padding / 2, right = padding / 2 }
 end
 
-capi.tag.connect_signal("tagged", set_padding)
-capi.tag.connect_signal("untagged", set_padding)
-capi.tag.connect_signal("cleared", set_padding)
-capi.tag.connect_signal("property::selected", set_padding)
-capi.tag.connect_signal("property::layout", set_padding)
+api.tag.connect_signal("tagged", fix_screen_padding)
+api.tag.connect_signal("untagged", fix_screen_padding)
+api.tag.connect_signal("cleared", fix_screen_padding)
+api.tag.connect_signal("property::selected", fix_screen_padding)
+api.tag.connect_signal("property::layout", fix_screen_padding)
 
+api.client.connect_signal("property::minimized", function(c)
+	fix_screen_padding(c.first_tag)
+end)

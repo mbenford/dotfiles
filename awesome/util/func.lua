@@ -1,3 +1,5 @@
+local awful = require("awful")
+
 local M = {}
 
 function M.map_threshold(value, thresholds)
@@ -17,6 +19,23 @@ function M.lazy(func, ...)
 	local args = { ... }
 	return function()
 		func(table.unpack(args))
+	end
+end
+
+function M.client_func(func)
+	return function()
+		if client.focus then
+			func(client.focus)
+		end
+	end
+end
+
+function M.tag_func(func)
+	return function()
+		local tag = awful.screen.focused().selected_tag
+		if tag then
+			func(tag)
+		end
 	end
 end
 
