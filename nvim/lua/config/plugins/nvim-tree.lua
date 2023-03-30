@@ -1,7 +1,7 @@
 return {
-	'kyazdani42/nvim-tree.lua',
+	'nvim-tree/nvim-tree.lua',
 	dependencies = {
-		'nvim-web-devicons',
+		'nvim-tree/nvim-web-devicons',
 	},
 	keys = { '<Leader>e' },
 	config = function ()

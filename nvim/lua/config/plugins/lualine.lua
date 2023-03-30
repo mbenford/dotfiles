@@ -47,7 +47,7 @@ return {
 
 		require('lualine').setup({
 			options = {
-				-- theme = theme,
+				theme = 'catppuccin',
 				globalstatus = true,
 				icons_enabled = true,
 				section_separators = { left = '', right = '' },
@@ -82,6 +82,16 @@ return {
 					gitsigns_status,
 				},
 				lualine_x = {
+					{
+						'diagnostics',
+						sources = { 'nvim_diagnostic' },
+						symbols = {
+							error = diagnostic_symbol('DiagnosticSignError', 'E:'),
+							warn = diagnostic_symbol('DiagnosticSignWarn', 'W:'),
+							info = diagnostic_symbol('DiagnosticSignInfo', 'I:'),
+							hint = diagnostic_symbol('DiagnosticSignHint', 'H:'),
+						},
+					},
 					{ lsp_status },
 					{ filetype, fmt = string.upper },
 					{ indentation, fmt = string.upper },
@@ -99,34 +109,24 @@ return {
 				lualine_b = {},
 				lualine_c = {},
 			},
-			winbar = {
-				lualine_c = {
-					{
-						'filename',
-						color = 'LualineWinbar',
-					},
-				},
-				lualine_x = {
-					{
-						'diagnostics',
-						sources = { 'nvim_diagnostic' },
-						symbols = {
-							error = diagnostic_symbol('DiagnosticSignError', 'E:'),
-							warn = diagnostic_symbol('DiagnosticSignWarn', 'W:'),
-							info = diagnostic_symbol('DiagnosticSignInfo', 'I:'),
-							hint = diagnostic_symbol('DiagnosticSignHint', 'H:'),
-						},
-					},
-				},
-			},
-			inactive_winbar = {
-				lualine_c = {
-					{
-						'filename',
-						color = 'LualineWinbarInactive',
-					},
-				},
-			},
+			-- winbar = {
+			-- 	lualine_c = {
+			-- 		{
+			-- 			'filename',
+			-- 			color = 'LualineWinbar',
+			-- 		},
+			-- 	},
+			-- 	lualine_x = {
+			-- 	},
+			-- },
+			-- inactive_winbar = {
+			-- 	lualine_c = {
+			-- 		{
+			-- 			'filename',
+			-- 			color = 'LualineWinbarInactive',
+			-- 		},
+			-- 	},
+			-- },
 			extensions = {
 				'nvim-tree',
 				'quickfix',
