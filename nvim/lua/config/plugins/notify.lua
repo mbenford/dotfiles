@@ -1,14 +1,12 @@
 return {
 	'rcarriga/nvim-notify',
-	-- event = 'VeryLazy',
+	event = 'VeryLazy',
 	config = function()
 		require('notify').setup({
 			stages = 'static',
-			render = 'simple',
-			top_down = false,
+			render = 'wrapped-compact',
 			on_open = function(win)
 				if vim.api.nvim_win_is_valid(win) then
-					vim.api.nvim_win_set_config(win, { border = require('utils.ui').border_float })
 					vim.api.nvim_win_set_option(win, 'wrap', true)
 				end
 			end,

@@ -3,14 +3,24 @@ return {
 	config = function()
 		local builtin = require('statuscol.builtin')
 		require('statuscol').setup({
-			ft_ignore = {
-				'NvimTree',
-			},
 			relculright = true,
 			segments = {
+				{
+					sign = {
+						namespace = { 'gitsigns' },
+						colwidth = 1,
+						auto = true,
+					},
+				},
+				{
+					sign = {
+						name = { '.*' },
+						maxwidth = 2,
+						colwidth = 1,
+						auto = true,
+					},
+				},
 				{ text = { builtin.lnumfunc, ' ' } },
-				{ text = { '%s' } },
-				{ text = { builtin.foldfunc, ' ' } },
 			},
 		})
 	end,

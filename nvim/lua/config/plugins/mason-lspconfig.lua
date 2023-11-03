@@ -1,6 +1,6 @@
 return {
 	'williamboman/mason-lspconfig.nvim',
-	event = 'BufRead',
+	event = { 'BufRead', 'InsertEnter' },
 	opts = {
 		automatic_installation = true,
 		ensure_installed = {
@@ -19,5 +19,5 @@ return {
 			'tsserver',
 			'yamlls',
 		},
-	}
+	},
 }

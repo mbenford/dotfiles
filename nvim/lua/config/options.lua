@@ -18,7 +18,7 @@ o.hlsearch = false
 o.ignorecase = true
 o.linebreak = true
 o.list = true
-o.listchars = { trail = '·', tab = '  ' }
+o.listchars = { tab = '  ', trail = '·' }
 o.mouse = 'a'
 o.numberwidth = 2
 o.number = true
@@ -26,7 +26,7 @@ o.relativenumber = true
 o.ruler = false
 o.scrolloff = 3
 o.shiftwidth = 2
-o.shortmess:append({ I = true, S = true, a = true, s = true, c = true })
+o.shortmess:append({ I = true, a = true, s = true, c = true })
 o.showcmd = false
 o.showmode = false
 o.sidescroll = 1
@@ -34,6 +34,7 @@ o.sidescrolloff = 5
 o.signcolumn = 'auto:1-2'
 o.smartcase = true
 o.smartindent = false
+o.spell = false
 o.spelllang = { 'en_us', 'pt_br' }
 o.spelloptions = 'camel'
 o.softtabstop = 2
@@ -48,4 +49,5 @@ o.undofile = true
 o.updatetime = 250
 o.virtualedit = ''
 o.wildmode = 'full'
+o.winbar = '%f%{&mod?"*":""}'
 o.wrap = false

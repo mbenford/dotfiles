@@ -11,4 +11,11 @@ function M.last_index_of(str, substr)
 	return -1
 end
 
+function M.truncate_left(str, length)
+	if #str <= length then
+		return str
+	end
+	return '…' .. str:sub(#str - length + 2, #str)
+end
+
 return M

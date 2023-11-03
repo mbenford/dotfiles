@@ -4,7 +4,7 @@ return {
 	config = function()
 		require('dressing').setup({
 			input = {
-				border = require('utils.ui').border_float,
+				border = 'rounded',
 				prompt_align = 'center',
 				win_options = {
 					winblend = 0,
@@ -15,14 +15,20 @@ return {
 					local min_width = math.max(#prompt, #default) + 10
 
 					return {
+						prompt = ' ' .. vim.trim(prompt) .. ' ',
 						min_width = min_width,
 						start_in_insert = vim.trim(prompt) == 'Create file' or #default == 0,
 					}
 				end,
 			},
 			select = {
-				backend = { 'telescope' },
-				telescope = require('config.plugins.telescope').center_theme(),
+				get_config = function(opts)
+					local themes = require('telescope.themes')
+					return {
+						backend = 'telescope',
+						telescope = opts.kind == 'codeaction' and themes.get_cursor() or themes.get_dropdown(),
+					}
+				end,
 			},
 		})
 	end,

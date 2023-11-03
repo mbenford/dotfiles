@@ -48,46 +48,55 @@ return {
 				'vim',
 				'yaml',
 			},
-			highlight = {
-				enable = true,
-				additional_vim_regex_highlighting = false,
-			},
+			playground = { enable = true },
+			highlight = { enable = true },
+			indent = { enable = false },
+			autotag = { enable = true },
+			matchup = { enable = true },
 			incremental_selection = {
 				enable = true,
 				keymaps = {
-					init_selection = '<Leader>vv',
-					node_incremental = '<Leader>vv',
-					node_decremental = '<Leader>vd',
-					scope_incremental = '<Leader>vs',
+					node_incremental = '<Up>',
+					node_decremental = '<Down>',
 				},
 			},
-			indent = { enable = false },
-			playground = { enable = true },
-			query_linter = {
-				enable = true,
-				use_virtual_text = true,
-				lint_events = { 'BufWrite', 'CursorHold' },
-			},
-			autotag = { enable = true },
 			textobjects = {
 				select = {
 					enable = true,
-					lookahead = false,
+					lookahead = true,
 					keymaps = {
+						['aa'] = '@parameter.outer',
+						['ia'] = '@parameter.inner',
 						['af'] = '@function.outer',
 						['if'] = '@function.inner',
-						['ax'] = '@block.inner',
+						['ac'] = '@class.outer',
+						['ic'] = '@class.inner',
 					},
-					selection_modes = {
-						['@function.outer'] = 'V',
-						['@function.inner'] = 'V',
+				},
+				move = {
+					enable = true,
+					set_jumps = true,
+					goto_next_start = {
+						[']f'] = '@function.outer',
+						[']]'] = '@class.outer',
+					},
+					goto_next_end = {
+						[']F'] = '@function.outer',
+						[']['] = '@class.outer',
+					},
+					goto_previous_start = {
+						['[f'] = '@function.outer',
+						['[['] = '@class.outer',
+					},
+					goto_previous_end = {
+						['[F'] = '@function.outer',
+						['[]'] = '@class.outer',
 					},
 				},
 			},
-			matchup = { enable = true },
 		})
 
 		local ts = vim.treesitter
-		ts.language.register('pcss', 'scss')
+		ts.language.register('css', 'pcss')
 	end,
 }

@@ -3,10 +3,10 @@ return {
 	cmd = 'Mason',
 	opts = {
 		ui = {
-			border = require('utils.ui').border_float,
+			border = 'rounded',
 			icons = {
 				package_installed = ' ',
-				package_pending = ' ',
+				package_pending = '󰇚',
 				package_uninstalled = ' ',
 			},
 		},

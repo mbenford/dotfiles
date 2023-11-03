@@ -1,21 +1,37 @@
 return {
 	'nvim-tree/nvim-web-devicons',
 	lazy = true,
-	config = function()
-		require('nvim-web-devicons').setup({
-			default = true,
-			override = {
-				css = {
-					icon = '',
-					color = '#264de4',
-					name = 'CSS',
-				},
-				tf = {
-					icon = '',
-					color = '#8956c4',
-					name = 'terraform',
-				},
+	opts = {
+		default = true,
+		strict = true,
+		override = {
+			css = {
+				icon = '',
+				color = '#264de4',
+				name = 'CSS',
 			},
-		})
-	end
+			scss = {
+				icon = '',
+				color = '#264de4',
+				name = 'SASS',
+			},
+			pcss = {
+				icon = '',
+				color = '#264de4',
+				name = 'PostCSS',
+			},
+		},
+		override_by_filename = {
+			['go.mod'] = {
+				icon = '',
+				color = '#519aba',
+				name = 'GoMod',
+			},
+			['go.sum'] = {
+				icon = '',
+				color = '#519aba',
+				name = 'GoSum',
+			},
+		},
+	},
 }

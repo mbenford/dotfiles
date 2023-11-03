@@ -1,7 +1,7 @@
 return {
 	'abecodes/tabout.nvim',
 	event = 'InsertEnter',
-	config = {
+	opts = {
 		tabkey = '<tab>',
 	},
 }

@@ -17,6 +17,7 @@ return {
 				{ name = 'luasnip' },
 				{ name = 'path', keyword_length = 3 },
 				{ name = 'buffer', keyword_length = 3 },
+				{ name = 'copilot' },
 			}),
 			completion = {
 				autocomplete = {
@@ -43,10 +44,11 @@ return {
 				end,
 			},
 			sorting = {
+				priority_weight = 2,
 				comparators = {
-					cmp.config.compare.locality,
 					cmp.config.compare.recently_used,
 					cmp.config.compare.score,
+					cmp.config.compare.locality,
 					cmp.config.compare.offset,
 					cmp.config.compare.order,
 				},
@@ -59,12 +61,9 @@ return {
 			preselect = cmp.PreselectMode.None,
 			window = {
 				documentation = {
-					border = require('utils.ui').border_float,
+					border = 'rounded',
 					winhighlight = 'FloatBorder:FloatBorder',
 				},
-			},
-			experimental = {
-				ghost_text = true,
 			},
 		})
 	end,

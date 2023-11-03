@@ -3,40 +3,13 @@ return {
 	dependencies = {
 		'mason.nvim',
 	},
-	event = 'BufRead',
+	event = { 'BufRead', 'InsertEnter' },
 	config = function()
-		local server_opts = {
-			['cssls'] = {
-				filetypes = { 'css', 'scss', 'less', 'pcss' },
-			},
-			['jsonls'] = {
-				settings = {
-					json = {
-						schemas = require('schemastore').json.schemas(),
-						validate = { enable = true },
-					},
-				},
-			},
-			['lua_ls'] = {
-				settings = {
-					Lua = {
-						diagnostics = {
-							globals = { 'vim' },
-						},
-						telemetry = {
-							enable = false,
-						},
-					},
-				},
-			},
-		}
-
 		for _, server in pairs(require('mason-lspconfig').get_installed_servers()) do
-			require('lspconfig')[server].setup(require('config.lsp').setup_server(server_opts[server] or {}))
+			require('lspconfig')[server].setup(require('config.lsp').setup_server(server))
 		end
 
-		require('lspconfig.ui.windows').default_options.border = require('utils.ui').border_float
-
+		require('lspconfig.ui.windows').default_options.border = 'rounded'
 		local hl = require('utils.highlight')
 		hl.set('LspInfoBorder', { link = 'FloatBorder' })
 	end,

@@ -1,7 +1,8 @@
 return {
 	'lukas-reineke/indent-blankline.nvim',
-	event = 'BufRead',
-	config = {
+	event = { 'BufRead', 'InsertEnter' },
+	tag = 'v2.20.8',
+	opts = {
 		char = '▏',
 		use_treesitter = true,
 		show_first_indent_level = true,

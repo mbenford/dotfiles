@@ -3,6 +3,7 @@ return {
 	name = 'catppuccin',
 	opts = {
 		flavour = 'macchiato',
+		no_bold = true,
 		no_italic = true,
 		integrations = {
 			native_lsp = {
@@ -20,6 +21,10 @@ return {
 			navic = {
 				enabled = true,
 			},
+			neotree = true,
+			neotest = true,
+			mason = true,
+			notify = true,
 		},
 		custom_highlights = function(colors)
 			return {
@@ -29,10 +34,15 @@ return {
 				TextYank = { fg = colors.yellow, bg = colors.none, reverse = true },
 				VertSplit = { fg = colors.surface0 },
 				NormalFloat = { bg = colors.base },
+				WinBar = { fg = colors.text },
 
 				-- NvimTree
 				NvimTreeNormal = { bg = colors.base },
 				NvimTreeWinSeparator = { link = 'VertSplit' },
+
+				-- Neo-tree
+				NeoTreeNormal = { bg = colors.base },
+				NeoTreeNormalNC = { bg = colors.base },
 
 				-- Telescope
 				TelescopeTitle = { reverse = true },
@@ -42,9 +52,10 @@ return {
 				LualineGitSignsAdd = { fg = colors.green, bg = colors.mantle },
 				LualineGitSignsChange = { fg = colors.yellow, bg = colors.mantle },
 				LualineGitSignsDelete = { fg = colors.red, bg = colors.mantle },
-				LualineLspStatus = { fg = colors.blue, bg = colors.mantle },
 				LualineWinbar = { bg = colors.base },
 				LualineWinbarInactive = { fg = colors.overlay0, bg = colors.base },
+				LualineLspActive = { fg = colors.green, bg = colors.mantle },
+				LualineCopilotActive = { fg = colors.blue, bg = colors.mantle },
 
 				-- Cokeline
 				CokelineFocused = { fg = colors.blue },
@@ -56,6 +67,12 @@ return {
 
 				-- Dressing
 				FloatTitle = { fg = colors.blue, reverse = true },
+
+				-- Lightbulb
+				LightBulbSign = { fg = colors.yellow },
+
+				-- Flash
+				FlashLabel = { fg = colors.crust, bg = colors.peach },
 			}
 		end,
 	},

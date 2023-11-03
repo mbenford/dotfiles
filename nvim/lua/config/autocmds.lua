@@ -19,14 +19,8 @@ require('legendary').autocmds({
 					return
 				end
 
-				local name = ''
-				local directory = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
-				if buffer.name == '' then
-					name = '[No Name]'
-				else
-					name = vim.fn.fnamemodify(buffer.name, ':t')
-				end
-				vim.opt.titlestring = string.format('%s - %s', name, directory)
+				local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+				vim.opt.titlestring = string.format('%s | Neovim', cwd)
 			end,
 		},
 	},

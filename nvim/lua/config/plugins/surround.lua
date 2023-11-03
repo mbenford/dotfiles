@@ -1,14 +1,13 @@
 return {
 	'kylechui/nvim-surround',
 	event = 'BufRead',
-	config = {
+	opts = {
 		keymaps = {
-			normal = 'gs',
-			normal_cur = 'gS',
-			normal_cur_line = 'gSS',
-			visual = 'gs',
-			change = 'gsr',
-			delete = 'gsd',
+			normal = '<C-s>',
+			normal_cur = '<C-S-s>',
+			visual = '<C-s>',
+			change = '<C-s>r',
+			delete = '<C-s>d',
 		},
-	}
+	},
 }

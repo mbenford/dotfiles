@@ -1,7 +1,6 @@
 return {
 	'Wansmer/treesj',
-	dependencies = {
-		'nvim-treesitter',
-	},
+	dependencies = { 'nvim-treesitter/nvim-treesitter' },
 	event = 'BufRead',
+	opts = { },
 }

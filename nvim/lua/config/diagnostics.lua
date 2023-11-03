@@ -1,28 +1,27 @@
 local sign = vim.fn.sign_define
-sign('DiagnosticSignError', { text = ' ', texthl = 'DiagnosticSignError' })
-sign('DiagnosticSignWarn', { text = ' ', texthl = 'DiagnosticSignWarn' })
-sign('DiagnosticSignInfo', { text = ' ', texthl = 'DiagnosticSignInfo' })
-sign('DiagnosticSignHint', { text = '硫', texthl = 'DiagnosticSignHint' })
+sign('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError' })
+sign('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' })
+sign('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
+sign('DiagnosticSignHint', { text = '󰌶', texthl = 'DiagnosticSignHint' })
 
 vim.diagnostic.config({
-	virtual_text = false,
+	update_in_insert = false,
 	signs = false,
 	underline = true,
-	update_in_insert = false,
-
+	severity_sort = true,
+	virtual_text = {
+		spacing = 0,
+		prefix = '',
+		suffix = ' ',
+		severity = vim.diagnostic.severity.ERROR,
+	},
 	float = {
 		scope = 'line',
 		focusable = false,
 		severity_sort = true,
 		source = 'always',
-		border = require('utils.ui').border_float,
+		border = 'rounded',
 		header = '',
 		prefix = '',
-		format = function(diagnostic)
-			if diagnostic.code then
-				return string.format('%s (%s)', diagnostic.message, diagnostic.code)
-			end
-			return diagnostic.message
-		end,
 	},
 })

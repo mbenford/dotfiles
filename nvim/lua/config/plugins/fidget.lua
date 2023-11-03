@@ -1,7 +1,9 @@
 return {
 	'j-hui/fidget.nvim',
+	enabled = false,
+	tag = 'legacy',
 	event = { 'LspAttach' },
-	config = {
+	opts = {
 		text = {
 			spinner = 'dots_scrolling',
 			done = '',

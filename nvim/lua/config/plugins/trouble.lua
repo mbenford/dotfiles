@@ -1,5 +1,7 @@
 return {
 	'folke/trouble.nvim',
 	event = 'BufRead',
-	config = true,
+	opts = {
+		use_diagnostic_signs = true,
+	},
 }
