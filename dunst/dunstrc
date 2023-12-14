@@ -1,25 +1,33 @@
 [global]
-monitor = 0
+monitor = 1
 follow = none
-width = (300, 400)
+width = (400, 700)
 height = 200
-origin = top-right
-offset = 10x40
+origin = top-center
+offset = 0x0
+notification_limit = 1
 indicate_hidden = true
 transparency = 0
 padding = 8
 horizontal_padding = 8
 frame_width = 1
-frame_color = "#5c6370"
-gap_size = 5
+frame_color = "#b7bdf8"
+gap_size = 0
 separator_height = 1
 separator_color = frame
 sort = true
 idle_threshold = 5m
 enable_posix_regex = true
 
+# Progress bar
+progress_bar_height = 20
+progress_bar_frame_width = 1
+progress_bar_min_width = 150
+progress_bar_max_width = 400
+progress_bar_corner_radius = 0
+
 # Text
-font = Ubuntu Mono 12
+font = Ubuntu 12
 line_height = 0
 markup = full
 format = "<b>%s</b>\n%b%n"
@@ -34,14 +42,16 @@ hide_duplicate_count = false
 show_indicators = false
 
 # Icons
+enable_recursive_icon_lookup = true
 icon_position = left
-min_icon_size = 0
-max_icon_size = 48
-icon_path = /usr/share/icons/Papirus/48x48/apps:/usr/share/icons/Papirus/48x48/devices:/usr/share/icons/Papirus/48x48/status
+min_icon_size = 48
+max_icon_size = 64
+icon_theme = Papirus-Dark
+# icon_path = /usr/share/icons/Papirus/48x48/apps:/usr/share/icons/Papirus/48x48/devices:/usr/share/icons/Papirus/48x48/status
 
 # History
 sticky_history = true
-history_length = 20
+history_length = 100
 
 # Misc
 dmenu = /usr/bin/rofi -dmenu -p dunst
@@ -64,19 +74,21 @@ mouse_right_click = close_all
 per_monitor_dpi = false
 
 [urgency_low]
-background = "#21252b"
-foreground = "#ffffff"
-timeout = 3
+background = "#24273A"
+foreground = "#CAD3F5"
+override_dbus_timeout = 5
 
 [urgency_normal]
-background = "#21252b"
-foreground = "#ffffff"
-timeout = 3
+background = "#24273A"
+foreground = "#CAD3F5"
+override_dbus_timeout = 5
+highlight = "#8aadf4"
 
 [urgency_critical]
-background = "#22252c"
-frame_color = "#f44747"
-timeout = 0
+background = "#24273A"
+foreground = "#CAD3F5"
+frame_color = "#F5A97F"
+override_dbus_timeout = 0
 
 [transient_history_ignore]
 match_transient = true
@@ -102,5 +114,12 @@ appname = Spotify
 set_transient = 1
 max_icon_size = 128
 history_ignore = true
+
+[volumeicon]
+appname = Volume Icon
+set_transient = 1
+min_icon_size = 24
+icon_position = top
+hide_text = true
 
 # vim: ft=cfg
