@@ -1,5 +1,7 @@
+@import "shared/colors.rasi"
+
 * {
-	font: "mono 12";
+	font: "sans 20";
 	text-color: var(foreground);
 	background-color:	var(background);
 }
@@ -13,10 +15,8 @@ window {
 }
 
 inputbar {
-	border-color: var(border);
-	padding: 3px;
-	border: 0px solid 0px 1px;
-	children: [entry, mode-switcher];
+	padding: 5px;
+	children: [entry, prompt];
 }
 
 entry {
@@ -26,18 +26,30 @@ entry {
 	width: 100%;
 }
 
+prompt {
+	color: var(prompt-fg);
+	background-color: var(prompt-bg);
+	font: "mono 18";
+	width: 100px;
+	padding: 0px 10px;
+	vertical-align: 0.5;
+}
+
+textbox {
+	font: "mono 12";
+	horizontal-align: 0.5;
+}
+
 listview {
+	border: 1px 0px 0px 0px;
+	border-color: var(border);
 	layout: vertical;
-	columns: 2;
-	lines: 10;
+	columns: 1;
+	lines: 5;
 	dynamic: true;
 	fixed-height: false;
 	cycle: false;
-}
-
-element-icon {
-	size: 32;
-	padding: 0px 5px 0px 0px;
+	require-input: true;
 }
 
 element {
@@ -53,26 +65,17 @@ element-text selected {
 
 element-text,
 element-text selected {
-  highlight: var(item-highlight); 
+	font: "sans 20";
+  highlight: var(item-highlight);
 	vertical-align: 0.5;
+}
+
+element-icon {
+	size: 48;
+	padding: 0px 5px 0px 0px;
 }
 
 mode-switcher {
 	spacing: 5px;
 }
 
-button {
-	background-color: var(background-alt);
-}
-
-button,
-button selected {
-	font: "mono 10";
-	padding: 0px 5px;
-	width: 80px;
-}
-
-button selected {
-	text-color: var(button-selected-fg);
-	background-color: var(button-selected-bg);
-}

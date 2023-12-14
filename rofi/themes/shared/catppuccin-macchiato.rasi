@@ -1,0 +1,13 @@
+* {
+	foreground: #CAD3F5;
+	background:	#24273A;
+	background-alt:	#363A4F;
+	border: #8AADF4;
+	prompt-fg: #ffffff;
+	prompt-bg: #363A4F;
+	item-selected-fg: #ffffff;
+	item-selected-bg: #363A4F;
+	item-highlight: #C6A0F6;
+	button-selected-fg: #ffffff;
+	button-selected-bg: #8AADF4;
+}

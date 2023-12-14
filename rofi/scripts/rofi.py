@@ -1,24 +1,31 @@
-import sys
 import argparse
+from abc import ABC, abstractmethod
 from os import getenv
 
 
-class Rofi:
+class RofiScript(ABC):
     def __init__(self):
-        self.__retv = getenv("ROFI_RETV")
-
         info = getenv("ROFI_INFO", "")
         self.__info = [] if info == "" else info.split(";")
+        self.__retv = getenv("ROFI_RETV")
 
-    def handle_startup(self, generate, process):
+    def run(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('selected', nargs='?', default='')
         args, rest = parser.parse_known_args()
 
         if args.selected == '':
-            generate(self, args=rest)
+            self.generate(args=rest)
         else:
-            process(self, selected=args.selected, args=rest)
+            self.execute(selected=args.selected, args=rest)
+
+    @abstractmethod
+    def generate(self, args):
+        pass
+
+    @abstractmethod
+    def execute(self, selected, args):
+        pass
 
     def row(self, text, icon=None, meta=None, info=None, selectable=True):
         opts = []
@@ -63,6 +70,10 @@ class Rofi:
 
     def custom_entry(self, enabled):
         self.__set_option("no-custom", str(enabled).lower())
+        return self
+
+    def hotkeys(self, enabled):
+        self.__set_option("use-hot-keys", str(enabled).lower())
         return self
 
     @staticmethod

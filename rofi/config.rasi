@@ -5,15 +5,24 @@ configuration {
 	matching: "fuzzy";
 	show-icons: true;
 	application-fallback-icon: "emblem-question";
-	
-	modi: "drun,run";
+
+	modi: "drun";
 	display-drun: "apps";
 	drun-match-fields: "name,generic";
-	drun-display-format: "<b>{name}</b>";
+	drun-display-format: "{name}";
 
 	kb-element-next: "";
 	kb-mode-next: "Tab";
 	kb-row-select: "Control-s";
+	kb-remove-char-back: "BackSpace";
+	kb-mode-complete: "";
+	kb-clear-line: "Control-l";
+	kb-move-word-back: "Control-b";
+	kb-move-word-forward: "Control-w";
+	kb-move-char-back: "Control-Left";
+	kb-move-char-forward: "Control-Right";
+	kb-row-left: "Left";
+	kb-row-right: "Right";
 
 	run, drun {
 		fallback-icon: "application-x-addon";
@@ -30,4 +39,3 @@ configuration {
 }
 
 @theme "themes/default.rasi"
-@import "colors/onedark.rasi"

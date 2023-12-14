@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+
+import subprocess
+import json
+from rofi import RofiScript
+
+class DunstHistory(RofiScript):
+    def __init__(self):
+        super().__init__()
+        self.custom_entry(False)
+        self.markup_rows(True)
+
+
+    def generate(self, args):
+        notifications = json.loads(subprocess.check_output("dunstctl history", shell=True, text=True))
+
+        for notification in notifications["data"][0]:
+            self.row(notification["message"]["data"], icon=notification["icon_path"]["data"])
+
+
+    def execute(self, selected, args):
+        pass
+
+
+if __name__ == "__main__":
+    DunstHistory().run()

@@ -1,0 +1,34 @@
+@import "shared/colors.rasi"
+@import "default.rasi"
+
+textbox {
+	font: "sans 14";
+	padding: 5px;
+}
+
+listview {
+	layout: vertical;
+	flow: horizontal;
+	columns: 5;
+	fixed-height: false;
+	fixed-columns: true;
+	cycle: false;
+	require-input: false;
+}
+
+element {
+	orientation: vertical;
+	padding: 10px;
+}
+
+element-text,
+element-text selected {
+  highlight: var(item-highlight);
+	vertical-align: 0.5;
+	horizontal-align: 0.5;
+}
+
+element-icon {
+	size: 64;
+	padding: 0;
+}

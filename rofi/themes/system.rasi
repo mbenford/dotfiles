@@ -1,0 +1,24 @@
+@import "shared/colors.rasi"
+@import "columns.rasi"
+
+inputbar {
+	enabled: false;
+}
+
+listview {
+	fixed-columns: false;
+	lines: 1;
+}
+
+element {
+	padding: 5px 0px;
+}
+
+element-text {
+	font: "sans 12";
+}
+
+element-icon {
+	size: 64;
+	padding: 0;
+}
