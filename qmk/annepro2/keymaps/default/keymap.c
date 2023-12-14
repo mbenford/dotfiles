@@ -4,9 +4,9 @@
 #include "config.h"
 
 enum anne_pro_layers {
-  DEF,
-  FN1,
-	FN2,
+    DEF,
+    FN1,
+    FN2,
 };
 
 const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -20,7 +20,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	[FN1] = KEYMAP(
     KC_ESC, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_DEL,
-    _______, _______, _______, KC_ESC, _______, _______, _______, _______, KC_HOME, KC_END, _______, _______, _______, KC_CAPS,
+    _______, _______, _______, KC_ESC, _______, _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END, _______, _______, KC_CAPS,
     _______, KC_LALT, KC_LSFT, KC_LCTL, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_BSPC, KC_DEL, KC_PSCR,
     _______, _______, S(KC_DEL), C(KC_INS), S(KC_INS), KC_MEDIA_PLAY_PAUSE, KC_MPRV, KC_MNXT, KC_VOLD, KC_VOLU, KC_MUTE, _______,
     _______, _______, _______, KC_ENT, _______, _______, _______, _______
