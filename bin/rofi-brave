@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+rofi -show brave -modes brave \
+	-kb-accept-custom "" \
+	-kb-custom-1 "Control-Return" \
+	-theme columns \
+	-theme-str "inputbar{enabled:false;}" \
+	-theme-str "listview{fixed-columns:false;lines:1;}"

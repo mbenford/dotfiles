@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+rofi -show system -modes system -theme system.rasi

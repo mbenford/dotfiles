@@ -2,19 +2,19 @@
 
 set -e
 
-hash=$(
+hash=`
 	git \
 	--no-pager log -100 \
-	--pretty='%C(yellow)%h%Creset %C(bold blue)%<(15,trunc)%ae%Creset %Cgreen%cs %C(auto)%d%Creset %s' \
+	--pretty='%C(yellow)%h%Creset %C(bold blue)%<(15,trunc)%ae%Creset %Cgreen%cs%C(auto)%d%Creset %s' \
 	--color=always \
 	| fzf \
-	--height=60% \
-	--ansi \
 	--preview 'git show --name-status {1}' \
-	--preview-window down,40%,border-sharp,hidden \
+	--preview-window right,50%,border-sharp,hidden \
 	--bind 'ctrl-p:toggle-preview' \
+	--bind 'ctrl-j:preview-down' \
+	--bind 'ctrl-k:preview-up' \
 	| awk '{printf $1}'
-)
+`
 
 [[ -z "$hash" ]] && exit 1
 
@@ -26,7 +26,7 @@ actions=(
 	"Reset"
 	"Show"
 )
-action=$(printf "%s\n" "${actions[@]}" | fzf --height=$((${#actions[@]} + 1)))
+action=`printf "%s\n" "${actions[@]}" | fzf --height=$((${#actions[@]} + 1))`
 [[ -z "$action" ]] && exit 1
 
 case $action in

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+rofi -show dotfiles -modes dotfiles

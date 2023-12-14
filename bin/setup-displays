@@ -23,7 +23,7 @@ auto_setup() {
 
 	cmd="xrandr"
 
-	if [[ "$count" -gt "1" ]]; then
+	if [[ "$count" -gt "2" ]]; then
 		cmd="$cmd --output $edp --off"
 	fi
 
