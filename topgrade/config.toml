@@ -1,0 +1,3 @@
+[misc]
+only = ["cargo", "firmware", "go", "pipx", "pip3", "rustup", "shell", "system", "tldr"]
+no_retry = true
