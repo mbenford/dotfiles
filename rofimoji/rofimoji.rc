@@ -1,8 +1,10 @@
 files = [emojis]
-skin-tone = light
+skin-tone = neutral
 prompt = emoji
-max-recent = 5
+max-recent = 0
 action = type
-clipboarder = xsel
+clipboarder = xclip
 typer = xdotool
-selector-args = -eh 1 -matching normal -theme-str "#element{children:[element-text];}"
+hidden-descriptions = true
+selector-args = -eh 1 -matching normal -theme "rofimoji.rasi"
+keybinding-copy = Control+c
