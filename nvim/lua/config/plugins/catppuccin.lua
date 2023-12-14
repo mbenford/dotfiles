@@ -1,17 +1,17 @@
 return {
-	'catppuccin/nvim',
-	name = 'catppuccin',
+	"catppuccin/nvim",
+	name = "catppuccin",
 	opts = {
-		flavour = 'macchiato',
+		flavour = "macchiato",
 		no_bold = true,
 		no_italic = true,
 		integrations = {
 			native_lsp = {
 				underlines = {
-					errors = { 'undercurl' },
-					hints = { 'undercurl' },
-					warnings = { 'undercurl' },
-					information = { 'undercurl' },
+					errors = { "undercurl" },
+					hints = { "undercurl" },
+					warnings = { "undercurl" },
+					information = { "undercurl" },
 				},
 			},
 			dap = {
@@ -38,7 +38,7 @@ return {
 
 				-- NvimTree
 				NvimTreeNormal = { bg = colors.base },
-				NvimTreeWinSeparator = { link = 'VertSplit' },
+				NvimTreeWinSeparator = { link = "VertSplit" },
 
 				-- Neo-tree
 				NeoTreeNormal = { bg = colors.base },
@@ -48,6 +48,7 @@ return {
 				TelescopeTitle = { reverse = true },
 
 				-- Lualine
+				LualineFilenameModified = { fg = colors.yellow, bg = colors.mantle },
 				LualineExoticFileFormat = { fg = colors.red, bg = colors.mantle },
 				LualineGitSignsAdd = { fg = colors.green, bg = colors.mantle },
 				LualineGitSignsChange = { fg = colors.yellow, bg = colors.mantle },
@@ -56,6 +57,7 @@ return {
 				LualineWinbarInactive = { fg = colors.overlay0, bg = colors.base },
 				LualineLspActive = { fg = colors.green, bg = colors.mantle },
 				LualineCopilotActive = { fg = colors.blue, bg = colors.mantle },
+				LualineRecording = { fg = colors.red, bg = colors.mantle },
 
 				-- Cokeline
 				CokelineFocused = { fg = colors.blue },
@@ -73,11 +75,18 @@ return {
 
 				-- Flash
 				FlashLabel = { fg = colors.crust, bg = colors.peach },
+
+				-- Noice
+				NoiceCmdline = { bg = colors.mantle },
+
+				-- Treesitter Context
+				TreesitterContext = { link = "CursorLine" },
+				TreesitterContextLineNumber = { link = "CursorLine" },
 			}
 		end,
 	},
 	config = function(_, opts)
-		require('catppuccin').setup(opts)
-		vim.cmd.colorscheme('catppuccin')
+		require("catppuccin").setup(opts)
+		vim.cmd.colorscheme("catppuccin")
 	end,
 }

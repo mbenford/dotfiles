@@ -11,7 +11,7 @@ vim.diagnostic.config({
 	severity_sort = true,
 	virtual_text = {
 		spacing = 0,
-		prefix = '',
+		prefix = ' ',
 		suffix = ' ',
 		severity = vim.diagnostic.severity.ERROR,
 	},

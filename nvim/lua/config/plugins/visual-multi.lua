@@ -1,4 +1,5 @@
 return {
-	'mg979/vim-visual-multi',
-	event = 'BufRead',
+	"mg979/vim-visual-multi",
+	enabled = false,
+	event = "BufRead",
 }

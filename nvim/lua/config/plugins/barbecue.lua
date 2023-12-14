@@ -1,7 +1,7 @@
 local M = {
 	'utilyre/barbecue.nvim',
-	name = 'barbecue',
 	enabled = false,
+	name = 'barbecue',
 	dependencies = {
 		'SmiteshP/nvim-navic',
 		'nvim-tree/nvim-web-devicons',
@@ -12,7 +12,7 @@ function M.config()
 	require('barbecue').setup({
 		show_modified = true,
 		show_navic = false,
-		show_dirname = false,
+		show_dirname = true,
 		custom_section = function(bufnr)
 			return table.concat({
 				M.diagnostic(bufnr),

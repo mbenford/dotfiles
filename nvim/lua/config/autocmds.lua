@@ -20,7 +20,7 @@ require('legendary').autocmds({
 				end
 
 				local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
-				vim.opt.titlestring = string.format('%s | Neovim', cwd)
+				vim.opt.titlestring = string.format('%s - Neovim', cwd)
 			end,
 		},
 	},

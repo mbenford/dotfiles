@@ -1,25 +1,25 @@
 local g = vim.g
-g.mapleader = ' ' -- space as the leader key
+g.mapleader = " " -- space as the leader key
 
 local o = vim.opt
 o.backup = false
-o.colorcolumn = '120'
-o.completeopt = { 'menu', 'menuone', 'noinsert' }
+o.colorcolumn = "120"
+o.completeopt = { "menu", "menuone", "noinsert", "noselect" }
 o.confirm = true
 o.cursorline = true
 o.expandtab = false
-o.foldcolumn = 'auto'
+o.foldcolumn = "auto"
 o.foldlevel = 99
 o.foldlevelstart = -1
 o.foldenable = true
-o.fillchars:append({ eob = ' ', fold = ' ', foldopen = '', foldsep = ' ', foldclose = '' })
+o.fillchars:append({ eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "" })
 o.hidden = true
 o.hlsearch = false
 o.ignorecase = true
 o.linebreak = true
 o.list = true
-o.listchars = { tab = '  ', trail = '·' }
-o.mouse = 'a'
+o.listchars = { tab = "  ", trail = "·" }
+o.mouse = "a"
 o.numberwidth = 2
 o.number = true
 o.relativenumber = true
@@ -31,12 +31,12 @@ o.showcmd = false
 o.showmode = false
 o.sidescroll = 1
 o.sidescrolloff = 5
-o.signcolumn = 'auto:1-2'
+o.signcolumn = "auto:1-2"
 o.smartcase = true
 o.smartindent = false
 o.spell = false
-o.spelllang = { 'en_us', 'pt_br' }
-o.spelloptions = 'camel'
+o.spelllang = { "en_us", "pt_br" }
+o.spelloptions = "camel"
 o.softtabstop = 2
 o.splitbelow = true
 o.splitright = true
@@ -47,7 +47,6 @@ o.title = true
 o.ttimeoutlen = 0
 o.undofile = true
 o.updatetime = 250
-o.virtualedit = ''
-o.wildmode = 'full'
-o.winbar = '%f%{&mod?"*":""}'
+o.virtualedit = ""
+o.wildmode = "full"
 o.wrap = false

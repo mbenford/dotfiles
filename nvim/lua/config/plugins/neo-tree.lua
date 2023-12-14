@@ -1,5 +1,6 @@
 return {
 	'nvim-neo-tree/neo-tree.nvim',
+	enabled = false,
 	branch = 'v3.x',
 	dependencies = {
 		'nvim-lua/plenary.nvim',
@@ -9,7 +10,7 @@ return {
 	opts = {
 		enable_normal_mode_for_inputs = true,
 		popup_border_style = 'rounded',
-		use_popups_for_input = false,
+		-- use_popups_for_input = false,
 		window = {
 			position = 'float',
 		},

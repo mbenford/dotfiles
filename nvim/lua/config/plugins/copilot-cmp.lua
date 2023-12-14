@@ -3,6 +3,6 @@ return {
 	dependencies = {
 		'zbirenbaum/copilot.lua',
 	},
-	event = { 'InsertEnter', 'LspAttach' },
+	event = 'InsertEnter',
 	opts = {},
 }
