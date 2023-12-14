@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Twitter
-Exec=/usr/bin/brave --new-window --app=https://twitter.com
-Icon=twitter
-Comment=Twitter Web App
-StartupNotify=true

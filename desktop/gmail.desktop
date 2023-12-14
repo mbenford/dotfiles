@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Gmail
-Exec=/usr/bin/brave --new-window --app=https://gmail.com
+Exec=brave-profile Personal --new-window --app=https://gmail.com
 Icon=gmail
 Comment=Gmail Web App
 StartupNotify=true

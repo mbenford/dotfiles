@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Teams
-Exec=/usr/bin/brave --new-window --app=https://teams.microsoft.com
-Icon=teams
-Comment=Teams Web App
-StartupNotify=true
