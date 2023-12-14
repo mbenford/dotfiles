@@ -22,18 +22,27 @@ alias parre='paru -R '
 alias parloc='paru -Qi '
 alias parreps='paru -Ss '
 alias parclean='paru -Sccd --noconfirm'
+alias parls='paru -Qq | fzf --preview "paru -Qil {}" --layout=reverse --bind "enter:execute(paru -Qil {} | less)"'
+
+# lazygit
+alias lg='lazygit '
+alias lgl='lazygit log '
+alias lgs='lazygit status '
+alias lgb='lazygit branch '
+alias lgst='lazygit stash '
 
 # misc
+alias cat='bat '
 alias open='mimeo '
-alias trash='gio trash '
-alias trashls='gio list trash://'
-alias lzg='lazygit '
 alias lzd='lazydocker '
 alias sudoe='sudoedit '
 alias r='ranger'
+alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
 alias pdf='devour llpp '
+alias pn='pnpm'
+alias lwd='echo $OLDPWD'
 
 # work
 [[ -f "$ZDOTDIR/.zsh_aliases_work" ]] && source "$ZDOTDIR/.zsh_aliases_work"

@@ -35,16 +35,23 @@ plugins=(
 	common-aliases
 	fast-syntax-highlighting
 	fzf
+	fd
 	git
 	sudo
 	archlinux
 	zsh-autosuggestions
 	zsh-abbr
+	httpie
+	systemd
+	encode64
+	fzf-tab
+	terraform
+	gcloud
 )
 
 # Oh My ZSH
 source $ZSH/oh-my-zsh.sh
-ZSH_THEME_TERM_TITLE_IDLE="$(basename $SHELL):%~"
+ZSH_THEME_TERM_TITLE_IDLE="%1d - $(basename $SHELL)"
 
 # custom zsh options
 setopt hist_ignore_all_dups

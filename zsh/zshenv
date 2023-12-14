@@ -15,23 +15,20 @@ ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_HISTORY_IGNORE="?(#c100,)"
 
 # fzf
-export FZF_DEFAULT_COMMAND="rg --files --hidden"
-export FZF_DEFAULT_OPTS='
-	--no-info
-	--height=20%
-	--reverse
-	--color=bg+:#31353f,hl:magenta,hl+:magenta
-	--color=prompt:magenta,pointer:magenta'
+source $XDG_CONFIG_HOME/fzf/fzf.zsh
 
 # golang
 export GOPATH=$HOME/.go
 path+=$GOPATH/bin
 
-# rust
-source "$HOME/.cargo/env"
-
 # poetry
 path+=$HOME/.poetry/bin
+
+# cargo
+path+=$HOME/.cargo/bin
+
+# gcloud
+source $HOME/downloads/google-cloud-sdk/path.zsh.inc
 
 # work
 [[ -f "$ZDOTDIR/.zshenv_work" ]] && source "$ZDOTDIR/.zshenv_work"

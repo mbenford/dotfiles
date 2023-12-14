@@ -9,11 +9,11 @@ ctrl-z () {
   fi
 }
 
-zle -N push-line-and-insert
 zle -N watch-line
 zle -N ctrl-z
 
 bindkey -M viins '^[e' edit-command-line
+bindkey -M viins '^[i' insert-last-word
 bindkey -M viins '^[q' push-line
 bindkey -M viins '^[w' watch-line
-bindkey '^Z' ctrl-z
+bindkey -M viins '^Z' ctrl-z
