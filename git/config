@@ -1,34 +1,45 @@
 [user]
 	name = Michael Benford
 	signingKey = AD5AE395
+
 [core]
 	editor = /usr/bin/nvim
 	pager = delta
+
 [init]
 	defaultBranch = main
+
 [pull]
 	rebase = true
+
 [push]
 	default = simple
+
 [rebase]
 	autosquash=true
+
 [color]
 	ui = auto
+
 [interactive]
   diffFilter = delta --color-only
+
+[add.interactive]
+	useBuiltin = false
+
 [delta]
 	word-diff-regex = "\\s+"
 	navigate = true
+	hyperlinks = true
 	tabs = 2
-	line-numbers = true
-	syntax-theme = OneHalfDark
-	file-decoration-style = blue box
+	syntax-theme = Catppuccin-macchiato
+	file-style = yellow
+	file-decoration-style = yellow ul ol
 	file-modified-label = modified:
 	hunk-header-style = omit
 	plus-style = syntax "#1f3623"
 	minus-style = syntax "#4a2324"
-	line-numbers-plus-style = green
-	line-numbers-minus-style = red
+
 [include]
 	path = ./config.work
 
