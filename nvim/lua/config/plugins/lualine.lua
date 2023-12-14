@@ -1,13 +1,22 @@
 local truncate_right = require("utils.string").truncate_right
 
+local function get_cwd()
+	return vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+end
+
 local function cwd()
-	return truncate_right(vim.fn.fnamemodify(vim.fn.getcwd(), ":t"), 20)
+	return truncate_right(get_cwd(), 20)
 end
 
 local function filename()
 	local file = vim.fn.expand("%:t:~")
 	if file == "" then
 		file = "[No Name]"
+	else
+		local parent = vim.fn.expand("%:p:h:t")
+		if parent ~= get_cwd() then
+			file = parent .. "/" .. file
+		end
 	end
 
 	if not vim.bo.modifiable or vim.bo.readonly then
