@@ -4,12 +4,9 @@ local client_func = require("util.func").client_func
 local tag_func = require("util.func").tag_func
 local ezkeys = require("util.ez").ezkeys
 local floating = require("util.floating")
+local keychord = require("util.keychord")
 
 local api = { awesome = awesome, client = client, screen = screen, mouse = mouse }
-
-local terminal = os.getenv("TERMINAL") or "xterm"
-local editor = os.getenv("EDITOR") or "vim"
-local browser = os.getenv("BROWSER") or "firefox"
 
 awful.keyboard.append_global_keybindings(ezkeys({
 	-- Awesome
@@ -18,6 +15,7 @@ awful.keyboard.append_global_keybindings(ezkeys({
 
 	-- Navigation
 	["M-h"] = lazy(awful.client.focus.bydirection, "left"),
+	["M-l"] = lazy(awful.client.focus.bydirection, "right"),
 	["M-j"] = function()
 		if awful.layout.get() == awful.layout.suit.max then
 			awful.client.focus.byidx(1)
@@ -32,9 +30,15 @@ awful.keyboard.append_global_keybindings(ezkeys({
 			awful.client.focus.bydirection("up")
 		end
 	end,
-	["M-l"] = lazy(awful.client.focus.bydirection, "right"),
 	["M-i"] = function()
-		awful.screen.focus_relative(1)
+		if api.client.focus then
+			local screen = api.client.focus.screen
+			local next = screen:get_next_in_direction("down") or screen:get_next_in_direction("up")
+			awful.screen.focus(next)
+		else
+			awful.screen.focus_relative(1)
+		end
+
 		local screen = awful.screen.focused()
 		api.mouse.coords({
 			x = screen.geometry.x + screen.geometry.width / 2,
@@ -45,13 +49,13 @@ awful.keyboard.append_global_keybindings(ezkeys({
 		awful.client.urgent.jumpto()
 		awful.client.setmaster(api.client.focus)
 	end,
-	['M-Tab'] = function()
+	["M-Tab"] = function()
 		awful.client.focus.history.previous()
 		if api.client.focus then
 			api.client.focus:raise()
 		end
 	end,
-	['M-`'] = awful.tag.history.restore,
+	["M-`"] = awful.tag.history.restore,
 
 	-- Window arrangement
 	["M-S-h"] = lazy(awful.client.swap.bydirection, "left"),
@@ -65,7 +69,7 @@ awful.keyboard.append_global_keybindings(ezkeys({
 		if client ~= main then
 			tag.previous_main = main
 			client:swap(main)
-		else
+		elseif tag.previous_main then
 			client:swap(tag.previous_main)
 			tag.previous_main = client
 		end
@@ -89,6 +93,9 @@ awful.keyboard.append_global_keybindings(ezkeys({
 			api.client.focus:activate()
 		end
 	end),
+	["M-S-f"] = tag_func(function(tag)
+		tag.enable_padding = not tag.enable_padding
+	end),
 	["M-minus"] = lazy(awful.tag.incnmaster, -1),
 	["M-S-equal"] = lazy(awful.tag.incnmaster, 1),
 	["M-equal"] = tag_func(function(tag)
@@ -104,11 +111,8 @@ awful.keyboard.append_global_keybindings(ezkeys({
 			client:kill()
 		end
 	end),
-	["M-S-f"] = client_func(function(client)
+	["M-C-f"] = client_func(function(client)
 		client.floating = not client.floating
-	end),
-	["M-S-i"] = client_func(function(client)
-		client:move_to_screen()
 	end),
 	["M-n"] = client_func(function(client)
 		client.minimized = true
@@ -118,31 +122,40 @@ awful.keyboard.append_global_keybindings(ezkeys({
 	["M-C-k"] = client_func(floating.move_up),
 	["M-C-l"] = client_func(floating.move_right),
 	["M-C-c"] = client_func(floating.center),
+	["M-S-i"] = client_func(function(client)
+		client:move_to_screen()
+	end),
 
 	-- Apps
-	["M-Return"] = lazy(awful.spawn, terminal),
-	["M-b"] = lazy(awful.spawn, browser),
-	["M-S-b"] = lazy(awful.spawn, browser .. " --incognito"),
-	["M-e"] = lazy(awful.spawn, terminal .. " " .. editor),
+	["M-Return"] = lazy(awful.spawn, "kitty"),
+	["M-b"] = lazy(awful.spawn, "rofi-brave"),
 	["Print"] = lazy(awful.spawn, "flameshot gui"),
 
 	-- Rofi
-	["M-space"] = lazy(awful.spawn, "rofi -show drun"),
-	["M-S-space"] = lazy(awful.spawn, "rofi -show projects -modes projects,dotfiles -eh 2"),
-	["M-BackSpace"] = lazy(awful.spawn, "rofi -show system -modes system"),
+	["M-space"] = lazy(awful.spawn, "rofi-apps"),
+	["M-S-space"] = keychord({
+		["p"] = lazy(awful.spawn, "rofi-projects"),
+		["d"] = lazy(awful.spawn, "rofi-dotfiles"),
+		["e"] = lazy(awful.spawn, "rofimoji"),
+	}),
+	["M-BackSpace"] = lazy(awful.spawn, "rofi-system"),
 
 	-- Dunst
 	["M-o"] = lazy(awful.spawn, "dunstctl close"),
 	["M-S-o"] = lazy(awful.spawn, "dunstctl history-pop"),
 	["M-C-o"] = lazy(awful.spawn, "dunstctl set-paused toggle"),
 
+	-- Autorandr
+	["M-a"] = keychord({
+		["c"] = lazy(awful.spawn, "autorandr --cycle"),
+		["d"] = lazy(awful.spawn, "autorandr --change --load default"),
+		["f"] = lazy(awful.spawn, "autorandr --load common --ignore-lid"),
+	}),
+
 	-- Media
-	["XF86AudioRaiseVolume"] = lazy(awful.spawn, "pactl set-sink-volume @DEFAULT_SINK@ +10%"),
-	["XF86AudioLowerVolume"] = lazy(awful.spawn, "pactl set-sink-volume @DEFAULT_SINK@ -10%"),
-	["XF86AudioMute"] = lazy(awful.spawn, "pactl set-sink-mute @DEFAULT_SINK@ toggle"),
-	["XF86AudioPlay"] = lazy(awful.spawn, "playerctl play-pause"),
-	["XF86AudioPrev"] = lazy(awful.spawn, "playerctl previous"),
-	["XF86AudioNext"] = lazy(awful.spawn, "playerctl next"),
+	["XF86AudioPlay"] = lazy(awful.spawn, "playerctl play-pause --all-players"),
+	["XF86AudioPrev"] = lazy(awful.spawn, "playerctl previous --all-players"),
+	["XF86AudioNext"] = lazy(awful.spawn, "playerctl next --all-players"),
 
 	["M-S-n"] = function()
 		local client = awful.client.restore()
@@ -153,16 +166,16 @@ awful.keyboard.append_global_keybindings(ezkeys({
 }))
 
 -- Tags
-for i = 1, 4 do
+for i, t in ipairs(api.screen[1].tags) do
 	awful.keyboard.append_global_keybindings(ezkeys({
 		["M-" .. i] = function()
-			local tag = awful.tag.find_by_name(awful.screen.focused(), tostring(i))
+			local tag = awful.screen.focused().tags[i]
 			if tag then
 				tag:view_only()
 			end
 		end,
 		["M-S-" .. i] = client_func(function(client)
-			local tag = awful.tag.find_by_name(client.screen, tostring(i))
+			local tag = awful.screen.focused().tags[i]
 			if tag then
 				client:move_to_tag(tag)
 				tag:view_only()
@@ -173,11 +186,11 @@ end
 
 -- Scratchpads
 local scratchpad = require("util.scratchpad")
-scratchpad.register("terminal", {
-	command = terminal .. " --name kitty-scratch",
+scratchpad.register("kitty", {
+	command = "kitty --name kitty-scratch",
 	rule = { instance = "kitty-scratch" },
-	width = 0.5,
-	height = 0.8,
+	width = 1200,
+	height = 0.9,
 })
 scratchpad.register("calc", {
 	command = "qalculate-gtk --name qalculate-scratch",
@@ -185,22 +198,20 @@ scratchpad.register("calc", {
 	width = 600,
 	height = 100,
 })
+scratchpad.register("spotify", {
+	command = "gtk-launch spotify",
+	width = 1600,
+	height = 0.9,
+})
 scratchpad.register("ticktick", {
 	command = "gtk-launch ticktick",
-	rule = { instance = "ticktick.com__webapp" },
-	width = 1200,
-	height = 900,
-})
-scratchpad.register("whatsapp", {
-	command = "gtk-launch whatsapp",
-	rule = { instance = "web.whatsapp.com" },
-	width = 0.5,
+	width = 1600,
 	height = 0.9,
 })
 
 awful.keyboard.append_global_keybindings(ezkeys({
-	["M-S-Return"] = lazy(scratchpad.toggle, "terminal"),
+	["M-S-Return"] = lazy(scratchpad.toggle, "kitty"),
 	["M-c"] = lazy(scratchpad.toggle, "calc"),
+	["M-s"] = lazy(scratchpad.toggle, "spotify"),
 	["M-t"] = lazy(scratchpad.toggle, "ticktick"),
-	["M-w"] = lazy(scratchpad.toggle, "whatsapp"),
 }))

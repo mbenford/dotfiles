@@ -1,7 +1,7 @@
 local awful = require("awful")
 local naughty = require("naughty")
 
-local api = { client = client, tag = tag }
+local api = { awesome = awesome, screen = screen, client = client, tag = tag }
 
 naughty.connect_signal("request::display_error", function(message, startup)
 	naughty.notification({
@@ -14,6 +14,7 @@ end)
 api.client.connect_signal("property::urgent", function(c)
 	if c.urgent then
 		c:jump_to()
+		c:swap(awful.client.getmaster())
 	end
 end)
 
@@ -30,7 +31,7 @@ local function fix_screen_padding(tag)
 	local screen = tag.screen
 	screen.padding = { left = 0, right = 0 }
 
-	if screen.geometry.width <= min_screen_width then
+	if screen.geometry.width <= min_screen_width or not tag.enable_padding then
 		return
 	end
 
@@ -52,6 +53,7 @@ api.tag.connect_signal("untagged", fix_screen_padding)
 api.tag.connect_signal("cleared", fix_screen_padding)
 api.tag.connect_signal("property::selected", fix_screen_padding)
 api.tag.connect_signal("property::layout", fix_screen_padding)
+api.tag.connect_signal("property::enable_padding", fix_screen_padding)
 
 api.client.connect_signal("property::minimized", function(c)
 	fix_screen_padding(c.first_tag)

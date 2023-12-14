@@ -1,5 +1,5 @@
-local theme = require('themes.catppuccin').setup({
-	flavor = 'macchiato',
+local theme = require("themes.catppuccin").setup({
+	flavor = "macchiato",
 })
 
 local beautiful = require("beautiful")

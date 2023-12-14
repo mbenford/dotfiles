@@ -6,46 +6,56 @@ function M.setup(opts)
 
 	local gfs = require("gears.filesystem")
 	local default_themes_path = gfs.get_themes_dir()
-	local flavor = require('themes.catppuccin.' .. opts.flavor)
+	local flavor = require("themes.catppuccin." .. opts.flavor)
 
 	return {
 		useless_gap = dpi(2),
-		font = "Ubuntu Mono 12",
+		font = "Ubuntu 11",
+
+		fg_normal = flavor.text,
+		fg_focus = "#ffffff",
+		fg_urgent = flavor.red,
+		fg_minimize = flavor.surface2,
 
 		bg_normal = flavor.mantle,
 		bg_focus = flavor.base,
 		bg_urgent = flavor.flamingo,
-		bg_minimize = "#444444",
+		bg_minimize = flavor.base,
 		bg_systray = flavor.mantle,
-
-		fg_normal = flavor.text,
-		fg_focus = "#ffffff",
-		fg_urgent = "#ffffff",
-		fg_minimize = "#ffffff",
 
 		border_width = dpi(2),
 		border_normal = flavor.surface2,
 		border_focus = flavor.blue,
-		border_marked = "#91231c",
+		border_marked = flavor.yellow,
 
+		taglist_fg = flavor.text,
+		taglist_fg_focus = flavor.mauve,
+		taglist_bg_focus = flavor.surface0,
 		taglist_fg_empty = "#5c6370",
-		taglist_bg_focus = flavor.mauve,
+		taglist_shape_border_color = flavor.surface2,
+		taglist_shape_border_color_focus = flavor.mauve,
 
-		tasklist_fg_normal = "#8C8C8C",
+		tasklist_fg_normal = flavor.text,
 		tasklist_fg_focus = flavor.text,
-		tasklist_bg_normal = "#24273A",
-		tasklist_bg_focus = "#24273A",
+		tasklist_bg_normal = flavor.base,
+		tasklist_bg_focus = flavor.surface0,
 		tasklist_plain_task_name = true,
-
-		notification_icon_size = 48,
-		notification_max_width = 400,
+		tasklist_spacing = 3,
+		tasklist_icon_size = 22,
 
 		widget_label_fg = "#5c6370",
 
-		threshold_normal_fg = "#61afef",
-		threshold_medium_fg = "#d68910",
-		threshold_high_fg = "#ba4a00",
-		threshold_critical_fg = "#cb4335",
+		distro_fg = flavor.blue,
+
+		threshold_normal_fg = flavor.blue,
+		threshold_medium_fg = flavor.yellow,
+		threshold_high_fg = flavor.flamingo,
+		threshold_critical_fg = flavor.red,
+
+		sensors_font = "Ubuntu Mono 12",
+
+		clock_font = "Ubuntu Bold 11",
+		clock_fg = flavor.text,
 
 		wallpaper = default_themes_path .. "default/background.png",
 

@@ -67,15 +67,17 @@ function M.toggle(name)
 end
 
 api.client.connect_signal("request::manage", function(client)
-	if client.scratchpad_id ~= "" and M.scratchpads[client.scratchpad_id].client == nil then
+	local scratchpad = M.scratchpads[client.scratchpad_id]
+	if scratchpad and scratchpad.client == nil then
 		client.hidden = true
-		M.scratchpads[client.scratchpad_id].client = client
+		scratchpad.client = client
 	end
 end)
 
 api.client.connect_signal("request::unmanage", function(client)
-	if client.scratchpad_id ~= "" and M.scratchpads[client.scratchpad_id].client ~= nil then
-		M.scratchpads[client.scratchpad_id].client = nil
+	local scratchpad = M.scratchpads[client.scratchpad_id]
+	if scratchpad and scratchpad.client ~= nil then
+		scratchpad.client = nil
 	end
 end)
 

@@ -39,7 +39,23 @@ ruled.client.connect_signal("request::rules", function()
 				placement = awful.placement.centered,
 			},
 		},
-		-- Apps
+		-- Messaging
+		{
+			id = "communication",
+			rule_any = {
+				instance = {
+					"gmail.com",
+					"web.whatsapp.com",
+					"web.telegram.org",
+				},
+			},
+			properties = {
+				tag = "4",
+				screen = 2,
+				switch_to_tags = true,
+			},
+		},
+		-- Work,
 		{
 			id = "work",
 			rule_any = {
@@ -50,7 +66,8 @@ ruled.client.connect_signal("request::rules", function()
 				},
 			},
 			properties = {
-				tag = "4",
+				tag = "1",
+				screen = 2,
 				switch_to_tags = true,
 			},
 		},
