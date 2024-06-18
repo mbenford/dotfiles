@@ -1,23 +1,39 @@
-const { Hints, Visual, map, unmap, unmapAllExcept } = api
+const { Hints, Visual, map, unmap, unmapAllExcept, removeSearchAlias } = api
 
 function main() {
   settings.smoothScroll = false
   settings.hintAlign = 'left'
   settings.enableEmojiInsertion = false
+  settings.tabsThreshold = 0
 
   setTheme()
 
   disableFor([
     /mail.google.com/,
+    /drive.google.com/,
     /ticktick.com/,
     /app.slack.com/,
     /outlook.office.com/,
+    /.*.youtube.com/,
+    /codesandbox.io/,
   ])
+
+  removeSearchAlias('g')
+  removeSearchAlias('d')
+  removeSearchAlias('b')
+  removeSearchAlias('e')
+  removeSearchAlias('w')
+  removeSearchAlias('s')
+  removeSearchAlias('y')
 
   unmap('/', /github.com/)
 
   map('h', 'S')
   map('l', 'D')
+  map('oo', 'go')
+  map('ob', 'b')
+  map('ot', 'T')
+  map('oh', 'oh')
 }
 
 function setTheme() {
@@ -28,7 +44,7 @@ function setTheme() {
   settings.theme = `
   .sk_theme {
       font-family: monospace;
-      font-size: 10pt;
+      font-size: 12pt;
       background: #24272e;
       color: #abb2bf;
   }
