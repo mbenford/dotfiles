@@ -1,0 +1,85 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+version: 2
+var:
+  PromptChar: 
+
+palette:
+  prompt-char-fg: "#a6da95"
+  prompt-char-error-fg: "#ed8796"
+  default-bg: "#363a4f"
+  separator-fg: "#6e738d"
+  path-fg: "#8aadf4"
+  git-pristine-fg: "#a6da95"
+  git-dirty-fg: "#eed49f"
+  executiontime-fg: "#c6a0f6"
+  status-fg: "#ed8796"
+
+final_space: true
+console_title_template: "{{if .Segments.Git.RepoName}}{{.Segments.Git.RepoName}}{{else}}{{.Folder}}{{end}} - {{.Shell}}"
+
+transient_prompt:
+  foreground: "p:prompt-char-fg"
+  background: transparent
+  template: "{{.Var.PromptChar}} "
+
+blocks:
+  - type: prompt
+    alignment: left
+    newline: true
+    segments:
+      - type: path
+        style: diamond
+        leading_diamond: ""
+        trailing_diamond: ""
+        foreground: "p:path-fg"
+        background: "p:default-bg"
+        properties:
+          style: agnoster_short
+          max_depth: 2
+        templates:
+          - "{{if not .Writable}} {{end}}"
+          - "{{if hasPrefix \"/\" .Parent}}/{{end}}"
+          - "{{if .Segments.Git.RepoName}}<b>{{.Segments.Git.RepoName}}</b>{{replace .Segments.Git.Dir \"\" .PWD}}{{end}}"
+          - "{{if not .Segments.Git.RepoName}}{{.Path}}{{end}}"
+      - type: git
+        style: diamond
+        leading_diamond: " "
+        trailing_diamond: ""
+        foreground: "p:git-pristine-fg"
+        background: "p:default-bg"
+        foreground_templates:
+          - "{{if or (.Working.Changed) (.Staging.Changed) }}p:git-dirty-fg{{end}}"
+        properties:
+          fetch_status: true
+          fetch_stash_count: false
+          branch_icon: " "
+          branch_identical_icon: ""
+        template: "{{.HEAD}}{{if .BranchStatus}} {{.BranchStatus}}{{end}}"
+      - type: executiontime
+        style: diamond
+        leading_diamond: " "
+        trailing_diamond: ""
+        foreground: "p:executiontime-fg"
+        background: "p:default-bg"
+        properties:
+          threshold: 3000
+          style: round
+        template: " {{.FormattedMs}}"
+      - type: status
+        style: diamond
+        leading_diamond: " "
+        trailing_diamond: ""
+        foreground: "p:status-fg"
+        background: "p:default-bg"
+        template: "{{if gt .Code 0}} {{reason .Code}}{{end}}"
+  - type: prompt
+    alignment: left
+    newline: true
+    segments:
+      - type: text
+        style: plain
+        foreground: "p:prompt-char-fg"
+        background: transparent
+        foreground_templates:
+          - "{{if gt .Code 0 }}p:prompt-char-error-fg{{end}}"
+        template: "{{.Var.PromptChar}}"
