@@ -1,12 +1,30 @@
 export FZF_DEFAULT_COMMAND="rg --files --hidden"
 export FZF_DEFAULT_OPTS='
   --ansi
-	--no-info
-	--height=~100%
+	--info=inline-right
+	--height=100%
 	--reverse
+	--highlight-line
 	--prompt=" "
-	--pointer="▍"
-	--marker="✗"
-	--color=bg+:#363a4f,bg:#24273a,spinner:#f4dbd6,hl:#ed8796
-	--color=fg:#cad3f5,header:#ed8796,info:#c6a0f6,pointer:#f4dbd6
-	--color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796'
+	--pointer="▋"
+	--scrollbar="▐"
+	--marker="▍"
+	--no-separator
+	--no-bold
+	--color=bg+:#2e3c64
+  --color=bg:#1f2335
+  --color=border:#29a4bd
+  --color=fg:#c0caf5
+  --color=gutter:#1f2335
+  --color=header:#ff9e64
+  --color=hl+:#2ac3de
+  --color=hl:#2ac3de
+  --color=info:#545c7e
+  --color=marker:#ff007c
+  --color=pointer:#2e3c64
+  --color=prompt:#2ac3de
+  --color=query:#c0caf5:regular
+  --color=scrollbar:#29a4bd
+  --color=separator:#ff9e64
+  --color=spinner:#ff007c
+'
