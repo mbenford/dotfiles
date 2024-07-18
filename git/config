@@ -32,13 +32,22 @@
 	navigate = true
 	hyperlinks = true
 	tabs = 2
-	syntax-theme = Catppuccin-macchiato
+	syntax-theme = Tokyonight-Storm
 	file-style = yellow
 	file-decoration-style = yellow ul ol
 	file-modified-label = modified:
 	hunk-header-style = omit
-	plus-style = syntax "#1f3623"
-	minus-style = syntax "#4a2324"
+  minus-style                   = syntax "#3f2d3d"
+  minus-non-emph-style          = syntax "#3f2d3d"
+  minus-emph-style              = syntax "#763842"
+  minus-empty-line-marker-style = syntax "#3f2d3d"
+  line-numbers-minus-style      = "#914c54"
+  plus-style                    = syntax "#283b4d"
+  plus-non-emph-style           = syntax "#283b4d"
+  plus-emph-style               = syntax "#316172"
+  plus-empty-line-marker-style  = syntax "#283b4d"
+  line-numbers-plus-style       = "#449dab"
+  line-numbers-zero-style       = "#3b4261"
 
 [include]
 	path = ./config.work
