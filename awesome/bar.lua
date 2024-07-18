@@ -21,20 +21,18 @@ api.screen.connect_signal("request::desktop_decoration", function(screen)
 
 	local left = {
 		padding,
-		widgets.distro(),
-		sep,
-		widgets.taglist(screen, "circles"),
+		widgets.taglist(screen),
 		spacer,
 		widgets.layoutbox(screen),
 		spacer,
+		widgets.window_count(screen),
 		layout = wibox.layout.fixed.horizontal,
 	}
 	local middle = {
-		widgets.tasklist(screen),
+		widgets.window_name(screen),
 		layout = wibox.layout.ratio.horizontal,
 	}
 	local right = {
-		spacer,
 		widgets.clock(),
 		padding,
 		layout = wibox.layout.fixed.horizontal,
@@ -43,16 +41,39 @@ api.screen.connect_signal("request::desktop_decoration", function(screen)
 	if screen == api.screen.primary then
 		right = gears.table.join({
 			spacer,
-			wibox.widget.systray(),
+			widgets.systray(),
+			sep,
+			widgets.wifi("wlan0"),
 			spacer,
 			widgets.cpu(),
 			spacer,
-			widgets.memory(),
+			widgets.ram(),
 			spacer,
-			widgets.disk(),
+			widgets.ssd(),
+			spacer,
+			widgets.pulseaudio_sink(),
+			sep,
 		}, right)
+	else
+		right = gears.table.join({ spacer }, right)
 	end
 
 	local bar = awful.wibar({ position = "top", screen = screen })
-	bar:setup({ left, middle, right, layout = wibox.layout.align.horizontal })
+	bar:setup({
+		{
+			left,
+			halign = "left",
+			widget = wibox.container.place,
+		},
+		{
+			middle,
+			widget = wibox.container.place,
+		},
+		{
+			right,
+			halign = "right",
+			widget = wibox.container.place,
+		},
+		layout = wibox.layout.flex.horizontal,
+	})
 end)

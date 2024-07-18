@@ -1,4 +1,6 @@
 local awful = require("awful")
+local wibox = require("wibox")
+local beautiful = require("beautiful")
 local naughty = require("naughty")
 
 local api = { awesome = awesome, screen = screen, client = client, tag = tag }
@@ -54,7 +56,18 @@ api.tag.connect_signal("cleared", fix_screen_padding)
 api.tag.connect_signal("property::selected", fix_screen_padding)
 api.tag.connect_signal("property::layout", fix_screen_padding)
 api.tag.connect_signal("property::enable_padding", fix_screen_padding)
-
 api.client.connect_signal("property::minimized", function(c)
 	fix_screen_padding(c.first_tag)
+end)
+
+api.client.connect_signal("request::titlebars", function(c)
+	local titlebar = awful.titlebar(c, { size = beautiful.titlebar_size })
+	titlebar.widget = {
+		{
+			halign = "center",
+			font = beautiful.titlebar_font,
+			widget = awful.titlebar.widget.titlewidget(c),
+		},
+		layout = wibox.layout.flex.horizontal,
+	}
 end)

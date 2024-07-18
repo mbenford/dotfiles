@@ -1,6 +1,9 @@
-local theme = require("themes.catppuccin").setup({
-	flavor = "macchiato",
-})
+local theme = require("gears.table").crush(
+	require("themes.default"),
+	require("themes.tokyonight").setup({
+		flavor = "storm",
+	})
+)
 
 local beautiful = require("beautiful")
 if not beautiful.init(theme) then

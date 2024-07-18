@@ -3,15 +3,44 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local vicious = require("vicious")
 local ezbuttons = require("util.ez").ezbuttons
-local util = require("util.func")
+local func = require("util.func")
+local pulseaudio = require("util.pulseaudio")
 vicious.contrib = require("vicious.contrib")
 
-local api = { client = client }
+local api = { awesome = awesome, client = client, tag = tag }
 
 local M = {}
 
+local function with_label(label, widget)
+	return wibox.widget({
+		{
+			{
+				text = label,
+				font = beautiful.widget_font,
+				widget = wibox.widget.textbox,
+			},
+			fg = beautiful.widget_label_fg,
+			widget = wibox.container.background,
+		},
+		widget,
+		spacing = beautiful.widget_label_spacing,
+		layout = wibox.layout.fixed.horizontal,
+	})
+end
+
+function M.systray()
+	return wibox.widget({
+		{
+			base_size = 22,
+			widget = wibox.widget.systray(),
+		},
+		valign = "center",
+		widget = wibox.container.place,
+	})
+end
+
 function M.distro()
-	return {
+	return wibox.widget({
 		{
 			text = "󰣇",
 			font = "Symbols Nerd Font 16",
@@ -19,13 +48,13 @@ function M.distro()
 		},
 		fg = beautiful.distro_fg,
 		widget = wibox.container.background,
-	}
+	})
 end
 
 function M.clock()
 	return wibox.widget({
 		{
-			format = "%b %d %R",
+			format = "%R",
 			refresh = 20,
 			font = beautiful.clock_font,
 			widget = wibox.widget.textclock,
@@ -35,7 +64,7 @@ function M.clock()
 	})
 end
 
-function M.taglist(screen, template)
+function M.taglist(screen)
 	local templates = {}
 	templates.standard = {
 		nil,
@@ -62,7 +91,7 @@ function M.taglist(screen, template)
 			{
 				{
 					id = "content",
-					font = "Symbols Nerd Font",
+					font = "Symbols Nerd Font 12",
 					widget = wibox.widget.textbox,
 				},
 				left = 3,
@@ -82,11 +111,20 @@ function M.taglist(screen, template)
 
 			if t.selected then
 				content.text = ""
+				background.fg = beautiful.taglist_fg_focus
 			else
-				content.text = #t:clients() > 0 and "" or ""
+				if #t:clients() > 0 then
+					content.text = ""
+					background.fg = beautiful.taglist_fg_not_empty
+				else
+					content.text = ""
+					background.fg = beautiful.taglist_fg
+				end
 			end
 
-			background.fg = t.urgent and beautiful.fg_urgent or beautiful.taglist_fg
+			if t.urgent then
+				background.fg = beautiful.fg_urgent
+			end
 		end,
 	}
 
@@ -102,7 +140,7 @@ function M.taglist(screen, template)
 			spacing = 3,
 			layout = wibox.layout.fixed.horizontal,
 		},
-		widget_template = templates[template],
+		widget_template = templates[beautiful.taglist_style],
 	})
 end
 
@@ -150,11 +188,73 @@ function M.tasklist(screen)
 	})
 end
 
+function M.window_name(screen)
+	local content = wibox.widget.textbox()
+	content.font = beautiful.window_name_font
+
+	local function update_name(c)
+		if c.screen == screen and api.client.focus == c then
+			content.text = c.name
+		end
+	end
+	local function clear_title(t)
+		if t.screen == screen and #t:clients() == 0 then
+			content.text = ""
+		end
+	end
+
+	api.client.connect_signal("focus", update_name)
+	api.client.connect_signal("property::name", update_name)
+	api.tag.connect_signal("untagged", clear_title)
+	api.tag.connect_signal("property::selected", clear_title)
+
+	return wibox.widget({
+		{
+			content,
+			widget = wibox.container.margin,
+		},
+		fg = beautiful.window_name_fg,
+		bg = beautiful.window_name_bg,
+		widget = wibox.container.background,
+	})
+end
+
+function M.window_count(screen)
+	local content = wibox.widget.textbox()
+	content.font = beautiful.window_count_font
+
+	local function update_count(t)
+		if t.screen == screen then
+			content.text = t.layout == awful.layout.suit.max and #t:clients() or ""
+		end
+	end
+
+	api.tag.connect_signal("tagged", update_count)
+	api.tag.connect_signal("untagged", update_count)
+	api.tag.connect_signal("cleared", update_count)
+	api.tag.connect_signal("property::selected", update_count)
+	api.tag.connect_signal("property::layout", update_count)
+
+	return wibox.widget({
+		{
+			content,
+			widget = wibox.container.margin,
+		},
+		fg = beautiful.window_count_fg,
+		bg = beautiful.window_count_bg,
+		widget = wibox.container.background,
+	})
+end
+
 function M.layoutbox(screen)
-	return wibox.container.place(awful.widget.layoutbox({
-		screen = screen,
-		forced_width = 20,
-	}))
+	return wibox.widget({
+		{
+			screen = screen,
+			forced_width = 20,
+			widget = awful.widget.layoutbox,
+		},
+		widget = wibox.container.place,
+	})
 end
 
 function M.cpu()
@@ -165,19 +265,17 @@ function M.cpu()
 		normal = beautiful.threshold_normal_fg,
 	}
 
-	local widget = wibox.widget({
-		font = beautiful.sensors_font,
-		widget = wibox.widget.textbox,
-	})
+	local widget = wibox.widget({ font = beautiful.widget_font, widget = wibox.widget.textbox })
 	vicious.register(widget, vicious.widgets.cpu, function(_, args)
-		local value = args[1] > 0 and args[1] or 1
-		local color = util.map_threshold(value, thresholds)
-		return util.span(color, "CPU:%02d%%", value)
+		local value = math.max(args[1], 1)
+		local color = func.map_threshold(value, thresholds)
+		return func.span(color, "%02d%%", value)
 	end, 5)
-	return widget
+
+	return with_label("CPU", widget)
 end
 
-function M.memory()
+function M.ram()
 	local thresholds = {
 		{ 90, beautiful.threshold_critical_fg },
 		{ 70, beautiful.threshold_high_fg },
@@ -185,26 +283,22 @@ function M.memory()
 		normal = beautiful.threshold_normal_fg,
 	}
 
-	local widget = wibox.widget({
-		font = beautiful.sensors_font,
-		widget = wibox.widget.textbox,
-	})
+	local widget = wibox.widget({ font = beautiful.widget_font, widget = wibox.widget.textbox })
 	vicious.register(widget, vicious.widgets.mem, function(_, args)
-		local color = util.map_threshold(args[1], thresholds)
-		return util.span(color, "MEM:%02d%%", args[1])
+		local color = func.map_threshold(args[1], thresholds)
+		return func.span(color, "%02d%%", args[1])
 	end, 7)
-	return widget
+
+	return with_label("RAM", widget)
 end
 
-function M.disk()
-	local widget = wibox.widget({
-		font = beautiful.sensors_font,
-		widget = wibox.widget.textbox,
-	})
+function M.ssd()
+	local widget = wibox.widget({ font = beautiful.widget_font, widget = wibox.widget.textbox })
 	vicious.register(widget, vicious.widgets.fs, function(_, args)
-		return util.span(beautiful.threshold_normal_fg, "SSD:%dG", math.floor(args["{/ avail_gb}"]))
+		return func.span(beautiful.threshold_normal_fg, "%dG", math.floor(args["{/ avail_gb}"]))
 	end, 61)
-	return widget
+
+	return with_label("SSD", widget)
 end
 
 function M.packages()
@@ -216,32 +310,84 @@ function M.packages()
 	}
 	local widget = wibox.widget.textbox()
 	vicious.register(widget, vicious.widgets.pkg, function(w, args)
-		local color = util.map_threshold(args[1], thresholds)
-		return util.span(color, "PKG:%d", args[1])
+		local color = func.map_threshold(args[1], thresholds)
+		return func.span(color, "PKG:%d", args[1])
 	end, 60 * 60, "Arch C")
 	return widget
 end
 
-function M.volume()
-	local thresholds = {
-		{ 99, beautiful.threshold_critical_fg },
-		{ 90, beautiful.threshold_high_fg },
-		{ 70, beautiful.threshold_medium_fg },
-		normal = beautiful.threshold_normal_fg,
-	}
+function M.pulseaudio_sink()
+	local content = wibox.widget.textbox()
+	content.font = beautiful.widget_font
+
+	pulseaudio.connect_signal("sink::volume", function(volume)
+		content.markup = string.format("%02d%%", volume)
+	end)
+	pulseaudio.connect_signal("sink::mute", function()
+		content.markup = "MUTE"
+	end)
+	pulseaudio.refresh_sink_volume()
+
+	local widget = wibox.widget({
+		{
+			content,
+			widget = wibox.container.margin,
+		},
+		widget = wibox.container.background,
+	})
+
+	return with_label("VOL", widget)
+end
+
+function M.pulseaudio_source()
+	local content = wibox.widget.textbox()
+	content.font = beautiful.widget_font
+
+	pulseaudio.connect_signal("source::volume", function(volume)
+		content.markup = string.format("%02d%%", volume)
+	end)
+	pulseaudio.connect_signal("source::mute", function()
+		content.markup = "MUTE"
+	end)
+	pulseaudio.refresh_source_volume()
+
+	local widget = wibox.widget({
+		{
+			content,
+			widget = wibox.container.margin,
+		},
+		widget = wibox.container.background,
+	})
+
+	return with_label("MIC", widget)
+end
+
+function M.wifi(interface)
 	local widget = wibox.widget.textbox()
-	vicious.register(widget, vicious.contrib.pulse, function(_, args)
-		local color = util.map_threshold(args[1], thresholds)
-		return util.span(color, "VOL:%d%%", args[1])
-	end, 50)
+	vicious.register(widget, vicious.widgets.wifiiw, function(_, args)
+		return func.span(beautiful.wifi_ssid_fg, "%s", args["{ssid}"])
+	end, 11, interface)
 	return widget
 end
 
-function M.wifi()
+function M.netstats(label, interface)
 	local widget = wibox.widget.textbox()
-	vicious.register(widget, vicious.widgets.wifiiw, function(_, args)
-		return util.span(beautiful.threshold_normal_fg, "WIFI:%s%%", args["{linp}"])
-	end, 11, "wlan0")
+	local get_prop = function(args, property)
+		return args[string.format("{%s %s}", interface, property)]
+	end
+
+	vicious.register(widget, vicious.widgets.net, function(_, args)
+		if get_prop(args, "carrier") == 0 then
+			return ""
+		end
+
+		local down_kb = get_prop(args, "down_kb")
+		return string.format(
+			"%s  %s",
+			func.span(beautiful.widget_label_fg, label),
+			func.span(beautiful.threshold_normal_fg, "%skb", down_kb)
+		)
+	end, 3, interface)
 	return widget
 end
 
@@ -255,27 +401,28 @@ function M.cpu_temp()
 
 	local widget = wibox.widget.textbox()
 	vicious.register(widget, vicious.contrib.sensors, function(_, args)
-		local color = util.map_threshold(args[1], thresholds)
-		return util.span(color, "TEMP:%sC", args[1])
+		local color = func.map_threshold(args[1], thresholds)
+		return func.span(color, "TEMP:%sC", args[1])
 	end, 7, "Package id 0")
 	return widget
 end
 
 function M.sep(width)
 	return wibox.widget({
-		widget = wibox.widget.separator,
 		orientation = "vertical",
-		color = "#353535",
+		thickness = 1,
+		color = beautiful.separator_color,
 		forced_width = width,
+		widget = wibox.widget.separator,
 	})
 end
 
 function M.spacer(width)
 	return wibox.widget({
-		widget = wibox.widget.separator,
 		orientation = "vertical",
-		color = "#21252b",
+		color = beautiful.wibar_bg,
 		forced_width = width,
+		widget = wibox.widget.separator,
 	})
 end
 

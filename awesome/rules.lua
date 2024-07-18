@@ -23,7 +23,7 @@ ruled.client.connect_signal("request::rules", function()
 					"Blueman-manager",
 					"Lxappearance",
 					"Nm-connection-editor",
-					"Pavucontrol",
+					"pavucontrol",
 					"Qalculate-gtk",
 					"Xfce4-power-manager-settings",
 				},
@@ -37,6 +37,7 @@ ruled.client.connect_signal("request::rules", function()
 			properties = {
 				floating = true,
 				placement = awful.placement.centered,
+				ontop = true,
 			},
 		},
 		-- Messaging

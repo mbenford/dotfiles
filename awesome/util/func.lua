@@ -22,6 +22,14 @@ function M.lazy(func, ...)
 	end
 end
 
+function M.partial_right(func, ...)
+	local rightArgs = { ... }
+	return function(...)
+		local args = { ... }
+		func(table.unpack(require("gears").table.join(args, rightArgs)))
+	end
+end
+
 function M.client_func(func)
 	return function()
 		if client.focus then

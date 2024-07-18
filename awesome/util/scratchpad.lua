@@ -30,7 +30,7 @@ function M.register(name, opts)
 		placement = (opts.placement or awful.placement.centered) + awful.placement.no_offscreen,
 		width = opts.width,
 		height = opts.height,
-		skip_taskbar = opts.skip_taskbar or true,
+		skip_taskbar = true,
 		floating = true,
 	}
 end
