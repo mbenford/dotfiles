@@ -10,7 +10,7 @@ indicate_hidden = true
 transparency = 0
 padding = 8
 horizontal_padding = 8
-frame_width = 1
+frame_width = 2
 frame_color = "#b7bdf8"
 gap_size = 0
 separator_height = 1
@@ -59,7 +59,7 @@ browser = /usr/bin/brave
 always_run_script = true
 title = Dunst
 class = Dunst
-corner_radius = 0
+corner_radius = 5
 ignore_dbusclose = false
 
 # Legacy
@@ -74,21 +74,23 @@ mouse_right_click = close_all
 per_monitor_dpi = false
 
 [urgency_low]
-background = "#24273A"
-foreground = "#CAD3F5"
+background = "#1f2335"
+foreground = "#c0caf5"
+frame_color = "#7aa2f7"
 override_dbus_timeout = 5
 
 [urgency_normal]
-background = "#24273A"
-foreground = "#CAD3F5"
+background = "#24283b"
+foreground = "#c0caf5"
+frame_color = "#c0caf5"
+frame_color = "#7aa2f7"
 override_dbus_timeout = 5
-highlight = "#8aadf4"
 
 [urgency_critical]
-background = "#24273A"
-foreground = "#CAD3F5"
-frame_color = "#F5A97F"
-override_dbus_timeout = 0
+background = "#292e42"
+foreground = "#db4b4b"
+frame_color = "#db4b4b"
+override_dbus_timeout = 5
 
 [transient_history_ignore]
 match_transient = true
@@ -121,5 +123,6 @@ set_transient = 1
 min_icon_size = 24
 icon_position = top
 hide_text = true
+highlight = "#7aa2f7"
 
 # vim: ft=cfg
