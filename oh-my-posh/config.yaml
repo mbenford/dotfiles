@@ -71,7 +71,7 @@ blocks:
         trailing_diamond: ""
         foreground: "p:status-fg"
         background: "p:default-bg"
-        template: "{{if gt .Code 0}} {{reason .Code}}{{end}}"
+        template: "{{if gt .Code 0}} {{reason .Code}} ({{.Code}}){{end}}"
   - type: prompt
     alignment: left
     newline: true
