@@ -1,13 +1,13 @@
-local lazy = require('legendary.toolbox').lazy
-require('legendary').autocmds({
+local lazy = require("legendary.toolbox").lazy
+require("legendary").autocmds({
 	{
-		name = 'Custom',
+		name = "Custom",
 		clear = true,
-		{ 'FocusLost', 'silent! wa' },
-		{ 'TextYankPost', lazy(vim.highlight.on_yank, { higroup = 'TextYank', timeout = 150 }) },
-		{ 'VimResized', lazy(vim.api.nvim_command, 'wincmd =') },
+		{ "FocusLost", "silent! wa" },
+		{ "TextYankPost", lazy(vim.highlight.on_yank, { higroup = "TextYank", timeout = 150 }) },
+		{ "VimResized", lazy(vim.api.nvim_command, "wincmd =") },
 		{
-			{ 'BufEnter', 'BufWritePost' },
+			{ "BufEnter", "BufWritePost" },
 			function(args)
 				local bufinfo = vim.fn.getbufinfo(args.buf)
 				if #bufinfo ~= 1 then
@@ -19,8 +19,8 @@ require('legendary').autocmds({
 					return
 				end
 
-				local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
-				vim.opt.titlestring = string.format('%s - Neovim', cwd)
+				local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+				vim.opt.titlestring = string.format("%s - Neovim", cwd)
 			end,
 		},
 	},

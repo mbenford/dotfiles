@@ -47,6 +47,7 @@ return {
 				"tsx",
 				"typescript",
 				"vim",
+				"vimdoc",
 				"yaml",
 			},
 			playground = { enable = true },

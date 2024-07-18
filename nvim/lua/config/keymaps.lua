@@ -1,114 +1,31 @@
 local legendary = require("legendary")
 local lazy = require("legendary.toolbox").lazy
 legendary.keymaps({
-	{
-		";",
-		":",
-		mode = { "n", "x" },
-		opts = {
-			silent = false,
-		},
-		description = "Command line mode",
-	},
-	{
-		"H",
-		"^",
-		mode = { "n", "x", "o" },
-		opts = {
-			remap = true,
-		},
-		description = "Alias for ^",
-	},
-	{
-		"L",
-		"g_",
-		mode = { "n", "x", "o" },
-		opts = {
-			remap = true,
-		},
-		description = "Alias for g_",
-	},
-	{
-		"M",
-		"%",
-		mode = { "n", "x", "o" },
-		opts = {
-			remap = true,
-		},
-		description = "Alias for %",
-	},
+	{ ";", ":", mode = { "n", "x" }, opts = { silent = false }, description = "Command line mode" },
+	{ "H", "^", mode = { "n", "x", "o" }, opts = { remap = true }, description = "Alias for ^" },
+	{ "L", "g_", mode = { "n", "x", "o" }, opts = { remap = true }, description = "Alias for g_" },
+	{ "M", "%", mode = { "n", "x", "o" }, opts = { remap = true }, description = "Alias for %" },
 	{ "Q", '<cmd>execute "noautocmd normal! " . v:count1 . "@" . getcharstr()<cr>', description = "Alias for @" },
-	{
-		"<",
-		"<gv",
-		mode = { "x" },
-		description = "Shift left and keep selection",
-	},
-	{
-		">",
-		">gv",
-		mode = { "x" },
-		description = "Shift right and keep selection",
-	},
+	{ "<", "<gv", mode = { "x" }, description = "Shift left and keep selection" },
+	{ ">", ">gv", mode = { "x" }, description = "Shift right and keep selection" },
 	{ "U", "<C-R>", description = "Redo" },
-	{
-		"j",
-		"gj",
-		description = "Go down (non-linewise)",
-	},
-	{
-		"k",
-		"gk",
-		description = "Go up (non-linewise)",
-	},
-	{
-		"n",
-		"nzz",
-		description = "Go to next occurrence and center",
-	},
-	{
-		"N",
-		"Nzz",
-		description = "Go to previous occurrence and center",
-	},
-	{
-		"<C-d>",
-		"<C-d>zz",
-		description = "Scroll down and center",
-	},
-	{
-		"<C-u>",
-		"<C-u>zz",
-		description = "Scroll up and center",
-	},
-	{
-		"*",
-		"*zz",
-		description = "Search forward and center",
-	},
-	{
-		"#",
-		"#zz",
-		description = "Search backward and center",
-	},
-	{
-		"J",
-		"maJ`a",
-		description = "Join lines and keep the cursor at its position",
-	},
+	{ "j", "gj", description = "Go down (non-linewise)" },
+	{ "k", "gk", description = "Go up (non-linewise)" },
+	{ "n", "nzz", description = "Go to next occurrence and center" },
+	{ "N", "Nzz", description = "Go to previous occurrence and center" },
+	{ "<C-d>", "<C-d>zz", description = "Scroll down and center" },
+	{ "<C-u>", "<C-u>zz", description = "Scroll up and center" },
+	{ "*", "*zz", description = "Search forward and center" },
+	{ "#", "#zz", description = "Search backward and center" },
+	{ "J", "maJ`a", description = "Join lines and keep the cursor at its position" },
 	{ "x", '"_x', mode = { "n", "x" }, description = "Same as x but uses the black hole register" },
 	{ "X", '"_dd', description = "Delete the current line into the black hole register" },
-	{
-		"<Tab>",
-		"<C-^>",
-		description = "Switch to the alternate buffer",
-	},
+	{ "<Tab>", "<C-^>zz", description = "Switch to the alternate buffer" },
 	{
 		"dd",
 		function()
 			return vim.api.nvim_get_current_line():match("^%s*$") and '"_dd' or "dd"
 		end,
-		mode = { "n" },
 		opts = { expr = true },
 		description = "Same as dd but uses the black hole register for empty lines",
 	},
@@ -120,28 +37,13 @@ legendary.keymaps({
 	{ "<Leader>o", "mao<Esc>`a", description = "Insert empty line below" },
 	{ "<Leader>O", "maO<Esc>`a", description = "Insert empty line above" },
 	{ "<Leader>y", '"+yy', description = "Yank current line to clipboard" },
-	{
-		"<Leader>y",
-		'"+y',
-		mode = { "x" },
-		description = "Yank selected lines to clipboard",
-	},
+	{ "<Leader>y", '"+y', mode = { "x" }, description = "Yank selected lines to clipboard" },
 	{ "<Leader>p", '"+p', description = "Paste from clipboard after the cursor" },
 	{ "<Leader>P", '"+P', description = "Paste from clipboard before the cursor" },
 	{ "<C-Down>", "<Cmd>move +1<CR>==", description = "Move the current line down" },
 	{ "<C-Up>", "<Cmd>move -2<CR>==", description = "Move the current line up" },
-	{
-		"<C-Down>",
-		":m '>+1<CR>gv=gv",
-		mode = { "v" },
-		description = "Move selected lines line down",
-	},
-	{
-		"<C-Up>",
-		":m '<-2<CR>gv=gv",
-		mode = { "v" },
-		description = "Move selected lines line up",
-	},
+	{ "<C-Down>", ":m '>+1<CR>gv=gv", mode = { "v" }, description = "Move selected lines line down" },
+	{ "<C-Up>", ":m '<-2<CR>gv=gv", mode = { "v" }, description = "Move selected lines line up" },
 	{
 		"gx",
 		function()
@@ -149,16 +51,36 @@ legendary.keymaps({
 		end,
 		description = "Open the URL under the cursor",
 	},
+	{
+		"gco",
+		function()
+			if vim.o.commentstring == "" then
+				return
+			end
+
+			local comment = string.gsub(vim.o.commentstring, "%%s", "")
+			vim.cmd.normal("O")
+			vim.cmd.normal("cc" .. comment)
+			vim.cmd.startinsert({ bang = true })
+		end,
+	},
+	{
+		"gca",
+		function()
+			if vim.o.commentstring == "" then
+				return
+			end
+
+			local comment = string.gsub(vim.o.commentstring, "%%s", "")
+			vim.cmd.normal("A " .. comment)
+			vim.cmd.startinsert({ bang = true })
+		end,
+	},
+	{ "gct", "gcoTODO: ", opts = { remap = true }, description = "Add a TODO comment" },
+	{ "gcn", "gcoNOTE: ", opts = { remap = true }, description = "Add a NOTE comment" },
+	{ "gcf", "gcoFIXME: ", opts = { remap = true }, description = "Add a FIXME comment" },
 	{ "<Leader>d", "<Cmd>copy .<CR>", description = "Duplicate current line" },
 	{ "<Leader>d", ":copy '><CR>", mode = { "x" }, description = "Duplicate selected lines" },
-	{
-		"<Leader>tn",
-		"<Cmd>set number! | set relativenumber!<CR>",
-		description = "Toggle relative numbers",
-	},
-	{ "<Leader>tw", "<Cmd>set wrap!<CR>", description = "Toggle line wrap" },
-	{ "<Leader>th", "<Cmd>set hlsearch!<CR>", description = "Toggle search highlight" },
-	{ "<Leader>ts", "<Cmd>set spell!<CR>", description = "Toggle spell checking" },
 	{ "<Leader>sh", "<Cmd>aboveleft vsplit<CR>", description = "Split window horizontally" },
 	{ "<Leader>sj", "<Cmd>belowright split<CR>", description = "Split window horizontally" },
 	{ "<Leader>sk", "<Cmd>aboveleft split<CR>", description = "Split window horizontally" },
@@ -200,6 +122,15 @@ legendary.keymaps({
 	},
 	{ "[q", "<Cmd>cp<CR>", description = "Go to previous item on quickfix list" },
 	{ "]q", "<Cmd>cn<CR>", description = "Go to next item on quickfix list" },
+	{ "cn", "*``micgn", description = "" },
+	{ "cN", "*``micgn", description = "" },
+	{ "<Esc>", "<Cmd>nohlsearch<CR>", mode = { "n" }, description = "Clear search highlight" },
+	-- Toggles
+	{ "<LocalLeader>tn", "<Cmd>set number!<CR>", description = "Toggle numbers" },
+	{ "<LocalLeader>tr", "<Cmd>set relativenumber!<CR>", description = "Toggle relative numbers" },
+	{ "<LocalLeader>tw", "<Cmd>set wrap!<CR>", description = "Toggle line wrap" },
+	{ "<LocalLeader>th", "<Cmd>set hlsearch!<CR>", description = "Toggle search highlight" },
+	{ "<LocalLeader>ts", "<Cmd>set spell!<CR>", description = "Toggle spell checking" },
 })
 
 legendary.autocmds({

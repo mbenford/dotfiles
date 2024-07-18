@@ -21,5 +21,24 @@ return {
 				description = "",
 			},
 		})
+
+		require("legendary").autocmds({
+			{
+				name = "MiniFiles",
+				clear = true,
+				{
+					"User",
+					function(args)
+						local win_id = args.data.win_id
+						local config = vim.api.nvim_win_get_config(win_id)
+						config.border = "rounded"
+						vim.api.nvim_win_set_config(win_id, config)
+					end,
+					opts = {
+						pattern = "MiniFilesWindowOpen",
+					},
+				},
+			},
+		})
 	end,
 }

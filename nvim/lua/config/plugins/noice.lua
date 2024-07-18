@@ -1,3 +1,4 @@
+string.format("1", 1, 2)
 return {
 	'folke/noice.nvim',
 	event = 'VeryLazy',

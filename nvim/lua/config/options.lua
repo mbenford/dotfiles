@@ -1,5 +1,6 @@
 local g = vim.g
-g.mapleader = " " -- space as the leader key
+g.mapleader = " "
+g.maplocalleader = "\\"
 
 local o = vim.opt
 o.backup = false
@@ -14,7 +15,7 @@ o.foldlevelstart = -1
 o.foldenable = true
 o.fillchars:append({ eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "" })
 o.hidden = true
-o.hlsearch = false
+o.hlsearch = true
 o.ignorecase = true
 o.linebreak = true
 o.list = true

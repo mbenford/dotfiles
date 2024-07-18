@@ -1,28 +1,28 @@
 return {
-	'nvim-telescope/telescope.nvim',
+	"nvim-telescope/telescope.nvim",
 	dependencies = {
-		'nvim-lua/plenary.nvim',
-		'natecraddock/telescope-zf-native.nvim',
+		"nvim-lua/plenary.nvim",
+		"natecraddock/telescope-zf-native.nvim",
 	},
 	opts = {
 		defaults = {
 			filesize_limit = 1,
-			sorting_strategy = 'ascending',
-			scroll_strategy = 'limit',
-			prompt_prefix = '  ',
-			selection_caret = '',
-			entry_prefix = '',
+			sorting_strategy = "ascending",
+			scroll_strategy = "limit",
+			prompt_prefix = "  ",
+			selection_caret = "",
+			entry_prefix = "",
 			results_title = false,
-			layout_strategy = 'vertical',
+			layout_strategy = "vertical",
 			layout_config = {
-				prompt_position = 'top',
+				prompt_position = "top",
 				vertical = {
 					mirror = true,
 				},
 			},
 			file_ignore_patterns = {
-				'%.png',
-				'%.gz',
+				"%.png",
+				"%.gz",
 			},
 		},
 		pickers = {
@@ -35,112 +35,117 @@ return {
 		},
 	},
 	config = function(_, opts)
-		local actions = require('telescope.actions')
+		local actions = require("telescope.actions")
 		opts.defaults.mappings = {
 			i = {
-				['<esc>'] = actions.close,
-				['<cr>'] = actions.select_default + actions.center,
+				["<esc>"] = actions.close,
+				["<cr>"] = actions.select_default + actions.center,
 			},
 		}
-		require('telescope').setup(opts)
-		require('telescope').load_extension('zf-native')
+		require("telescope").setup(opts)
+		require("telescope").load_extension("zf-native")
 
-		local builtin = require('telescope.builtin')
-		local themes = require('telescope.themes')
-		local lazy = require('legendary.toolbox').lazy
+		local builtin = require("telescope.builtin")
+		local themes = require("telescope.themes")
+		local lazy = require("legendary.toolbox").lazy
 
 		local function project_files(opts)
 			opts = opts or {}
-			if not pcall(builtin.git_files, vim.tbl_deep_extend('force', { show_untracked = true }, opts)) then
+			if not pcall(builtin.git_files, vim.tbl_deep_extend("force", { show_untracked = true }, opts)) then
 				builtin.find_files(opts)
 			end
 		end
 
-		require('legendary').keymaps({
+		require("legendary").keymaps({
 			{
-				'<Leader>ff',
+				"<Leader>ff",
 				project_files,
-				description = 'Telescope (project files)',
+				description = "Telescope (project files)",
 			},
 			{
-				'<Leader>fa',
+				"<Leader>fa",
 				lazy(builtin.find_files, { hidden = true, no_ignore = true, no_ignore_parent = true }),
-				description = 'Telescope - All Files',
+				description = "Telescope - All Files",
 			},
 			{
-				'<leader>fo',
+				"<leader>fo",
 				builtin.oldfiles,
-				description = 'Telescope - Old Files',
+				description = "Telescope - Old Files",
 			},
 			{
-				'<leader>fg',
+				"<leader>fg",
 				builtin.live_grep,
-				description = 'Telescope - Live Grep',
+				description = "Telescope - Live Grep",
 			},
 			{
-				'<leader>f*',
+				"<leader>f*",
 				builtin.grep_string,
-				description = 'Telescope -Grep string',
+				description = "Telescope - Grep string",
 			},
 			{
-				'<leader>f<leader>',
+				"<leader>fb",
 				lazy(builtin.buffers, { sort_lastused = true }),
-				description = 'Telescope - Buffers',
+				description = "Telescope - Buffers",
 			},
 			{
-				'<leader>fr',
+				"<leader>f<leader>",
 				builtin.resume,
-				description = 'Telescope - Resume',
+				description = "Telescope - Resume",
 			},
 			{
-				'<leader>fd',
+				"<leader>fr",
+				builtin.registers,
+				description = "Telescope - Registers",
+			},
+			{
+				"<leader>fd",
 				builtin.diagnostics,
-				description = 'Telescope - Diagnostics',
+				description = "Telescope - Diagnostics",
 			},
 			{
-				'<leader>;',
+				"<leader>;",
 				builtin.commands,
-				description = 'Telescope - Commands',
+				description = "Telescope - Commands",
 			},
 			{
-				'<leader>/',
+				"<leader>/",
 				builtin.current_buffer_fuzzy_find,
-				description = 'Telescope - Buffer Fuzzy Find',
+				description = "Telescope - Buffer Fuzzy Find",
 			},
 			{
-				'<leader>fhh',
+				"<leader>fhh",
 				builtin.help_tags,
-				description = 'Telescope - Help Tags',
+				description = "Telescope - Help Tags",
 			},
 			{
-				'<leader>fhi',
+				"<leader>fhi",
 				builtin.highlights,
-				description = 'Telescope - Highlights',
+				description = "Telescope - Highlights",
 			},
 			{
-				'<leader>fhs',
+				"<leader>fhs",
 				lazy(builtin.search_history, themes.get_dropdown()),
-				description = 'Telescope - Search History',
+				description = "Telescope - Search History",
 			},
 			{
-				'<leader>fhc',
+				"<leader>fhc",
 				lazy(builtin.command_history, themes.get_dropdown()),
-				description = 'Telescope - Command History',
+				description = "Telescope - Command History",
 			},
 			{
-				'<leader>fv',
+				"<leader>fv",
 				lazy(builtin.vim_options, themes.get_dropdown()),
-				description = 'Telescope - Vim Options',
+				description = "Telescope - Vim Options",
 			},
 			{
-				'<leader>ft',
+				"<leader>ft",
 				lazy(builtin.filetypes, themes.get_dropdown()),
-				description = 'Telescope - File Types',
+				description = "Telescope - File Types",
 			},
 			{
-				'<leader>fs',
+				"<leader>fs",
 				lazy(builtin.spell_suggest, themes.get_cursor()),
-				description = 'Telescope - Spell Suggestions',
+				description = "Telescope - Spell Suggestions",
 			},
 			-- {
 			-- 	'<leader>fa',
@@ -148,40 +153,45 @@ return {
 			-- 	description = 'Telescope - Autocommands',
 			-- },
 			{
-				'<leader>gb',
+				"<leader>gb",
 				builtin.git_branches,
-				description = 'Telescope - Git Branches',
+				description = "Telescope - Git Branches",
 			},
 			-- { '<leader>gs', builtin.git_stash, description = '' },
 			{
-				'<leader>gs',
+				"<leader>gs",
 				builtin.git_status,
-				description = 'Telescope - Git Status',
+				description = "Telescope - Git Status",
 			},
 			{
-				'<leader>gc',
+				"<leader>gc",
 				builtin.git_commits,
-				description = 'Telescope - Git Commits',
+				description = "Telescope - Git Commits",
 			},
 			{
-				'<leader>ld',
+				"<leader>gC",
+				builtin.git_bcommits,
+				description = "Telescope - Git Commits of current buffer",
+			},
+			{
+				"<leader>ld",
 				builtin.lsp_definitions,
-				description = 'Telescope - LSP Definitions',
+				description = "Telescope - LSP Definitions",
 			},
 			{
-				'<leader>li',
+				"<leader>li",
 				builtin.lsp_implementations,
-				description = 'Telescope - LSP Implementations',
+				description = "Telescope - LSP Implementations",
 			},
 			{
-				'<leader>lr',
+				"<leader>lr",
 				lazy(builtin.lsp_references, { include_declaration = false, show_line = false }),
-				description = '',
+				description = "",
 			},
 			{
-				'<leader>ls',
+				"<leader>ls",
 				lazy(builtin.lsp_document_symbols, { symbol_width = 50 }),
-				description = 'Telescope - LSP Document Symbols',
+				description = "Telescope - LSP Document Symbols",
 			},
 		})
 	end,

@@ -30,12 +30,8 @@ local function filename()
 	return file
 end
 
-local function filetype()
-	return vim.bo.filetype
-end
-
 local function lsp_status()
-	local clients = #vim.lsp.get_active_clients()
+	local clients = #vim.lsp.get_clients()
 	local status = "LSP:" .. clients
 	return clients > 0 and ("%#LualineLspActive#" .. status) or status
 end
@@ -65,14 +61,11 @@ return {
 	"nvim-lualine/lualine.nvim",
 	opts = {
 		options = {
-			theme = "catppuccin",
+			theme = "tokyonight",
 			globalstatus = true,
 			icons_enabled = true,
 			section_separators = { left = "", right = "" },
 			component_separators = { left = "", right = "" },
-			disabled_filetypes = {
-				statusline = { "TelescopePrompt" },
-			},
 		},
 		sections = {
 			lualine_a = {
@@ -80,18 +73,12 @@ return {
 			},
 			lualine_b = {},
 			lualine_c = {
-				{ "filetype", icon_only = true, padding = { left = 1, right = 0 } },
 				filename,
 			},
 			lualine_x = {
 				recording_status,
-				{
-					"branch",
-					icon = "",
-					fmt = function(branch)
-						return truncate_right(branch, 20)
-					end,
-				},
+				"grapple",
+				{ "branch", icon = "" },
 				{
 					"diagnostics",
 					sources = { "nvim_diagnostic" },
@@ -99,12 +86,20 @@ return {
 					always_visible = true,
 				},
 				lsp_status,
-				{ filetype, fmt = string.upper },
+				{ "filetype", fmt = string.upper },
 				{ indentation, fmt = string.upper },
 				{ file_encoding, fmt = string.upper },
 				{ file_format, fmt = string.upper },
 				location,
 			},
+			lualine_y = {},
+			lualine_z = {},
+		},
+		inactive_sections = {
+			lualine_a = {},
+			lualine_b = {},
+			lualine_c = { filename },
+			lualine_x = { filetype },
 			lualine_y = {},
 			lualine_z = {},
 		},

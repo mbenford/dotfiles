@@ -8,7 +8,7 @@ return {
 			html = { "prettier" },
 			javascript = { "prettier" },
 			javascriptreact = { "prettier" },
-			json = { "prettier" },
+			json = { "jq" },
 			lua = { "stylua" },
 			markdown = { "prettier" },
 			python = { "black" },

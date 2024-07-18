@@ -1,6 +1,7 @@
 return {
 	"catppuccin/nvim",
 	name = "catppuccin",
+	enabled = false,
 	opts = {
 		flavour = "macchiato",
 		no_bold = true,
@@ -34,6 +35,7 @@ return {
 				TextYank = { fg = colors.yellow, bg = colors.none, reverse = true },
 				VertSplit = { fg = colors.surface0 },
 				NormalFloat = { bg = colors.base },
+				FloatBorder = { bg = colors.base },
 				WinBar = { fg = colors.text },
 
 				-- NvimTree
@@ -58,6 +60,8 @@ return {
 				LualineLspActive = { fg = colors.green, bg = colors.mantle },
 				LualineCopilotActive = { fg = colors.blue, bg = colors.mantle },
 				LualineRecording = { fg = colors.red, bg = colors.mantle },
+				LualineGitStatusClean = { fg = colors.green, bg = colors.mantle },
+				LualineGitStatusDirty = { fg = colors.yellow, bg = colors.mantle },
 
 				-- Cokeline
 				CokelineFocused = { fg = colors.blue },
