@@ -5,7 +5,8 @@ set -e
 hash=`
 	git \
 	--no-pager log -100 \
-	--pretty='%C(yellow)%h%Creset %C(bold blue)%<(15,trunc)%ae%Creset %Cgreen%cs%C(auto)%d%Creset %s' \
+	--pretty='%C(yellow)%h%Creset %Cgreen%cd %C(bold blue)%<(15,trunc)%an%Creset %s%C(auto)%d%Creset' \
+	--date=format:%d-%m-%y \
 	--color=always \
 	| fzf \
 	--preview 'git show --name-status {1}' \
