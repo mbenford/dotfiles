@@ -110,14 +110,14 @@ function M.taglist(screen)
 			local background = self:get_children_by_id("background")[1]
 
 			if t.selected then
-				content.text = ""
+				content.text = beautiful.taglist_circles_selected
 				background.fg = beautiful.taglist_fg_focus
 			else
 				if #t:clients() > 0 then
-					content.text = ""
+					content.text = beautiful.taglist_circles_not_empty
 					background.fg = beautiful.taglist_fg_not_empty
 				else
-					content.text = ""
+					content.text = beautiful.taglist_circles_empty
 					background.fg = beautiful.taglist_fg
 				end
 			end
@@ -225,7 +225,12 @@ function M.window_count(screen)
 
 	local function update_count(t)
 		if t.screen == screen then
-			content.text = t.layout == awful.layout.suit.max and #t:clients() or ""
+			local count = #t:clients()
+			if t.layout == awful.layout.suit.max and count > 1 then
+				content.text = count
+			else
+				content.text = ""
+			end
 		end
 	end
 

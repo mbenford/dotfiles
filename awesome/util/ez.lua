@@ -1,5 +1,5 @@
 local awful = require("awful")
-local split = require("util.func").split
+local funcutil = require("util.func")
 
 local mods = {
 	["M"] = "Mod4",
@@ -9,7 +9,7 @@ local mods = {
 }
 
 local function parse(key)
-	local parts = split(key, "-")
+	local parts = funcutil.split(key, "-")
 	local result = {
 		value = parts[#parts],
 		mods = {},

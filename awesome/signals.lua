@@ -1,9 +1,9 @@
+local api = { awesome = awesome, screen = screen, client = client, tag = tag, mouse = mouse }
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-
-local api = { awesome = awesome, screen = screen, client = client, tag = tag }
+local mouse = require("util.mouse")
 
 naughty.connect_signal("request::display_error", function(message, startup)
 	naughty.notification({
@@ -17,6 +17,12 @@ api.client.connect_signal("property::urgent", function(c)
 	if c.urgent then
 		c:jump_to()
 		c:swap(awful.client.getmaster())
+	end
+end)
+
+api.client.connect_signal("focus", function(c)
+	if api.mouse.current_client ~= c then
+		mouse.move_to_client(c)
 	end
 end)
 
@@ -37,14 +43,14 @@ local function fix_screen_padding(tag)
 		return
 	end
 
-	local regular_clients_count = 0
+	local clients_count = 0
 	for _, client in ipairs(tag:clients()) do
 		if not client.floating and not client.minimized then
-			regular_clients_count = regular_clients_count + 1
+			clients_count = clients_count + 1
 		end
 	end
 
-	if regular_clients_count == 1 or tag.layout == awful.layout.suit.max then
+	if clients_count == 1 or tag.layout == awful.layout.suit.max then
 		local padding = screen.geometry.width - min_screen_width
 		screen.padding = { left = padding / 2, right = padding / 2 }
 	end

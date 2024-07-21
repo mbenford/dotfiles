@@ -1,3 +1,4 @@
+local api = { awesome = awesome, client = client, screen = screen, mouse = mouse }
 local awful = require("awful")
 local lazy = require("util.func").lazy
 local client_func = require("util.func").client_func
@@ -5,9 +6,8 @@ local tag_func = require("util.func").tag_func
 local ezkeys = require("util.ez").ezkeys
 local floating = require("util.floating")
 local keychord = require("util.keychord")
+local mouse = require("util.mouse")
 local pulseaudio = require("util.pulseaudio")
-
-local api = { awesome = awesome, client = client, screen = screen, mouse = mouse }
 
 awful.keyboard.append_global_keybindings(ezkeys({
 	-- Awesome
@@ -32,16 +32,16 @@ awful.keyboard.append_global_keybindings(ezkeys({
 		end
 	end,
 	["M-i"] = function()
+		if api.client.focus and api.client.focus.screen ~= api.mouse.screen then
+			mouse.move_to_screen(api.client.focus.screen)
+		end
+
 		awful.screen.focus_relative(1)
-		if api.client.focus ~= nil and api.client.focus.screen.index ~= awful.screen.focused().index then
+		if api.client.focus and api.client.focus.screen ~= awful.screen.focused() then
 			api.client.focus = nil
 		end
 
-		local geometry = awful.screen.focused().geometry
-		api.mouse.coords({
-			x = geometry.x + geometry.width / 2,
-			y = geometry.y + geometry.height / 2,
-		})
+		mouse.move_to_screen(awful.screen.focused())
 	end,
 	["M-u"] = function()
 		awful.client.urgent.jumpto()

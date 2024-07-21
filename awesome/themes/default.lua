@@ -11,6 +11,9 @@ return {
 
 	border_width = dpi(2),
 	taglist_style = "circles",
+	taglist_circles_selected = "",
+	taglist_circles_not_empty = "",
+	taglist_circles_empty = "",
 	systray_icon_spacing = 10,
 	wibar_margins = { top = 5, bottom = 1, left = 5, right = 5 },
 	wibar_shape = partial_right(require("gears.shape").rounded_rect, 8),
