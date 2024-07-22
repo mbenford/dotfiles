@@ -12,6 +12,7 @@ window {
 	width: 25%;
 	border-color: var(border);
 	border: 2px solid;
+	border-radius: 5px;
 }
 
 inputbar {
