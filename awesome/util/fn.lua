@@ -1,3 +1,4 @@
+local api = { client = client }
 local awful = require("awful")
 
 local M = {}
@@ -15,48 +16,36 @@ function M.span(color, format, ...)
 	return string.format('<span foreground="%s">%s</span>', color, string.format(format, ...))
 end
 
-function M.lazy(func, ...)
+function M.bind(fn, ...)
 	local args = { ... }
 	return function()
-		func(table.unpack(args))
+		fn(table.unpack(args))
 	end
 end
 
-function M.partial_right(func, ...)
+function M.partial_right(fn, ...)
 	local rightArgs = { ... }
 	return function(...)
 		local args = { ... }
-		func(table.unpack(require("gears").table.join(args, rightArgs)))
+		fn(table.unpack(require("gears").table.join(args, rightArgs)))
 	end
 end
 
-function M.client_func(func)
+function M.bind_client(fn)
 	return function()
-		if client.focus then
-			func(client.focus)
+		if api.client.focus then
+			fn(api.client.focus)
 		end
 	end
 end
 
-function M.tag_func(func)
+function M.bind_tag(fn)
 	return function()
 		local tag = awful.screen.focused().selected_tag
 		if tag then
-			func(tag)
+			fn(tag)
 		end
 	end
-end
-
-function M.split(str, sep)
-	if str == nil or str == "" then
-		return ""
-	end
-
-	local items = {}
-	for item in str:gmatch("([^" .. sep .. "]+)") do
-		table.insert(items, item)
-	end
-	return items
 end
 
 return M

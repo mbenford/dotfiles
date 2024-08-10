@@ -29,16 +29,19 @@ api.screen.connect_signal("request::desktop_decoration", function(screen)
 		layout = wibox.layout.fixed.horizontal,
 	}
 	local middle = {
-		widgets.window_name(screen),
-		layout = wibox.layout.ratio.horizontal,
+		layout = wibox.layout.fixed.horizontal,
+		widgets.clock(),
 	}
 	local right = {
-		widgets.clock(),
 		padding,
 		layout = wibox.layout.fixed.horizontal,
 	}
 
 	if screen == api.screen.primary then
+		middle = gears.table.join(middle, {
+			spacer,
+			widgets.notification_count(screen),
+		})
 		right = gears.table.join({
 			spacer,
 			widgets.systray(),
@@ -52,14 +55,11 @@ api.screen.connect_signal("request::desktop_decoration", function(screen)
 			widgets.ssd(),
 			spacer,
 			widgets.pulseaudio_sink(),
-			sep,
 		}, right)
-	else
-		right = gears.table.join({ spacer }, right)
 	end
 
-	local bar = awful.wibar({ position = "top", screen = screen })
-	bar:setup({
+	screen.bar = awful.wibar({ position = "top", screen = screen })
+	screen.bar:setup({
 		{
 			left,
 			halign = "left",

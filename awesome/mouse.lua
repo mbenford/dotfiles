@@ -1,7 +1,7 @@
 local awful = require("awful")
-local ezbuttons = require("util.ez").ezbuttons
+local ez = require("util.ez")
 
-awful.mouse.append_client_mousebindings(ezbuttons({
+awful.mouse.append_client_mousebindings(ez.buttons({
 	["1"] = function(c)
 		c:activate({ context = "mouse_click" })
 	end,

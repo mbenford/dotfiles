@@ -1,6 +1,6 @@
 local awful = require("awful")
 local gears = require("gears")
-local lazy = require("util.func").lazy
+local fn = require("util.fn")
 
 local targets = { sink = "@DEFAULT_SINK@", source = "@DEFAULT_SOURCE@" }
 local object = gears.object()
@@ -23,12 +23,12 @@ end
 
 local function set_volume(name, value)
 	local set_volume_cmd = string.format("pactl set-%s-volume %s %s", name, targets[name], value)
-	awful.spawn.easy_async(set_volume_cmd, lazy(refresh, name))
+	awful.spawn.easy_async(set_volume_cmd, fn.bind(refresh, name))
 end
 
 local function set_mute(name, value)
 	local set_mute_cmd = string.format("pactl set-%s-mute %s %s", name, targets[name], value)
-	awful.spawn.easy_async(set_mute_cmd, lazy(refresh, name))
+	awful.spawn.easy_async(set_mute_cmd, fn.bind(refresh, name))
 end
 
 local function connect_signal(name, func)

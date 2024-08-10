@@ -3,7 +3,6 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-local mouse = require("util.mouse")
 
 naughty.connect_signal("request::display_error", function(message, startup)
 	naughty.notification({
@@ -22,7 +21,7 @@ end)
 
 api.client.connect_signal("focus", function(c)
 	if api.mouse.current_client ~= c then
-		mouse.move_to_client(c)
+		require("util.mouse").move_to_client(c)
 	end
 end)
 

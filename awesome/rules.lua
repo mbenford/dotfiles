@@ -61,8 +61,9 @@ ruled.client.connect_signal("request::rules", function()
 			id = "work",
 			rule_any = {
 				instance = {
-					".*.slack.com",
-					"teams.microsoft.com",
+					"discord",
+					"slack",
+					"teams-for-linux",
 					"outlook.office.com",
 				},
 			},
@@ -76,12 +77,12 @@ ruled.client.connect_signal("request::rules", function()
 end)
 
 ruled.notification.connect_signal("request::rules", function()
-	-- All notifications will match this rule.
 	ruled.notification.append_rule({
-		rule = {},
+		rule = {
+			app_name = "Slack",
+		},
 		properties = {
-			screen = awful.screen.preferred,
-			implicit_timeout = 5,
+			app_icon = "slack",
 		},
 	})
 end)

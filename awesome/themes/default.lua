@@ -2,7 +2,7 @@ local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 local gfs = require("gears.filesystem")
 local default_themes_path = gfs.get_themes_dir()
-local partial_right = require("util.func").partial_right
+local fn = require("util.fn")
 
 return {
 	useless_gap = dpi(2),
@@ -16,7 +16,7 @@ return {
 	taglist_circles_empty = "",
 	systray_icon_spacing = 10,
 	wibar_margins = { top = 5, bottom = 1, left = 5, right = 5 },
-	wibar_shape = partial_right(require("gears.shape").rounded_rect, 8),
+	wibar_shape = fn.partial_right(require("gears.shape").rounded_rect, 8),
 	wibar_height = 30,
 	titlebar_font = "Ubuntu 11",
 	titlebar_size = 20,
@@ -24,7 +24,19 @@ return {
 	window_count_font = "JetBrains Mono 12",
 	widget_font = "JetBrains Mono 12",
 	widget_label_spacing = 3,
-	clock_font = "JetBrains Mono 12",
+	clock_font = "Ubuntu 12",
+
+	-- notification_font = "Ubuntu 12",
+	notification_appname_font = "Ubuntu 11",
+	notification_age_font = "Ubuntu 11",
+	notification_position = "top_middle",
+	notification_border_width = 2,
+	notification_icon_size = 48,
+	-- notification_spacing = 10,
+	notification_margin = 10,
+	notification_minimum_width = 400,
+	notification_maximum_width = 400,
+	notification_maximum_height = 64,
 
 	wallpaper = default_themes_path .. "default/background.png",
 	layout_fairh = default_themes_path .. "default/layouts/fairhw.png",

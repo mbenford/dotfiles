@@ -4,13 +4,25 @@ pcall(require, "luarocks.loader")
 
 -- Dirty hack to disable naughty so dunst can be loaded
 -- https://github.com/awesomeWM/awesome/issues/1285
-package.loaded["naughty.dbus"] = {}
+-- package.loaded["naughty.dbus"] = {}
 
-require("awful.autofocus")
-require("signals")
-require("theme")
-require("bar")
-require("keys")
-require("mouse")
-require("rules")
-require("autorun")
+local function load(module)
+	local success, error = pcall(require, module)
+	if not success then
+		require("naughty").notification({
+			urgency = "critical",
+			title = string.format("Error while loading module '%s'", module),
+			message = error,
+		})
+	end
+end
+
+load("awful.autofocus")
+load("signals")
+load("theme")
+load("bar")
+load("keys")
+load("mouse")
+load("rules")
+load("notifications")
+load("autorun")

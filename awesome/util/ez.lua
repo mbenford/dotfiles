@@ -1,5 +1,5 @@
 local awful = require("awful")
-local funcutil = require("util.func")
+local stringutil = require("util.string")
 
 local mods = {
 	["M"] = "Mod4",
@@ -9,7 +9,7 @@ local mods = {
 }
 
 local function parse(key)
-	local parts = funcutil.split(key, "-")
+	local parts = stringutil.split(key, "-")
 	local result = {
 		value = parts[#parts],
 		mods = {},
@@ -24,7 +24,7 @@ end
 
 local M = {}
 
-function M.ezkey(mapping, action)
+function M.key(mapping, action)
 	local result = parse(mapping)
 	return awful.key({
 		modifiers = result.mods,
@@ -33,15 +33,15 @@ function M.ezkey(mapping, action)
 	})
 end
 
-function M.ezkeys(mappings)
+function M.keys(mappings)
 	local bindings = {}
 	for mapping, action in pairs(mappings) do
-		table.insert(bindings, M.ezkey(mapping, action))
+		table.insert(bindings, M.key(mapping, action))
 	end
 	return bindings
 end
 
-function M.ezbutton(mapping, action)
+function M.button(mapping, action)
 	local result = parse(mapping)
 	return awful.button({
 		modifiers = result.mods,
@@ -50,10 +50,10 @@ function M.ezbutton(mapping, action)
 	})
 end
 
-function M.ezbuttons(mappings)
+function M.buttons(mappings)
 	local bindings = {}
 	for mapping, action in pairs(mappings) do
-		table.insert(bindings, M.ezbutton(mapping, action))
+		table.insert(bindings, M.button(mapping, action))
 	end
 	return bindings
 end
