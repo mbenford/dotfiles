@@ -5,10 +5,76 @@ local beautiful = require("beautiful")
 
 local List = {}
 
+local function new(args)
+	args = args or {}
+
+	local container = wibox.widget({
+		widget = wibox.container.background,
+		bg = args.bg,
+		{
+			widget = wibox.container.margin,
+			margins = args.margins,
+			{
+				id = "content",
+				layout = wibox.layout.align.vertical,
+			},
+		},
+	})
+	container:connect_signal("button::press", function(self, x, y, button)
+		if button == 4 then
+			self:select_prev()
+		elseif button == 5 then
+			self:select_next()
+		end
+	end)
+
+	gears.table.crush(container, List)
+	gears.table.crush(container._private, {
+		layout = args.layout or "vertical",
+		item_fg = args.item_fg,
+		item_bg = args.item_bg,
+		item_shape = args.item_shape,
+		item_border_color = args.item_border_color or beautiful.border_normal,
+		item_border_width = args.item_border_width or 1,
+		item_fg_selected = args.item_fg_selected,
+		item_bg_selected = args.item_bg_selected,
+		item_border_color_selected = args.item_border_color_selected or beautiful.border_focus,
+		item_creator = args.item_creator,
+		page_size = args.page_size or 5,
+		page_indicator_shape = args.page_indicator_shape or gears.shape.rectangle,
+		page_indicator_width = args.page_indicator_width or 20,
+		page_indicator_height = args.page_indicator_height or 3,
+		page_indicator_margin = args.page_indicator_margin or 5,
+		page_indicator_spacing = args.page_indicator_spacing or 5,
+		page_indicator_bg = args.page_indicator_bg or beautiful.border_normal,
+		page_indicator_bg_selected = args.page_indicator_bg_selected or beautiful.border_focus,
+		empty_widget = args.empty_widget or wibox.widget({
+			widget = wibox.container.place,
+			valign = "center",
+			halign = "center",
+			{
+				widget = wibox.widget.textbox,
+				text = "No items",
+			},
+		}),
+
+		count = 0,
+		selected_index = 0,
+		pages = {},
+	})
+
+	if args.items then
+		container:set_items(args.items)
+	end
+
+	return container
+end
+
 function List:set_items(items)
 	self:clear()
+
 	if #items == 0 then
-		self.widget = self._private.empty_widget
+		self:_content_widget().second = self._private.empty_widget
 		return
 	end
 
@@ -19,17 +85,25 @@ function List:set_items(items)
 
 	for index, value in ipairs(items) do
 		local container = wibox.widget({
-			id = "background_role",
 			fg = self._private.item_fg,
 			bg = self._private.item_bg,
 			shape = self._private.item_shape,
 			border_color = self._private.item_border_color,
 			border_width = self._private.item_border_width,
 			widget = wibox.container.background,
+			self._private.item_creator(index, value),
 		})
-		container:set_widget(self._private.item_creator(index, value))
+		container:connect_signal("mouse::enter", function()
+			self:select(index)
+		end)
+		container:connect_signal("button::press", function(_, x, y, button, mods)
+			if button == 1 then
+				self._private.keygrabber:stop()
+				self:emit_signal("selection::confirmed", index)
+			end
+		end)
 
-		local page_index = self:_get_page_index(index)
+		local page_index = self:_page_index(index)
 		if self._private.pages[page_index] == nil then
 			self._private.pages[page_index] = wibox.widget(page_template)
 		end
@@ -41,6 +115,7 @@ function List:set_items(items)
 end
 
 function List:clear()
+	self:_content_widget():reset()
 	for _, value in ipairs(self._private.pages) do
 		value:reset()
 	end
@@ -63,7 +138,7 @@ function List:select(index)
 		index = self._private.count
 	end
 
-	local selected = self:_get_item_widget(self._private.selected_index)
+	local selected = self:_item_widget(self._private.selected_index)
 	if selected then
 		gears.table.crush(selected, {
 			fg = self._private.item_fg,
@@ -72,20 +147,25 @@ function List:select(index)
 		})
 	end
 
-	selected = self:_get_item_widget(index)
+	selected = self:_item_widget(index)
 	if selected then
 		gears.table.crush(selected, {
 			fg = self._private.item_fg_selected,
 			bg = self._private.item_bg_selected,
 			border_color = self._private.item_border_color_selected,
 		})
-		self.widget = self._private.pages[self:_get_page_index(index)]
+		self:_content_widget().second = self._private.pages[self:_page_index(index)]
 		self._private.selected_index = index
+		self:_update_page_indicator()
 	end
 end
 
 function List:start_selection()
-	local grabber = awful.keygrabber({
+	if self._private.keygrabber then
+		self._private.keygrabber:stop()
+	end
+
+	self._private.keygrabber = awful.keygrabber({
 		keypressed_callback = function(grabber, mod, key)
 			if key == "h" then
 				self:select(self._private.selected_index - self._private.page_size)
@@ -122,62 +202,54 @@ function List:start_selection()
 			self:emit_signal("selection::keypressed", grabber, mod, key, self._private.selected_index)
 		end,
 	})
-	grabber:start()
+	self._private.keygrabber:start()
 end
 
-function List:_get_item_widget(index)
+function List:_content_widget()
+	return self:get_children_by_id("content")[1]
+end
+
+function List:_item_widget(index)
 	local widget_index = index % self._private.page_size
 	if widget_index == 0 then
 		widget_index = self._private.page_size
 	end
 
-	local page = self._private.pages[self:_get_page_index(index)]
+	local page = self._private.pages[self:_page_index(index)]
 	return page and page.children[widget_index] or nil
 end
 
-function List:_get_page_index(index)
+function List:_page_index(index)
 	return math.ceil(index / self._private.page_size)
 end
 
-local function new(args)
-	args = args or {}
+function List:_update_page_indicator()
+	local dots = wibox.widget({
+		layout = wibox.layout.fixed.horizontal,
+		spacing = self._private.page_indicator_spacing,
+	})
 
-	local container = wibox.container.background()
-	gears.table.crush(container, List)
-	container.bg = args.bg or beautiful.bg_normal
+	local page_index = self:_page_index(self._private.selected_index)
+	for i = 1, #self._private.pages do
+		dots:add(wibox.widget({
+			widget = wibox.container.background,
+			shape = gears.shape.rectangle,
+			forced_width = self._private.page_indicator_width,
+			forced_height = self._private.page_indicator_height,
+			bg = i == page_index and self._private.page_indicator_bg_selected or self._private.page_indicator_bg,
+		}))
+	end
 
-	gears.table.crush(container._private, {
-		layout = args.layout or "vertical",
-		item_fg = args.item_fg or beautiful.fg_normal,
-		item_bg = args.item_bg or beautiful.bg_normal,
-		item_shape = args.item_shape,
-		item_border_color = args.item_border_color or beautiful.notification_border_color,
-		item_border_width = args.item_border_width or 1,
-		item_fg_selected = args.item_fg_selected,
-		item_bg_selected = args.item_bg_selected,
-		item_border_color_selected = args.item_border_color_selected or beautiful.notification_border_color_selected,
-		item_creator = args.item_creator,
-		page_size = args.page_size or 5,
-
-		count = 0,
-		selected_index = 0,
-		pages = {},
-		empty_widget = args.empty_widget or {
+	self:_content_widget().third = wibox.widget({
+		widget = wibox.container.margin,
+		margins = { top = 5 },
+		{
 			widget = wibox.container.place,
 			valign = "center",
 			halign = "center",
-			{
-				widget = wibox.widget.textbox,
-				text = "No items",
-			},
+			dots,
 		},
 	})
-
-	if args.items then
-		container:set_items(args.items)
-	end
-
-	return container
 end
 
 return setmetatable(List, {

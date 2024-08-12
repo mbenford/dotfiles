@@ -38,6 +38,8 @@ function M.setup(opts)
 		notification_bg = flavor.bg_dark,
 		notification_bg_selected = flavor.blue7,
 		notification_bg_critical = flavor.red1,
+		notification_list_page_indicator_normal = flavor.dark5,
+		notification_list_page_indicator_selected = flavor.fg,
 
 		titlebar_fg_normal = flavor.fg,
 		titlebar_bg_normal = flavor.bg_dark,
