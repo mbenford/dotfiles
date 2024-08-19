@@ -8,6 +8,8 @@ naughty.connect_signal("request::display_error", function(message, startup)
 	naughty.notification({
 		urgency = "critical",
 		title = "Oops, an error happened" .. (startup and " during startup!" or "!"),
+		app_name = "AwesomeWM",
+		app_icon = "dialog-error",
 		message = message,
 	})
 end)

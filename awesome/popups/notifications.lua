@@ -1,11 +1,12 @@
-local api = { screen = screen }
 local awful = require("awful")
 local wibox = require("wibox")
 local ruled = require("ruled")
 local naughty = require("naughty")
-local gears = require("gears")
 local beautiful = require("beautiful")
 local list = require("widgets.list")
+local popup_util = require("util.popup")
+local ez = require("util.ez")
+local fn = require("util.fn")
 local icons = require("util.icons")
 
 ruled.notification.connect_signal("request::rules", function()
@@ -13,53 +14,15 @@ ruled.notification.connect_signal("request::rules", function()
 		{
 			rule = {},
 			properties = {
-				screen = api.screen.primary,
 				never_timeout = true,
-				position = "top_middle",
 				ignore = true,
 				callback = function(n)
 					n.timestamp = os.time()
 				end,
 			},
 		},
-		{
-			rule = {
-				urgency = "critical",
-			},
-			properties = {
-				ignore = false,
-				bg = beautiful.notification_bg_critical,
-			},
-		},
 	})
 end)
-
-local notifications = {}
-
-naughty.connect_signal("added", function(n)
-	table.insert(notifications, 1, n)
-end)
-
-naughty.connect_signal("destroyed", function(n)
-	for index, value in ipairs(notifications) do
-		if value == n then
-			table.remove(notifications, index)
-			return
-		end
-	end
-end)
-
-local popup = awful.popup({
-	visible = false,
-	placement = function(c, args)
-		args.honor_workarea = true
-		awful.placement.top(c, { honor_workarea = true })
-	end,
-	ontop = true,
-	border_color = beautiful.border_focus,
-	border_width = beautiful.border_width,
-	widget = {},
-})
 
 local function format_duration(value)
 	if value < 60 then
@@ -85,7 +48,7 @@ local function get_icon(notification)
 	return icons.lookup_filename("dialog-information", beautiful.notification_icon_size)
 end
 
-local notification_list = list({
+local notifications = list({
 	margins = 10,
 	empty_widget = wibox.widget({
 		widget = wibox.container.place,
@@ -100,8 +63,6 @@ local notification_list = list({
 	}),
 	item_bg = beautiful.notification_bg,
 	item_bg_selected = beautiful.notification_bg_selected,
-	item_border_width = 2,
-	item_shape = require("util.fn").partial_right(gears.shape.rounded_rect, 5),
 	item_creator = function(_, value)
 		return wibox.widget({
 			widget = wibox.container.constraint,
@@ -169,43 +130,47 @@ local notification_list = list({
 	end,
 })
 
-notification_list:connect_signal("selection::stopped", function()
-	popup.visible = false
-end)
-
-notification_list:connect_signal("selection::confirmed", function(self, selected_index)
-	local notification = notifications[selected_index]
-	if notification then
-		notification:destroy(naughty.notification_closed_reason.dismissed_by_user)
-		popup.visible = false
-	end
-end)
-
-notification_list:connect_signal("selection::keypressed", function(self, grabber, mod, key, selected_index)
-	if key == "d" then
-		local notification = notifications[selected_index]
-		if notification then
-			notification:destroy(naughty.notification_closed_reason.silent)
-			self:set_items(notifications)
-			self:select(selected_index)
-		end
-		return
-	end
-
-	if key == "D" then
-		self:clear()
-		naughty.destroy_all_notifications(nil, naughty.notification_closed_reason.silent)
-		popup.visible = false
-		grabber:stop()
-		return
-	end
-end)
-
 local function show()
-	popup.widget = notification_list
-	notification_list:set_items(notifications)
-	notification_list:start_selection()
-	popup.visible = true
+	local popup = awful.popup({
+		placement = function(c)
+			awful.placement.top(c, { honor_workarea = true })
+		end,
+		ontop = true,
+		border_color = beautiful.popup_border_color,
+		border_width = beautiful.popup_border_width,
+		widget = notifications,
+	})
+	popup_util.enhance(popup, {
+		timeout = 5,
+		keybindings = ez.keys({
+			["h"] = fn.bind_obj(notifications, "prev_page"),
+			["j"] = fn.bind_obj(notifications, "next_item"),
+			["k"] = fn.bind_obj(notifications, "prev_item"),
+			["l"] = fn.bind_obj(notifications, "next_page"),
+			["d"] = function()
+				local selected = notifications:selected()
+				local notification = naughty.active[selected]
+				if notification then
+					notification:destroy(naughty.notification_closed_reason.silent)
+					notifications:set_items(naughty.active)
+					notifications:select(selected)
+				end
+			end,
+			["S-D"] = function()
+				notifications:clear()
+				naughty.destroy_all_notifications(nil, naughty.notification_closed_reason.silent)
+				popup.visible = false
+			end,
+			["Return"] = function()
+				local notification = naughty.active[notifications:selected()]
+				if notification then
+					notification:destroy(naughty.notification_closed_reason.dismissed_by_user)
+					popup.visible = false
+				end
+			end,
+		}),
+	})
+	notifications:set_items(naughty.active)
 end
 
 return {

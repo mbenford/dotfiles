@@ -12,6 +12,8 @@ local function load(module)
 		require("naughty").notification({
 			urgency = "critical",
 			title = string.format("Error while loading module '%s'", module),
+			app_name = "AwesomeWM",
+			app_icon = "dialog-error",
 			message = error,
 		})
 	end
@@ -24,5 +26,5 @@ load("bar")
 load("keys")
 load("mouse")
 load("rules")
-load("notifications")
+load("popups")
 load("autorun")

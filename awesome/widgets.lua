@@ -8,6 +8,7 @@ local vicious = require("vicious")
 local ez = require("util.ez")
 local fn = require("util.fn")
 local tag = require("util.tag")
+local icons = require("util.icons")
 local pulseaudio = require("util.pulseaudio")
 vicious.contrib = require("vicious.contrib")
 
@@ -332,13 +333,12 @@ function M.pulseaudio_sink()
 	local content = wibox.widget.textbox()
 	content.font = beautiful.widget_font
 
-	pulseaudio.connect_signal("sink::volume", function(volume)
+	pulseaudio:connect_signal("sink::volume", function(_, volume)
 		content.markup = string.format("%02d%%", volume)
 	end)
-	pulseaudio.connect_signal("sink::mute", function()
+	pulseaudio:connect_signal("sink::mute", function()
 		content.markup = "MUTE"
 	end)
-	pulseaudio.refresh_sink_volume()
 
 	local widget = wibox.widget({
 		{
@@ -349,6 +349,32 @@ function M.pulseaudio_sink()
 	})
 
 	return with_label("VOL", widget)
+end
+
+function M.pulseaudio_sink_icon()
+	local icon = wibox.widget.imagebox()
+	icon.resize = false
+
+	local states = {
+		on = icons.lookup_filename("audio-volume-high", 22),
+		off = icons.lookup_filename("audio-volume-muted", 22),
+	}
+	pulseaudio:connect_signal("sink::volume", function()
+		icon.image = states.on
+	end)
+	pulseaudio:connect_signal("sink::mute", function()
+		icon.image = states.off
+	end)
+
+	pulseaudio:get_sink_mute(function(mute)
+		icon.image = mute and states.off or states.on
+	end)
+
+	return wibox.widget({
+		widget = wibox.container.place,
+		valign = "center",
+		icon,
+	})
 end
 
 function M.pulseaudio_source()

@@ -23,6 +23,13 @@ function M.bind(fn, ...)
 	end
 end
 
+function M.bind_obj(obj, func, ...)
+	local args = { ... }
+	return function()
+		obj[func](obj, table.unpack(args))
+	end
+end
+
 function M.partial_right(fn, ...)
 	local rightArgs = { ... }
 	return function(...)

@@ -22,15 +22,16 @@ local function new(args)
 	})
 	container:connect_signal("button::press", function(self, x, y, button)
 		if button == 4 then
-			self:select_prev()
+			self:prev_item()
 		elseif button == 5 then
-			self:select_next()
+			self:next_item()
 		end
 	end)
 
 	gears.table.crush(container, List)
 	gears.table.crush(container._private, {
 		layout = args.layout or "vertical",
+		cycle = args.cycle or false,
 		item_fg = args.item_fg,
 		item_bg = args.item_bg,
 		item_shape = args.item_shape,
@@ -38,7 +39,7 @@ local function new(args)
 		item_border_width = args.item_border_width or 1,
 		item_fg_selected = args.item_fg_selected,
 		item_bg_selected = args.item_bg_selected,
-		item_border_color_selected = args.item_border_color_selected or beautiful.border_focus,
+		item_border_color_selected = args.item_border_color_selected or beautiful.border_normal,
 		item_creator = args.item_creator,
 		page_size = args.page_size or 5,
 		page_indicator_shape = args.page_indicator_shape or gears.shape.rectangle,
@@ -96,12 +97,6 @@ function List:set_items(items)
 		container:connect_signal("mouse::enter", function()
 			self:select(index)
 		end)
-		container:connect_signal("button::press", function(_, x, y, button, mods)
-			if button == 1 then
-				self._private.keygrabber:stop()
-				self:emit_signal("selection::confirmed", index)
-			end
-		end)
 
 		local page_index = self:_page_index(index)
 		if self._private.pages[page_index] == nil then
@@ -123,19 +118,27 @@ function List:clear()
 	self._private.selected_index = 0
 end
 
-function List:select_next()
+function List:next_item()
 	self:select(self._private.selected_index + 1)
 end
 
-function List:select_prev()
+function List:prev_item()
 	self:select(self._private.selected_index - 1)
+end
+
+function List:prev_page()
+	self:select(self._private.selected_index - self._private.page_size)
+end
+
+function List:next_page()
+	self:select(self._private.selected_index + self._private.page_size)
 end
 
 function List:select(index)
 	if index < 1 then
-		index = 1
+		index = self._private.cycle and self._private.count or 1
 	elseif index > self._private.count then
-		index = self._private.count
+		index = self._private.cycle and 1 or self._private.count
 	end
 
 	local selected = self:_item_widget(self._private.selected_index)
@@ -160,49 +163,8 @@ function List:select(index)
 	end
 end
 
-function List:start_selection()
-	if self._private.keygrabber then
-		self._private.keygrabber:stop()
-	end
-
-	self._private.keygrabber = awful.keygrabber({
-		keypressed_callback = function(grabber, mod, key)
-			if key == "h" then
-				self:select(self._private.selected_index - self._private.page_size)
-				return
-			end
-
-			if key == "l" then
-				self:select(self._private.selected_index + self._private.page_size)
-				return
-			end
-
-			if key == "j" then
-				self:select_next()
-				return
-			end
-
-			if key == "k" then
-				self:select_prev()
-				return
-			end
-
-			if key == "Return" then
-				grabber:stop()
-				self:emit_signal("selection::confirmed", self._private.selected_index)
-				return
-			end
-
-			if key == "Escape" then
-				grabber:stop()
-				self:emit_signal("selection::stopped")
-				return
-			end
-
-			self:emit_signal("selection::keypressed", grabber, mod, key, self._private.selected_index)
-		end,
-	})
-	self._private.keygrabber:start()
+function List:selected()
+	return self._private.selected_index
 end
 
 function List:_content_widget()
@@ -224,6 +186,11 @@ function List:_page_index(index)
 end
 
 function List:_update_page_indicator()
+	if #self._private.pages <= 1 then
+		self:_content_widget().third = nil
+		return
+	end
+
 	local dots = wibox.widget({
 		layout = wibox.layout.fixed.horizontal,
 		spacing = self._private.page_indicator_spacing,

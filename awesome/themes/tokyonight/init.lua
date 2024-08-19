@@ -41,6 +41,15 @@ function M.setup(opts)
 		notification_list_page_indicator_normal = flavor.dark5,
 		notification_list_page_indicator_selected = flavor.fg,
 
+		popup_border_width = 2,
+		popup_border_color = flavor.blue,
+
+		popup_volume_progress_fg = flavor.blue0,
+		popup_volume_progress_bg = flavor.blue7,
+
+		dialog_button_bg = flavor.bg_dark,
+		dialog_button_bg_selected = flavor.blue7,
+
 		titlebar_fg_normal = flavor.fg,
 		titlebar_bg_normal = flavor.bg_dark,
 		titlebar_fg_focus = flavor.fg,

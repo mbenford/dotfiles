@@ -54,7 +54,7 @@ api.screen.connect_signal("request::desktop_decoration", function(screen)
 			spacer,
 			widgets.ssd(),
 			spacer,
-			widgets.pulseaudio_sink(),
+			widgets.pulseaudio_sink_icon(),
 		}, right)
 	end
 

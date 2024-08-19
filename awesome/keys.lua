@@ -8,6 +8,10 @@ local mouse = require("util.mouse")
 local pulseaudio = require("util.pulseaudio")
 
 awful.keyboard.append_global_keybindings(ez.keys({
+	["M-w"] = function()
+		require("popups.system").show()
+	end,
+
 	-- Awesome
 	["M-C-r"] = api.awesome.restart,
 	["M-C-q"] = api.awesome.quit,
@@ -136,7 +140,7 @@ awful.keyboard.append_global_keybindings(ez.keys({
 
 	-- Notifications
 	["M-n"] = function()
-		require("notifications").show()
+		require("popups.notifications").show()
 	end,
 
 	-- Autorandr
@@ -150,9 +154,9 @@ awful.keyboard.append_global_keybindings(ez.keys({
 	["XF86AudioPlay"] = fn.bind(awful.spawn, "playerctl play-pause --all-players"),
 	["XF86AudioPrev"] = fn.bind(awful.spawn, "playerctl previous --all-players"),
 	["XF86AudioNext"] = fn.bind(awful.spawn, "playerctl next --all-players"),
-	["XF86AudioRaiseVolume"] = fn.bind(pulseaudio.set_sink_volume, "+5%"),
-	["XF86AudioLowerVolume"] = fn.bind(pulseaudio.set_sink_volume, "-5%"),
-	["XF86AudioMute"] = fn.bind(pulseaudio.set_sink_mute, "toggle"),
+	["XF86AudioRaiseVolume"] = fn.bind_obj(pulseaudio, "set_sink_volume", "+2%"),
+	["XF86AudioLowerVolume"] = fn.bind_obj(pulseaudio, "set_sink_volume", "-2%"),
+	["XF86AudioMute"] = fn.bind_obj(pulseaudio, "set_sink_mute", "toggle"),
 }))
 
 -- Tags
