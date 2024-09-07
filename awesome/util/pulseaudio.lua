@@ -1,6 +1,5 @@
-local awful = require("awful")
 local gears = require("gears")
-local fn = require("util.fn")
+local async = require("util.async")
 
 local targets = { sink = "@DEFAULT_SINK@", source = "@DEFAULT_SOURCE@" }
 local PA = gears.object()
@@ -17,12 +16,12 @@ function PA:set_sink_volume(value)
 	self:set_volume("sink", value)
 end
 
-function PA:get_sink_volume(cb)
-	self:get_volume("sink", cb)
+function PA:get_sink_volume()
+	return self:get_volume("sink")
 end
 
-function PA:get_sink_mute(cb)
-	self:get_mute("sink", cb)
+function PA:get_sink_mute()
+	return self:get_mute("sink")
 end
 
 function PA:set_source_volume(value)
@@ -37,40 +36,55 @@ function PA:set_source_mute(value)
 	self:set_mute("source", value)
 end
 
-function PA:refresh(name)
-	self:get_mute(name, function(mute)
-		if mute then
-			self:emit_signal(name .. "::mute", true)
-			return
-		end
-
-		self:get_volume(name, function(volume)
-			self:emit_signal(name .. "::volume", volume)
-		end)
-	end)
-end
-
 function PA:set_volume(name, value)
+	local unmute_cmd = string.format("pactl set-%s-mute %s no", name, targets[name])
 	local set_volume_cmd = string.format("pactl set-%s-volume %s %s", name, targets[name], value)
-	awful.spawn.easy_async(set_volume_cmd, fn.bind_obj(self, "refresh", name))
+	return async
+		.spawn(unmute_cmd)
+		:next(function()
+			return async.spawn(set_volume_cmd)
+		end)
+		:next(function()
+			return self:get_volume(name)
+		end)
+		:next(function(volume)
+			if volume > 100 then
+				return self:set_volume(name, "100%")
+			end
+			self:emit_signal(name .. "::volume", volume)
+			return volume
+		end)
 end
 
 function PA:set_mute(name, value)
 	local set_mute_cmd = string.format("pactl set-%s-mute %s %s", name, targets[name], value)
-	awful.spawn.easy_async(set_mute_cmd, fn.bind_obj(self, "refresh", name))
+	return async
+		.spawn(set_mute_cmd)
+		:next(function()
+			return self:get_mute(name)
+		end)
+		:next(function(mute)
+			if mute then
+				return 0
+			end
+			return self:get_volume(name)
+		end)
+		:next(function(volume)
+			self:emit_signal(name .. "::volume", volume)
+		end)
 end
 
-function PA:get_volume(name, cb)
+function PA:get_volume(name)
 	local get_volume_cmd = string.format("pactl get-%s-volume %s", name, targets[name])
-	awful.spawn.easy_async(get_volume_cmd, function(volume)
-		cb(tonumber(volume:match("(%d+)%%")))
+	return async.spawn(get_volume_cmd):next(function(result)
+		return tonumber(result.stdout:match("(%d+)%%"))
 	end)
 end
 
-function PA:get_mute(name, cb)
+function PA:get_mute(name)
 	local get_mute_cmd = string.format("pactl get-%s-mute %s", name, targets[name])
-	awful.spawn.easy_async(get_mute_cmd, function(mute)
-		cb(mute:match("yes"))
+	return async.spawn(get_mute_cmd):next(function(result)
+		return result.stdout:match("yes")
 	end)
 end
 

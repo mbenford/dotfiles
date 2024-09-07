@@ -17,9 +17,18 @@ function M.span(color, format, ...)
 end
 
 function M.bind(fn, ...)
-	local args = { ... }
-	return function()
-		fn(table.unpack(args))
+	local left_args = { ... }
+	return function(...)
+		local args = { ... }
+		return fn(table.unpack(require("gears").table.join(left_args, args)))
+	end
+end
+
+function M.bind_right(fn, ...)
+	local rightArgs = { ... }
+	return function(...)
+		local args = { ... }
+		return fn(table.unpack(require("gears").table.join(args, rightArgs)))
 	end
 end
 
@@ -27,14 +36,6 @@ function M.bind_obj(obj, func, ...)
 	local args = { ... }
 	return function()
 		obj[func](obj, table.unpack(args))
-	end
-end
-
-function M.partial_right(fn, ...)
-	local rightArgs = { ... }
-	return function(...)
-		local args = { ... }
-		fn(table.unpack(require("gears").table.join(args, rightArgs)))
 	end
 end
 

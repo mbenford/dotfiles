@@ -41,6 +41,9 @@ function M.setup(opts)
 		notification_list_page_indicator_normal = flavor.dark5,
 		notification_list_page_indicator_selected = flavor.fg,
 
+		notification_icon_fg = flavor.fg,
+		notification_icon_unread_fg = flavor.blue2,
+
 		popup_border_width = 2,
 		popup_border_color = flavor.blue,
 
@@ -49,6 +52,14 @@ function M.setup(opts)
 
 		dialog_button_bg = flavor.bg_dark,
 		dialog_button_bg_selected = flavor.blue7,
+
+		calendar_weekday_fg = flavor.blue,
+		calendar_weekend_fg = flavor.red,
+		calendar_header_fg = flavor.blue,
+		calendar_focus_fg = flavor.yellow,
+		calendar_month_fg = flavor.blue,
+		calendar_normal_fg = flavor.fg,
+		calendar_day_border_color = flavor.fg_gutter,
 
 		titlebar_fg_normal = flavor.fg,
 		titlebar_bg_normal = flavor.bg_dark,

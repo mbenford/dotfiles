@@ -1,5 +1,7 @@
 local awful = require("awful")
 local ruled = require("ruled")
+local ez = require("util.ez")
+local fn = require("util.fn")
 
 local api = { client = client }
 
@@ -19,20 +21,27 @@ local function show_client(sp)
 end
 
 awful.client.property.persist("scratchpad_id", "string")
+
 local M = { scratchpads = {} }
 
-function M.register(name, opts)
-	M.scratchpads[name] = {
-		id = name,
-		client = nil,
-		command = opts.command,
-		rule = opts.rule,
-		placement = (opts.placement or awful.placement.centered) + awful.placement.no_offscreen,
-		width = opts.width,
-		height = opts.height,
-		skip_taskbar = true,
-		floating = true,
-	}
+function M.register(scratchpads)
+	for name, opts in pairs(scratchpads) do
+		M.scratchpads[name] = {
+			id = name,
+			client = nil,
+			command = opts.command,
+			rule = opts.rule,
+			placement = (opts.placement or awful.placement.centered) + awful.placement.no_offscreen,
+			width = opts.width,
+			height = opts.height,
+			skip_taskbar = true,
+			floating = true,
+		}
+
+		if opts.toggle_ezkey ~= nil then
+			awful.keyboard.append_global_keybinding(ez.key(opts.toggle_ezkey, fn.bind(M.toggle, name)))
+		end
+	end
 end
 
 function M.toggle(name)

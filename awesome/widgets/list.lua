@@ -1,4 +1,3 @@
-local awful = require("awful")
 local wibox = require("wibox")
 local gears = require("gears")
 local beautiful = require("beautiful")
@@ -30,7 +29,10 @@ local function new(args)
 
 	gears.table.crush(container, List)
 	gears.table.crush(container._private, {
-		layout = args.layout or "vertical",
+		layout = args.layout or {
+			layout = wibox.layout.flex.vertical,
+			spacing = 10,
+		},
 		cycle = args.cycle or false,
 		item_fg = args.item_fg,
 		item_bg = args.item_bg,
@@ -75,14 +77,8 @@ function List:set_items(items)
 	self:clear()
 
 	if #items == 0 then
-		self:_content_widget().second = self._private.empty_widget
 		return
 	end
-
-	local page_template = {
-		spacing = 10,
-		layout = wibox.layout.flex[self._private.layout],
-	}
 
 	for index, value in ipairs(items) do
 		local container = wibox.widget({
@@ -100,7 +96,7 @@ function List:set_items(items)
 
 		local page_index = self:_page_index(index)
 		if self._private.pages[page_index] == nil then
-			self._private.pages[page_index] = wibox.widget(page_template)
+			self._private.pages[page_index] = wibox.widget(self._private.layout)
 		end
 		self._private.pages[page_index]:add(container)
 	end
@@ -111,6 +107,8 @@ end
 
 function List:clear()
 	self:_content_widget():reset()
+	self:_content_widget().second = self._private.empty_widget
+
 	for _, value in ipairs(self._private.pages) do
 		value:reset()
 	end
@@ -148,6 +146,7 @@ function List:select(index)
 			bg = self._private.item_bg,
 			border_color = self._private.item_border_color,
 		})
+		self:emit_signal("item::unselected", selected.widget)
 	end
 
 	selected = self:_item_widget(index)
@@ -160,11 +159,16 @@ function List:select(index)
 		self:_content_widget().second = self._private.pages[self:_page_index(index)]
 		self._private.selected_index = index
 		self:_update_page_indicator()
+		self:emit_signal("item::selected", selected.widget)
 	end
 end
 
-function List:selected()
+function List:selected_index()
 	return self._private.selected_index
+end
+
+function List:selected_item()
+	return self:_item_widget(self._private.selected_index)
 end
 
 function List:_content_widget()

@@ -1,9 +1,9 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local list = require("widgets.list")
+local widgets = require("widgets")
 local popup_util = require("util.popup")
-local icons = require("util.icons")
+local icons = require("icons")
 local ez = require("util.ez")
 local fn = require("util.fn")
 
@@ -19,8 +19,11 @@ local function show(args)
 	args.placement = args.placement or awful.placement.centered
 	args.margins = args.margins or 10
 
-	local buttons = list({
-		layout = "horizontal",
+	local buttons = widgets.list({
+		layout = {
+			layout = wibox.layout.flex.horizontal,
+			spacing = 10,
+		},
 		item_bg = beautiful.dialog_button_bg,
 		item_bg_selected = beautiful.dialog_button_bg_selected,
 		items = args.buttons,
@@ -66,10 +69,9 @@ local function show(args)
 					{
 						layout = wibox.layout.align.horizontal,
 						{
-							widget = wibox.widget.imagebox,
-							image = icons.lookup_filename(args.icon, 48),
-							resize = false,
-							valign = "center",
+							widget = icons.system.icon,
+							name = args.icon,
+							size = 48,
 						},
 						{
 							widget = wibox.container.constraint,
@@ -104,8 +106,8 @@ local function show(args)
 			["Return"] = function()
 				if args.button_callback then
 					args.button_callback({
-						index = buttons:selected(),
-						text = args.buttons[buttons:selected()].text,
+						index = buttons:selected_index(),
+						text = args.buttons[buttons:selected_index()].text,
 					})
 				end
 				popup.visible = false

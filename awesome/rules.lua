@@ -56,33 +56,40 @@ ruled.client.connect_signal("request::rules", function()
 				switch_to_tags = true,
 			},
 		},
-		-- Work,
-		{
-			id = "work",
-			rule_any = {
-				instance = {
-					"discord",
-					"slack",
-					"teams-for-linux",
-					"outlook.office.com",
-				},
-			},
-			properties = {
-				tag = "1",
-				screen = 2,
-				switch_to_tags = true,
-			},
-		},
 	})
+
+	local ok, work = pcall(require, "work")
+	if ok then
+		ruled.client.append_rules(work.rules)
+	end
 end)
 
 ruled.notification.connect_signal("request::rules", function()
+	-- All
+	ruled.notification.append_rule({
+		rule = {},
+		properties = {
+			never_timeout = true,
+			ignore = true,
+			callback = function(notification)
+				notification.timestamp = os.time()
+			end,
+		},
+	})
+
+	-- Web Apps
+	local webapps = {
+		["app.slack.com"] = "slack",
+		["web.whatsapp.com"] = "whatsapp",
+	}
 	ruled.notification.append_rule({
 		rule = {
-			app_name = "Slack",
+			app_name = "Brave",
 		},
-		properties = {
-			app_icon = "slack",
-		},
+		callback = function(notification)
+			local url = notification.message:sub(1, notification.message:find("\n") - 1)
+			notification.webapp_url = url
+			notification.webapp_icon = webapps[url]
+		end,
 	})
 end)

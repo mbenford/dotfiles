@@ -1,28 +1,13 @@
 local awful = require("awful")
 local wibox = require("wibox")
-local ruled = require("ruled")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
-local list = require("widgets.list")
+local widgets = require("widgets")
 local popup_util = require("util.popup")
 local ez = require("util.ez")
 local fn = require("util.fn")
-local icons = require("util.icons")
-
-ruled.notification.connect_signal("request::rules", function()
-	ruled.notification.append_rules({
-		{
-			rule = {},
-			properties = {
-				never_timeout = true,
-				ignore = true,
-				callback = function(n)
-					n.timestamp = os.time()
-				end,
-			},
-		},
-	})
-end)
+local string_util = require("util.string")
+local icons = require("icons")
 
 local function format_duration(value)
 	if value < 60 then
@@ -37,58 +22,95 @@ local function format_duration(value)
 end
 
 local function get_icon(notification)
-	if notification.image then
-		return notification.image
+	local source = notification.webapp_icon or notification.app_icon or notification.app_name
+	if source:find("^file://") ~= nil then
+		return wibox.widget({
+			widget = wibox.widget.imagebox,
+			image = source:gsub("file://", ""),
+			forced_width = beautiful.notification_icon_size,
+			forced_height = beautiful.notification_icon_size,
+		})
 	end
 
-	if notification.app_icon then
-		return icons.lookup_filename(notification.app_icon, beautiful.notification_icon_size)
-	end
-
-	return icons.lookup_filename("dialog-information", beautiful.notification_icon_size)
+	return wibox.widget({
+		widget = icons.system.icon,
+		name = source,
+		size = beautiful.notification_icon_size,
+	})
 end
 
-local notifications = list({
-	margins = 10,
+local function get_source(notification)
+	return notification.webapp_url or notification.app_name
+end
+
+local function get_message(notification)
+	local message = notification.webapp_url and notification.message:gsub(notification.webapp_url, "")
+		or notification.message
+	return string_util.trim(message:gsub("\n", " "))
+end
+
+local notifications = widgets.list({
+	layout = {
+		layout = wibox.layout.flex.vertical,
+		max_widget_size = 89,
+		spacing = 10,
+	},
+	page_size = 10,
 	empty_widget = wibox.widget({
 		widget = wibox.container.place,
 		valign = "center",
 		halign = "center",
-		forced_width = 400,
-		forced_height = 50,
 		{
-			widget = wibox.widget.textbox,
-			text = "Nothing to see here",
+			layout = wibox.layout.flex.vertical,
+			{
+				widget = icons.material.icon,
+				name = "done_all",
+				fg = "#ffffff",
+				size = 64,
+			},
+			{
+				widget = wibox.widget.textbox,
+				text = "You are all caught up!",
+			},
 		},
 	}),
 	item_bg = beautiful.notification_bg,
 	item_bg_selected = beautiful.notification_bg_selected,
-	item_creator = function(_, value)
+	item_creator = function(_, notification)
+		local age = format_duration(os.time() - notification.timestamp)
+		local title = string.format("<b>%s</b>", notification.title)
+		local icon = get_icon(notification)
+		local source = get_source(notification)
+		local message = get_message(notification)
+
 		return wibox.widget({
 			widget = wibox.container.constraint,
 			strategy = "exact",
-			width = 400,
-			height = 100,
+			height = 110,
 			{
 				widget = wibox.container.margin,
 				margins = 10,
 				{
-					layout = wibox.layout.fixed.vertical,
+					layout = wibox.layout.align.vertical,
 					{
-						layout = wibox.layout.flex.horizontal,
+						layout = wibox.layout.align.horizontal,
+						forced_height = beautiful.notification_icon_size,
+						{
+							widget = wibox.container.margin,
+							margins = { right = 5 },
+							icon,
+						},
 						{
 							widget = wibox.widget.textbox,
-							text = value.app_name,
+							text = source,
+							valign = "center",
 							font = beautiful.notification_appname_font,
 						},
 						{
-							widget = wibox.container.place,
+							widget = wibox.widget.textbox,
+							text = age,
+							font = beautiful.notification_age_font,
 							halign = "right",
-							{
-								widget = wibox.widget.textbox,
-								text = format_duration(os.time() - value.timestamp),
-								font = beautiful.notification_age_font,
-							},
 						},
 					},
 					{
@@ -99,27 +121,14 @@ local notifications = list({
 							valign = "center",
 							halign = "left",
 							{
-								layout = wibox.layout.fixed.horizontal,
-								spacing = 5,
+								layout = wibox.layout.fixed.vertical,
 								{
-									widget = wibox.widget.imagebox,
-									image = get_icon(value),
+									widget = wibox.widget.textbox,
+									markup = title,
 								},
 								{
-									widget = wibox.container.place,
-									valign = "center",
-									{
-										layout = wibox.layout.align.vertical,
-										{
-											widget = wibox.widget.textbox,
-											forced_height = 20,
-											markup = string.format("<b>%s</b>", value.title),
-										},
-										{
-											widget = wibox.widget.textbox,
-											text = value.message,
-										},
-									},
+									widget = wibox.widget.textbox,
+									text = message,
 								},
 							},
 						},
@@ -130,49 +139,60 @@ local notifications = list({
 	end,
 })
 
-local function show()
-	local popup = awful.popup({
-		placement = function(c)
-			awful.placement.top(c, { honor_workarea = true })
+local popup = awful.popup({
+	visible = false,
+	placement = function(c)
+		awful.placement.top_right(c, { honor_workarea = true })
+		awful.placement.stretch_down(c)
+	end,
+	ontop = true,
+	border_color = beautiful.popup_border_color,
+	border_width = beautiful.popup_border_width,
+	widget = {
+		widget = wibox.container.margin,
+		margins = 10,
+		{
+			widget = wibox.container.constraint,
+			strategy = "exact",
+			width = 400,
+			notifications,
+		},
+	},
+})
+popup_util.enhance(popup, {
+	timeout = 10,
+	keybindings = ez.keys({
+		["h"] = fn.bind_obj(notifications, "prev_page"),
+		["j"] = fn.bind_obj(notifications, "next_item"),
+		["k"] = fn.bind_obj(notifications, "prev_item"),
+		["l"] = fn.bind_obj(notifications, "next_page"),
+		["d"] = function()
+			local selected = notifications:selected_index()
+			local notification = naughty.active[selected]
+			if notification then
+				notification:destroy(naughty.notification_closed_reason.silent)
+				notifications:set_items(naughty.active)
+				notifications:select(selected)
+			end
 		end,
-		ontop = true,
-		border_color = beautiful.popup_border_color,
-		border_width = beautiful.popup_border_width,
-		widget = notifications,
-	})
-	popup_util.enhance(popup, {
-		timeout = 5,
-		keybindings = ez.keys({
-			["h"] = fn.bind_obj(notifications, "prev_page"),
-			["j"] = fn.bind_obj(notifications, "next_item"),
-			["k"] = fn.bind_obj(notifications, "prev_item"),
-			["l"] = fn.bind_obj(notifications, "next_page"),
-			["d"] = function()
-				local selected = notifications:selected()
-				local notification = naughty.active[selected]
-				if notification then
-					notification:destroy(naughty.notification_closed_reason.silent)
-					notifications:set_items(naughty.active)
-					notifications:select(selected)
-				end
-			end,
-			["S-D"] = function()
-				notifications:clear()
-				naughty.destroy_all_notifications(nil, naughty.notification_closed_reason.silent)
+		["S-D"] = function()
+			naughty.destroy_all_notifications(nil, naughty.notification_closed_reason.silent)
+			notifications:clear()
+		end,
+		["Return"] = function()
+			local notification = naughty.active[notifications:selected_index()]
+			if notification then
+				notification:destroy(naughty.notification_closed_reason.dismissed_by_user)
 				popup.visible = false
-			end,
-			["Return"] = function()
-				local notification = naughty.active[notifications:selected()]
-				if notification then
-					notification:destroy(naughty.notification_closed_reason.dismissed_by_user)
-					popup.visible = false
-				end
-			end,
-		}),
-	})
-	notifications:set_items(naughty.active)
-end
+			end
+		end,
+	}),
+})
 
 return {
-	show = show,
+	show = function()
+		popup.visible = true
+		popup.screen = awful.screen.primary
+		notifications:set_items(naughty.active)
+	end,
 }

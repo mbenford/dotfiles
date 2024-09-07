@@ -8,10 +8,6 @@ local mouse = require("util.mouse")
 local pulseaudio = require("util.pulseaudio")
 
 awful.keyboard.append_global_keybindings(ez.keys({
-	["M-w"] = function()
-		require("popups.system").show()
-	end,
-
 	-- Awesome
 	["M-C-r"] = api.awesome.restart,
 	["M-C-q"] = api.awesome.quit,
@@ -136,11 +132,16 @@ awful.keyboard.append_global_keybindings(ez.keys({
 		["d"] = fn.bind(awful.spawn, "rofi-dotfiles"),
 		["e"] = fn.bind(awful.spawn, "rofimoji"),
 	}),
-	["M-BackSpace"] = fn.bind(awful.spawn, "rofi-system"),
 
-	-- Notifications
+	-- Popups
+	["M-BackSpace"] = function()
+		require("popups.system").show()
+	end,
 	["M-n"] = function()
 		require("popups.notifications").show()
+	end,
+	["M-d"] = function()
+		require("popups.calendar").show()
 	end,
 
 	-- Autorandr
@@ -160,52 +161,27 @@ awful.keyboard.append_global_keybindings(ez.keys({
 }))
 
 -- Tags
-for i, t in ipairs(api.screen[1].tags) do
+for i = 1, 9 do
 	awful.keyboard.append_global_keybindings(ez.keys({
 		["M-" .. i] = function()
-			local tag = awful.screen.focused().tags[i]
+			local tag = awful.tag.find_by_name(awful.screen.focused(), tostring(i))
 			if tag then
 				tag:view_only()
 			end
 		end,
 		["M-S-" .. i] = fn.bind_client(function(c)
-			local tag = awful.screen.focused().tags[i]
-			if tag then
-				c:move_to_tag(tag)
-				tag:view_only()
+			local tag = awful.tag.find_by_name(awful.screen.focused(), tostring(i))
+			if tag == nil then
+				tag = awful.tag.add(tostring(i), {
+					screen = awful.screen.focused(),
+					layout = awful.layout.suit.tile,
+					enable_padding = true,
+					volatile = true,
+				})
 			end
+
+			c:move_to_tag(tag)
+			tag:view_only()
 		end),
 	}))
 end
-
--- Scratchpads
-local scratchpad = require("util.scratchpad")
-scratchpad.register("kitty", {
-	command = "kitty --name kitty-scratch",
-	rule = { instance = "kitty-scratch" },
-	width = 1600,
-	height = 0.9,
-})
-scratchpad.register("calc", {
-	command = "qalculate-gtk --name qalculate-scratch",
-	rule = { instance = "qalculate-scratch" },
-	width = 600,
-	height = 100,
-})
-scratchpad.register("youtube-music", {
-	command = "gtk-launch youtube-music",
-	width = 1600,
-	height = 0.9,
-})
-scratchpad.register("ticktick", {
-	command = "gtk-launch ticktick",
-	width = 1600,
-	height = 0.9,
-})
-
-awful.keyboard.append_global_keybindings(ez.keys({
-	["M-S-Return"] = fn.bind(scratchpad.toggle, "kitty"),
-	["M-c"] = fn.bind(scratchpad.toggle, "calc"),
-	["M-y"] = fn.bind(scratchpad.toggle, "youtube-music"),
-	["M-t"] = fn.bind(scratchpad.toggle, "ticktick"),
-}))

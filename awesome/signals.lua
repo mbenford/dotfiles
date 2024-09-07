@@ -37,7 +37,14 @@ end)
 
 local min_screen_width = 1920
 local function fix_screen_padding(tag)
+	if tag == nil then
+		return
+	end
+
 	local screen = tag.screen
+	if tag.screen == nil then
+		return
+	end
 	screen.padding = { left = 0, right = 0 }
 
 	if screen.geometry.width <= min_screen_width or not tag.enable_padding then
