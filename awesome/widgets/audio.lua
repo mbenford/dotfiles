@@ -9,11 +9,8 @@ return {
 		local content = wibox.widget.textbox()
 		content.font = beautiful.widget_font
 
-		pulseaudio:connect_signal("sink::volume", function(_, volume)
+		pulseaudio:connect_signal("sink::volume", function(_, name, volume)
 			content.markup = string.format("%02d%%", volume)
-		end)
-		pulseaudio:connect_signal("sink::mute", function()
-			content.markup = "MUTE"
 		end)
 
 		local widget = wibox.widget({
@@ -29,22 +26,22 @@ return {
 
 	sink_icon = function()
 		local icon = wibox.widget({
-			widget = icons.material.icon,
-			fg = "#ffffff",
-			fill = true,
-			size = 22,
+			widget = icons.system.icon,
+			size = 16,
 		})
 
 		local states = {
-			on = "volume_up",
-			off = "no_sound",
+			on = "audio-ready",
+			off = "audio-off",
 		}
 
-		pulseaudio:connect_signal("sink::volume", function(_, volume)
-			icon.name = volume > 0 and states.on or states.off
+		pulseaudio:connect_signal("sink::volume", function(_, name, volume)
+			if name == "@DEFAULT_SINK@" then
+				icon.name = volume > 0 and states.on or states.off
+			end
 		end)
 
-		pulseaudio:get_sink_mute():next(function(mute)
+		pulseaudio:get_sink_mute("@DEFAULT_SINK@"):next(function(mute)
 			icon.name = mute and states.off or states.on
 		end)
 
@@ -55,13 +52,9 @@ return {
 		local content = wibox.widget.textbox()
 		content.font = beautiful.widget_font
 
-		pulseaudio.connect_signal("source::volume", function(volume)
+		pulseaudio:connect_signal("source::volume", function(_, name, volume)
 			content.markup = string.format("%02d%%", volume)
 		end)
-		pulseaudio.connect_signal("source::mute", function()
-			content.markup = "MUTE"
-		end)
-		pulseaudio:refresh_source_volume()
 
 		local widget = wibox.widget({
 			{
@@ -72,5 +65,29 @@ return {
 		})
 
 		return util.label("MIC", widget)
+	end,
+
+	source_icon = function()
+		local icon = wibox.widget({
+			widget = icons.system.icon,
+			size = 16,
+		})
+
+		local states = {
+			on = "mic-ready",
+			off = "mic-off",
+		}
+
+		pulseaudio:connect_signal("source::volume", function(_, name, volume)
+			if name == "@DEFAULT_SOURCE@" then
+				icon.name = volume > 0 and states.on or states.off
+			end
+		end)
+
+		pulseaudio:get_source_mute("@DEFAULT_SOURCE@"):next(function(mute)
+			icon.name = mute and states.off or states.on
+		end)
+
+		return icon
 	end,
 }

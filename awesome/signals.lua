@@ -5,12 +5,18 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 
 naughty.connect_signal("request::display_error", function(message, startup)
-	naughty.notification({
-		urgency = "critical",
-		title = "Oops, an error happened" .. (startup and " during startup!" or "!"),
-		app_name = "AwesomeWM",
-		app_icon = "dialog-error",
-		message = message,
+	naughty.layout.box({
+		notification = naughty.notification({
+			urgency = "critical",
+			title = "Oops, an error happened" .. (startup and " during startup!" or "!"),
+			app_name = "AwesomeWM",
+			app_icon = "dialog-error",
+			position = "bottom_middle",
+			bg = "#ff0000",
+			border_color = "#ff0000",
+			max_width = 1000,
+			message = message,
+		}),
 	})
 end)
 

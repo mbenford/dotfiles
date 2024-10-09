@@ -24,8 +24,8 @@ local function show(args)
 			layout = wibox.layout.flex.horizontal,
 			spacing = 10,
 		},
-		item_bg = beautiful.dialog_button_bg,
-		item_bg_selected = beautiful.dialog_button_bg_selected,
+		item_bg = beautiful.notification_bg_selected,
+		item_border_color = beautiful.notification_bg_selected,
 		items = args.buttons,
 		item_creator = function(index, value)
 			return wibox.widget({

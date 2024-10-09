@@ -1,17 +1,15 @@
 local widgets = {
+	"audio",
 	"clock",
 	"distro",
 	"hardware",
-	"layout",
 	"list",
+	"network",
 	"notification",
-	"pulseaudio",
 	"systray",
-	"taglist",
-	"tasklist",
+	"tags",
 	"util",
 	"vpn",
-	"wifi",
 	"window",
 }
 

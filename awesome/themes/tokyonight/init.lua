@@ -36,7 +36,7 @@ function M.setup(opts)
 		notification_border_color = flavor.dark5,
 		notification_border_color_selected = flavor.dark5,
 		notification_bg = flavor.bg_dark,
-		notification_bg_selected = flavor.blue7,
+		notification_bg_selected = flavor.bg_highlight,
 		notification_bg_critical = flavor.red1,
 		notification_list_page_indicator_normal = flavor.dark5,
 		notification_list_page_indicator_selected = flavor.fg,
@@ -44,6 +44,14 @@ function M.setup(opts)
 		notification_icon_fg = flavor.fg,
 		notification_icon_unread_fg = flavor.blue2,
 
+		list_item_bg = flavor.bg_highlight,
+		list_item_bg_selected = flavor.bg_highlight,
+		list_item_border_width = 2,
+		list_item_border_color = flavor.bg_highlight,
+		list_item_border_color_selected = flavor.blue0,
+
+		popup_title_fg = flavor.fg,
+		popup_title_bg = flavor.blue7,
 		popup_border_width = 2,
 		popup_border_color = flavor.blue,
 

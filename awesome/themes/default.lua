@@ -1,7 +1,7 @@
+local gears = require("gears")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
-local gfs = require("gears.filesystem")
-local default_themes_path = gfs.get_themes_dir()
+local default_themes_path = gears.filesystem.get_themes_dir()
 local fn = require("util.fn")
 
 return {
@@ -16,7 +16,7 @@ return {
 	taglist_circles_empty = "",
 	systray_icon_spacing = 10,
 	wibar_margins = { top = 5, bottom = 1, left = 5, right = 5 },
-	wibar_shape = fn.bind_right(require("gears.shape").rounded_rect, 8),
+	wibar_shape = fn.bind_right(gears.shape.rounded_rect, 8),
 	wibar_height = 30,
 	titlebar_font = "Ubuntu 11",
 	titlebar_size = 20,
@@ -25,6 +25,8 @@ return {
 	widget_font = "JetBrains Mono 12",
 	widget_label_spacing = 3,
 	clock_font = "Ubuntu 12",
+
+	popup_title_font = "Ubuntu 11",
 
 	-- notification_font = "Ubuntu 12",
 	notification_appname_font = "Ubuntu 11",
@@ -37,6 +39,8 @@ return {
 	notification_minimum_width = 400,
 	notification_maximum_width = 400,
 	notification_maximum_height = 64,
+
+	list_item_shape = fn.bind_right(gears.shape.rounded_rect, 5),
 
 	calendar_font = "Ubuntu 12",
 	wallpaper = default_themes_path .. "default/background.png",

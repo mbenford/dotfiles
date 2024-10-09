@@ -82,15 +82,17 @@ local calendar = wibox.widget({
 
 local popup = awful.popup({
 	visible = false,
-	placement = awful.placement.centered,
+	placement = function(c)
+		awful.placement.top_right(c, { honor_workarea = true })
+	end,
 	ontop = true,
 	border_color = beautiful.popup_border_color,
 	border_width = beautiful.popup_border_width,
 	widget = {
 		widget = wibox.container.margin,
 		margins = { bottom = 10, left = 10, right = 10 },
-		forced_width = 500,
-		forced_height = 400,
+		forced_width = 400,
+		forced_height = 300,
 		calendar,
 	},
 })

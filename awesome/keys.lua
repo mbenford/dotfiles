@@ -8,10 +8,6 @@ local mouse = require("util.mouse")
 local pulseaudio = require("util.pulseaudio")
 
 awful.keyboard.append_global_keybindings(ez.keys({
-	-- Awesome
-	["M-C-r"] = api.awesome.restart,
-	["M-C-q"] = api.awesome.quit,
-
 	-- Navigation
 	["M-h"] = fn.bind(awful.client.focus.bydirection, "left"),
 	["M-l"] = fn.bind(awful.client.focus.bydirection, "right"),
@@ -122,7 +118,6 @@ awful.keyboard.append_global_keybindings(ez.keys({
 
 	-- Apps
 	["M-Return"] = fn.bind(awful.spawn, "kitty"),
-	["M-b"] = fn.bind(awful.spawn, "rofi-brave"),
 	["Print"] = fn.bind(awful.spawn, "flameshot gui"),
 
 	-- Rofi
@@ -134,18 +129,17 @@ awful.keyboard.append_global_keybindings(ez.keys({
 	}),
 
 	-- Popups
-	["M-BackSpace"] = function()
-		require("popups.system").show()
-	end,
-	["M-n"] = function()
-		require("popups.notifications").show()
-	end,
-	["M-d"] = function()
-		require("popups.calendar").show()
-	end,
+	["M-BackSpace"] = require("popups.system").show,
+	["M-n"] = require("popups.notifications").show,
+	["M-d"] = require("popups.calendar").show,
+	["M-b"] = require("popups.brave").show,
+	["M-a"] = keychord({
+		["o"] = require("popups.audio").show_outputs,
+		["i"] = require("popups.audio").show_inputs,
+	}),
 
 	-- Autorandr
-	["M-a"] = keychord({
+	["M-v"] = keychord({
 		["c"] = fn.bind(awful.spawn, "autorandr --cycle"),
 		["d"] = fn.bind(awful.spawn, "autorandr --change --load default"),
 		["f"] = fn.bind(awful.spawn, "autorandr --load common --ignore-lid"),
@@ -155,9 +149,26 @@ awful.keyboard.append_global_keybindings(ez.keys({
 	["XF86AudioPlay"] = fn.bind(awful.spawn, "playerctl play-pause --all-players"),
 	["XF86AudioPrev"] = fn.bind(awful.spawn, "playerctl previous --all-players"),
 	["XF86AudioNext"] = fn.bind(awful.spawn, "playerctl next --all-players"),
-	["XF86AudioRaiseVolume"] = fn.bind_obj(pulseaudio, "set_sink_volume", "+2%"),
-	["XF86AudioLowerVolume"] = fn.bind_obj(pulseaudio, "set_sink_volume", "-2%"),
-	["XF86AudioMute"] = fn.bind_obj(pulseaudio, "set_sink_mute", "toggle"),
+
+	-- Audio
+	["XF86AudioRaiseVolume"] = function()
+		pulseaudio:set_sink_volume("@DEFAULT_SINK@", "+2%")
+	end,
+	["XF86AudioLowerVolume"] = function()
+		pulseaudio:set_sink_volume("@DEFAULT_SINK@", "-2%")
+	end,
+	["XF86AudioMute"] = function()
+		pulseaudio:set_sink_mute("@DEFAULT_SINK@", "toggle")
+	end,
+	["C-XF86AudioRaiseVolume"] = function()
+		pulseaudio:set_source_volume("@DEFAULT_SOURCE@", "+2%")
+	end,
+	["C-XF86AudioLowerVolume"] = function()
+		pulseaudio:set_source_volume("@DEFAULT_SOURCE@", "-2%")
+	end,
+	["C-XF86AudioMute"] = function()
+		pulseaudio:set_source_mute("@DEFAULT_SOURCE@", "toggle")
+	end,
 }))
 
 -- Tags

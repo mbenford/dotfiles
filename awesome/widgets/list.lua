@@ -19,13 +19,6 @@ local function new(args)
 			},
 		},
 	})
-	container:connect_signal("button::press", function(self, x, y, button)
-		if button == 4 then
-			self:prev_item()
-		elseif button == 5 then
-			self:next_item()
-		end
-	end)
 
 	gears.table.crush(container, List)
 	gears.table.crush(container._private, {
@@ -34,23 +27,25 @@ local function new(args)
 			spacing = 10,
 		},
 		cycle = args.cycle or false,
-		item_fg = args.item_fg,
-		item_bg = args.item_bg,
-		item_shape = args.item_shape,
-		item_border_color = args.item_border_color or beautiful.border_normal,
-		item_border_width = args.item_border_width or 1,
-		item_fg_selected = args.item_fg_selected,
-		item_bg_selected = args.item_bg_selected,
-		item_border_color_selected = args.item_border_color_selected or beautiful.border_normal,
+		item_fg = args.item_fg or beautiful.list_item_fg,
+		item_bg = args.item_bg or beautiful.list_item_bg,
+		item_fg_selected = args.item_fg_selected or beautiful.list_item_fg_selected,
+		item_bg_selected = args.item_bg_selected or beautiful.list_item_bg_selected,
+		item_shape = args.item_shape or beautiful.list_item_shape,
+		item_border_width = args.item_border_width or beautiful.list_item_border_width or 0,
+		item_border_color = args.item_border_color or beautiful.list_item_border_color,
+		item_border_color_selected = args.item_border_color_selected or beautiful.list_item_border_color_selected,
 		item_creator = args.item_creator,
 		page_size = args.page_size or 5,
-		page_indicator_shape = args.page_indicator_shape or gears.shape.rectangle,
-		page_indicator_width = args.page_indicator_width or 20,
-		page_indicator_height = args.page_indicator_height or 3,
-		page_indicator_margin = args.page_indicator_margin or 5,
-		page_indicator_spacing = args.page_indicator_spacing or 5,
-		page_indicator_bg = args.page_indicator_bg or beautiful.border_normal,
-		page_indicator_bg_selected = args.page_indicator_bg_selected or beautiful.border_focus,
+		page_indicator_shape = args.page_indicator_shape or beautiful.list_indicator_shape or gears.shape.rectangle,
+		page_indicator_width = args.page_indicator_width or beautiful.list_indicator_width or 20,
+		page_indicator_height = args.page_indicator_height or beautiful.list_indicator_height or 3,
+		page_indicator_margin = args.page_indicator_margin or beautiful.list_indicator_margin or 5,
+		page_indicator_spacing = args.page_indicator_spacing or beautiful.list_indicator_spacing or 5,
+		page_indicator_bg = args.page_indicator_bg or beautiful.list_indicator_bg or beautiful.border_normal,
+		page_indicator_bg_selected = args.page_indicator_bg_selected
+			or beautiful.list_indicator_bg_selected
+			or beautiful.border_focus,
 		empty_widget = args.empty_widget or wibox.widget({
 			widget = wibox.container.place,
 			valign = "center",
@@ -90,9 +85,6 @@ function List:set_items(items)
 			widget = wibox.container.background,
 			self._private.item_creator(index, value),
 		})
-		container:connect_signal("mouse::enter", function()
-			self:select(index)
-		end)
 
 		local page_index = self:_page_index(index)
 		if self._private.pages[page_index] == nil then

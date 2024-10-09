@@ -3,6 +3,7 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local popup_util = require("util.popup")
 local pulseaudio = require("util.pulseaudio")
+local fn = require("util.fn")
 local icons = require("icons")
 
 local popup = awful.popup({
@@ -15,17 +16,14 @@ local popup = awful.popup({
 		widget = wibox.container.margin,
 		margins = 10,
 		forced_width = 300,
-		forced_height = 130,
+		forced_height = 110,
 		{
 			layout = wibox.layout.fixed.vertical,
 			spacing = 10,
 			{
 				id = "icon",
-				widget = icons.material.icon,
-				name = "no_sound",
-				size = 70,
-				fill = true,
-				fg = "#ffffff",
+				widget = icons.system.icon,
+				size = 48,
 			},
 			{
 				layout = wibox.layout.stack,
@@ -48,12 +46,20 @@ local popup = awful.popup({
 })
 popup_util.enhance(popup, { timeout = 1 })
 
-local function show(volume)
+local function show(_, name, volume, type)
+	if name ~= "@DEFAULT_SINK@" and name ~= "@DEFAULT_SOURCE@" then
+		return
+	end
+
 	local icon = popup.widget:get_children_by_id("icon")[1]
 	local text = popup.widget:get_children_by_id("text")[1]
 	local progress = popup.widget:get_children_by_id("progress")[1]
 
-	icon.name = volume > 0 and "volume_up" or "no_sound"
+	if type == "sink" then
+		icon.name = volume > 0 and "audio-ready" or "audio-off"
+	elseif type == "source" then
+		icon.name = volume > 0 and "mic-ready" or "mic-off"
+	end
 	text.text = volume > 0 and volume .. "%" or "MUTE"
 	progress.value = volume
 
@@ -65,6 +71,5 @@ local function show(volume)
 	end
 end
 
-pulseaudio:connect_signal("sink::volume", function(_, volume)
-	show(volume)
-end)
+pulseaudio:connect_signal("sink::volume", fn.bind_right(show, "sink"))
+pulseaudio:connect_signal("source::volume", fn.bind_right(show, "source"))

@@ -19,7 +19,7 @@ local commands = {
 	{ text = "Shutdown", icon = "system-shutdown", exec = "systemctl poweroff" },
 }
 
-local actions = widgets.list({
+local action_list = widgets.list({
 	layout = {
 		layout = wibox.layout.flex.horizontal,
 		spacing = 10,
@@ -27,8 +27,6 @@ local actions = widgets.list({
 	cycle = true,
 	margins = 10,
 	items = commands,
-	item_bg = beautiful.notification_bg,
-	item_bg_selected = beautiful.notification_bg_selected,
 	item_creator = function(index, value)
 		return wibox.widget({
 			widget = wibox.container.margin,
@@ -36,6 +34,7 @@ local actions = widgets.list({
 			forced_width = 100,
 			{
 				layout = wibox.layout.fixed.vertical,
+				spacing = 10,
 				fill_space = true,
 				{
 					widget = icons.system.icon,
@@ -79,19 +78,19 @@ local popup = awful.popup({
 					},
 				},
 			},
-			actions,
+			action_list,
 		},
 	},
 })
 popup_util.enhance(popup, {
 	timeout = 10,
 	keybindings = ez.keys({
-		["h"] = fn.bind_obj(actions, "prev_item"),
-		["l"] = fn.bind_obj(actions, "next_item"),
+		["h"] = fn.bind_obj(action_list, "prev_item"),
+		["l"] = fn.bind_obj(action_list, "next_item"),
 		["Return"] = function()
 			popup.visible = false
 
-			local command = commands[actions:selected_index()]
+			local command = commands[action_list:selected_index()]
 			if command.no_confirmation then
 				gears.timer.delayed_call(function()
 					awful.spawn(command.exec)
@@ -133,7 +132,7 @@ return {
 			popup.widget:get_children_by_id("uptime")[1].text = uptime
 			popup.screen = awful.screen.focused()
 			popup.visible = true
-			actions:select(1)
+			action_list:select(1)
 		end)
 	end,
 }

@@ -27,6 +27,7 @@ local function get_icon(notification)
 		return wibox.widget({
 			widget = wibox.widget.imagebox,
 			image = source:gsub("file://", ""),
+			resize = true,
 			forced_width = beautiful.notification_icon_size,
 			forced_height = beautiful.notification_icon_size,
 		})
@@ -49,10 +50,10 @@ local function get_message(notification)
 	return string_util.trim(message:gsub("\n", " "))
 end
 
-local notifications = widgets.list({
+local notification_list = widgets.list({
 	layout = {
 		layout = wibox.layout.flex.vertical,
-		max_widget_size = 89,
+		max_widget_size = 90,
 		spacing = 10,
 	},
 	page_size = 10,
@@ -63,9 +64,8 @@ local notifications = widgets.list({
 		{
 			layout = wibox.layout.flex.vertical,
 			{
-				widget = icons.material.icon,
-				name = "done_all",
-				fg = "#ffffff",
+				widget = icons.system.icon,
+				name = "checkmark",
 				size = 64,
 			},
 			{
@@ -74,8 +74,6 @@ local notifications = widgets.list({
 			},
 		},
 	}),
-	item_bg = beautiful.notification_bg,
-	item_bg_selected = beautiful.notification_bg_selected,
 	item_creator = function(_, notification)
 		local age = format_duration(os.time() - notification.timestamp)
 		local title = string.format("<b>%s</b>", notification.title)
@@ -155,32 +153,36 @@ local popup = awful.popup({
 			widget = wibox.container.constraint,
 			strategy = "exact",
 			width = 400,
-			notifications,
+			notification_list,
 		},
 	},
 })
 popup_util.enhance(popup, {
+	decorations = {
+		title = { text = "Notifications" },
+	},
 	timeout = 10,
 	keybindings = ez.keys({
-		["h"] = fn.bind_obj(notifications, "prev_page"),
-		["j"] = fn.bind_obj(notifications, "next_item"),
-		["k"] = fn.bind_obj(notifications, "prev_item"),
-		["l"] = fn.bind_obj(notifications, "next_page"),
+		["h"] = fn.bind_obj(notification_list, "prev_page"),
+		["j"] = fn.bind_obj(notification_list, "next_item"),
+		["k"] = fn.bind_obj(notification_list, "prev_item"),
+		["l"] = fn.bind_obj(notification_list, "next_page"),
 		["d"] = function()
-			local selected = notifications:selected_index()
+			local selected = notification_list:selected_index()
 			local notification = naughty.active[selected]
 			if notification then
 				notification:destroy(naughty.notification_closed_reason.silent)
-				notifications:set_items(naughty.active)
-				notifications:select(selected)
+				notification_list:set_items(naughty.active)
+				notification_list:select(selected)
 			end
 		end,
 		["S-D"] = function()
 			naughty.destroy_all_notifications(nil, naughty.notification_closed_reason.silent)
-			notifications:clear()
+			notification_list:clear()
+			popup.visible = false
 		end,
 		["Return"] = function()
-			local notification = naughty.active[notifications:selected_index()]
+			local notification = naughty.active[notification_list:selected_index()]
 			if notification then
 				notification:destroy(naughty.notification_closed_reason.dismissed_by_user)
 				popup.visible = false
@@ -193,6 +195,6 @@ return {
 	show = function()
 		popup.visible = true
 		popup.screen = awful.screen.primary
-		notifications:set_items(naughty.active)
+		notification_list:set_items(naughty.active)
 	end,
 }

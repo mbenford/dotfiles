@@ -6,6 +6,21 @@ pcall(require, "luarocks.loader")
 -- https://github.com/awesomeWM/awesome/issues/1285
 -- package.loaded["naughty.dbus"] = {}
 
+-- Basic keybindings
+local awful = require("awful")
+awful.keyboard.append_global_keybindings({
+	awful.key({ "Mod4", "Control" }, "r", awesome.restart),
+	awful.key({ "Mod4", "Control" }, "q", awesome.quit),
+	awful.key({ "Mod4", "Control" }, "Return", function()
+		awful.spawn("kitty", {
+			floating = true,
+			ontop = true,
+			fullscreen = true,
+			placement = awful.placement.centered,
+		})
+	end),
+})
+
 local function load(module)
 	local success, error = pcall(require, module)
 	if not success then
@@ -19,13 +34,13 @@ local function load(module)
 	end
 end
 
-load("awful.autofocus")
-load("signals")
 load("theme")
-load("bar")
 load("keys")
+load("signals")
+load("bar")
 load("mouse")
 load("rules")
 load("popups")
 load("scratchpads")
+load("awful.autofocus")
 load("autorun")

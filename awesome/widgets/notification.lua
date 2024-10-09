@@ -3,16 +3,14 @@ local icons = require("icons")
 
 return function()
 	local icon = wibox.widget({
-		widget = icons.material.icon,
+		widget = icons.system.icon,
 		name = "notifications",
-		fg = "#ffffff",
-		fill = true,
-		size = 20,
+		size = 16,
 	})
 
 	local naughty = require("naughty")
 	local function update()
-		icon.name = #naughty.active > 0 and "notifications_unread" or "notifications"
+		icon.name = #naughty.active > 0 and "preferences-desktop-notification-bell" or "notification-inactive"
 	end
 
 	naughty.connect_signal("added", update)
