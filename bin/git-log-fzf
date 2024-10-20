@@ -9,11 +9,8 @@ hash=`
 	--date=format:%d-%m-%y \
 	--color=always \
 	| fzf \
-	--preview 'git show --name-status {1}' \
-	--preview-window right,50%,border-sharp,hidden \
-	--bind 'ctrl-p:toggle-preview' \
-	--bind 'ctrl-j:preview-down' \
-	--bind 'ctrl-k:preview-up' \
+	--preview 'git show {1} | delta'  \
+	--preview-window 'nohidden' \
 	| awk '{printf $1}'
 `
 
