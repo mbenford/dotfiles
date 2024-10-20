@@ -1,6 +1,7 @@
 return {
 	"echasnovski/mini.bufremove",
 	version = false,
+	event = { "BufRead", "BufNew" },
 	opts = {},
 	config = function(_, opts)
 		local mini_bufremove = require("mini.bufremove")

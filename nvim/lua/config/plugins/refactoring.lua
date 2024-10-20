@@ -1,10 +1,7 @@
 return {
-	'ThePrimeagen/refactoring.nvim',
-	dependencies = {
-		'nvim-lua/plenary.nvim',
-		'nvim-treesitter/nvim-treesitter',
-	},
+	"ThePrimeagen/refactoring.nvim",
+	enabled = false,
 	config = function()
-		require('refactoring').setup()
+		require("refactoring").setup()
 	end,
 }

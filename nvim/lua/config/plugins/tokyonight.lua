@@ -13,6 +13,10 @@ return {
 			hl.Pmenu = { bg = colors.bg_highlight }
 			hl.SpellBad = { undercurl = true, sp = colors.green }
 			hl.TextYank = { fg = colors.yellow, bg = colors.none, reverse = true }
+			hl.FloatTitle = { fg = colors.border_highlight, bg = colors.bg_float, reverse = true }
+
+			-- LSP
+			hl.LspInfoBorder = "FloatBorder"
 
 			-- Telescope
 			hl.TelescopeTitle = { reverse = true }
@@ -29,6 +33,7 @@ return {
 			hl.LualineRecording = { fg = colors.red, bg = colors.bg_statusline }
 			hl.LualineGitStatusClean = { fg = colors.green, bg = colors.bg_statusline }
 			hl.LualineGitStatusDirty = { fg = colors.yellow, bg = colors.bg_statusline }
+			hl.LualineGitBranch = { fg = colors.blue, bg = colors.bg_statusline }
 
 			-- Noice
 			hl.NoiceCmdline = { bg = colors.bg_statusline }
@@ -37,6 +42,12 @@ return {
 			hl.GitSignsAdd = { fg = colors.green }
 			hl.GitSignsChange = { fg = colors.yellow }
 			hl.GitSignsDelete = { fg = colors.red }
+
+			-- Quicker
+			hl.QuickFixLineNr = "CursorLineNr"
+
+			-- Better Quickfix
+			hl.BqfPreviewFloat = "NormalFloat"
 		end,
 	},
 	config = function(_, opts)

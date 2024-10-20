@@ -1,5 +1,6 @@
 return {
 	"monaqa/dial.nvim",
+	event = { "BufRead", "InsertEnter" },
 	config = function()
 		local augend = require("dial.augend")
 		require("dial.config").augends:register_group({

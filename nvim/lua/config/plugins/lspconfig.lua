@@ -1,16 +1,17 @@
 return {
-	'neovim/nvim-lspconfig',
-	dependencies = {
-		'mason.nvim',
-	},
-	event = { 'BufRead', 'InsertEnter' },
+	"neovim/nvim-lspconfig",
+	lazy = true,
 	config = function()
-		for _, server in pairs(require('mason-lspconfig').get_installed_servers()) do
-			require('lspconfig')[server].setup(require('config.lsp').setup_server(server))
-		end
+		require("lspconfig.ui.windows").default_options.border = "rounded"
 
-		require('lspconfig.ui.windows').default_options.border = 'rounded'
-		local hl = require('utils.highlight')
-		hl.set('LspInfoBorder', { link = 'FloatBorder' })
+		-- Dirty hack to center the cursor after a jump
+		local jump = vim.lsp.util.jump_to_location
+		vim.lsp.util.jump_to_location = function(location, offset_encoding, reuse_win)
+			local success = jump(location, offset_encoding, reuse_win)
+			if success then
+				vim.cmd.normal("zz")
+			end
+			return success
+		end
 	end,
 }

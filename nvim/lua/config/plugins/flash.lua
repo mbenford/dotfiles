@@ -21,7 +21,7 @@ return {
 		local lazy = require("legendary.toolbox").lazy
 		require("legendary").keymaps({
 			{
-				"s",
+				"<CR>",
 				lazy(flash.jump, {
 					label = {
 						min_pattern_length = 2,
@@ -30,16 +30,25 @@ return {
 				mode = { "n", "x", "o" },
 				description = "Flash",
 			},
-			{ "S", flash.treesitter, mode = { "n", "x", "o" }, description = "Flash" },
+			{ "<Leader>v", flash.treesitter, mode = { "n", "x", "o" }, description = "Flash" },
 			{ "r", flash.remote, mode = { "o" }, description = "Flash (Remote)" },
 			{
 				"gl",
-				lazy(flash.jump, {
-					search = { mode = "search", max_length = 0 },
-					label = { after = { 0, 0 } },
-					highlight = { matches = false },
-					pattern = "^",
-				}),
+				function()
+					flash.jump({
+						search = { mode = "search", max_length = 0 },
+						label = { after = { 0, 0 } },
+						highlight = { matches = false },
+						pattern = "^",
+						action = function(match, state)
+							local is_operator = vim.fn.mode(true):find("no")
+							require("flash.jump").jump(match, state)
+							if is_operator then
+								vim.cmd.normal("V")
+							end
+						end,
+					})
+				end,
 				mode = { "n", "x", "o" },
 				description = "Flash (Jump to line)",
 			},

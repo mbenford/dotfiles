@@ -2,6 +2,12 @@ local g = vim.g
 g.mapleader = " "
 g.maplocalleader = "\\"
 
+-- Disable unused providers
+g.loaded_python3_provider = 0
+g.loaded_ruby_provider = 0
+g.loaded_perl_provider = 0
+g.loaded_node_provider = 0
+
 local o = vim.opt
 o.backup = false
 o.colorcolumn = "120"
@@ -23,6 +29,7 @@ o.listchars = { tab = "  ", trail = "·" }
 o.mouse = "a"
 o.numberwidth = 2
 o.number = true
+-- o.quickfixtextfunc = "v:lua.require'config.quickfix'.format"
 o.relativenumber = true
 o.ruler = false
 o.scrolloff = 3
@@ -50,4 +57,6 @@ o.undofile = true
 o.updatetime = 250
 o.virtualedit = ""
 o.wildmode = "full"
+o.winminheight = 0
+o.winminwidth = 0
 o.wrap = false

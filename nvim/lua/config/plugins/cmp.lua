@@ -1,11 +1,12 @@
 return {
 	"hrsh7th/nvim-cmp",
-	event = "InsertEnter",
+	event = { "InsertEnter", "CmdlineEnter" },
 	dependencies = {
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
 		"hrsh7th/cmp-nvim-lua",
 		"hrsh7th/cmp-nvim-lsp",
+		"hrsh7th/cmp-cmdline",
 		"saadparwaiz1/cmp_luasnip",
 		"zbirenbaum/copilot-cmp",
 	},
@@ -13,12 +14,12 @@ return {
 		local cmp = require("cmp")
 		cmp.setup({
 			sources = cmp.config.sources({
-				{ name = "nvim_lua" },
 				{ name = "nvim_lsp" },
 				{ name = "luasnip" },
 				{ name = "path", keyword_length = 3 },
 				{ name = "buffer", keyword_length = 3 },
 				{ name = "copilot", group_index = 2 },
+				{ name = "lazydev", group_index = 0 },
 			}),
 			completion = {
 				autocomplete = {
@@ -63,6 +64,18 @@ return {
 					winhighlight = "FloatBorder:FloatBorder",
 				},
 			},
+		})
+
+		cmp.setup.cmdline(":", {
+			sources = cmp.config.sources({
+				{ name = "path" },
+			}, {
+				{ name = "cmdline" },
+			}),
+			completion = { keyword_length = 3 },
+			view = { entries = "wildmenu" },
+			matching = { disallow_symbol_nonprefix_matching = false },
+			mapping = cmp.mapping.preset.cmdline(),
 		})
 	end,
 }

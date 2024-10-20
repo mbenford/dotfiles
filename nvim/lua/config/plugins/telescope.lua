@@ -1,7 +1,7 @@
 return {
 	"nvim-telescope/telescope.nvim",
+	event = "VeryLazy",
 	dependencies = {
-		"nvim-lua/plenary.nvim",
 		"natecraddock/telescope-zf-native.nvim",
 	},
 	opts = {
@@ -38,8 +38,8 @@ return {
 		local actions = require("telescope.actions")
 		opts.defaults.mappings = {
 			i = {
-				["<esc>"] = actions.close,
-				["<cr>"] = actions.select_default + actions.center,
+				["<Esc>"] = actions.close,
+				["<CR>"] = actions.select_default + actions.center,
 			},
 		}
 		require("telescope").setup(opts)
@@ -49,22 +49,19 @@ return {
 		local themes = require("telescope.themes")
 		local lazy = require("legendary.toolbox").lazy
 
-		local function project_files(opts)
-			opts = opts or {}
-			if not pcall(builtin.git_files, vim.tbl_deep_extend("force", { show_untracked = true }, opts)) then
-				builtin.find_files(opts)
-			end
-		end
-
-		require("legendary").keymaps({
+		local legendary = require("legendary")
+		legendary.keymaps({
 			{
 				"<Leader>ff",
-				project_files,
-				description = "Telescope (project files)",
+				builtin.find_files,
+				description = "Telescope - Files",
 			},
 			{
 				"<Leader>fa",
-				lazy(builtin.find_files, { hidden = true, no_ignore = true, no_ignore_parent = true }),
+				lazy(
+					builtin.find_files,
+					{ prompt_title = "Find Files (ALL)", hidden = true, no_ignore = true, no_ignore_parent = true }
+				),
 				description = "Telescope - All Files",
 			},
 			{
@@ -74,12 +71,19 @@ return {
 			},
 			{
 				"<leader>fg",
-				builtin.live_grep,
+				lazy(builtin.live_grep, { additional_args = { "--fixed-strings" } }),
 				description = "Telescope - Live Grep",
+			},
+			{
+				"<leader>fg",
+				builtin.grep_string,
+				mode = { "x" },
+				description = "Telescope - Grep string",
 			},
 			{
 				"<leader>f*",
 				builtin.grep_string,
+				mode = { "n", "x" },
 				description = "Telescope - Grep string",
 			},
 			{
@@ -105,6 +109,11 @@ return {
 			{
 				"<leader>;",
 				builtin.commands,
+				description = "Telescope - Commands",
+			},
+			{
+				"<leader>fk",
+				builtin.keymaps,
 				description = "Telescope - Commands",
 			},
 			{
@@ -147,31 +156,10 @@ return {
 				lazy(builtin.spell_suggest, themes.get_cursor()),
 				description = "Telescope - Spell Suggestions",
 			},
-			-- {
-			-- 	'<leader>fa',
-			-- 	builtin.autocommands,
-			-- 	description = 'Telescope - Autocommands',
-			-- },
 			{
-				"<leader>gb",
-				builtin.git_branches,
-				description = "Telescope - Git Branches",
-			},
-			-- { '<leader>gs', builtin.git_stash, description = '' },
-			{
-				"<leader>gs",
-				builtin.git_status,
-				description = "Telescope - Git Status",
-			},
-			{
-				"<leader>gc",
-				builtin.git_commits,
-				description = "Telescope - Git Commits",
-			},
-			{
-				"<leader>gC",
-				builtin.git_bcommits,
-				description = "Telescope - Git Commits of current buffer",
+				"<leader>fk",
+				builtin.keymaps,
+				description = "Telescope - Spell Suggestions",
 			},
 			{
 				"<leader>ld",
@@ -186,12 +174,22 @@ return {
 			{
 				"<leader>lr",
 				lazy(builtin.lsp_references, { include_declaration = false, show_line = false }),
-				description = "",
+				description = "Telescope - LSP References",
 			},
 			{
 				"<leader>ls",
 				lazy(builtin.lsp_document_symbols, { symbol_width = 50 }),
 				description = "Telescope - LSP Document Symbols",
+			},
+			{
+				"<leader>lci",
+				builtin.lsp_incoming_calls,
+				description = "Telescope - LSP Incoming Calls",
+			},
+			{
+				"<leader>lco",
+				builtin.lsp_outgoing_calls,
+				description = "Telescope - LSP Outgoing Calls",
 			},
 		})
 	end,

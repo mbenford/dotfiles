@@ -1,7 +1,5 @@
-local M = {}
-
-function M.setup_server(server)
-	local opts = {
+return function(server_name)
+	local config = {
 		capabilities = require("cmp_nvim_lsp").default_capabilities(),
 		handlers = {
 			["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
@@ -24,25 +22,12 @@ function M.setup_server(server)
 				},
 				{ "<leader>l?", "<Cmd>LspInfo<CR>", description = "LSP Info" },
 			})
-
-			if client.supports_method("textDocument/documentHighlight") then
-				legendary.autocmds({
-					{
-						name = "LspDocumentHighlight",
-						clear = true,
-						{ { "CursorHold", "CursorHoldI" }, vim.lsp.buf.document_highlight, opts = { buffer = 0 } },
-						{ "CursorMoved", vim.lsp.buf.clear_references, opts = { buffer = 0 } },
-					},
-				})
-			end
 		end,
 	}
 
-	local ok, server_opts = pcall(require, "config.language-servers." .. server)
+	local ok, server_config = pcall(require, "config.language-servers." .. server_name)
 	if ok then
-		opts = vim.tbl_deep_extend("force", opts, server_opts)
+		config = vim.tbl_deep_extend("force", config, server_config)
 	end
-	return opts
+	return config
 end
-
-return M

@@ -30,9 +30,13 @@ local function filename()
 	return file
 end
 
+local function filetype()
+	return vim.bo.filetype
+end
+
 local function lsp_status()
 	local clients = #vim.lsp.get_clients()
-	local status = "LSP:" .. clients
+	local status = " " .. clients
 	return clients > 0 and ("%#LualineLspActive#" .. status) or status
 end
 
@@ -77,7 +81,6 @@ return {
 			},
 			lualine_x = {
 				recording_status,
-				"grapple",
 				{ "branch", icon = "" },
 				{
 					"diagnostics",
@@ -86,7 +89,7 @@ return {
 					always_visible = true,
 				},
 				lsp_status,
-				{ "filetype", fmt = string.upper },
+				{ filetype, fmt = string.upper },
 				{ indentation, fmt = string.upper },
 				{ file_encoding, fmt = string.upper },
 				{ file_format, fmt = string.upper },
@@ -105,7 +108,8 @@ return {
 		},
 		extensions = {
 			"lazy",
-			"neo-tree",
+			"man",
+			"mason",
 			"nvim-dap-ui",
 			"quickfix",
 			"trouble",

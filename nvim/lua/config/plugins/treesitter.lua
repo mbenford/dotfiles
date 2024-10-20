@@ -2,9 +2,6 @@ return {
 	"nvim-treesitter/nvim-treesitter",
 	build = ":TSUpdate",
 	event = { "BufRead", "BufWritePost" },
-	dependencies = {
-		"nvim-treesitter/playground",
-	},
 	config = function()
 		require("nvim-treesitter.configs").setup({
 			ensure_installed = {
@@ -13,6 +10,7 @@ return {
 				"cmake",
 				"cpp",
 				"css",
+				"diff",
 				"dockerfile",
 				"fennel",
 				"git_rebase",
@@ -25,6 +23,7 @@ return {
 				"hcl",
 				"html",
 				"http",
+				"hurl",
 				"javascript",
 				"jsdoc",
 				"json",
@@ -64,7 +63,7 @@ return {
 			},
 			textobjects = {
 				select = {
-					enable = true,
+					enable = false,
 					lookahead = true,
 					keymaps = {
 						["af"] = "@function.outer",

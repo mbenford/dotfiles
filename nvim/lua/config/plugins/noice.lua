@@ -1,17 +1,16 @@
-string.format("1", 1, 2)
 return {
-	'folke/noice.nvim',
-	event = 'VeryLazy',
+	"folke/noice.nvim",
+	event = "VeryLazy",
 	dependencies = {
-		'MunifTanjim/nui.nvim',
-		'rcarriga/nvim-notify',
+		"MunifTanjim/nui.nvim",
+		"rcarriga/nvim-notify",
 	},
 	opts = {
 		lsp = {
 			override = {
-				['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-				['vim.lsp.util.stylize_markdown'] = true,
-				['cmp.entry.get_documentation'] = true,
+				["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+				["vim.lsp.util.stylize_markdown"] = true,
+				["cmp.entry.get_documentation"] = true,
 			},
 		},
 		presets = {
@@ -20,7 +19,7 @@ return {
 			lsp_doc_border = true,
 		},
 		cmdline = {
-			view = 'cmdline',
+			view = "cmdline",
 		},
 	},
 }

@@ -1,17 +1,14 @@
 return {
-	'nvim-neotest/neotest',
+	"nvim-neotest/neotest",
 	dependencies = {
-		'nvim-lua/plenary.nvim',
-		'nvim-treesitter/nvim-treesitter',
-		'antoinemadec/FixCursorHold.nvim',
-		'nvim-neotest/neotest-jest',
+		"nvim-neotest/neotest-jest",
 	},
 	enabled = false,
 	config = function()
-		require('neotest').setup({
+		require("neotest").setup({
 			adapters = {
-				require('neotest-jest')({
-					jestCommand = 'pnpm test --',
+				require("neotest-jest")({
+					jestCommand = "pnpm test --",
 					cwd = function(path)
 						return vim.fn.getcwd()
 					end,

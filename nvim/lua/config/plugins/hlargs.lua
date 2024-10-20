@@ -1,8 +1,8 @@
 return {
-	'm-demare/hlargs.nvim',
+	"m-demare/hlargs.nvim",
 	dependencies = {
-		'nvim-treesitter',
+		"nvim-treesitter",
 	},
-	event = 'BufRead',
-	config = true,
+	event = "BufRead",
+	opts = {},
 }

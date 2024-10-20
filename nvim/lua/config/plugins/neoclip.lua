@@ -1,6 +1,6 @@
 return {
 	"AckslD/nvim-neoclip.lua",
-	event = "VeryLazy",
+	keys = { "<Leader>fy" },
 	config = function()
 		require("neoclip").setup()
 		require("legendary").keymaps({

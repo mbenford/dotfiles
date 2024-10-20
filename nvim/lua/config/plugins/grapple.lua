@@ -3,6 +3,9 @@ return {
 	event = { "BufReadPost", "BufNewFile" },
 	opts = {
 		scope = "git",
+		win_opts = {
+			border = "rounded",
+		},
 	},
 	config = function(_, opts)
 		local grapple = require("grapple")

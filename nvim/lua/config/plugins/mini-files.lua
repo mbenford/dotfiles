@@ -1,9 +1,13 @@
 return {
 	"echasnovski/mini.files",
 	version = false,
+	keys = { "<Leader>ee", "<Leader>ef" },
 	opts = {
 		mappings = {
+			go_in = "<Right>",
 			go_in_plus = "<CR>",
+			go_out = "<Left>",
+			go_out_plus = "-",
 		},
 	},
 	config = function(_, opts)

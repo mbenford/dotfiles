@@ -1,5 +1,6 @@
 return {
 	"echasnovski/mini.ai",
-	version = false,
+	version = "*",
+	event = { "BufRead", "InsertEnter" },
 	opts = {},
 }
