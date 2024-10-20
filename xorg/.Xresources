@@ -1,0 +1,7 @@
+Xcursor.size: 16
+Xcursor.theme: Adwaita
+
+xterm*faceName: JetBrainsMonoNL Nerd Font
+xterm*faceSize: 12
+xterm*foreground: #ffffff
+xterm*background: #000000

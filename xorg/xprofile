@@ -1,0 +1,20 @@
+#!/bin/sh
+
+export PATH="$HOME/.local/bin:$PATH"
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+
+export TERMINAL="/usr/bin/kitty"
+export EDITOR="/usr/bin/nvim"
+export BROWSER="/usr/bin/brave"
+
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+export _JAVA_AWT_WM_NONREPARENTING=1
+export QT_STYLE_OVERRIDE="kvantum"
+export GTK_THEME="Arc-Dark"
+
+autorandr --change --match-edid
+xrdb -merge ~/.Xresources
