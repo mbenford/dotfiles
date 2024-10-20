@@ -91,3 +91,26 @@ api.client.connect_signal("request::titlebars", function(c)
 		layout = wibox.layout.flex.horizontal,
 	}
 end)
+
+local function restore_layout(tag, client)
+	if tag.layout ~= awful.layout.suit.max then
+		return
+	end
+
+	if client.floating then
+		return
+	end
+
+	tag.layout = tag.previous_layout
+	tag.previous_layout = nil
+end
+
+api.tag.connect_signal("tagged", restore_layout)
+api.tag.connect_signal("untagged", restore_layout)
+api.tag.connect_signal("property::layout", function(tag)
+	for _, c in ipairs(tag:clients()) do
+		if c ~= api.client.focus then
+			c.minimized = tag.layout == awful.layout.suit.max
+		end
+	end
+end)

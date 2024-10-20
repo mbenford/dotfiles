@@ -53,10 +53,10 @@ end
 local notification_list = widgets.list({
 	layout = {
 		layout = wibox.layout.flex.vertical,
-		max_widget_size = 90,
+		max_widget_size = 89,
 		spacing = 10,
 	},
-	page_size = 10,
+	page_size = 5,
 	empty_widget = wibox.widget({
 		widget = wibox.container.place,
 		valign = "center",
@@ -141,7 +141,7 @@ local popup = awful.popup({
 	visible = false,
 	placement = function(c)
 		awful.placement.top_right(c, { honor_workarea = true })
-		awful.placement.stretch_down(c)
+		awful.placement.scale(c, { to_percent = 0.5, direction = "down" })
 	end,
 	ontop = true,
 	border_color = beautiful.popup_border_color,

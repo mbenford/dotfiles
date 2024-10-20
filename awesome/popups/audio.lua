@@ -27,6 +27,10 @@ local device_list = widgets.list({
 			icon = "audio-headphones"
 		elseif icon:find("speakers") then
 			icon = "audio-speakers"
+		elseif icon:find("camera") then
+			icon = "camera-web"
+		else
+			icon = "audio-speakers"
 		end
 
 		return wibox.widget({
@@ -46,7 +50,7 @@ local device_list = widgets.list({
 							{
 								widget = icons.system.icon,
 								name = icon,
-								size = 24,
+								size = 22,
 							},
 						},
 						{

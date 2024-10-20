@@ -184,7 +184,7 @@ return {
 
 		local function update_count(t)
 			if t.screen == screen then
-				content.name = "counter_" .. #tag.tiled_clients(t)
+				content.name = "counter_" .. #t:clients()
 			end
 		end
 

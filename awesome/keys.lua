@@ -10,21 +10,9 @@ local pulseaudio = require("util.pulseaudio")
 awful.keyboard.append_global_keybindings(ez.keys({
 	-- Navigation
 	["M-h"] = fn.bind(awful.client.focus.bydirection, "left"),
+	["M-j"] = fn.bind(awful.client.focus.bydirection, "down"),
+	["M-k"] = fn.bind(awful.client.focus.bydirection, "up"),
 	["M-l"] = fn.bind(awful.client.focus.bydirection, "right"),
-	["M-j"] = function()
-		if awful.layout.get() == awful.layout.suit.max then
-			awful.client.focus.byidx(1)
-		else
-			awful.client.focus.bydirection("down")
-		end
-	end,
-	["M-k"] = function()
-		if awful.layout.get() == awful.layout.suit.max then
-			awful.client.focus.byidx(-1)
-		else
-			awful.client.focus.bydirection("up")
-		end
-	end,
 	["M-i"] = function()
 		if api.client.focus and api.client.focus.screen ~= api.mouse.screen then
 			mouse.move_to_screen(api.client.focus.screen)
@@ -39,7 +27,7 @@ awful.keyboard.append_global_keybindings(ez.keys({
 	end,
 	["M-u"] = function()
 		awful.client.urgent.jumpto()
-		awful.client.setmaster(api.client.focus)
+		awful.client.urgent:swap(awful.client.getmaster())
 	end,
 	["M-Tab"] = function()
 		awful.client.focus.history.previous()
@@ -80,10 +68,6 @@ awful.keyboard.append_global_keybindings(ez.keys({
 			tag.previous_layout = tag.layout
 			tag.layout = awful.layout.suit.max
 		end
-
-		if api.client.focus then
-			api.client.focus:activate()
-		end
 	end),
 	["M-S-f"] = fn.bind_tag(function(tag)
 		tag.enable_padding = not tag.enable_padding
@@ -113,7 +97,8 @@ awful.keyboard.append_global_keybindings(ez.keys({
 	["M-C-l"] = fn.bind_client(client.move_right),
 	["M-C-c"] = fn.bind_client(client.center),
 	["M-S-i"] = fn.bind_client(function(c)
-		c:move_to_screen()
+		awful.client.movetoscreen()
+		c:swap(awful.client.getmaster())
 	end),
 
 	-- Apps
@@ -191,8 +176,9 @@ for i = 1, 9 do
 				})
 			end
 
-			c:move_to_tag(tag)
 			tag:view_only()
+			c:move_to_tag(tag)
+			c:swap(awful.client.getmaster())
 		end),
 	}))
 end
