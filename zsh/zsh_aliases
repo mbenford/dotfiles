@@ -1,7 +1,9 @@
 # zsh
-alias zshreload='exec zsh'
-alias zshalias='$EDITOR $ZDOTDIR/.zsh_aliases'
-alias zshenv='$EDITOR $ZDOTDIR/.zshenv'
+alias zreload='exec zsh'
+alias zalias='$EDITOR $ZDOTDIR/.zsh_aliases'
+alias zenv='$EDITOR $ZDOTDIR/.zshenv'
+alias zbindings='$EDITOR $ZDOTDIR/.zsh_bindings'
+alias als="alias | fzf"
 
 # git
 alias gcfu='git commit --fixup'
@@ -11,10 +13,7 @@ alias gbsort='git branch --sort=-committerdate'
 alias gs='git fancy-status '
 alias glr='git-log-fzf'
 alias gcol='git checkout -'
-
-# exa
-alias ls='exa --group-directories-first --time-style long-iso'
-alias la='ls -la'
+alias gce='git config user.email'
 
 # paru
 alias parin='paru -S '
@@ -33,14 +32,15 @@ alias lgst='lazygit stash '
 
 # misc
 alias cat='bat '
-alias open='mimeo '
+alias open='xdg-open '
 alias lzd='lazydocker '
 alias sudoe='sudoedit '
 alias r='ranger'
+alias y='yazi'
 alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
-alias pdf='devour llpp '
+alias vc='nvim -u NONE'
 alias pn='pnpm'
 alias lwd='echo $OLDPWD'
 

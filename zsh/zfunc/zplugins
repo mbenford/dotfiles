@@ -1,0 +1,5 @@
+zplugins() {
+	local name=`omz plugin list | fzf`
+	[[ $name != "" ]] && omz plugin info $name | glow
+}
+# vim: set ft=zsh:
