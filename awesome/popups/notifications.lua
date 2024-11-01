@@ -56,7 +56,7 @@ local notification_list = widgets.list({
 		max_widget_size = 89,
 		spacing = 10,
 	},
-	page_size = 5,
+	page_size = 10,
 	empty_widget = wibox.widget({
 		widget = wibox.container.place,
 		valign = "center",
@@ -141,7 +141,7 @@ local popup = awful.popup({
 	visible = false,
 	placement = function(c)
 		awful.placement.top_right(c, { honor_workarea = true })
-		awful.placement.scale(c, { to_percent = 0.5, direction = "down" })
+		awful.placement.stretch_down(c)
 	end,
 	ontop = true,
 	border_color = beautiful.popup_border_color,
@@ -158,6 +158,9 @@ local popup = awful.popup({
 	},
 })
 popup_util.enhance(popup, {
+	xprops = {
+		position = "right",
+	},
 	decorations = {
 		title = { text = "Notifications" },
 	},
@@ -168,12 +171,13 @@ popup_util.enhance(popup, {
 		["k"] = fn.bind_obj(notification_list, "prev_item"),
 		["l"] = fn.bind_obj(notification_list, "next_page"),
 		["d"] = function()
-			local selected = notification_list:selected_index()
-			local notification = naughty.active[selected]
+			local notification = notification_list:selected()
 			if notification then
 				notification:destroy(naughty.notification_closed_reason.silent)
-				notification_list:set_items(naughty.active)
-				notification_list:select(selected)
+
+				local current_index = notification_list:selected_index()
+				notification_list:set_items(require("util.table").reverse(naughty.active))
+				notification_list:select(current_index)
 			end
 		end,
 		["S-D"] = function()
@@ -182,7 +186,7 @@ popup_util.enhance(popup, {
 			popup.visible = false
 		end,
 		["Return"] = function()
-			local notification = naughty.active[notification_list:selected_index()]
+			local notification = notification_list:selected()
 			if notification then
 				notification:destroy(naughty.notification_closed_reason.dismissed_by_user)
 				popup.visible = false
@@ -195,6 +199,6 @@ return {
 	show = function()
 		popup.visible = true
 		popup.screen = awful.screen.primary
-		notification_list:set_items(naughty.active)
+		notification_list:set_items(require("util.table").reverse(naughty.active))
 	end,
 }

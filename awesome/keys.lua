@@ -8,6 +8,9 @@ local mouse = require("util.mouse")
 local pulseaudio = require("util.pulseaudio")
 
 awful.keyboard.append_global_keybindings(ez.keys({
+	["M-p"] = function() end,
+	["M-w"] = require("popups.network").show_wifi,
+
 	-- Navigation
 	["M-h"] = fn.bind(awful.client.focus.bydirection, "left"),
 	["M-j"] = fn.bind(awful.client.focus.bydirection, "down"),

@@ -48,24 +48,13 @@ local popup = awful.popup({
 	border_width = beautiful.popup_border_width,
 	widget = {
 		widget = wibox.container.background,
-		{
-			layout = wibox.layout.fixed.vertical,
-			{
-				widget = wibox.container.margin,
-				margins = { top = 10 },
-				{
-					widget = wibox.container.place,
-					{
-						widget = wibox.widget.textbox,
-						text = "Select a profile",
-					},
-				},
-			},
-			buttons,
-		},
+		buttons,
 	},
 })
 popup_util.enhance(popup, {
+	decorations = {
+		title = { text = "Brave Browser" },
+	},
 	timeout = 10,
 	keybindings = ez.keys({
 		["h"] = fn.bind_obj(buttons, "prev_item"),

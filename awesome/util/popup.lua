@@ -81,6 +81,15 @@ local function with_decorations(popup, decorations)
 	return popup
 end
 
+local function with_xprops(popup, props)
+	for k, v in pairs(props) do
+		awesome.register_xproperty("awesomewm_popup_" .. k, "string")
+		popup:set_xproperty("awesomewm_popup_" .. k, v)
+	end
+
+	return popup
+end
+
 return {
 	enhance = function(popup, opts)
 		if opts.keybindings then
@@ -91,6 +100,10 @@ return {
 
 		if opts.decorations then
 			popup = with_decorations(popup, opts.decorations)
+		end
+
+		if opts.xprops then
+			popup = with_xprops(popup, opts.xprops)
 		end
 
 		return popup

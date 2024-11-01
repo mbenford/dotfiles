@@ -184,7 +184,13 @@ return {
 
 		local function update_count(t)
 			if t.screen == screen then
-				content.name = "counter_" .. #t:clients()
+				local count = 0
+				for _, c in pairs(t:clients()) do
+					if not c.floating then
+						count = count + 1
+					end
+				end
+				content.name = "counter_" .. count
 			end
 		end
 

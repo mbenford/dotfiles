@@ -6,7 +6,7 @@ function M.split(str, sep)
 	end
 
 	local items = {}
-	for item in str:gmatch("([^" .. sep .. "]+)") do
+	for item in str:gmatch("([^" .. sep .. "]*)(" .. sep .. "?)") do
 		table.insert(items, item)
 	end
 	return items

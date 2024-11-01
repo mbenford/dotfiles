@@ -130,7 +130,7 @@ return {
 			local hostname = values[2]
 			popup.widget:get_children_by_id("hostname")[1].text = hostname
 			popup.widget:get_children_by_id("uptime")[1].text = uptime
-			popup.screen = awful.screen.focused()
+			popup.screen = awful.screen.primary
 			popup.visible = true
 			action_list:select(1)
 		end)

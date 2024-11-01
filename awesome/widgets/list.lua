@@ -93,6 +93,7 @@ function List:set_items(items)
 		self._private.pages[page_index]:add(container)
 	end
 
+	self._private.items = items
 	self._private.count = #items
 	self:select(1)
 end
@@ -104,6 +105,7 @@ function List:clear()
 	for _, value in ipairs(self._private.pages) do
 		value:reset()
 	end
+	self._private.items = {}
 	self._private.pages = {}
 	self._private.selected_index = 0
 end
@@ -155,12 +157,16 @@ function List:select(index)
 	end
 end
 
-function List:selected_index()
-	return self._private.selected_index
+function List:selected()
+	return self._private.items[self:selected_index()]
 end
 
 function List:selected_item()
-	return self:_item_widget(self._private.selected_index)
+	return self:_item_widget(self:selected_index())
+end
+
+function List:selected_index()
+	return self._private.selected_index
 end
 
 function List:_content_widget()

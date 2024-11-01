@@ -34,22 +34,19 @@ return {
 				return
 			end
 
-			local signal = ap:get_strength()
-			if signal == 0 then
-				icon.name = "network-wireless-offline"
-				return
-			end
-
-			if signal >= 80 then
+			local quality = require("util.network").signal_to_grade(ap:get_strength())
+			if quality == 5 then
 				icon.name = "network-wireless-signal-excellent"
-			elseif signal >= 70 then
+			elseif quality == 4 then
 				icon.name = "network-wireless-signal-good"
-			elseif signal >= 60 then
+			elseif quality == 3 then
 				icon.name = "network-wireless-signal-ok"
-			elseif signal >= 50 then
+			elseif quality == 2 then
 				icon.name = "network-wireless-signal-low"
-			else
+			elseif quality == 1 then
 				icon.name = "network-wireless-signal-none"
+			else
+				icon.name = "network-wireless-offline"
 			end
 		end
 

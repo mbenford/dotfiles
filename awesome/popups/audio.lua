@@ -65,14 +65,14 @@ local device_list = widgets.list({
 								visible = item.is_default,
 								widget = icons.system.icon,
 								name = "checkmark",
-								size = 24,
+								size = 22,
 							},
 						},
 					},
 				},
 				{
 					layout = wibox.layout.stack,
-					forced_height = 30,
+					forced_height = 20,
 					{
 						id = "progress",
 						widget = wibox.widget.progressbar,
@@ -94,6 +94,7 @@ local device_list = widgets.list({
 	end,
 })
 local popup = awful.popup({
+	type = "dock",
 	visible = false,
 	placement = function(c)
 		awful.placement.top_right(c, { honor_workarea = true })
@@ -122,6 +123,9 @@ local function update_device_volume(volume)
 end
 
 popup_util.enhance(popup, {
+	xprops = {
+		position = "right",
+	},
 	decorations = {
 		title = {},
 	},
@@ -148,7 +152,7 @@ popup_util.enhance(popup, {
 				return
 			end
 
-			pulseaudio:set_default_sink(device.name):next(function()
+			pulseaudio:set_default(device.type, device.name):next(function()
 				for i in ipairs(devices) do
 					devices[i].is_default = devices[i].name == device.name
 				end
@@ -164,7 +168,7 @@ local function show(type, title)
 		devices = items
 		device_list:set_items(devices)
 		popup.widget:get_children_by_id("title")[1].text = title
-		popup.screen = awful.screen.focused()
+		popup.screen = awful.screen.primary
 		popup.visible = true
 	end)
 end

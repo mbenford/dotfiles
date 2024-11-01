@@ -81,6 +81,7 @@ local calendar = wibox.widget({
 })
 
 local popup = awful.popup({
+	type = "dock",
 	visible = false,
 	placement = function(c)
 		awful.placement.top_right(c, { honor_workarea = true })
@@ -97,6 +98,9 @@ local popup = awful.popup({
 	},
 })
 popup_util.enhance(popup, {
+	xprops = {
+		position = "right",
+	},
 	timeout = 60,
 	keybindings = ez.keys({
 		["h"] = function()
@@ -124,9 +128,7 @@ popup_util.enhance(popup, {
 return {
 	show = function()
 		calendar.date = os.date("*t")
-		popup.screen = awful.screen.focused()
-		require("gears").timer.delayed_call(function()
-			popup.visible = true
-		end)
+		popup.screen = awful.screen.primary
+		popup.visible = true
 	end,
 }

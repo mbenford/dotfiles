@@ -69,6 +69,12 @@ function M.setup(opts)
 		calendar_normal_fg = flavor.fg,
 		calendar_day_border_color = flavor.fg_gutter,
 
+		wifi_signal_grade_5_color = flavor.green,
+		wifi_signal_grade_4_color = flavor.orange,
+		wifi_signal_grade_3_color = flavor.yellow,
+		wifi_signal_grade_2_color = flavor.purple,
+		wifi_signal_grade_1_color = flavor.red1,
+
 		titlebar_fg_normal = flavor.fg,
 		titlebar_bg_normal = flavor.bg_dark,
 		titlebar_fg_focus = flavor.fg,
