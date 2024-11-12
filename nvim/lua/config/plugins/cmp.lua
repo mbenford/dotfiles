@@ -65,17 +65,5 @@ return {
 				},
 			},
 		})
-
-		cmp.setup.cmdline(":", {
-			sources = cmp.config.sources({
-				{ name = "path" },
-			}, {
-				{ name = "cmdline" },
-			}),
-			completion = { keyword_length = 3 },
-			view = { entries = "wildmenu" },
-			matching = { disallow_symbol_nonprefix_matching = false },
-			mapping = cmp.mapping.preset.cmdline(),
-		})
 	end,
 }

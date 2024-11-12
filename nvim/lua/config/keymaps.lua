@@ -19,6 +19,7 @@ legendary.keymaps({
 	{ "N", "Nzz", description = "Go to previous occurrence and center" },
 	{ "gg", "ggzz", description = "Go to line (default first line) and center" },
 	{ "G", "Gzz", description = "Go to line (default last line) and center" },
+	{ "g;", "g;zz", description = "Go to last edit and center" },
 	{ "<C-d>", "<C-d>zz", description = "Scroll down and center" },
 	{ "<C-u>", "<C-u>zz", description = "Scroll up and center" },
 	{ "*", "*zz", description = "Search forward and center" },

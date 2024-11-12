@@ -14,6 +14,7 @@ vim.opt.runtimepath:prepend(lazypath)
 require("lazy").setup("config.plugins", {
 	ui = {
 		border = "rounded",
+		backdrop = 100,
 	},
 	performance = {
 		rtp = {
@@ -29,4 +30,4 @@ require("lazy").setup("config.plugins", {
 	},
 })
 
-vim.keymap.set('n', '<Leader>L', '<Cmd>Lazy<CR>', { desc = 'Open Lazy' })
+vim.keymap.set("n", "<Leader>L", "<Cmd>Lazy<CR>", { desc = "Open Lazy" })

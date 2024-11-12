@@ -3,6 +3,9 @@ return {
 	version = false,
 	keys = { "<Leader>ee", "<Leader>ef" },
 	opts = {
+		options = {
+			permanent_delete = false,
+		},
 		mappings = {
 			go_in = "<Right>",
 			go_in_plus = "<CR>",

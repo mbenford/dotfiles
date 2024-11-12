@@ -29,7 +29,6 @@ o.listchars = { tab = "  ", trail = "·" }
 o.mouse = "a"
 o.numberwidth = 2
 o.number = true
--- o.quickfixtextfunc = "v:lua.require'config.quickfix'.format"
 o.relativenumber = true
 o.ruler = false
 o.scrolloff = 3
