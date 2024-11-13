@@ -7,8 +7,8 @@ return {
 		local mini_bufremove = require("mini.bufremove")
 		mini_bufremove.setup(opts)
 
-		require("legendary").keymaps({
-			{ "<Leader>xx", mini_bufremove.delete, description = "Unload current buffer" },
+		require("which-key").add({
+			{ "<Leader>xx", mini_bufremove.delete, desc = "Unload current buffer" },
 		})
 	end,
 }

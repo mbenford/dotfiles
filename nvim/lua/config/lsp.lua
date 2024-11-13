@@ -5,22 +5,20 @@ return function(server_name)
 			["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
 		},
 		on_attach = function(client, bufnr)
-			local legendary = require("legendary")
-
-			legendary.keymaps({
-				{ "K", vim.lsp.buf.hover, opts = { buffer = bufnr }, description = "LSP Hover" },
-				{ "<C-k>", vim.lsp.buf.signature_help, opts = { buffer = bufnr }, description = "LSP Signature Help" },
-				{ "<leader>rr", vim.lsp.buf.rename, opts = { buffer = bufnr }, description = "LSP Rename" },
-				{ "<leader>la", vim.lsp.buf.code_action, description = "LSP Code Action" },
+			require("which-key").add({
+				{ "K", vim.lsp.buf.hover, buffer = bufnr, desc = "LSP Hover" },
+				{ "<C-k>", vim.lsp.buf.signature_help, buffer = bufnr, desc = "LSP Signature Help" },
+				{ "<leader>rr", vim.lsp.buf.rename, buffer = bufnr, desc = "LSP Rename" },
+				{ "<leader>la", vim.lsp.buf.code_action, desc = "LSP Code Action" },
 				{
 					"<leader>lh",
 					function()
 						vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
 					end,
-					opts = { buffer = bufnr },
-					description = "LSP Inlay Hints",
+					buffer = bufnr,
+					desc = "LSP Inlay Hints",
 				},
-				{ "<leader>l?", "<Cmd>LspInfo<CR>", description = "LSP Info" },
+				{ "<leader>l?", "<Cmd>LspInfo<CR>", desc = "LSP Info" },
 			})
 		end,
 	}

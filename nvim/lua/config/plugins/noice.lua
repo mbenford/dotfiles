@@ -15,7 +15,6 @@ return {
 		},
 		presets = {
 			command_palette = true,
-			cmdline_output_to_split = true,
 			long_message_to_split = true,
 			inc_rename = false,
 			lsp_doc_border = true,

@@ -7,13 +7,20 @@ return {
 	opts = {
 		use_default_keymaps = false,
 	},
-	config = function(_, opts)
-		local treesj = require("treesj")
-		treesj.setup(opts)
-
-		require("legendary").keymaps({
-			{ "<C-s>", treesj.split, description = "" },
-			{ "<C-j>", treesj.join, description = "" },
-		})
-	end,
+	keys = {
+		{
+			"<C-s>",
+			function()
+				require("treesj").split()
+			end,
+			desc = "",
+		},
+		{
+			"<C-j>",
+			function()
+				require("treesj").join()
+			end,
+			desc = "",
+		},
+	},
 }

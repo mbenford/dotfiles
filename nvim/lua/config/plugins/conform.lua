@@ -35,24 +35,21 @@ return {
 			}
 		end,
 	},
-	config = function(_, opts)
-		local conform = require("conform")
-		conform.setup(opts)
-
-		local lazy = require("legendary.toolbox").lazy
-		local legendary = require("legendary")
-		legendary.keymaps({
-			{ "<Leader><Leader>f", lazy(conform.format, { async = true, lsp_fallback = true }), description = "" },
-		})
-		legendary.commands({
-			{
-				"FormatToggle",
-				function()
-					vim.g.disable_autoformat = not vim.g.disable_autoformat
-					vim.notify("Autoformat " .. (vim.g.disable_autoformat and "disabled" or "enabled"))
-				end,
-				description = "Toggle autoformat on saving",
-			},
-		})
-	end,
+	keys = {
+		{
+			"<Leader><Leader>ff",
+			function()
+				require("conform").format({ async = true, lsp_fallback = true })
+			end,
+			desc = "Format buffer",
+		},
+		{
+			"<Leader><Leader>ft",
+			function()
+				vim.g.disable_autoformat = not vim.g.disable_autoformat
+				vim.notify("Autoformat " .. (vim.g.disable_autoformat and "disabled" or "enabled"))
+			end,
+			desc = "Toggle autoformat on saving",
+		},
+	},
 }

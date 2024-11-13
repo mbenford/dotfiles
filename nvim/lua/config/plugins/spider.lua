@@ -1,14 +1,38 @@
 return {
 	"chrisgrieser/nvim-spider",
 	event = "BufRead",
-	config = function()
-		local spider = require("spider")
-		local lazy = require("legendary.toolbox").lazy
-		require("legendary").keymaps({
-			{ "w", lazy(spider.motion, "w"), mode = { "n", "o", "x" }, description = "" },
-			{ "e", lazy(spider.motion, "e"), mode = { "n", "o", "x" }, description = "" },
-			{ "b", lazy(spider.motion, "b"), mode = { "n", "o", "x" }, description = "" },
-			{ "ge", lazy(spider.motion, "ge"), mode = { "n", "o", "x" }, description = "" },
-		})
-	end,
+	keys = {
+		{
+			"w",
+			function()
+				require("spider").motion("w")
+			end,
+			mode = { "n", "o", "x" },
+			desc = "",
+		},
+		{
+			"e",
+			function()
+				require("spider").motion("e")
+			end,
+			mode = { "n", "o", "x" },
+			desc = "",
+		},
+		{
+			"b",
+			function()
+				require("spider").motion("b")
+			end,
+			mode = { "n", "o", "x" },
+			desc = "",
+		},
+		{
+			"ge",
+			function()
+				require("spider").motion("ge")
+			end,
+			mode = { "n", "o", "x" },
+			desc = "",
+		},
+	},
 }

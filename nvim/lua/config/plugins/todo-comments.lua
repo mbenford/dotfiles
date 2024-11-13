@@ -1,20 +1,29 @@
 return {
-	'folke/todo-comments.nvim',
-	event = 'BufRead',
+	"folke/todo-comments.nvim",
+	event = "BufRead",
 	opts = {
 		signs = false,
 		highlight = {
-			keyword = 'fg',
-			after = '',
+			keyword = "fg",
+			after = "",
 		},
 	},
-	config = function (_, opts)
-		local todo = require('todo-comments')
-		todo.setup(opts)
-
-		require('legendary').keymaps({
-			{ '[t', todo.jump_prev, opts = { buffer = true }, description = 'Go to prev todo comment' },
-			{ ']t', todo.jump_next, opts = { buffer = true }, description = 'Go to next todo comment' },
-		})
-	end
+	keys = {
+		{
+			"[t",
+			function()
+				require("todo-comments").jump_prev()
+			end,
+			buffer = true,
+			desc = "Go to prev todo comment",
+		},
+		{
+			"]t",
+			function()
+				require("todo-comments").jump_next()
+			end,
+			buffer = true,
+			desc = "Go to next todo comment",
+		},
+	},
 }

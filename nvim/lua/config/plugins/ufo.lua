@@ -10,15 +10,34 @@ return {
 			return { "treesitter", "indent" }
 		end,
 	},
-	config = function(_, opts)
-		local ufo = require("ufo")
-		ufo.setup(opts)
-
-		require("legendary").keymaps({
-			{ "zR", ufo.openAllFolds, description = "" },
-			{ "zr", ufo.openAllFolds, description = "" },
-			{ "zM", ufo.closeAllFolds, description = "" },
-			{ "zm", ufo.closeFoldsWith, description = "" },
-		})
-	end,
+	keys = {
+		{
+			"zR",
+			function()
+				require("ufo").openAllFolds()
+			end,
+			desc = "",
+		},
+		{
+			"zr",
+			function()
+				require("ufo").openAllFolds()
+			end,
+			desc = "",
+		},
+		{
+			"zM",
+			function()
+				require("ufo").closeAllFolds()
+			end,
+			desc = "",
+		},
+		{
+			"zm",
+			function()
+				require("ufo").closeFoldsWith()
+			end,
+			desc = "",
+		},
+	},
 }

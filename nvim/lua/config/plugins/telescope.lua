@@ -47,14 +47,13 @@ return {
 
 		local builtin = require("telescope.builtin")
 		local themes = require("telescope.themes")
-		local lazy = require("legendary.toolbox").lazy
 
-		local legendary = require("legendary")
-		legendary.keymaps({
+		local lazy = require("utils.lazy")
+		require("which-key").add({
 			{
 				"<Leader>ff",
 				builtin.find_files,
-				description = "Telescope - Files",
+				desc = "Telescope - Files",
 			},
 			{
 				"<Leader>fa",
@@ -62,134 +61,134 @@ return {
 					builtin.find_files,
 					{ prompt_title = "Find Files (ALL)", hidden = true, no_ignore = true, no_ignore_parent = true }
 				),
-				description = "Telescope - All Files",
+				desc = "Telescope - All Files",
 			},
 			{
 				"<leader>fo",
 				builtin.oldfiles,
-				description = "Telescope - Old Files",
+				desc = "Telescope - Old Files",
 			},
 			{
 				"<leader>fg",
 				lazy(builtin.live_grep, { additional_args = { "--fixed-strings" } }),
-				description = "Telescope - Live Grep",
+				desc = "Telescope - Live Grep",
 			},
 			{
 				"<leader>fg",
 				builtin.grep_string,
 				mode = { "x" },
-				description = "Telescope - Grep string",
+				desc = "Telescope - Grep string",
 			},
 			{
 				"<leader>f*",
 				builtin.grep_string,
 				mode = { "n", "x" },
-				description = "Telescope - Grep string",
+				desc = "Telescope - Grep string",
 			},
 			{
 				"<leader>fb",
 				lazy(builtin.buffers, { sort_lastused = true }),
-				description = "Telescope - Buffers",
+				desc = "Telescope - Buffers",
 			},
 			{
 				"<leader>f<leader>",
 				builtin.resume,
-				description = "Telescope - Resume",
+				desc = "Telescope - Resume",
 			},
 			{
 				"<leader>fr",
 				builtin.registers,
-				description = "Telescope - Registers",
+				desc = "Telescope - Registers",
 			},
 			{
 				"<leader>fd",
 				builtin.diagnostics,
-				description = "Telescope - Diagnostics",
+				desc = "Telescope - Diagnostics",
 			},
 			{
 				"<leader>;",
 				builtin.commands,
-				description = "Telescope - Commands",
+				desc = "Telescope - Commands",
 			},
 			{
 				"<leader>fk",
 				builtin.keymaps,
-				description = "Telescope - Commands",
+				desc = "Telescope - Commands",
 			},
 			{
 				"<leader>/",
 				builtin.current_buffer_fuzzy_find,
-				description = "Telescope - Buffer Fuzzy Find",
+				desc = "Telescope - Buffer Fuzzy Find",
 			},
 			{
 				"<leader>fhh",
 				builtin.help_tags,
-				description = "Telescope - Help Tags",
+				desc = "Telescope - Help Tags",
 			},
 			{
 				"<leader>fhi",
 				builtin.highlights,
-				description = "Telescope - Highlights",
+				desc = "Telescope - Highlights",
 			},
 			{
 				"<leader>fhs",
 				lazy(builtin.search_history, themes.get_dropdown()),
-				description = "Telescope - Search History",
+				desc = "Telescope - Search History",
 			},
 			{
 				"<leader>fhc",
 				lazy(builtin.command_history, themes.get_dropdown()),
-				description = "Telescope - Command History",
+				desc = "Telescope - Command History",
 			},
 			{
 				"<leader>fv",
 				lazy(builtin.vim_options, themes.get_dropdown()),
-				description = "Telescope - Vim Options",
+				desc = "Telescope - Vim Options",
 			},
 			{
 				"<leader>ft",
 				lazy(builtin.filetypes, themes.get_dropdown()),
-				description = "Telescope - File Types",
+				desc = "Telescope - File Types",
 			},
 			{
 				"<leader>fs",
 				lazy(builtin.spell_suggest, themes.get_cursor()),
-				description = "Telescope - Spell Suggestions",
+				desc = "Telescope - Spell Suggestions",
 			},
 			{
 				"<leader>fk",
 				builtin.keymaps,
-				description = "Telescope - Spell Suggestions",
+				desc = "Telescope - Spell Suggestions",
 			},
 			{
 				"<leader>ld",
 				builtin.lsp_definitions,
-				description = "Telescope - LSP Definitions",
+				desc = "Telescope - LSP Definitions",
 			},
 			{
 				"<leader>li",
 				builtin.lsp_implementations,
-				description = "Telescope - LSP Implementations",
+				desc = "Telescope - LSP Implementations",
 			},
 			{
 				"<leader>lr",
 				lazy(builtin.lsp_references, { include_declaration = false, show_line = false }),
-				description = "Telescope - LSP References",
+				desc = "Telescope - LSP References",
 			},
 			{
 				"<leader>ls",
 				lazy(builtin.lsp_document_symbols, { symbol_width = 50 }),
-				description = "Telescope - LSP Document Symbols",
+				desc = "Telescope - LSP Document Symbols",
 			},
 			{
 				"<leader>lci",
 				builtin.lsp_incoming_calls,
-				description = "Telescope - LSP Incoming Calls",
+				desc = "Telescope - LSP Incoming Calls",
 			},
 			{
 				"<leader>lco",
 				builtin.lsp_outgoing_calls,
-				description = "Telescope - LSP Outgoing Calls",
+				desc = "Telescope - LSP Outgoing Calls",
 			},
 		})
 	end,

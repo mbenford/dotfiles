@@ -119,25 +119,20 @@ return {
 		local lualine = require("lualine")
 		lualine.setup(opts)
 
-		require("legendary").autocmds({
-			{
-				name = "Lualine",
-				clear = true,
-				{
-					"RecordingEnter",
-					function()
-						vim.g.lualine_macro_recording = true
-						lualine:refresh()
-					end,
-				},
-				{
-					"RecordingLeave",
-					function()
-						vim.g.lualine_macro_recording = false
-						lualine:refresh()
-					end,
-				},
-			},
+		vim.api.nvim_create_augroup("Lualine", { clear = true })
+		vim.api.nvim_create_autocmd("RecordingEnter", {
+			group = "Lualine",
+			callback = function()
+				vim.g.lualine_macro_recording = true
+				lualine:refresh()
+			end,
+		})
+		vim.api.nvim_create_autocmd("RecordingLeave", {
+			group = "Lualine",
+			callback = function()
+				vim.g.lualine_macro_recording = false
+				lualine:refresh()
+			end,
 		})
 	end,
 }
