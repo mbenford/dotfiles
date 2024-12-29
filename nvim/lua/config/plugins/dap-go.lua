@@ -1,8 +1,9 @@
 return {
-	'leoluz/nvim-dap-go',
+	"leoluz/nvim-dap-go",
+	enabled = false,
 	dependencies = {
-		'nvim-dap',
+		"nvim-dap",
 	},
-	ft = 'go',
-	config = true,
+	ft = "go",
+	opts = {},
 }

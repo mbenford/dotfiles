@@ -1,7 +1,7 @@
 return {
 	"echasnovski/mini.operators",
 	version = "*",
-	event = { "BufRead", "InsertEnter" },
+	lazy = false,
 	opts = {
 		evaluate = {
 			func = function(input)
@@ -11,7 +11,6 @@ return {
 				end
 
 				cmd = vim.split(cmd, " ")
-				local output = {}
 				local ok, result = pcall(vim.system, cmd, { text = true, stdin = input.lines })
 				if not ok then
 					vim.notify(result, "error")
@@ -28,4 +27,5 @@ return {
 			end,
 		},
 	},
+	keys = { "g=", "gx", "gm", "gr", "gs", { "gmc", "gccgmmgcc", remap = true } },
 }

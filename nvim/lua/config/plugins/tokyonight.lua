@@ -13,14 +13,10 @@ return {
 			hl.Pmenu = { bg = colors.bg_highlight }
 			hl.SpellBad = { undercurl = true, sp = colors.green }
 			hl.TextYank = { fg = colors.yellow, bg = colors.none, reverse = true }
-			hl.FloatTitle = { fg = colors.border_highlight, bg = colors.bg_float, reverse = true }
+			hl.FloatTitle = { fg = colors.border_highlight, bg = colors.bg_float }
 
 			-- LSP
 			hl.LspInfoBorder = "FloatBorder"
-
-			-- Telescope
-			hl.TelescopeTitle = { reverse = true }
-			hl.TelescopePromptTitle = { reverse = true }
 
 			-- Treesitter Context
 			hl.TreesitterContext = "CursorLine"
@@ -30,7 +26,7 @@ return {
 			hl.LualineExoticFileFormat = { fg = colors.red, bg = colors.bg_statusline }
 			hl.LualineLspActive = { fg = colors.green, bg = colors.bg_statusline }
 			hl.LualineCopilotActive = { fg = colors.blue, bg = colors.bg_statusline }
-			hl.LualineRecording = { fg = colors.red, bg = colors.bg_statusline }
+			hl.LualineMacroRecording = { fg = colors.red, bg = colors.bg_statusline }
 			hl.LualineGitStatusClean = { fg = colors.green, bg = colors.bg_statusline }
 			hl.LualineGitStatusDirty = { fg = colors.yellow, bg = colors.bg_statusline }
 			hl.LualineGitBranch = { fg = colors.blue, bg = colors.bg_statusline }

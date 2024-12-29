@@ -46,9 +46,6 @@ return {
 				NeoTreeNormal = { bg = colors.base },
 				NeoTreeNormalNC = { bg = colors.base },
 
-				-- Telescope
-				TelescopeTitle = { reverse = true },
-
 				-- Lualine
 				LualineFilenameModified = { fg = colors.yellow, bg = colors.mantle },
 				LualineExoticFileFormat = { fg = colors.red, bg = colors.mantle },
@@ -70,9 +67,6 @@ return {
 				CokelineUnfocused = { fg = colors.text },
 				CokelineSidebarFocused = { fg = colors.blue },
 				CokelineSidebarUnfocused = { fg = colors.text },
-
-				-- Dressing
-				FloatTitle = { fg = colors.blue, reverse = true },
 
 				-- Lightbulb
 				LightBulbSign = { fg = colors.yellow },

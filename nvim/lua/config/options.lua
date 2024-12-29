@@ -23,6 +23,7 @@ o.fillchars:append({ eob = " ", fold = " ", foldopen = "", foldsep = " ", fol
 o.hidden = true
 o.hlsearch = true
 o.ignorecase = true
+o.laststatus = 3
 o.linebreak = true
 o.list = true
 o.listchars = { tab = "  ", trail = "·" }

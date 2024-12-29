@@ -1,6 +1,8 @@
+
 return {
 	"hrsh7th/nvim-cmp",
-	event = { "InsertEnter", "CmdlineEnter" },
+	enabled = true,
+	event = "InsertEnter",
 	dependencies = {
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
@@ -29,6 +31,13 @@ return {
 			mapping = cmp.mapping.preset.insert({
 				["<CR>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
 				["<C-y>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+				["<C-s>"] = cmp.mapping.complete({
+					config = {
+						sources = {
+							{ name = "luasnip" },
+						},
+					},
+				}),
 			}),
 			formatting = {
 				fields = { "kind", "abbr", "menu" },
@@ -44,7 +53,13 @@ return {
 			sorting = {
 				priority_weight = 2,
 				comparators = {
-					require("copilot_cmp.comparators").prioritize,
+					function(entry1, entry2)
+						if entry1.source.name == "copilot" and entry2.source.name ~= "copilot" then
+							return false
+						elseif entry2.copilot == "copilot" and entry1.source.name ~= "copilot" then
+							return true
+						end
+					end,
 					cmp.config.compare.recently_used,
 					cmp.config.compare.score,
 					cmp.config.compare.locality,
@@ -59,10 +74,12 @@ return {
 			},
 			preselect = cmp.PreselectMode.None,
 			window = {
-				documentation = {
-					border = "rounded",
-					winhighlight = "FloatBorder:FloatBorder",
-				},
+				completion = cmp.config.window.bordered({
+					winhighlight = "CursorLine:Visual,Search:None",
+				}),
+				documentation = cmp.config.window.bordered({
+					winhighlight = "CursorLine:Visual,Search:None",
+				}),
 			},
 		})
 	end,

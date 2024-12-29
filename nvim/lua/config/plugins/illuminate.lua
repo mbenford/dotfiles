@@ -5,6 +5,7 @@ return {
 		modes_allowlist = { "n" },
 		filetypes_denylist = {
 			"qf",
+			"oil",
 		},
 	},
 	config = function(_, opts)

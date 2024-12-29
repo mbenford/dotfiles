@@ -23,10 +23,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- Adds a buffer-local keybinding 'q' to close some windows based on their file type
 vim.api.nvim_create_autocmd("FileType", {
 	group = "Custom",
-	pattern = "help,qf,vim",
-	callback = lazy.require("which-key", "add", {
-		{ "q", "<C-w>q", buffer = true, desc = "Close window" },
-	}),
+	pattern = { "help", "qf", "vim", "checkhealth" },
+	callback = function(event)
+		require("which-key").add({ "q", "<C-w>q", buffer = event.buf, desc = "Close window" })
+	end,
 })
 
 -- Updates the window title
@@ -50,7 +50,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
 
 -- Opens help/man/markdown files in a floating window
 vim.api.nvim_create_autocmd("BufWinEnter", {
-	group = custom,
+	group = "Custom",
 	pattern = "*",
 	callback = function(event)
 		local filetype = vim.bo[event.buf].filetype
@@ -64,15 +64,27 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 			return
 		end
 
-		local help_win = vim.api.nvim_get_current_win()
-		local popup_id = require("detour").Detour()
-		if popup_id then
-			require("detour.features").CloseOnLeave(popup_id)
-			vim.api.nvim_win_close(help_win, false)
-			vim.api.nvim_win_set_config(popup_id, {
-				title = string.format(" %s ", vim.fn.fnamemodify(file_path, ":t")),
-				title_pos = "center",
-			})
-		end
+		local curr_win = vim.api.nvim_get_current_win()
+		vim.api.nvim_win_close(curr_win, false)
+
+		local win = require("snacks").win.new({
+			buf = event.buf,
+			border = "rounded",
+			backdrop = false,
+			width = 120,
+			title = string.format(" %s ", vim.fn.fnamemodify(file_path, ":t:r")),
+			title_pos = "center",
+			wo = {
+				wrap = true,
+			},
+		})
+		win:add_padding()
+		win:update()
+		vim.api.nvim_create_autocmd("WinEnter", {
+			group = win.augroup,
+			callback = function()
+				win:close()
+			end,
+		})
 	end,
 })

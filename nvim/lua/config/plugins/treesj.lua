@@ -3,7 +3,6 @@ return {
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter",
 	},
-	event = "BufRead",
 	opts = {
 		use_default_keymaps = false,
 	},
@@ -13,14 +12,14 @@ return {
 			function()
 				require("treesj").split()
 			end,
-			desc = "",
+			desc = "Split lines",
 		},
 		{
 			"<C-j>",
 			function()
 				require("treesj").join()
 			end,
-			desc = "",
+			desc = "Join lines",
 		},
 	},
 }

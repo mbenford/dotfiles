@@ -1,6 +1,7 @@
 return {
 	"echasnovski/mini.ai",
 	version = "*",
+	lazy = false,
 	event = { "BufRead", "InsertEnter" },
 	config = function()
 		local mini_ai = require("mini.ai")

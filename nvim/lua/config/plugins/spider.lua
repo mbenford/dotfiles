@@ -1,6 +1,5 @@
 return {
 	"chrisgrieser/nvim-spider",
-	event = "BufRead",
 	keys = {
 		{
 			"w",
@@ -8,7 +7,7 @@ return {
 				require("spider").motion("w")
 			end,
 			mode = { "n", "o", "x" },
-			desc = "",
+			desc = "Forward to start of word",
 		},
 		{
 			"e",
@@ -16,7 +15,7 @@ return {
 				require("spider").motion("e")
 			end,
 			mode = { "n", "o", "x" },
-			desc = "",
+			desc = "Forward to end of word",
 		},
 		{
 			"b",
@@ -24,7 +23,7 @@ return {
 				require("spider").motion("b")
 			end,
 			mode = { "n", "o", "x" },
-			desc = "",
+			desc = "Backward to start of word",
 		},
 		{
 			"ge",
@@ -32,7 +31,7 @@ return {
 				require("spider").motion("ge")
 			end,
 			mode = { "n", "o", "x" },
-			desc = "",
+			desc = "Backward to end of word",
 		},
 	},
 }

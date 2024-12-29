@@ -15,21 +15,21 @@ return {
 			function()
 				require("dial.map").manipulate("increment", "normal")
 			end,
-			desc = "",
+			desc = "Add to the number or alphabetic character at or after the cursor",
 		},
 		{
 			"<C-x>",
 			function()
 				require("dial.map").manipulate("decrement", "normal")
 			end,
-			desc = "",
+			desc = "Subtract from the number or alphabetic character at or after the cursor",
 		},
 		{
 			"g<C-a>",
 			function()
 				require("dial.map").manipulate("increment", "gnormal")
 			end,
-			desc = "",
+			desc = "Add to the number or alphabetic character at or after the cursor",
 		},
 		{
 			"g<C-x>",

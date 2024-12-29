@@ -1,11 +1,17 @@
 return {
 	"OXY2DEV/markview.nvim",
-	enabled = true,
+	enabled = false,
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter",
 	},
-	ft = { "markdown", "Avante" },
+	ft = { "markdown" },
 	opts = {
-		filetypes = { "markdown", "Avante" },
+		code_blocks = {
+			icons = "mini",
+		},
 	},
+	config = function(_, opts)
+		opts.headings = require("markview.presets").headings.marker
+		require("markview").setup(opts)
+	end,
 }

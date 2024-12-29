@@ -1,12 +1,11 @@
 local lazy = require("utils.lazy")
 local apply_zz = require("utils.misc").apply_zz
-local kitty = require("utils.kitty")
 
 require("which-key").add({
 	{ "<Space>", "<Nop>", mode = { "n", "x" } },
 	{ ";", ":", mode = { "n", "x" }, silent = false, desc = "Command line mode" },
 	{ "H", "^", mode = { "n", "x", "o" }, remap = true, desc = "Alias for ^" },
-	{ "L", "g_", mode = { "n", "x", "o" }, remap = true, desc = "Alias for g_" },
+	{ "L", "$", mode = { "n", "x", "o" }, remap = true, desc = "Alias for $" },
 	{ "M", "%", mode = { "n", "x", "o" }, remap = true, desc = "Alias for %" },
 	{ "Q", '<Cmd>execute "noautocmd normal! " . v:count1 . "@" . getcharstr()<cr>', desc = "Alias for @" },
 	{ "<", "<gv", mode = { "x" }, desc = "Shift left and keep selection" },
@@ -19,6 +18,19 @@ require("which-key").add({
 	{ "gg", "ggzz", desc = "Go to line (default first line) and center" },
 	{ "G", "Gzz", desc = "Go to line (default last line) and center" },
 	{ "g;", "g;zz", desc = "Go to last edit and center" },
+	{ "<C-i>", "<C-i>zz", desc = "Go to newer cursor position in jump list and center" },
+	{ "<C-o>", "<C-o>zz", desc = "Go to older cursor position in jump list and center" },
+	{
+		"gh",
+		function()
+			local word = vim.fn.expand("<cword>")
+			if word == "" then
+				return
+			end
+			vim.cmd.help(word)
+		end,
+		desc = "Go to help page for the word under cursor",
+	},
 	{ "<C-d>", "<C-d>zz", desc = "Scroll down and center" },
 	{ "<C-u>", "<C-u>zz", desc = "Scroll up and center" },
 	{ "*", "*zz", desc = "Search forward and center" },
@@ -47,6 +59,8 @@ require("which-key").add({
 	{ "<Leader>y", '"+y', mode = { "x" }, desc = "Yank selected lines to clipboard" },
 	{ "<Leader>p", '"+p', desc = "Paste from clipboard after the cursor" },
 	{ "<Leader>P", '"+P', desc = "Paste from clipboard before the cursor" },
+	{ "<Leader>nf", "<Cmd>ene | startinsert<CR>", desc = "Create an empty buffer in insert mode" },
+	{ "<Leader>nw", "<Cmd>vnew<CR>", desc = "Create a new window" },
 	{ "cn", "*``micgn", desc = "Change the word at the cursor and search next occurrences" },
 	{ "cs", "*``:%s/<C-r><C-w>//g<Left><Left>", desc = "Substitute all occurrences of the word at the cursor" },
 	{ "<C-Down>", "<Cmd>move +1<CR>==", desc = "Move the current line down" },
@@ -129,15 +143,31 @@ require("which-key").add({
 	{ "<LocalLeader>tw", "<Cmd>set wrap!<CR>", desc = "Toggle line wrap" },
 	{ "<LocalLeader>th", "<Cmd>set hlsearch!<CR>", desc = "Toggle search highlight" },
 	{ "<LocalLeader>ts", "<Cmd>set spell!<CR>", desc = "Toggle spell checking" },
-
-	-- Git
-	{
-		"<Leader>gd",
-		function()
-			kitty.launch({ cmd = "git diff " .. vim.fn.expand("%"), title = "Git Diff" })
-		end,
-	},
-	{ "<Leader>gD", lazy(kitty.launch, { cmd = "git diff", title = "Git Diff" }) },
-	{ "<Leader>gl", lazy(kitty.launch, { cmd = "git-log-fzf", title = "Git Log" }) },
-	{ "<Leader>gg", lazy(kitty.launch, { cmd = "lazygit", title = "Lazygit" }) },
 })
+
+local function close_float_window_or_run_q()
+	local current_win_id = vim.api.nvim_get_current_win()
+
+	local win_config = vim.api.nvim_win_get_config(current_win_id)
+	if win_config.relative ~= "" then
+		local bufnr = vim.api.nvim_get_current_buf()
+
+		if vim.api.nvim_buf_get_option(bufnr, "modified") then
+			local choice = vim.fn.confirm("There are unsaved changes. Close anyway?", "&Yes\n&No", 2)
+
+			if choice ~= 1 then
+				return
+			end
+
+			vim.api.nvim_buf_call(bufnr, function()
+				vim.cmd("silent! checktime")
+			end)
+		end
+		vim.api.nvim_win_close(current_win_id, false)
+	else
+		vim.api.nvim_feedkeys("q", "n", false)
+	end
+end
+
+-- Create the custom keymap for 'q'
+vim.keymap.set("n", "q", close_float_window_or_run_q, { silent = true })
