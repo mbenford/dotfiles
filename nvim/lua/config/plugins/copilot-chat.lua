@@ -13,6 +13,11 @@ return {
 		error_header = " ",
 		insert_at_end = true,
 	},
+	init = function()
+		require("which-key").add({
+			{ "<Leader>c", group = "Copilot Chat", icon = "" },
+		})
+	end,
 	keys = {
 		{
 			"<Leader>cc",
@@ -20,7 +25,7 @@ return {
 				require("CopilotChat").toggle()
 			end,
 			mode = { "n", "x" },
-			desc = "Toggle Copilot Chat",
+			desc = "Toggle chat",
 		},
 		{
 			"<leader>cq",
@@ -33,7 +38,7 @@ return {
 				end
 			end,
 			mode = { "n", "x" },
-			desc = "Quick Copilot Chat",
+			desc = "Quick chat",
 		},
 		{
 			"<leader>cp",
@@ -42,7 +47,7 @@ return {
 				actions.pick(actions.prompt_actions())
 			end,
 			mode = { "n", "x" },
-			desc = "Open Copliot Chat Prompt Actions",
+			desc = "Prompt actions",
 		},
 		{
 			"<leader>ce",
@@ -55,7 +60,7 @@ return {
 				)
 			end,
 			mode = { "n", "x" },
-			desc = "Open Copliot Chat Prompt Actions",
+			desc = "Explain",
 		},
 	},
 }

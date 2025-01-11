@@ -46,20 +46,25 @@ return {
 			end,
 		})
 	end,
+	init = function()
+		require("which-key").add({
+			{ "<Leader>e", group = "Mini Files" },
+		})
+	end,
 	keys = {
 		{
 			"<Leader>ee",
 			function()
 				require("mini.files").open(nil, false)
 			end,
-			desc = "Open Mini Files",
+			desc = "Open",
 		},
 		{
 			"<Leader>ef",
 			function()
 				require("mini.files").open(vim.api.nvim_buf_get_name(0))
 			end,
-			desc = "Open Mini Files on current file",
+			desc = "Focus current file",
 		},
 	},
 }

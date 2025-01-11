@@ -55,7 +55,7 @@ M.copilot_chat = {
 	filetypes = { "copilot-chat", "copilot-overlay" },
 }
 
-M.snacks = {
+M.snacks_dashboard = {
 	sections = {
 		lualine_a = {
 			components.cwd,

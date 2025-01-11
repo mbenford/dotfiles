@@ -31,7 +31,7 @@ M.filename = {
 		return file
 	end,
 	color = function()
-		return vim.bo.modified and "LualineFilenameModified" or nil
+		return vim.bo.modified and "StatusLineFilenameModified" or nil
 	end,
 }
 
@@ -65,7 +65,7 @@ M.copilot = {
 	cond = function()
 		return #vim.lsp.get_clients({ bufnr = 0, name = "copilot" }) > 0
 	end,
-	color = "LualineCopilotActive",
+	color = "StatusLineCopilotActive",
 }
 
 M.indentation = function()
@@ -80,7 +80,7 @@ M.file_format = {
 	cond = function()
 		return vim.bo.fileformat ~= "unix"
 	end,
-	color = "LualineExoticFileFormat",
+	color = "StatusLineExoticFileFormat",
 	fmt = string.upper,
 }
 
@@ -105,12 +105,21 @@ M.recording_status = {
 	cond = function()
 		return vim.fn.reg_recording() ~= ""
 	end,
-	color = "LualineMacroRecording",
+	color = "StatusLineMacroRecording",
 }
 
 M.git_branch = {
 	"branch",
 	icon = "",
+}
+
+M.dap = {
+	function()
+		return "DAP Active"
+	end,
+	cond = function()
+		return package.loaded["dap"] ~= nil and require("dap").session() ~= nil
+	end,
 }
 
 return M

@@ -30,6 +30,7 @@ return {
 			},
 		},
 		pickers = {
+			find_files = { prompt_title = "Files" },
 			oldfiles = { only_cwd = true, prompt_title = "Recent Files" },
 			live_grep = { additional_args = { "--fixed-strings" } },
 			buffers = { sort_lastused = true },
@@ -38,6 +39,11 @@ return {
 			lsp_document_symbols = { symbol_width = 50 },
 		},
 	},
+	init = function()
+		require("which-key").add({
+			{ "<Leader>f", group = "Telescope" },
+		})
+	end,
 	config = function(_, opts)
 		require("telescope").setup(opts)
 		require("telescope").load_extension("zf-native")
@@ -46,109 +52,99 @@ return {
 		{
 			"<Leader>ff",
 			"<Cmd>Telescope find_files<CR>",
-			desc = "Telescope - Files",
+			desc = "Files",
 		},
 		{
 			"<Leader>fa",
-			"<Cmd>Telescope find_files hidden=true no_ignore=true no_ignore_parent=true<CR>",
-			desc = "Telescope - All Files",
+			"<Cmd>Telescope find_files prompt_title=All\\ Files hidden=true no_ignore=true no_ignore_parent=true<CR>",
+			desc = "All files",
 		},
 		{
 			"<Leader>fo",
 			"<Cmd>Telescope oldfiles<CR>",
-			desc = "Telescope - Recent Files",
+			desc = "Recent files",
 		},
 		{
 			"<Leader>fg",
 			"<Cmd>Telescope live_grep<CR>",
-			desc = "Telescope - Live Grep",
+			desc = "Live grep",
 		},
 		{
 			"<Leader>fg",
 			"<Cmd>Telescope grep_string<CR>",
 			mode = { "x" },
-			desc = "Telescope - Grep string",
+			desc = "Grep string",
 		},
 		{
 			"<Leader>f*",
 			"<Cmd>Telescope grep_string<CR>",
 			mode = { "n", "x" },
-			desc = "Telescope - Grep string",
+			desc = "Grep string",
 		},
 		{
 			"<Leader>fb",
 			"<Cmd>Telescope buffers<CR>",
-			desc = "Telescope - Buffers",
+			desc = "Buffers",
 		},
 		{
 			"<Leader>f<Leader>",
 			"<Cmd>Telescope resume<CR>",
-			desc = "Telescope - Resume",
+			desc = "Resume last search",
 		},
 		{
 			"<Leader>fr",
 			"<Cmd>Telescope registers<CR>",
-			desc = "Telescope - Registers",
+			desc = "Registers",
 		},
 		{
 			"<Leader>fh",
 			"<Cmd>Telescope help_tags<CR>",
-			desc = "Telescope - Help",
+			desc = "Help",
 		},
-		-- {
-		-- 	"<Leader>fhs",
-		-- 	"<Cmd>Telescope search_history<CR>",
-		-- 	desc = "Telescope - Search History",
-		-- },
-		-- {
-		-- 	"<Leader>fhc",
-		-- 	"<Cmd>Telescope command_history<CR>",
-		-- 	desc = "Telescope - Command History",
-		-- },
 		{
 			"<Leader>fv",
 			"<Cmd>Telescope vim_options<CR>",
-			desc = "Telescope - Vim Options",
+			desc = "Vim options",
 		},
 		{
 			"<Leader>ft",
 			"<Cmd>Telescope filetypes theme=dropdown<CR>",
-			desc = "Telescope - File Types",
+			desc = "Filetypes",
 		},
 		{
 			"<Leader>fs",
 			"<Cmd>Telescope spell_suggest theme=cursor<CR>",
-			desc = "Telescope - Spell Suggestions",
+			desc = "Spelling suggestions",
 		},
 		{
 			"<Leader>ld",
 			"<Cmd>Telescope lsp_definitions<CR>",
-			desc = "Telescope - LSP Definitions",
+			desc = "LSP definitions",
 		},
 		{
 			"<Leader>li",
 			"<Cmd>Telescope lsp_implementations<CR>",
-			desc = "Telescope - LSP Implementations",
+			desc = "LSP implementations",
 		},
 		{
 			"<Leader>lr",
 			"<Cmd>Telescope lsp_references<CR>",
-			desc = "Telescope - LSP References",
+			desc = "LSP references",
 		},
 		{
 			"<Leader>ls",
 			"<Cmd>Telescope lsp_document_symbols<CR>",
-			desc = "Telescope - LSP Document Symbols",
+			desc = "LSP document symbols",
 		},
 		{
 			"<Leader>lci",
 			"<Cmd>Telescope lsp_incoming_calls<CR>",
-			desc = "Telescope - LSP Incoming Calls",
+			desc = "LSP incoming calls",
 		},
 		{
 			"<Leader>lco",
 			"<Cmd>Telescope lsp_outgoing_calls<CR>",
-			desc = "Telescope - LSP Outgoing Calls",
+			desc = "LSP outgoing calls",
 		},
 	},
 }

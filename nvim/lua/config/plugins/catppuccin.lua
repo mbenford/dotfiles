@@ -46,19 +46,19 @@ return {
 				NeoTreeNormal = { bg = colors.base },
 				NeoTreeNormalNC = { bg = colors.base },
 
-				-- Lualine
-				LualineFilenameModified = { fg = colors.yellow, bg = colors.mantle },
-				LualineExoticFileFormat = { fg = colors.red, bg = colors.mantle },
-				LualineGitSignsAdd = { fg = colors.green, bg = colors.mantle },
-				LualineGitSignsChange = { fg = colors.yellow, bg = colors.mantle },
-				LualineGitSignsDelete = { fg = colors.red, bg = colors.mantle },
-				LualineWinbar = { bg = colors.base },
-				LualineWinbarInactive = { fg = colors.overlay0, bg = colors.base },
-				LualineLspActive = { fg = colors.green, bg = colors.mantle },
-				LualineCopilotActive = { fg = colors.blue, bg = colors.mantle },
-				LualineRecording = { fg = colors.red, bg = colors.mantle },
-				LualineGitStatusClean = { fg = colors.green, bg = colors.mantle },
-				LualineGitStatusDirty = { fg = colors.yellow, bg = colors.mantle },
+				-- StatusLine
+				StatusLineFilenameModified = { fg = colors.yellow, bg = colors.mantle },
+				StatusLineExoticFileFormat = { fg = colors.red, bg = colors.mantle },
+				StatusLineGitSignsAdd = { fg = colors.green, bg = colors.mantle },
+				StatusLineGitSignsChange = { fg = colors.yellow, bg = colors.mantle },
+				StatusLineGitSignsDelete = { fg = colors.red, bg = colors.mantle },
+				StatusLineWinbar = { bg = colors.base },
+				StatusLineWinbarInactive = { fg = colors.overlay0, bg = colors.base },
+				StatusLineLspActive = { fg = colors.green, bg = colors.mantle },
+				StatusLineCopilotActive = { fg = colors.blue, bg = colors.mantle },
+				StatusLineRecording = { fg = colors.red, bg = colors.mantle },
+				StatusLineGitStatusClean = { fg = colors.green, bg = colors.mantle },
+				StatusLineGitStatusDirty = { fg = colors.yellow, bg = colors.mantle },
 
 				-- Cokeline
 				CokelineFocused = { fg = colors.blue },

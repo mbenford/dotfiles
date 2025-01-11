@@ -1,4 +1,3 @@
-
 return {
 	"hrsh7th/nvim-cmp",
 	enabled = true,
@@ -74,9 +73,7 @@ return {
 			},
 			preselect = cmp.PreselectMode.None,
 			window = {
-				completion = cmp.config.window.bordered({
-					winhighlight = "CursorLine:Visual,Search:None",
-				}),
+				completion = { winhighlight = "CursorLine:Visual,Search:None" },
 				documentation = cmp.config.window.bordered({
 					winhighlight = "CursorLine:Visual,Search:None",
 				}),

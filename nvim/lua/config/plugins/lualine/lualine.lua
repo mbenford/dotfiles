@@ -3,6 +3,7 @@ local extensions = require("config.plugins.lualine.extensions")
 
 return {
 	"nvim-lualine/lualine.nvim",
+	enabled = false,
 	opts = {
 		options = {
 			theme = "tokyonight",
@@ -21,6 +22,7 @@ return {
 			},
 			lualine_x = {
 				components.recording_status,
+				components.dap,
 				components.git_branch,
 				components.diagnostics,
 				components.lsp,
@@ -30,14 +32,6 @@ return {
 				components.file_format,
 				components.location,
 			},
-			lualine_y = {},
-			lualine_z = {},
-		},
-		inactive_sections = {
-			lualine_a = {},
-			lualine_b = {},
-			lualine_c = { components.filename },
-			lualine_x = { components.filetype },
 			lualine_y = {},
 			lualine_z = {},
 		},

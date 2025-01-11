@@ -3,6 +3,7 @@ return {
 	event = "VeryLazy",
 	opts = {
 		preset = "helix",
+		expand = 5,
 		delay = function(ctx)
 			return ctx.plugin and 0 or 1000
 		end,

@@ -1,6 +1,5 @@
 return {
 	"luukvbaal/statuscol.nvim",
-	branch = "0.10",
 	config = function()
 		local builtin = require("statuscol.builtin")
 		require("statuscol").setup({
@@ -10,6 +9,13 @@ return {
 					sign = {
 						namespace = { "gitsigns" },
 						colwidth = 1,
+						auto = true,
+					},
+				},
+				{
+					sign = {
+						name = { "Dap.*" },
+						colwidth = 2,
 						auto = true,
 					},
 				},

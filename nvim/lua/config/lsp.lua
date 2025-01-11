@@ -34,7 +34,7 @@ return function(server_name)
 		end,
 	}
 
-	local ok, server_config = pcall(require, "config.language-servers." .. server_name)
+	local ok, server_config = pcall(require, "config.lsp." .. server_name)
 	if ok then
 		config = vim.tbl_deep_extend("force", config, server_config)
 	end

@@ -1,5 +1,6 @@
 return {
 	"folke/snacks.nvim",
+	version = "2.11.0",
 	priority = 1000,
 	lazy = false,
 	opts = {
@@ -27,6 +28,23 @@ return {
 		notifier = { enabled = true },
 		quickfile = { enabled = true },
 		bufdelete = { enabled = true },
+		words = {
+			enabled = true,
+			debounce = 100,
+		},
+		indent = {
+			enabled = true,
+			indent = {
+				char = "▏",
+			},
+			scope = {
+				enabled = false,
+				char = "▏",
+			},
+			animate = {
+				enabled = false,
+			},
+		},
 		lazygit = {
 			win = {
 				title = " Lazygit ",
@@ -93,6 +111,20 @@ return {
 				})
 			end,
 			desc = "Diff the current file",
+		},
+		{
+			"]n",
+			function()
+				require("snacks").words.jump(1)
+			end,
+			desc = "Jump to next word",
+		},
+		{
+			"[n",
+			function()
+				require("snacks").words.jump(-1)
+			end,
+			desc = "Jump to previous word",
 		},
 	},
 }

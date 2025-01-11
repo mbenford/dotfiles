@@ -1,28 +1,28 @@
 local lazy = require("utils.lazy")
 
-vim.api.nvim_create_augroup("Custom", { clear = true })
+local group = vim.api.nvim_create_augroup("Custom", { clear = true })
 
 -- Saves all modified buffers when Neovim loses focus
 vim.api.nvim_create_autocmd("FocusLost", {
-	group = "Custom",
+	group = group,
 	command = "silent! wa",
 })
 
 -- Resizes splits when the Neovim window is resized
 vim.api.nvim_create_autocmd("VimResized", {
-	group = "Custom",
+	group = group,
 	command = "wincmd =",
 })
 
 -- Creates a highlight effect when text is yanked (copied)
 vim.api.nvim_create_autocmd("TextYankPost", {
-	group = "Custom",
+	group = group,
 	callback = lazy(vim.highlight.on_yank, { higroup = "TextYank", timeout = 150 }),
 })
 
 -- Adds a buffer-local keybinding 'q' to close some windows based on their file type
 vim.api.nvim_create_autocmd("FileType", {
-	group = "Custom",
+	group = group,
 	pattern = { "help", "qf", "vim", "checkhealth" },
 	callback = function(event)
 		require("which-key").add({ "q", "<C-w>q", buffer = event.buf, desc = "Close window" })
@@ -31,7 +31,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Updates the window title
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
-	group = "Custom",
+	group = group,
 	callback = function(args)
 		local bufinfo = vim.fn.getbufinfo(args.buf)
 		if #bufinfo ~= 1 then
@@ -50,7 +50,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
 
 -- Opens help/man/markdown files in a floating window
 vim.api.nvim_create_autocmd("BufWinEnter", {
-	group = "Custom",
+	group = group,
 	pattern = "*",
 	callback = function(event)
 		local filetype = vim.bo[event.buf].filetype
@@ -70,9 +70,9 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 		local win = require("snacks").win.new({
 			buf = event.buf,
 			border = "rounded",
-			backdrop = false,
 			width = 120,
-			title = string.format(" %s ", vim.fn.fnamemodify(file_path, ":t:r")),
+			backdrop = false,
+			title = string.format(" Help: %s ", vim.fn.fnamemodify(file_path, ":t:r")),
 			title_pos = "center",
 			wo = {
 				wrap = true,
