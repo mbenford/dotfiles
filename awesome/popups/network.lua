@@ -5,7 +5,7 @@ local widgets = require("widgets")
 local network = require("util.network")
 local fn = require("util.fn")
 local ez = require("util.ez")
-local popup_util = require("util.popup")
+local Popup = require("util.popup")
 local icons = require("icons")
 
 local grade_color = {
@@ -86,8 +86,7 @@ local content = wibox.widget({
 	scanning_message,
 })
 
-local popup = awful.popup({
-	visible = false,
+local popup = Popup({
 	placement = function(c)
 		awful.placement.top_right(c, { honor_workarea = true })
 	end,
@@ -101,13 +100,13 @@ local popup = awful.popup({
 	},
 })
 
-popup_util.enhance(popup, {
-	xprops = {
-		position = "right",
-	},
-	decorations = {
-		title = { text = "Wireless Networks" },
-	},
+popup:xprops({
+	position = "right",
+})
+popup:decorations({
+	title = { text = "Wireless Networks" },
+})
+popup:keygrabber({
 	timeout = 60,
 	keybindings = ez.keys({
 		["j"] = fn.bind_obj(network_list, "next_item"),
@@ -128,8 +127,7 @@ popup_util.enhance(popup, {
 return {
 	show_wifi = function()
 		content.widget = scanning_message
-		popup.screen = awful.screen.primary
-		popup.visible = true
+		popup:show({ screen = screen.primary })
 		network.scan({ rescan = "yes" }):next(function(networks)
 			network_list:set_items(networks)
 			content.widget = network_list

@@ -41,6 +41,8 @@ return {
 	notification_maximum_height = 64,
 
 	list_item_shape = fn.bind_right(gears.shape.rounded_rect, 5),
+	popup_volume_progress_shape = fn.bind_right(gears.shape.rounded_rect, 5),
+	window_name_shape = fn.bind_right(gears.shape.rounded_rect, 8),
 
 	calendar_font = "Ubuntu 12",
 	wallpaper = default_themes_path .. "default/background.png",

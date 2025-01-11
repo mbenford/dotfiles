@@ -37,6 +37,11 @@ function Icon:set_name(name)
 	self:update()
 end
 
+function Icon:set_fallback(name)
+	self._private.fallback = name
+	self:update()
+end
+
 function Icon:get_name()
 	return self._private.name
 end
@@ -56,7 +61,12 @@ function Icon:update()
 	if self._private.name == nil or self._private.size == nil then
 		return
 	end
-	self.image = lookup(self._private.name, self._private.size)
+
+	local image = lookup(self._private.name, self._private.size)
+	if image == nil then
+		image = lookup(self._private.fallback, self._private.size)
+	end
+	self.image = image
 end
 
 return {

@@ -94,6 +94,9 @@ function M.setup(opts)
 
 		clock_fg = flavor.fg,
 		wibar_bg = gears.color.change_opacity(flavor.bg_dark, 0.95),
+
+		window_name_fg = flavor.fg,
+		window_name_bg = flavor.bg_dark,
 	}
 end
 

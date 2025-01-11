@@ -2,8 +2,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local widgets = require("widgets")
-local popup_util = require("util.popup")
-local string_util = require("util.string")
+local Popup = require("util.popup")
 local fn = require("util.fn")
 local ez = require("util.ez")
 local async = require("util.async")
@@ -40,8 +39,7 @@ local buttons = widgets.list({
 		})
 	end,
 })
-local popup = awful.popup({
-	visible = false,
+local popup = Popup({
 	placement = awful.placement.centered,
 	ontop = true,
 	border_color = beautiful.popup_border_color,
@@ -51,22 +49,23 @@ local popup = awful.popup({
 		buttons,
 	},
 })
-popup_util.enhance(popup, {
-	decorations = {
-		title = { text = "Brave Browser" },
-	},
+
+popup:decorations({
+	title = { text = "Brave Browser" },
+})
+popup:keygrabber({
 	timeout = 10,
 	keybindings = ez.keys({
 		["h"] = fn.bind_obj(buttons, "prev_item"),
 		["l"] = fn.bind_obj(buttons, "next_item"),
 		["Return"] = function()
-			popup.visible = false
+			popup:hide()
 
 			local profile = profiles[buttons:selected_index()]
 			awful.spawn(string.format("brave --profile-directory='%s'", profile.id))
 		end,
 		["S-Return"] = function()
-			popup.visible = false
+			popup:hide()
 
 			local profile = profiles[buttons:selected_index()]
 			awful.spawn(string.format("brave --profile-directory='%s' --incognito", profile.id))
@@ -82,8 +81,7 @@ return {
 		async.spawn(cmd):next(function(result)
 			profiles = require("util.json").decode(result.stdout)
 			buttons:set_items(profiles)
-			popup.screen = awful.screen.focused()
-			popup.visible = true
+			popup:show()
 		end)
 	end,
 }

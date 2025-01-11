@@ -8,7 +8,6 @@ local mouse = require("util.mouse")
 local pulseaudio = require("util.pulseaudio")
 
 awful.keyboard.append_global_keybindings(ez.keys({
-	["M-p"] = function() end,
 	["M-w"] = require("popups.network").show_wifi,
 
 	-- Navigation
@@ -63,7 +62,11 @@ awful.keyboard.append_global_keybindings(ez.keys({
 	-- Layouts
 	["M-["] = fn.bind(awful.layout.inc, -1),
 	["M-]"] = fn.bind(awful.layout.inc, 1),
-	["M-f"] = fn.bind_tag(function(tag)
+	["M-f"] = fn.bind_tag(function(tag, c)
+		if c.floating or #tag:clients() < 2 then
+			return
+		end
+
 		if tag.previous_layout then
 			tag.layout = tag.previous_layout
 			tag.previous_layout = nil
@@ -139,24 +142,13 @@ awful.keyboard.append_global_keybindings(ez.keys({
 	["XF86AudioNext"] = fn.bind(awful.spawn, "playerctl next --all-players"),
 
 	-- Audio
-	["XF86AudioRaiseVolume"] = function()
-		pulseaudio:set_sink_volume("@DEFAULT_SINK@", "+2%")
-	end,
-	["XF86AudioLowerVolume"] = function()
-		pulseaudio:set_sink_volume("@DEFAULT_SINK@", "-2%")
-	end,
-	["XF86AudioMute"] = function()
-		pulseaudio:set_sink_mute("@DEFAULT_SINK@", "toggle")
-	end,
-	["C-XF86AudioRaiseVolume"] = function()
-		pulseaudio:set_source_volume("@DEFAULT_SOURCE@", "+2%")
-	end,
-	["C-XF86AudioLowerVolume"] = function()
-		pulseaudio:set_source_volume("@DEFAULT_SOURCE@", "-2%")
-	end,
-	["C-XF86AudioMute"] = function()
-		pulseaudio:set_source_mute("@DEFAULT_SOURCE@", "toggle")
-	end,
+	-- ["XF86AudioRaiseVolume"] = fn.bind(volume_popup.raise_volume, "sink"),
+	["XF86AudioRaiseVolume"] = fn.bind_obj(pulseaudio, "set_volume", { type = "sink", value = "+2%" }),
+	["XF86AudioLowerVolume"] = fn.bind_obj(pulseaudio, "set_volume", { type = "sink", value = "-2%" }),
+	["XF86AudioMute"] = fn.bind_obj(pulseaudio, "set_mute", { type = "sink", value = "toggle" }),
+	["C-XF86AudioRaiseVolume"] = fn.bind_obj(pulseaudio, "set_volume", { type = "source", value = "+2%" }),
+	["C-XF86AudioLowerVolume"] = fn.bind_obj(pulseaudio, "set_volume", { type = "source", value = "-2%" }),
+	["C-XF86AudioMute"] = fn.bind_obj(pulseaudio, "set_mute", { type = "source", value = "toggle" }),
 }))
 
 -- Tags

@@ -63,40 +63,32 @@ return {
 		return icon
 	end,
 
-	vpn = function(interface)
+	vpn = function(conn_type)
 		local icon = wibox.widget({
-			widget = icons.material.icon,
-			name = "vpn_key_alert",
-			fill = true,
-			size = 20,
-			fg = "#ff0000",
+			widget = icons.system.icon,
+			name = "nm-vpn-standalone-lock",
+			size = 16,
+			visible = false,
 		})
 
-		local device = client:get_device_by_iface(interface)
-		if device == nil then
-			return icon
-		end
-
-		local function update()
-			local state = device:get_state()
-			if state == "UNMANAGED" or state == "UNAVAILABLE" or state == "DISCONNECTED" then
-				icon.name = "vpn_key_off"
-				icon.fg = "#61636f"
+		local function update(conn, visible)
+			if conn:get_connection_type() ~= conn_type then
 				return
 			end
-
-			if state == "ACTIVATED" then
-				icon.name = "vpn_key"
-				icon.fg = "#dfdfdf"
-				return
-			end
+			icon.visible = visible
 		end
 
-		function device:on_state_changed()
-			update()
+		function client:on_connection_added(conn)
+			update(conn, true)
+		end
+		function client:on_connection_removed(conn)
+			update(conn, false)
 		end
 
-		update()
+		for _, conn in pairs(client:get_active_connections()) do
+			update(conn, true)
+		end
+
 		return icon
 	end,
 }

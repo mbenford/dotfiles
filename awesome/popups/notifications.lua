@@ -3,7 +3,7 @@ local wibox = require("wibox")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
 local widgets = require("widgets")
-local popup_util = require("util.popup")
+local Popup = require("util.popup")
 local ez = require("util.ez")
 local fn = require("util.fn")
 local string_util = require("util.string")
@@ -23,7 +23,7 @@ end
 
 local function get_icon(notification)
 	local source = notification.webapp_icon or notification.app_icon or notification.app_name
-	if source:find("^file://") ~= nil then
+	if source:find("^/") ~= nil or source:find("^file://") ~= nil then
 		return wibox.widget({
 			widget = wibox.widget.imagebox,
 			image = source:gsub("file://", ""),
@@ -36,6 +36,7 @@ local function get_icon(notification)
 	return wibox.widget({
 		widget = icons.system.icon,
 		name = source,
+		fallback = "applications-chat-panel",
 		size = beautiful.notification_icon_size,
 	})
 end
@@ -137,8 +138,7 @@ local notification_list = widgets.list({
 	end,
 })
 
-local popup = awful.popup({
-	visible = false,
+local popup = Popup({
 	placement = function(c)
 		awful.placement.top_right(c, { honor_workarea = true })
 		awful.placement.stretch_down(c)
@@ -157,13 +157,13 @@ local popup = awful.popup({
 		},
 	},
 })
-popup_util.enhance(popup, {
-	xprops = {
-		position = "right",
-	},
-	decorations = {
-		title = { text = "Notifications" },
-	},
+popup:decorations({
+	title = { text = "Notifications" },
+})
+popup:xprops({
+	position = "right",
+})
+popup:keygrabber({
 	timeout = 10,
 	keybindings = ez.keys({
 		["h"] = fn.bind_obj(notification_list, "prev_page"),
@@ -183,13 +183,13 @@ popup_util.enhance(popup, {
 		["S-D"] = function()
 			naughty.destroy_all_notifications(nil, naughty.notification_closed_reason.silent)
 			notification_list:clear()
-			popup.visible = false
+			popup:hide()
 		end,
 		["Return"] = function()
 			local notification = notification_list:selected()
 			if notification then
 				notification:destroy(naughty.notification_closed_reason.dismissed_by_user)
-				popup.visible = false
+				popup:hide()
 			end
 		end,
 	}),
@@ -197,8 +197,7 @@ popup_util.enhance(popup, {
 
 return {
 	show = function()
-		popup.visible = true
-		popup.screen = awful.screen.primary
+		popup:show({ screen = screen.primary })
 		notification_list:set_items(require("util.table").reverse(naughty.active))
 	end,
 }

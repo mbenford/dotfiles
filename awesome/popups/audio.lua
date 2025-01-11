@@ -4,7 +4,7 @@ local beautiful = require("beautiful")
 local widgets = require("widgets")
 local fn = require("util.fn")
 local ez = require("util.ez")
-local popup_util = require("util.popup")
+local Popup = require("util.popup")
 local pulseaudio = require("util.pulseaudio")
 local icons = require("icons")
 
@@ -72,7 +72,7 @@ local device_list = widgets.list({
 				},
 				{
 					layout = wibox.layout.stack,
-					forced_height = 20,
+					forced_height = 30,
 					{
 						id = "progress",
 						widget = wibox.widget.progressbar,
@@ -80,6 +80,7 @@ local device_list = widgets.list({
 						max_value = 100,
 						color = beautiful.popup_volume_progress_fg,
 						background_color = beautiful.popup_volume_progress_bg,
+						shape = beautiful.popup_volume_progress_shape,
 					},
 					{
 						id = "text",
@@ -93,25 +94,22 @@ local device_list = widgets.list({
 		})
 	end,
 })
-local popup = awful.popup({
-	type = "dock",
-	visible = false,
-	placement = function(c)
-		awful.placement.top_right(c, { honor_workarea = true })
-	end,
+local widget = wibox.widget({
+	widget = wibox.container.margin,
+	margins = 10,
+	{
+		widget = wibox.container.constraint,
+		strategy = "exact",
+		width = 400,
+		device_list,
+	},
+})
+local popup = Popup({
+	placement = awful.placement.centered,
 	ontop = true,
 	border_color = beautiful.popup_border_color,
 	border_width = beautiful.popup_border_width,
-	widget = {
-		widget = wibox.container.margin,
-		margins = 10,
-		{
-			widget = wibox.container.constraint,
-			strategy = "exact",
-			width = 400,
-			device_list,
-		},
-	},
+	widget = widget,
 })
 
 local function update_device_volume(volume)
@@ -122,28 +120,29 @@ local function update_device_volume(volume)
 	progress.value = volume
 end
 
-popup_util.enhance(popup, {
-	xprops = {
-		position = "right",
-	},
-	decorations = {
-		title = {},
-	},
+popup:decorations({})
+popup:keygrabber({
 	timeout = 10,
 	keybindings = ez.keys({
 		["j"] = fn.bind_obj(device_list, "next_item"),
 		["k"] = fn.bind_obj(device_list, "prev_item"),
 		["h"] = function()
 			local device = devices[device_list:selected_index()]
-			pulseaudio:set_volume(device.type, device.name, "-2%"):next(update_device_volume)
+			pulseaudio
+				:set_volume({ type = device.type, name = device.name, value = "-2%", silent = true })
+				:next(update_device_volume)
 		end,
 		["l"] = function()
 			local device = devices[device_list:selected_index()]
-			pulseaudio:set_volume(device.type, device.name, "+2%"):next(update_device_volume)
+			pulseaudio
+				:set_volume({ type = device.type, name = device.name, value = "+2%", silent = true })
+				:next(update_device_volume)
 		end,
 		["m"] = function()
 			local device = devices[device_list:selected_index()]
-			pulseaudio:set_mute(device.type, device.name, "toggle"):next(update_device_volume)
+			pulseaudio
+				:set_mute({ type = device.type, name = device.name, value = "toggle", silent = true })
+				:next(update_device_volume)
 		end,
 		["Return"] = function()
 			local index = device_list:selected_index()
@@ -165,11 +164,10 @@ popup_util.enhance(popup, {
 
 local function show(type, title)
 	pulseaudio:list(type):next(function(items)
+		require("util.debug").log(items)
 		devices = items
 		device_list:set_items(devices)
-		popup.widget:get_children_by_id("title")[1].text = title
-		popup.screen = awful.screen.primary
-		popup.visible = true
+		popup:show({ screen = screen.primary, title = title })
 	end)
 end
 

@@ -3,6 +3,7 @@ local widgets = {
 	"clock",
 	"distro",
 	"hardware",
+	"indicators",
 	"list",
 	"network",
 	"notification",

@@ -169,8 +169,10 @@ return {
 			widget = wibox.container.background,
 			fg = beautiful.window_name_fg,
 			bg = beautiful.window_name_bg,
+			shape = beautiful.window_name_shape,
 			{
 				widget = wibox.container.margin,
+				margins = { left = 10, right = 10 },
 				content,
 			},
 		})

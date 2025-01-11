@@ -114,3 +114,12 @@ api.tag.connect_signal("property::layout", function(tag)
 		end
 	end
 end)
+
+local pulseaudio = require("util.pulseaudio")
+local volume_popup = require("popups.volume")
+pulseaudio:connect_signal("sink::volume", function(self, name, volume)
+	volume_popup.show("sink", volume)
+end)
+pulseaudio:connect_signal("source::volume", function(self, name, volume)
+	volume_popup.show("source", volume)
+end)

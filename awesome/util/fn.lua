@@ -39,6 +39,13 @@ function M.bind_obj(obj, func, ...)
 	end
 end
 
+function M.bind_require(mod, func, ...)
+	local args = { ... }
+	return function()
+		require(mod)[func](table.unpack(args))
+	end
+end
+
 function M.bind_client(fn)
 	return function()
 		if api.client.focus then
@@ -49,9 +56,14 @@ end
 
 function M.bind_tag(fn)
 	return function()
-		local tag = awful.screen.focused().selected_tag
+		local client = api.client.focus
+		if client == nil then
+			return
+		end
+
+		local tag = client.screen.selected_tag
 		if tag then
-			fn(tag)
+			fn(tag, client)
 		end
 	end
 end

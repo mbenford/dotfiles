@@ -2,7 +2,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local stringx = require("pl.stringx")
-local popup_util = require("util.popup")
+local Popup = require("util.popup")
 local fn = require("util.fn")
 local ez = require("util.ez")
 
@@ -80,9 +80,7 @@ local calendar = wibox.widget({
 	end,
 })
 
-local popup = awful.popup({
-	type = "dock",
-	visible = false,
+local popup = Popup({
 	placement = function(c)
 		awful.placement.top_right(c, { honor_workarea = true })
 	end,
@@ -97,10 +95,10 @@ local popup = awful.popup({
 		calendar,
 	},
 })
-popup_util.enhance(popup, {
-	xprops = {
-		position = "right",
-	},
+popup:xprops({
+	position = "right",
+})
+popup:keygrabber({
 	timeout = 60,
 	keybindings = ez.keys({
 		["h"] = function()
@@ -128,7 +126,6 @@ popup_util.enhance(popup, {
 return {
 	show = function()
 		calendar.date = os.date("*t")
-		popup.screen = awful.screen.primary
-		popup.visible = true
+		popup:show({ screen = screen.primary })
 	end,
 }

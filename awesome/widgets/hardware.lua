@@ -5,6 +5,7 @@ local lgi = require("lgi")
 local icons = require("icons")
 local util = require("widgets.util")
 local fn = require("util.fn")
+local Gio = lgi.Gio
 
 local upower = lgi.UPowerGlib.Client()
 local batt_device = upower:get_display_device()
@@ -73,6 +74,7 @@ return {
 			local percentage = math.floor(device.percentage / 10) * 10
 			local icon_name = string.format("battery-%03d", percentage)
 			icon.name = icon_name .. (device.state == 1 and "-charging" or "")
+			icon.visible = device.state ~= 4
 		end
 		batt_device.on_notify = update
 

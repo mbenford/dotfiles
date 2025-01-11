@@ -5,15 +5,15 @@ local gears = require("gears")
 local widgets = require("widgets")
 local fn = require("util.fn")
 local ez = require("util.ez")
-local popup_util = require("util.popup")
+local Popup = require("util.popup")
 local sysutil = require("util.system")
 local Promise = require("util.promise")
 local dialog = require("popups.dialog")
 local icons = require("icons")
 
 local commands = {
-	{ text = "Suspend", icon = "system-suspend", exec = "systemctl suspend" },
 	{ text = "Lock", icon = "system-lock-screen", exec = "lock", no_confirmation = true },
+	{ text = "Suspend", icon = "system-suspend", exec = "systemctl suspend" },
 	{ text = "Logout", icon = "system-log-out", exec = "loginctl terminate-user $USER" },
 	{ text = "Reboot", icon = "system-reboot", exec = "systemctl reboot" },
 	{ text = "Shutdown", icon = "system-shutdown", exec = "systemctl poweroff" },
@@ -51,44 +51,44 @@ local action_list = widgets.list({
 	end,
 })
 
-local popup = awful.popup({
-	visible = false,
+local widget = wibox.widget({
+	widget = wibox.container.background,
+	{
+		layout = wibox.layout.fixed.vertical,
+		{
+			widget = wibox.container.margin,
+			margins = { top = 10, left = 10, right = 10 },
+			{
+				layout = wibox.layout.fixed.horizontal,
+				fill_space = true,
+				{
+					id = "hostname",
+					widget = wibox.widget.textbox,
+				},
+				{
+					id = "uptime",
+					widget = wibox.widget.textbox,
+					halign = "right",
+				},
+			},
+		},
+		action_list,
+	},
+})
+local popup = Popup({
 	placement = awful.placement.centered,
 	ontop = true,
 	border_color = beautiful.popup_border_color,
 	border_width = beautiful.popup_border_width,
-	widget = {
-		widget = wibox.container.background,
-		{
-			layout = wibox.layout.fixed.vertical,
-			{
-				widget = wibox.container.margin,
-				margins = { top = 10, left = 10, right = 10 },
-				{
-					layout = wibox.layout.fixed.horizontal,
-					fill_space = true,
-					{
-						id = "hostname",
-						widget = wibox.widget.textbox,
-					},
-					{
-						id = "uptime",
-						widget = wibox.widget.textbox,
-						halign = "right",
-					},
-				},
-			},
-			action_list,
-		},
-	},
+	widget = widget,
 })
-popup_util.enhance(popup, {
+popup:keygrabber({
 	timeout = 10,
 	keybindings = ez.keys({
 		["h"] = fn.bind_obj(action_list, "prev_item"),
 		["l"] = fn.bind_obj(action_list, "next_item"),
 		["Return"] = function()
-			popup.visible = false
+			popup:hide()
 
 			local command = commands[action_list:selected_index()]
 			if command.no_confirmation then
@@ -128,10 +128,9 @@ return {
 		Promise.all(table.unpack(tasks)):next(function(values)
 			local uptime = values[1]
 			local hostname = values[2]
-			popup.widget:get_children_by_id("hostname")[1].text = hostname
-			popup.widget:get_children_by_id("uptime")[1].text = uptime
-			popup.screen = awful.screen.primary
-			popup.visible = true
+			widget:get_children_by_id("hostname")[1].text = hostname
+			widget:get_children_by_id("uptime")[1].text = uptime
+			popup:show({ screen = screen.primary })
 			action_list:select(1)
 		end)
 	end,

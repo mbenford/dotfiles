@@ -15,8 +15,7 @@ awful.keyboard.append_global_keybindings({
 		awful.spawn("kitty", {
 			floating = true,
 			ontop = true,
-			fullscreen = true,
-			placement = awful.placement.centered,
+			placement = awful.placement.maximize,
 		})
 	end),
 })
@@ -34,13 +33,12 @@ local function load(module)
 	end
 end
 
-load("theme")
-load("keys")
-load("signals")
-load("bar")
-load("mouse")
-load("rules")
-load("popups")
-load("scratchpads")
+load("config.theme")
+load("config.keys")
+load("config.signals")
+load("config.bar")
+load("config.mouse")
+load("config.rules")
+load("config.scratchpads")
+load("config.autorun")
 load("awful.autofocus")
-load("autorun")

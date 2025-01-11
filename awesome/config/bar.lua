@@ -40,12 +40,14 @@ api.screen.connect_signal("request::desktop_decoration", function(screen)
 			widgets.hardware.cpu(),
 			widgets.hardware.mem(),
 			widgets.hardware.disk(),
-			widgets.network.vpn("vpn0"),
-			widgets.network.wifi("wlan0"),
-			widgets.audio.sink_icon(),
-			widgets.audio.source_icon(),
-			widgets.hardware.battery(),
-			widgets.notification(),
+			widgets.indicators(
+				widgets.network.vpn("tun"),
+				widgets.network.wifi("wlan0"),
+				widgets.audio.sink_icon(),
+				widgets.audio.source_icon(),
+				widgets.hardware.battery(),
+				widgets.notification()
+			),
 		}, sections.right)
 	end
 
