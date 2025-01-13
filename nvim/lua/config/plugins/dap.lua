@@ -10,24 +10,7 @@ return {
 		})
 	end,
 	config = function()
-		local dap = require("dap")
-		local after = dap.listeners.after
-		after.event_initialized["dap"] = function()
-			vim.g.dap_status = "running"
-		end
-		after.event_continued["dap"] = function()
-			vim.g.dap_status = "running"
-		end
-		after.event_stopped["dap"] = function()
-			vim.g.dap_status = "stopped"
-		end
-		after.event_terminated["dap"] = function()
-			vim.g.dap_status = nil
-		end
-		after.disconnect["dap"] = function()
-			vim.g.dap_status = nil
-		end
-
+		require("dap")
 		local sign = vim.fn.sign_define
 		sign("DapBreakpoint", { text = "●", texthl = "DapBreakpoint" })
 		sign("DapBreakpointCondition", { text = "■", texthl = "DapBreakpoint" })

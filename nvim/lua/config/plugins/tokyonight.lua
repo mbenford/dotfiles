@@ -20,24 +20,25 @@ return {
 			hl.WinBarNC = "Normal"
 
 			-- Statusline
-			hl.StatusLineModeNORMAL = { fg = colors.blue, bg = colors.bg_statusline, bold = true }
-			hl.StatusLineModeINSERT = { fg = colors.red, bg = colors.bg_statusline, bold = true }
-			hl.StatusLineModeVISUAL = { fg = colors.red, bg = colors.bg_statusline, bold = true }
-			hl.StatusLineModeSELECT = { fg = colors.red, bg = colors.bg_statusline, bold = true }
-			hl.StatusLineModeREPLACE = { fg = colors.red, bg = colors.bg_statusline, bold = true }
-			hl.StatusLineModeCOMMAND = { fg = colors.yellow, bg = colors.bg_statusline, bold = true }
-			hl.StatusLineModeEX = { fg = colors.yellow, bg = colors.bg_statusline, bold = true }
+			hl.StatusLineModeNORMAL = { fg = colors.bg_statusline, bg = colors.blue, bold = true }
+			hl.StatusLineModeINSERT = { fg = colors.bg_statusline, bg = colors.green, bold = true }
+			hl.StatusLineModeVISUAL = { fg = colors.bg_statusline, bg = colors.purple, bold = true }
+			hl.StatusLineModeSELECT = { fg = colors.bg_statusline, bg = colors.purple, bold = true }
+			hl.StatusLineModeREPLACE = { fg = colors.bg_statusline, bg = colors.red, bold = true }
+			hl.StatusLineModeCOMMAND = { fg = colors.bg_statusline, bg = colors.yellow, bold = true }
+			hl.StatusLineModeTERM = { fg = colors.bg_statusline, bg = colors.orange, bold = true }
+			hl.StatusLineModeEX = { fg = colors.bg_statusline, bg = colors.yellow, bold = true }
 			hl.StatusLineFilenameModified = { fg = colors.yellow }
 			hl.StatusLineExoticFileFormat = { fg = colors.red, bg = colors.bg_statusline }
-			hl.StatusLineLspActive = { fg = colors.green }
+			hl.StatusLineLspActive = { fg = colors.yellow }
+			hl.StatusLineDapActive = { fg = colors.orange }
 			hl.StatusLineCopilotActive = { fg = colors.blue }
 			hl.StatusLineMacroRecording = { fg = colors.red }
 			hl.StatusLineGitStatusClean = { fg = colors.green }
 			hl.StatusLineGitStatusDirty = { fg = colors.yellow }
-			hl.StatusLineWorkDir = { fg = colors.purple }
+			hl.StatusLineWorkDir = { fg = colors.teal, bold = true }
 			hl.StatusLineGitBranch = { fg = colors.green }
-			hl.StatusLineHeading1 = { fg = colors.purple }
-			hl.StatusLineHeading2 = { fg = colors.blue }
+			hl.StatusLineGitStatus = { fg = colors.blue }
 
 			-- LSP
 			hl.LspInfoBorder = "FloatBorder"

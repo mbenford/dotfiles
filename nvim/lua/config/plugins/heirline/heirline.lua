@@ -15,19 +15,18 @@ return {
 						})
 					end,
 					{
-						components.Space,
 						components.Mode,
+						components.WorkDir,
 						components.Fill,
 						components.FileType,
 					},
 				},
 				{
-					components.Space,
 					components.Mode,
 					components.WorkDir,
-					components.FileFlags,
-					components.FileName,
+					components.FileInfo,
 					components.Location,
+					components.GitSigns,
 					components.Diagnostics,
 					components.Fill,
 					components.RecordingStatus,
@@ -37,8 +36,7 @@ return {
 					components.FileEncoding,
 					components.FileFormat,
 					components.FileType,
-					components.GitBranch,
-					components.Space,
+					components.GitInfo,
 				},
 			},
 		}

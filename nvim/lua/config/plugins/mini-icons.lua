@@ -2,7 +2,11 @@ return {
 	"echasnovski/mini.icons",
 	version = "*",
 	event = "VeryLazy",
-	opts = {},
+	opts = {
+		filetype = {
+			go = { glyph = "" },
+		},
+	},
 	config = function(_, opts)
 		local mini_icons = require("mini.icons")
 		mini_icons.setup(opts)

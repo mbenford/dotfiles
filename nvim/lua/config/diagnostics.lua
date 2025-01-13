@@ -4,8 +4,8 @@ vim.diagnostic.config({
 	severity_sort = true,
 	signs = {
 		text = {
-			[vim.diagnostic.severity.ERROR] = "■",
-			[vim.diagnostic.severity.WARN] = "■",
+			[vim.diagnostic.severity.ERROR] = "●",
+			[vim.diagnostic.severity.WARN] = "●",
 		},
 		texthl = {
 			[vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
@@ -14,7 +14,7 @@ vim.diagnostic.config({
 	},
 	virtual_text = {
 		spacing = 0,
-		prefix = "■",
+		prefix = "● ",
 		suffix = " ",
 		severity = vim.diagnostic.severity.ERROR,
 	},

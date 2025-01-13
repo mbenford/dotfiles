@@ -1,5 +1,3 @@
-local conditions = require("heirline.conditions")
-
 local M = {}
 
 M.Space = { provider = " ", hl = "StatusLine" }
@@ -15,47 +13,37 @@ local function Flex(priority, component)
 	}
 end
 
+local function mode_name(mode)
+	if mode:match("^n") then
+		return "NORMAL"
+	end
+	if mode:match("^[vV]") or mode:match("^\22") then
+		return "VISUAL"
+	end
+	if mode:match("^[sS]") or mode:match("^\19") then
+		return "SELECT"
+	end
+	if mode:match("^i") then
+		return "INSERT"
+	end
+	if mode:match("^R") then
+		return "REPLACE"
+	end
+	if mode:match("^c") then
+		return "COMMAND"
+	end
+	if mode:match("^t") then
+		return "TERM"
+	end
+	return "UNKNOWN"
+end
+
 M.Mode = {
 	static = {
-		mode_names = {
-			n = "NORMAL",
-			no = "NORMAL",
-			nov = "NORMAL",
-			noV = "NORMAL",
-			["no\22"] = "NORMAL",
-			niI = "NORMAL",
-			niR = "NORMAL",
-			niV = "NORMAL",
-			nt = "NORMAL",
-			v = "VISUAL",
-			vs = "VISUAL",
-			V = "VISUAL",
-			Vs = "VISUAL",
-			["\22"] = "VISUAL",
-			["\22s"] = "VISUAL",
-			s = "SELECT",
-			S = "SELECT",
-			["\19"] = "SELECT",
-			i = "INSERT",
-			ic = "INSERT",
-			ix = "INSERT",
-			R = "REPLACE",
-			Rc = "REPLACE",
-			Rx = "REPLACE",
-			Rv = "REPLACE",
-			Rvc = "REPLACE",
-			Rvx = "REPLACE",
-			c = "COMMAND",
-			cv = "EX",
-			r = "PROMPT",
-			rm = "MORE",
-			["r?"] = "CONFIRM",
-			["!"] = "SHELL",
-			t = "TERMINAL",
-		},
+		longest_mode = 7,
 	},
 	init = function(self)
-		self.mode = self.mode_names[vim.api.nvim_get_mode().mode]
+		self.mode = mode_name(vim.api.nvim_get_mode().mode)
 	end,
 	hl = function(self)
 		return "StatusLineMode" .. self.mode
@@ -63,110 +51,124 @@ M.Mode = {
 	update = "ModeChanged",
 	{
 		provider = function(self)
-			return self.mode
+			return "  " .. self.mode
 		end,
 	},
-	M.Sep,
+	{
+		provider = "",
+		hl = { reverse = true },
+	},
+	{
+		condition = function(self)
+			return #self.mode < self.longest_mode
+		end,
+		M.Sep,
+	},
+	{
+		condition = function(self)
+			return #self.mode >= self.longest_mode
+		end,
+		M.Space,
+	},
 }
 
 M.WorkDir = {
 	hl = "StatusLineWorkDir",
 	{
 		provider = function()
-			return string.upper(vim.fn.fnamemodify(vim.fn.getcwd(), ":t"))
+			return " " .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
 		end,
 	},
 	M.Sep,
 }
 
-M.FileName = {
-	init = function(self)
-		self.filename = vim.fn.expand("%:f:~")
-	end,
-	hl = function()
-		return vim.bo.modified and "StatusLineFilenameModified" or ""
-	end,
-	{
-		condition = function(self)
-			return self.filename ~= ""
+do
+	local FileIcon = {
+		init = function(self)
+			self.icon, self.hl = require("mini.icons").get("file", vim.fn.expand("%:f"))
 		end,
-		flexible = 1,
-		{
-			provider = function(self)
-				return self.filename
-			end,
-		},
-		{
-			provider = function(self)
-				local folder = vim.fn.fnamemodify(self.filename, ":h:t")
-				local filename = vim.fn.fnamemodify(self.filename, ":t")
-				return folder .. "/" .. filename
-			end,
-		},
-		{
-			provider = function(self)
-				return vim.fn.pathshorten(self.filename, 1)
-			end,
-		},
-		{
-			provider = function(self)
-				return vim.fn.fnamemodify(self.filename, ":t")
-			end,
-		},
-	},
-	{
-		condition = function(self)
-			return self.filename == ""
+		condition = function()
+			return package.loaded["mini.icons"] ~= nil
 		end,
-		{
-			provider = "[No Name]",
-		},
-	},
-	M.Sep,
-}
+		hl = function(self)
+			return self.hl
+		end,
+		provider = function(self)
+			return self.icon
+		end,
+	}
 
-M.FileFlags = {
-	condition = function()
-		return vim.bo.readonly or not vim.bo.modifiable
-	end,
-	{
+	local FileName = {
+		init = function(self)
+			self.filename = vim.fn.expand("%:f:~")
+		end,
+		hl = function()
+			return vim.bo.modified and "StatusLineFilenameModified" or ""
+		end,
+		{
+			condition = function(self)
+				return self.filename ~= ""
+			end,
+			flexible = 1,
+			{
+				provider = function(self)
+					return self.filename
+				end,
+			},
+			{
+				provider = function(self)
+					local folder = vim.fn.fnamemodify(self.filename, ":h:t")
+					local filename = vim.fn.fnamemodify(self.filename, ":t")
+					return folder .. "/" .. filename
+				end,
+			},
+			{
+				provider = function(self)
+					return vim.fn.pathshorten(self.filename, 1)
+				end,
+			},
+			{
+				provider = function(self)
+					return vim.fn.fnamemodify(self.filename, ":t")
+				end,
+			},
+		},
+		{
+			condition = function(self)
+				return self.filename == ""
+			end,
+			{
+				provider = "[No Name]",
+			},
+		},
+	}
+
+	local FileFlags = {
+		condition = function()
+			return vim.bo.readonly or not vim.bo.modifiable
+		end,
 		provider = function()
 			if vim.bo.readonly or not vim.bo.modifiable then
 				return ""
 			end
 		end,
-	},
-	M.Space,
-}
+	}
 
-M.FileIcon = {
-	init = function(self)
-		self.icon, self.hl = require("mini.icons").get("file", vim.fn.expand("%:f"))
-	end,
-	condition = function()
-		return package.loaded["mini.icons"] ~= nil
-	end,
-	hl = function(self)
-		return self.hl
-	end,
-	{
-		provider = function(self)
-			return self.icon
-		end,
-	},
-	M.Space,
-}
-
-M.FileInfo = {
-	M.FileFlags,
-	M.FileName,
-}
+	M.FileInfo = {
+		FileIcon,
+		M.Space,
+		FileName,
+		M.Space,
+		FileFlags,
+		M.Space,
+	}
+end
 
 M.FileIndent = Flex(6, {
 	{
 		provider = function()
 			local size = vim.bo.shiftwidth
-			return vim.bo.expandtab and ("SPACES:" .. size) or ("TAB:" .. size)
+			return vim.bo.expandtab and ("SPACE:" .. size) or ("TAB:" .. size)
 		end,
 	},
 	M.Sep,
@@ -221,34 +223,52 @@ M.RecordingStatus = {
 	hl = "StatusLineMacroRecording",
 	{
 		provider = function()
-			return " " .. vim.fn.reg_recording()
+			return "REC @" .. vim.fn.reg_recording()
 		end,
 	},
 	M.Sep,
 }
 
-M.LspStatus = {
+M.LspStatus = Flex(7, {
 	condition = function()
 		return #vim.lsp.get_clients({ bufnr = 0 }) > 0
 	end,
 	{
 		provider = function()
-			return "LSP:" .. #vim.lsp.get_clients({ bufnr = 0 })
+			return " " .. #vim.lsp.get_clients({ bufnr = 0 })
 		end,
 	},
+	hl = "StatusLineLspActive",
 	M.Sep,
-}
+})
 
 M.DapStatus = {
 	condition = function()
 		return package.loaded["dap"] ~= nil
 	end,
+	hl = "StatusLineDapActive",
 	{
 		provider = function()
-			return vim.g.dap_status
+			return require("dap").session() ~= nil and " DEBUG SESSION" or ""
 		end,
 	},
 	M.Sep,
+}
+
+M.SelectionCount = {
+	condition = function()
+		return mode_name(vim.api.nvim_get_mode().mode) == "VISUAL"
+	end,
+	{
+		provider = function()
+			local line_start, line_end = vim.fn.line("v"), vim.fn.line(".")
+			local lines = math.abs(line_end - line_start) + 1
+			local chars = vim.fn.wordcount().visual_chars
+			return string.format("(%dL:%dC)", lines, chars)
+		end,
+	},
+	M.Space,
+	update = { "CursorMoved", "ModeChanged" },
 }
 
 M.Location = {
@@ -256,45 +276,109 @@ M.Location = {
 	M.Sep,
 }
 
-M.GitBranch = {
-	provider = function()
-		return " " .. (conditions.is_git_repo() and vim.b.gitsigns_status_dict["head"] or "NO BRANCH")
-	end,
-	hl = "StatusLineGitBranch",
-}
-
-local function diagnostic_icon(severity)
-	return {
-		condition = function(self)
-			return self.count[severity] ~= nil
-		end,
-		hl = function(self)
-			return self.signs.texthl[severity]
-		end,
+do
+	local GitBranch = {
+		hl = "StatusLineGitBranch",
 		{
 			provider = function(self)
-				return self.signs.text[severity] .. " " .. self.count[severity]
+				return " " .. self.git.head
 			end,
-			M.Space,
 		},
+		M.Space,
+	}
+
+	local GitStatus = {
+		hl = "StatusLineGitStatus",
+		{
+			provider = function(self)
+				return string.format(" ↑%d↓%d", self.git.ahead, self.git.behind)
+			end,
+		},
+		M.Space,
+	}
+
+	M.GitInfo = {
+		condition = function()
+			return vim.g.git ~= nil and vim.g.git.head ~= ""
+		end,
+		init = function(self)
+			self.git = vim.g.git
+		end,
+		GitBranch,
+		GitStatus,
 	}
 end
 
-M.Diagnostics = {
-	static = {
-		signs = vim.diagnostic.config().signs,
-	},
-	init = function(self)
-		self.count = vim.diagnostic.count(0)
-	end,
-	update = {
-		"DiagnosticChanged",
-		callback = function()
-			vim.cmd("redrawstatus")
+do
+	local function DiagnosticIcon(severity)
+		return {
+			condition = function(self)
+				return self.count[severity] ~= nil
+			end,
+			hl = function(self)
+				return self.signs.texthl[severity]
+			end,
+			{
+				provider = function(self)
+					return self.signs.text[severity] .. " " .. self.count[severity]
+				end,
+				M.Space,
+			},
+		}
+	end
+
+	M.Diagnostics = {
+		static = {
+			signs = vim.diagnostic.config().signs,
+		},
+		init = function(self)
+			self.count = vim.diagnostic.count(0)
 		end,
-	},
-	diagnostic_icon(vim.diagnostic.severity.ERROR),
-	diagnostic_icon(vim.diagnostic.severity.WARN),
-}
+		update = {
+			"DiagnosticChanged",
+			callback = function()
+				vim.cmd("redrawstatus")
+			end,
+		},
+		DiagnosticIcon(vim.diagnostic.severity.ERROR),
+		DiagnosticIcon(vim.diagnostic.severity.WARN),
+		M.Space,
+	}
+end
+
+do
+	local GitDiff = function(sign, type, hl)
+		return {
+			hl = hl,
+			condition = function()
+				return vim.b.gitsigns_status_dict[type] ~= nil and vim.b.gitsigns_status_dict[type] > 0
+			end,
+			{
+				provider = function()
+					return sign .. vim.b.gitsigns_status_dict[type]
+				end,
+			},
+		}
+	end
+
+	M.GitSigns = {
+		condition = function()
+			return vim.b.gitsigns_status_dict ~= nil
+		end,
+		GitDiff("+", "added", "GitSignsAdd"),
+		GitDiff("~", "changed", "GitSignsChange"),
+		GitDiff("-", "removed", "GitSignsDelete"),
+		M.Sep,
+	}
+end
+
+M.Grapple = Flex(8, {
+	condition = function()
+		return package.loaded["grapple"] ~= nil
+	end,
+	provider = function()
+		return require("grapple").statusline()
+	end,
+})
 
 return M
