@@ -1,11 +1,11 @@
 return {
 	"OXY2DEV/markview.nvim",
 	enabled = false,
-	dependencies = {
-		"nvim-treesitter/nvim-treesitter",
-	},
 	ft = { "markdown" },
 	opts = {
+		preview = {
+			filetypes = { "markdown", "copilot-chat" },
+		},
 		code_blocks = {
 			icons = "mini",
 		},

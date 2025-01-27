@@ -11,8 +11,30 @@ return {
 				["vim.lsp.util.stylize_markdown"] = true,
 			},
 		},
+		views = {
+			cmdline_input = {
+				view = "cmdline_popup",
+				relative = "cursor",
+				anchor = "auto",
+				position = { row = 2, col = 2 },
+				size = { min_width = 30, width = "auto", height = "auto" },
+			},
+		},
 		presets = {
-			command_palette = true,
+			command_palette = {
+				views = {
+					cmdline_popup = {
+						position = {
+							row = 2,
+						},
+					},
+					cmdline_popupmenu = {
+						position = {
+							row = 5,
+						},
+					},
+				},
+			},
 			long_message_to_split = true,
 			inc_rename = false,
 			lsp_doc_border = true,

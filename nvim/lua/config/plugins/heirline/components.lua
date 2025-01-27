@@ -5,7 +5,7 @@ M.Sep = { provider = "  ", hl = "StatusLine" }
 M.Fill = { provider = "%=", hl = "StatusLine" }
 M.Empty = { provider = "" }
 
-local function Flex(priority, component)
+M.Flex = function(priority, component)
 	return {
 		flexible = priority,
 		component,
@@ -35,6 +35,10 @@ local function mode_name(mode)
 	if mode:match("^t") then
 		return "TERM"
 	end
+	if mode == "rm" then
+		return "MORE"
+	end
+
 	return "UNKNOWN"
 end
 
@@ -48,10 +52,10 @@ M.Mode = {
 	hl = function(self)
 		return "StatusLineMode" .. self.mode
 	end,
-	update = "ModeChanged",
+	{ provider = "  " },
 	{
 		provider = function(self)
-			return "  " .. self.mode
+			return self.mode
 		end,
 	},
 	{
@@ -76,7 +80,7 @@ M.WorkDir = {
 	hl = "StatusLineWorkDir",
 	{
 		provider = function()
-			return " " .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+			return " " .. string.upper(vim.fn.fnamemodify(vim.fn.getcwd(), ":t"))
 		end,
 	},
 	M.Sep,
@@ -100,7 +104,7 @@ do
 
 	local FileName = {
 		init = function(self)
-			self.filename = vim.fn.expand("%:f:~")
+			self.filename = vim.fn.expand("%:.")
 		end,
 		hl = function()
 			return vim.bo.modified and "StatusLineFilenameModified" or ""
@@ -124,11 +128,6 @@ do
 			},
 			{
 				provider = function(self)
-					return vim.fn.pathshorten(self.filename, 1)
-				end,
-			},
-			{
-				provider = function(self)
 					return vim.fn.fnamemodify(self.filename, ":t")
 				end,
 			},
@@ -138,7 +137,7 @@ do
 				return self.filename == ""
 			end,
 			{
-				provider = "[No Name]",
+				provider = "Untitled",
 			},
 		},
 	}
@@ -164,7 +163,7 @@ do
 	}
 end
 
-M.FileIndent = Flex(6, {
+M.FileIndent = {
 	{
 		provider = function()
 			local size = vim.bo.shiftwidth
@@ -172,9 +171,9 @@ M.FileIndent = Flex(6, {
 		end,
 	},
 	M.Sep,
-})
+}
 
-M.FileType = Flex(5, {
+M.FileType = {
 	condition = function()
 		return vim.bo.filetype ~= ""
 	end,
@@ -184,9 +183,9 @@ M.FileType = Flex(5, {
 		end,
 	},
 	M.Sep,
-})
+}
 
-M.FileEncoding = Flex(4, {
+M.FileEncoding = {
 	condition = function()
 		return vim.bo.fileencoding ~= ""
 	end,
@@ -196,9 +195,9 @@ M.FileEncoding = Flex(4, {
 		end,
 	},
 	M.Sep,
-})
+}
 
-M.FileFormat = Flex(3, {
+M.FileFormat = {
 	{
 		provider = function()
 			local format = vim.bo.fileformat
@@ -214,7 +213,7 @@ M.FileFormat = Flex(3, {
 		end,
 	},
 	M.Sep,
-})
+}
 
 M.RecordingStatus = {
 	condition = function()
@@ -223,13 +222,13 @@ M.RecordingStatus = {
 	hl = "StatusLineMacroRecording",
 	{
 		provider = function()
-			return "REC @" .. vim.fn.reg_recording()
+			return " REC @" .. vim.fn.reg_recording()
 		end,
 	},
 	M.Sep,
 }
 
-M.LspStatus = Flex(7, {
+M.LspStatus = {
 	condition = function()
 		return #vim.lsp.get_clients({ bufnr = 0 }) > 0
 	end,
@@ -240,16 +239,19 @@ M.LspStatus = Flex(7, {
 	},
 	hl = "StatusLineLspActive",
 	M.Sep,
-})
+}
 
 M.DapStatus = {
 	condition = function()
-		return package.loaded["dap"] ~= nil
+		return package.loaded["dap"] ~= nil and require("dap").session() ~= nil
+	end,
+	init = function(self)
+		self.session = require("dap").session()
 	end,
 	hl = "StatusLineDapActive",
 	{
-		provider = function()
-			return require("dap").session() ~= nil and " DEBUG SESSION" or ""
+		provider = function(self)
+			return " " .. string.upper(self.session.config.name)
 		end,
 	},
 	M.Sep,
@@ -278,7 +280,9 @@ M.Location = {
 
 do
 	local GitBranch = {
-		hl = "StatusLineGitBranch",
+		hl = function(self)
+			return "StatusLineGitStatus" .. self.git.status
+		end,
 		{
 			provider = function(self)
 				return " " .. self.git.head
@@ -287,11 +291,25 @@ do
 		M.Space,
 	}
 
-	local GitStatus = {
-		hl = "StatusLineGitStatus",
+	local GitCommits = {
+		condition = function(self)
+			return self.git.ahead > 0 or self.git.behind > 0
+		end,
+		hl = "StatusLineGitCommits",
 		{
+			condition = function(self)
+				return self.git.ahead > 0
+			end,
 			provider = function(self)
-				return string.format(" ↑%d↓%d", self.git.ahead, self.git.behind)
+				return "↑" .. self.git.ahead
+			end,
+		},
+		{
+			condition = function(self)
+				return self.git.behind > 0
+			end,
+			provider = function(self)
+				return "↓" .. self.git.behind
 			end,
 		},
 		M.Space,
@@ -305,7 +323,7 @@ do
 			self.git = vim.g.git
 		end,
 		GitBranch,
-		GitStatus,
+		GitCommits,
 	}
 end
 
@@ -337,7 +355,7 @@ do
 		update = {
 			"DiagnosticChanged",
 			callback = function()
-				vim.cmd("redrawstatus")
+				vim.cmd.redrawstatus()
 			end,
 		},
 		DiagnosticIcon(vim.diagnostic.severity.ERROR),
@@ -358,6 +376,7 @@ do
 					return sign .. vim.b.gitsigns_status_dict[type]
 				end,
 			},
+			M.Space,
 		}
 	end
 
@@ -365,20 +384,29 @@ do
 		condition = function()
 			return vim.b.gitsigns_status_dict ~= nil
 		end,
-		GitDiff("+", "added", "GitSignsAdd"),
-		GitDiff("~", "changed", "GitSignsChange"),
-		GitDiff("-", "removed", "GitSignsDelete"),
+		GitDiff(" ", "added", "GitSignsAdd"),
+		GitDiff(" ", "changed", "GitSignsChange"),
+		GitDiff(" ", "removed", "GitSignsDelete"),
 		M.Sep,
 	}
 end
 
-M.Grapple = Flex(8, {
+M.Grapple = {
 	condition = function()
 		return package.loaded["grapple"] ~= nil
 	end,
 	provider = function()
 		return require("grapple").statusline()
 	end,
-})
+}
+
+M.Copilot = {
+	condition = function()
+		return package.loaded["copilot"] ~= nil
+	end,
+	hl = "StatusLineCopilotActive",
+	{ provider = " " },
+	M.Sep,
+}
 
 return M

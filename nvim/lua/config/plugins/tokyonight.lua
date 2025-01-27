@@ -14,7 +14,7 @@ return {
 			-- Native
 			hl.Pmenu = { bg = colors.bg_highlight }
 			hl.SpellBad = { undercurl = true, sp = colors.green }
-			hl.TextYank = { fg = colors.yellow, bg = colors.none, reverse = true }
+			hl.TextYank = { bg = darken(colors.yellow, 0.2) }
 			hl.FloatTitle = { fg = colors.border_highlight, bg = colors.bg_float }
 			hl.WinBar = "Normal"
 			hl.WinBarNC = "Normal"
@@ -27,18 +27,20 @@ return {
 			hl.StatusLineModeREPLACE = { fg = colors.bg_statusline, bg = colors.red, bold = true }
 			hl.StatusLineModeCOMMAND = { fg = colors.bg_statusline, bg = colors.yellow, bold = true }
 			hl.StatusLineModeTERM = { fg = colors.bg_statusline, bg = colors.orange, bold = true }
+			hl.StatusLineModeMORE = { fg = colors.bg_statusline, bg = colors.magenta, bold = true }
+			hl.StatusLineModeUNKNOWN = { fg = colors.bg_statusline, bg = colors.fg, bold = true }
 			hl.StatusLineModeEX = { fg = colors.bg_statusline, bg = colors.yellow, bold = true }
 			hl.StatusLineFilenameModified = { fg = colors.yellow }
 			hl.StatusLineExoticFileFormat = { fg = colors.red, bg = colors.bg_statusline }
 			hl.StatusLineLspActive = { fg = colors.yellow }
-			hl.StatusLineDapActive = { fg = colors.orange }
-			hl.StatusLineCopilotActive = { fg = colors.blue }
+			hl.StatusLineDapActive = { fg = colors.green }
+			hl.StatusLineCopilotActive = { fg = colors.green }
 			hl.StatusLineMacroRecording = { fg = colors.red }
 			hl.StatusLineGitStatusClean = { fg = colors.green }
 			hl.StatusLineGitStatusDirty = { fg = colors.yellow }
 			hl.StatusLineWorkDir = { fg = colors.teal, bold = true }
 			hl.StatusLineGitBranch = { fg = colors.green }
-			hl.StatusLineGitStatus = { fg = colors.blue }
+			hl.StatusLineGitCommits = { fg = colors.blue }
 
 			-- LSP
 			hl.LspInfoBorder = "FloatBorder"

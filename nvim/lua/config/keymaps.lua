@@ -4,6 +4,7 @@ local apply_zz = require("utils.misc").apply_zz
 require("which-key").add({
 	{ "<Space>", "<Nop>", mode = { "n", "x" } },
 	{ ";", ":", mode = { "n", "x" }, silent = false, desc = "Command line mode" },
+	{ "<Leader>;", ":lua ", mode = { "n", "x" }, silent = false, desc = "Command line mode (Lua)" },
 	{ "H", "^", mode = { "n", "x", "o" }, remap = true, desc = "Alias for ^" },
 	{ "L", "$", mode = { "n", "x", "o" }, remap = true, desc = "Alias for $" },
 	{ "M", "%", mode = { "n", "x", "o" }, remap = true, desc = "Alias for %" },

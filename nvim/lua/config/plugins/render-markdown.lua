@@ -12,7 +12,7 @@ return {
 			width = "block",
 			min_width = tonumber(vim.o.colorcolumn),
 			position = "inline",
-			icons = { "▊" },
+			icons = { "▊ " },
 		},
 		code = {
 			width = "block",

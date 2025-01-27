@@ -17,7 +17,7 @@ vim.api.nvim_create_autocmd("VimResized", {
 -- Creates a highlight effect when text is yanked (copied)
 vim.api.nvim_create_autocmd("TextYankPost", {
 	group = group,
-	callback = lazy(vim.highlight.on_yank, { higroup = "TextYank", timeout = 150 }),
+	callback = lazy(vim.highlight.on_yank, { higroup = "TextYank", timeout = 200 }),
 })
 
 -- Adds a buffer-local keybinding 'q' to close some windows based on their file type
@@ -29,26 +29,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
--- Updates the window title
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
-	group = group,
-	callback = function(args)
-		local bufinfo = vim.fn.getbufinfo(args.buf)
-		if #bufinfo ~= 1 then
-			return
-		end
-
-		local buffer = bufinfo[1]
-		if buffer.listed == 0 then
-			return
-		end
-
-		local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-		vim.opt.titlestring = string.format("%s - nvim", cwd)
-	end,
-})
-
--- Opens help/man/markdown files in a floating window
+-- Opens help files in a floating window
 vim.api.nvim_create_autocmd("BufWinEnter", {
 	group = group,
 	pattern = "*",
@@ -72,8 +53,10 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 			border = "rounded",
 			width = 120,
 			backdrop = false,
-			title = string.format(" Help: %s ", vim.fn.fnamemodify(file_path, ":t:r")),
+			title = " HELP ",
 			title_pos = "center",
+			footer = string.format(" %s ", vim.fn.fnamemodify(file_path, ":~")),
+			footer_pos = "center",
 			wo = {
 				wrap = true,
 			},

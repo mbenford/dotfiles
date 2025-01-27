@@ -1,7 +1,7 @@
 return {
 	"echasnovski/mini.operators",
 	version = "*",
-	lazy = false,
+	event = { "BufRead", "BufNewFile" },
 	opts = {
 		evaluate = {
 			func = function(input)
@@ -27,5 +27,4 @@ return {
 			end,
 		},
 	},
-	keys = { "g=", "gx", "gm", "gr", "gs", { "gmc", "gccgmmgcc", remap = true } },
 }

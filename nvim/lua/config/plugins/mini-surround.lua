@@ -1,9 +1,8 @@
 return {
 	"echasnovski/mini.surround",
 	version = "*",
-	lazy = false,
+	event = { "BufRead", "BufNewFile" },
 	opts = {
 		search_method = "cover_or_next",
 	},
-	keys = { "sa", "sd", "sr", "sf", "sF", "sh", "sn" },
 }

@@ -41,21 +41,19 @@ return {
 			formatting = {
 				fields = { "kind", "abbr", "menu" },
 				format = function(entry, item)
-					if item.abbr:sub(#item.abbr) == "~" then
-						item.abbr = item.abbr:sub(1, -2)
-					end
 					item.kind = require("utils.ui").lsp_icons[item.kind] or " "
-					item.menu = string.format("%10s", entry.source.name:upper():gsub("NVIM_", ""))
 					return item
 				end,
+				expandable_indicator = false,
 			},
 			sorting = {
 				priority_weight = 2,
 				comparators = {
-					function(entry1, entry2)
-						if entry1.source.name == "copilot" and entry2.source.name ~= "copilot" then
+					function(a, b)
+						if a.source.name == "copilot" and b.source.name ~= "copilot" then
 							return false
-						elseif entry2.copilot == "copilot" and entry1.source.name ~= "copilot" then
+						end
+						if b.copilot == "copilot" and a.source.name ~= "copilot" then
 							return true
 						end
 					end,
@@ -73,10 +71,8 @@ return {
 			},
 			preselect = cmp.PreselectMode.None,
 			window = {
-				completion = { winhighlight = "CursorLine:Visual,Search:None" },
-				documentation = cmp.config.window.bordered({
-					winhighlight = "CursorLine:Visual,Search:None",
-				}),
+				completion = cmp.config.window.bordered({ winhighlight = "CursorLine:Visual,Search:None" }),
+				documentation = cmp.config.window.bordered({ winhighlight = "CursorLine:Visual,Search:None" }),
 			},
 		})
 	end,

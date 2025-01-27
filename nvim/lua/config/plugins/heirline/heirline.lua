@@ -1,8 +1,10 @@
 return {
 	"rebelot/heirline.nvim",
+	event = { "BufRead", "BufNewFile" },
 	opts = function()
 		local conditions = require("heirline.conditions")
 		local components = require("config.plugins.heirline.components")
+		local Flex = components.Flex
 
 		return {
 			statusline = {
@@ -11,7 +13,7 @@ return {
 				{
 					condition = function()
 						return conditions.buffer_matches({
-							buftype = { "prompt", "nofile", "terminal", "quickfix" },
+							buftype = { "prompt", "nofile", "terminal", "quickfix", "help" },
 						})
 					end,
 					{
@@ -19,24 +21,26 @@ return {
 						components.WorkDir,
 						components.Fill,
 						components.FileType,
+						components.Location,
 					},
 				},
 				{
 					components.Mode,
 					components.WorkDir,
 					components.FileInfo,
-					components.Location,
-					components.GitSigns,
+					Flex(8, components.GitSigns),
 					components.Diagnostics,
 					components.Fill,
 					components.RecordingStatus,
 					components.DapStatus,
-					components.LspStatus,
-					components.FileIndent,
-					components.FileEncoding,
-					components.FileFormat,
-					components.FileType,
-					components.GitInfo,
+					Flex(3, components.FileEncoding),
+					Flex(4, components.FileFormat),
+					Flex(5, components.FileType),
+					Flex(6, components.FileIndent),
+					components.Location,
+					Flex(7, components.LspStatus),
+					Flex(7, components.Copilot),
+					Flex(8, components.GitInfo),
 				},
 			},
 		}

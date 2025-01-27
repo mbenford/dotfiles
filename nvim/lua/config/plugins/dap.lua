@@ -6,17 +6,18 @@ return {
 	lazy = true,
 	init = function()
 		require("which-key").add({
-			{ "<Leader>d", group = "Debugging" },
+			{ "<Leader>d", group = "DAP" },
 		})
 	end,
 	config = function()
 		require("dap")
+
 		local sign = vim.fn.sign_define
 		sign("DapBreakpoint", { text = "●", texthl = "DapBreakpoint" })
 		sign("DapBreakpointCondition", { text = "■", texthl = "DapBreakpoint" })
 		sign("DapBreakpointRejected", { text = "⊗", texthl = "DapBreakpointRejected" })
 		sign("DapLogPoint", { text = "◆", texthl = "DapLogPoint" })
-		sign("DapStopped", { text = "󰜴", texthl = "DapStopped", linehl = "DapStoppedLine" })
+		sign("DapStopped", { text = "", texthl = "DapStopped", linehl = "DapStoppedLine" })
 
 		vim.api.nvim_exec_autocmds("User", { pattern = "DapLoaded" })
 	end,

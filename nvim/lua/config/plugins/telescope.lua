@@ -3,6 +3,7 @@ return {
 	dependencies = {
 		"natecraddock/telescope-zf-native.nvim",
 	},
+	enabled = false,
 	opts = {
 		defaults = {
 			filesize_limit = 1,
@@ -12,11 +13,15 @@ return {
 			selection_caret = "",
 			entry_prefix = "",
 			results_title = false,
-			layout_strategy = "vertical",
+			layout_strategy = "flex",
 			layout_config = {
 				prompt_position = "top",
 				vertical = {
 					mirror = true,
+					height = 0.8,
+				},
+				horizontal = {
+					height = 0.8,
 				},
 			},
 			file_ignore_patterns = {

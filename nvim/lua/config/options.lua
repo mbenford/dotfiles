@@ -52,6 +52,7 @@ o.swapfile = false
 o.tabstop = 2
 o.termguicolors = true
 o.title = true
+o.titlestring = '%{fnamemodify(getcwd(), ":~")} - Neovim'
 o.ttimeoutlen = 0
 o.undofile = true
 o.updatetime = 250
