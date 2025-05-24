@@ -10,6 +10,7 @@ return {
 		"hrsh7th/cmp-cmdline",
 		"saadparwaiz1/cmp_luasnip",
 		"zbirenbaum/copilot-cmp",
+		"xzbdmw/colorful-menu.nvim",
 	},
 	config = function()
 		local cmp = require("cmp")
@@ -39,8 +40,14 @@ return {
 				}),
 			}),
 			formatting = {
-				fields = { "kind", "abbr", "menu" },
+				fields = { "kind", "abbr" },
 				format = function(entry, item)
+					local hl = require("colorful-menu").cmp_highlights(entry)
+					if hl ~= nil then
+						item.abbr = hl.text
+						item.abbr_hl_group = hl.highlights
+					end
+
 					item.kind = require("utils.ui").lsp_icons[item.kind] or " "
 					return item
 				end,

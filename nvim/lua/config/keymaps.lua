@@ -4,7 +4,7 @@ local apply_zz = require("utils.misc").apply_zz
 require("which-key").add({
 	{ "<Space>", "<Nop>", mode = { "n", "x" } },
 	{ ";", ":", mode = { "n", "x" }, silent = false, desc = "Command line mode" },
-	{ "<Leader>;", ":lua ", mode = { "n", "x" }, silent = false, desc = "Command line mode (Lua)" },
+	{ "<C-;>", ":lua ", mode = { "n", "x" }, silent = false, desc = "Command line mode (Lua)" },
 	{ "H", "^", mode = { "n", "x", "o" }, remap = true, desc = "Alias for ^" },
 	{ "L", "$", mode = { "n", "x", "o" }, remap = true, desc = "Alias for $" },
 	{ "M", "%", mode = { "n", "x", "o" }, remap = true, desc = "Alias for %" },
@@ -60,7 +60,7 @@ require("which-key").add({
 	{ "<Leader>y", '"+y', mode = { "x" }, desc = "Yank selected lines to clipboard" },
 	{ "<Leader>p", '"+p', desc = "Paste from clipboard after the cursor" },
 	{ "<Leader>P", '"+P', desc = "Paste from clipboard before the cursor" },
-	{ "<Leader>nf", "<Cmd>ene | startinsert<CR>", desc = "Create an empty buffer in insert mode" },
+	{ "<Leader>nf", "<Cmd>enew | startinsert<CR>", desc = "Create an empty buffer in insert mode" },
 	{ "<Leader>nw", "<Cmd>vnew<CR>", desc = "Create a new window" },
 	{ "cn", "*``micgn", desc = "Change the word at the cursor and search next occurrences" },
 	{ "cs", "*``:%s/<C-r><C-w>//g<Left><Left>", desc = "Substitute all occurrences of the word at the cursor" },
@@ -137,6 +137,12 @@ require("which-key").add({
 	{ "[l", "<Cmd>lprev<CR>zz", desc = "Go to previous item on location list" },
 	{ "]l", "<Cmd>lnext<CR>zz", desc = "Go to next item on location list" },
 	{ "<Esc>", "<Cmd>nohlsearch<CR><Esc>", mode = { "n" }, desc = "Clear search highlight" },
+	{ ".", ".<C-g>u", mode = { "i" }, desc = "Create an undo break after a ." },
+	{ ",", ",<C-g>u", mode = { "i" }, desc = "Create an undo break after a ," },
+	{ ";", ";<C-g>u", mode = { "i" }, desc = "Create an undo break after a ;" },
+	{ "?", "?<C-g>u", mode = { "i" }, desc = "Create an undo break after a ?" },
+	{ "!", "!<C-g>u", mode = { "i" }, desc = "Create an undo break after a !" },
+	{ "<Space>", "<Space><C-g>u", mode = { "i" }, desc = "Create an undo break after a space" },
 
 	-- Toggles
 	{ "<LocalLeader>tn", "<Cmd>set number!<CR>", desc = "Toggle numbers" },
@@ -145,30 +151,3 @@ require("which-key").add({
 	{ "<LocalLeader>th", "<Cmd>set hlsearch!<CR>", desc = "Toggle search highlight" },
 	{ "<LocalLeader>ts", "<Cmd>set spell!<CR>", desc = "Toggle spell checking" },
 })
-
-local function close_float_window_or_run_q()
-	local current_win_id = vim.api.nvim_get_current_win()
-
-	local win_config = vim.api.nvim_win_get_config(current_win_id)
-	if win_config.relative ~= "" then
-		local bufnr = vim.api.nvim_get_current_buf()
-
-		if vim.api.nvim_buf_get_option(bufnr, "modified") then
-			local choice = vim.fn.confirm("There are unsaved changes. Close anyway?", "&Yes\n&No", 2)
-
-			if choice ~= 1 then
-				return
-			end
-
-			vim.api.nvim_buf_call(bufnr, function()
-				vim.cmd("silent! checktime")
-			end)
-		end
-		vim.api.nvim_win_close(current_win_id, false)
-	else
-		vim.api.nvim_feedkeys("q", "n", false)
-	end
-end
-
--- Create the custom keymap for 'q'
-vim.keymap.set("n", "q", close_float_window_or_run_q, { silent = true })

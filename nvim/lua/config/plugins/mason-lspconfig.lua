@@ -8,6 +8,7 @@ return {
 	opts = {
 		automatic_installation = true,
 		ensure_installed = {
+			"basedpyright",
 			"bashls",
 			"cssls",
 			"cssmodules_ls",
@@ -16,9 +17,8 @@ return {
 			"gopls",
 			"html",
 			"jsonls",
-			"pyright",
-			"rust_analyzer",
 			"lua_ls",
+			"rust_analyzer",
 			"terraformls",
 			"ts_ls",
 			"yamlls",

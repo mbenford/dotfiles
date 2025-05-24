@@ -15,11 +15,11 @@ o.completeopt = { "menu", "menuone", "noinsert", "noselect" }
 o.confirm = true
 o.cursorline = true
 o.expandtab = false
+o.fillchars:append({ eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "" })
 o.foldcolumn = "auto"
+o.foldenable = true
 o.foldlevel = 99
 o.foldlevelstart = -1
-o.foldenable = true
-o.fillchars:append({ eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "" })
 o.hidden = true
 o.hlsearch = true
 o.ignorecase = true
@@ -28,9 +28,10 @@ o.linebreak = true
 o.list = true
 o.listchars = { tab = "  ", trail = "·" }
 o.mouse = "a"
-o.numberwidth = 2
+o.mousemodel = "extend"
 o.number = true
-o.relativenumber = true
+o.numberwidth = 3
+o.relativenumber = false
 o.ruler = false
 o.scrolloff = 3
 o.shiftwidth = 2
@@ -42,17 +43,17 @@ o.sidescrolloff = 5
 o.signcolumn = "auto:1-2"
 o.smartcase = true
 o.smartindent = false
+o.softtabstop = 2
 o.spell = false
 o.spelllang = { "en_us", "pt_br" }
 o.spelloptions = "camel"
-o.softtabstop = 2
 o.splitbelow = true
 o.splitright = true
 o.swapfile = false
 o.tabstop = 2
 o.termguicolors = true
 o.title = true
-o.titlestring = '%{fnamemodify(getcwd(), ":~")} - Neovim'
+o.titlestring = '%{expand("~") == getcwd() ? "Home" : fnamemodify(getcwd(), ":~")} :: Neovim'
 o.ttimeoutlen = 0
 o.undofile = true
 o.updatetime = 250

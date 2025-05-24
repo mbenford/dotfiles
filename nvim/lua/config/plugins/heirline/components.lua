@@ -1,3 +1,5 @@
+local util = require("utils.string")
+
 local M = {}
 
 M.Space = { provider = " ", hl = "StatusLine" }
@@ -243,7 +245,7 @@ M.LspStatus = {
 
 M.DapStatus = {
 	condition = function()
-		return package.loaded["dap"] ~= nil and require("dap").session() ~= nil
+		return package.loaded.dap ~= nil and require("dap").session() ~= nil
 	end,
 	init = function(self)
 		self.session = require("dap").session()
@@ -285,7 +287,7 @@ do
 		end,
 		{
 			provider = function(self)
-				return " " .. self.git.head
+				return " " .. util.truncate_middle(self.git.head, 20)
 			end,
 		},
 		M.Space,
@@ -349,6 +351,9 @@ do
 		static = {
 			signs = vim.diagnostic.config().signs,
 		},
+		condition = function()
+			return mode_name(vim.api.nvim_get_mode().mode) ~= "INSERT"
+		end,
 		init = function(self)
 			self.count = vim.diagnostic.count(0)
 		end,
@@ -393,7 +398,7 @@ end
 
 M.Grapple = {
 	condition = function()
-		return package.loaded["grapple"] ~= nil
+		return package.loaded.grapple ~= nil
 	end,
 	provider = function()
 		return require("grapple").statusline()
@@ -402,7 +407,7 @@ M.Grapple = {
 
 M.Copilot = {
 	condition = function()
-		return package.loaded["copilot"] ~= nil
+		return package.loaded.copilot ~= nil
 	end,
 	hl = "StatusLineCopilotActive",
 	{ provider = " " },

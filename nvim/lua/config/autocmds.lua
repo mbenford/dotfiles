@@ -1,36 +1,36 @@
 local lazy = require("utils.lazy")
-
+local autocmd = vim.api.nvim_create_autocmd
 local group = vim.api.nvim_create_augroup("Custom", { clear = true })
 
 -- Saves all modified buffers when Neovim loses focus
-vim.api.nvim_create_autocmd("FocusLost", {
+autocmd("FocusLost", {
 	group = group,
 	command = "silent! wa",
 })
 
 -- Resizes splits when the Neovim window is resized
-vim.api.nvim_create_autocmd("VimResized", {
+autocmd("VimResized", {
 	group = group,
 	command = "wincmd =",
 })
 
 -- Creates a highlight effect when text is yanked (copied)
-vim.api.nvim_create_autocmd("TextYankPost", {
+autocmd("TextYankPost", {
 	group = group,
 	callback = lazy(vim.highlight.on_yank, { higroup = "TextYank", timeout = 200 }),
 })
 
 -- Adds a buffer-local keybinding 'q' to close some windows based on their file type
-vim.api.nvim_create_autocmd("FileType", {
+autocmd("FileType", {
 	group = group,
 	pattern = { "help", "qf", "vim", "checkhealth" },
 	callback = function(event)
-		require("which-key").add({ "q", "<C-w>q", buffer = event.buf, desc = "Close window" })
+		require("which-key").add({ "x", "<C-w>q", buffer = event.buf, desc = "Close window" })
 	end,
 })
 
 -- Opens help files in a floating window
-vim.api.nvim_create_autocmd("BufWinEnter", {
+autocmd("BufWinEnter", {
 	group = group,
 	pattern = "*",
 	callback = function(event)
@@ -63,7 +63,7 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 		})
 		win:add_padding()
 		win:update()
-		vim.api.nvim_create_autocmd("WinEnter", {
+		autocmd("WinEnter", {
 			group = win.augroup,
 			callback = function()
 				win:close()

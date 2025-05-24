@@ -4,6 +4,7 @@ return {
 	opts = {
 		options = {
 			permanent_delete = false,
+			use_as_default_explorer = true,
 		},
 		mappings = {
 			go_in = "<Right>",

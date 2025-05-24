@@ -21,20 +21,7 @@ return {
 			},
 		},
 		presets = {
-			command_palette = {
-				views = {
-					cmdline_popup = {
-						position = {
-							row = 2,
-						},
-					},
-					cmdline_popupmenu = {
-						position = {
-							row = 5,
-						},
-					},
-				},
-			},
+			command_palette = true,
 			long_message_to_split = true,
 			inc_rename = false,
 			lsp_doc_border = true,

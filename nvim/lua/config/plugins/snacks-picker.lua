@@ -8,7 +8,8 @@ return {
 	opts = {
 		picker = {
 			layout = {
-				preset = "vscode",
+				preset = "vertical",
+				preview = false,
 				layout = {
 					backdrop = false,
 				},
@@ -31,6 +32,9 @@ return {
 				},
 				preview = {
 					wo = {
+						foldcolumn = "0",
+						signcolumn = "no",
+						statuscolumn = " ",
 						number = false,
 						relativenumber = false,
 					},
@@ -42,35 +46,35 @@ return {
 		{
 			"<Leader>ff",
 			function()
-				require("snacks").picker.files()
+				Snacks.picker.files()
 			end,
 			desc = "Files",
 		},
 		{
 			"<Leader>fa",
 			function()
-				require("snacks").picker.files({ hidden = true, ignored = true })
+				Snacks.picker.files({ hidden = true, ignored = true })
 			end,
 			desc = "All Files",
 		},
 		{
 			"<Leader>fo",
 			function()
-				require("snacks").picker.recent({ filter = { cwd = true } })
+				Snacks.picker.recent({ filter = { cwd = true } })
 			end,
 			desc = "Files",
 		},
 		{
 			"<Leader>fg",
 			function()
-				require("snacks").picker.grep({ regex = false })
+				Snacks.picker.grep({ regex = false, layout = { preview = true } })
 			end,
 			desc = "Live grep",
 		},
 		{
 			"<Leader>f*",
 			function()
-				require("snacks").picker.grep_word({ regex = false })
+				Snacks.picker.grep_word({ regex = false, layout = { preview = true } })
 			end,
 			mode = { "n", "x" },
 			desc = "Grep Word",
@@ -78,28 +82,42 @@ return {
 		{
 			"<Leader>fb",
 			function()
-				require("snacks").picker.buffers()
+				Snacks.picker.buffers()
 			end,
 			desc = "Buffers",
 		},
 		{
 			"<Leader>f<Space>",
 			function()
-				require("snacks").picker.resume()
+				Snacks.picker.resume()
 			end,
 			desc = "Resume",
 		},
 		{
 			"<Leader>fr",
 			function()
-				require("snacks").picker.registers()
+				Snacks.picker.registers()
 			end,
 			desc = "Registers",
 		},
 		{
 			"<Leader>fh",
 			function()
-				require("snacks").picker.help()
+				Snacks.picker.help()
+			end,
+			desc = "Help",
+		},
+		{
+			"<Leader>f;",
+			function()
+				Snacks.picker.commands()
+			end,
+			desc = "Help",
+		},
+		{
+			"<Leader>;",
+			function()
+				Snacks.picker.command_history({ layout = { preset = "vertical" } })
 			end,
 			desc = "Help",
 		},
@@ -111,10 +129,11 @@ return {
 					table.insert(filetypes, { text = ft, name = ft })
 				end
 
-				require("snacks").picker({
+				Snacks.picker({
 					items = filetypes,
-					source = "Filetypes",
-					format = function(item, picker)
+					source = "filetypes",
+					layout = "select",
+					format = function(item)
 						local icon, icon_hl = require("snacks.util").icon(item.text, "filetype")
 						return {
 							{ icon .. " ", icon_hl },
@@ -123,7 +142,7 @@ return {
 					end,
 					confirm = function(picker, item)
 						picker:close()
-						vim.cmd("set ft=" .. item.text)
+						vim.cmd.set("ft=" .. item.text)
 					end,
 				})
 			end,
@@ -132,35 +151,35 @@ return {
 		{
 			"<Leader>fs",
 			function()
-				-- require("snacks").picker.filetypes()
+				Snacks.picker.spelling()
 			end,
 			desc = "Filetypes",
 		},
 		{
 			"<Leader>ld",
 			function()
-				require("snacks").picker.lsp_definitions()
+				Snacks.picker.lsp_definitions()
 			end,
 			desc = "LSP Definitions",
 		},
 		{
 			"<Leader>lr",
 			function()
-				require("snacks").picker.lsp_references()
+				Snacks.picker.lsp_references()
 			end,
 			desc = "LSP References",
 		},
 		{
 			"<Leader>li",
 			function()
-				require("snacks").picker.lsp_implementations()
+				Snacks.picker.lsp_implementations()
 			end,
 			desc = "LSP Implementations",
 		},
 		{
 			"<Leader>ls",
 			function()
-				require("snacks").picker.lsp_symbols()
+				Snacks.picker.lsp_symbols()
 			end,
 			desc = "LSP Symbols",
 		},

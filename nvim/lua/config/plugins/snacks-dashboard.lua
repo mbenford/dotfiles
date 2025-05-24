@@ -1,3 +1,4 @@
+local version = vim.version()
 return {
 	"folke/snacks.nvim",
 	opts = {
@@ -25,7 +26,7 @@ return {
 					[[  █████  ░░█████░░██████ ░░██████     ░░███      █████ █████░███ █████ ]],
 					[[ ░░░░░    ░░░░░  ░░░░░░   ░░░░░░       ░░░      ░░░░░ ░░░░░ ░░░ ░░░░░  ]],
 					[[                                                                       ]],
-					vim.version().build,
+					string.format("%s.%s.%s", version.major, version.minor, version.patch),
 				}, "\n"),
 			},
 			sections = {

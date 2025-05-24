@@ -7,6 +7,9 @@ return {
 	},
 	ft = { "markdown", "Avante", "copilot-chat", "codecompanion" },
 	opts = {
+		anti_conceal = {
+			enabled = false,
+		},
 		file_types = { "markdown", "Avante", "copilot-chat", "codecompanion" },
 		heading = {
 			width = "block",
@@ -21,5 +24,6 @@ return {
 			right_pad = 1,
 			language_pad = 1,
 		},
+		win_options = { concealcursor = { rendered = "n" } },
 	},
 }

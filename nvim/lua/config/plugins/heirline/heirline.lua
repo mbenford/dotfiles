@@ -1,6 +1,5 @@
 return {
 	"rebelot/heirline.nvim",
-	event = { "BufRead", "BufNewFile" },
 	opts = function()
 		local conditions = require("heirline.conditions")
 		local components = require("config.plugins.heirline.components")

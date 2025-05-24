@@ -19,4 +19,16 @@ function M.truncate_right(str, length)
 	return #str > length and (str:sub(1, length) .. "…") or str
 end
 
+function M.truncate_middle(str, length)
+	if #str <= length then
+		return str
+	end
+
+	local half = math.floor((length - 1) / 2)
+	local left = str:sub(1, half)
+	local right = str:sub(-half)
+
+	return left .. "…" .. right
+end
+
 return M

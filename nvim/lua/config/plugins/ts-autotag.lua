@@ -1,4 +1,4 @@
 return {
-	'windwp/nvim-ts-autotag',
-	event = 'BufRead',
+	"windwp/nvim-ts-autotag",
+	ft = { "html", "jsx", "tsx" },
 }

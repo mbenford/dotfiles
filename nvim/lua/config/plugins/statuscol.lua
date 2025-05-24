@@ -1,16 +1,18 @@
 return {
 	"luukvbaal/statuscol.nvim",
-	event = { "BufRead", "BufNewFile" },
-	config = function()
+	event = { "BufRead", "BufNew" },
+	opts = function()
 		local builtin = require("statuscol.builtin")
-		require("statuscol").setup({
+		return {
+			ft_ignore = { "snacks_picker_preview" },
 			relculright = true,
 			segments = {
+				{ text = { builtin.lnumfunc, " " } },
 				{
 					sign = {
 						namespace = { "gitsigns" },
 						colwidth = 1,
-						auto = true,
+						auto = false,
 					},
 				},
 				{
@@ -28,8 +30,7 @@ return {
 						auto = true,
 					},
 				},
-				{ text = { builtin.lnumfunc, " " } },
 			},
-		})
+		}
 	end,
 }

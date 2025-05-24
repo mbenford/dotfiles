@@ -24,6 +24,16 @@ return {
 		terminal = {
 			win = { border = "rounded", title_pos = "center" },
 		},
+		input = {
+			enabled = true,
+			start_mode = "select",
+		},
+		styles = {
+			input = {
+				row = 1,
+				relative = "cursor",
+			},
+		},
 	},
 	keys = {
 		{

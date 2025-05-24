@@ -4,6 +4,11 @@ return {
 	event = { "BufRead", "BufWritePost" },
 	config = function()
 		require("nvim-treesitter.configs").setup({
+			auto_install = false,
+			sync_install = false,
+			ignore_install = {},
+			modules = {},
+
 			ensure_installed = {
 				"bash",
 				"c",
@@ -62,16 +67,6 @@ return {
 				},
 			},
 			textobjects = {
-				select = {
-					enable = false,
-					lookahead = true,
-					keymaps = {
-						["af"] = "@function.outer",
-						["if"] = "@function.inner",
-						["ac"] = "@class.outer",
-						["ic"] = "@class.inner",
-					},
-				},
 				move = {
 					enable = true,
 					set_jumps = true,

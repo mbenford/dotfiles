@@ -30,12 +30,13 @@ return {
 		{
 			"<leader>cq",
 			function()
-				local input = vim.fn.input("Copilot Chat: ")
-				if input ~= "" then
-					local mode = vim.api.nvim_get_mode().mode
-					local select = require("CopilotChat.select")
-					require("CopilotChat").ask(input, { selection = mode == "n" and select.buffer or select.visual })
-				end
+				vim.ui.input({ prompt = "Copilot Quick Chat: " }, function(input)
+					if input and input ~= "" then
+						local mode = vim.api.nvim_get_mode().mode
+						local select = require("CopilotChat.select")
+						require("CopilotChat").ask(input, { selection = mode == "n" and select.buffer or select.visual })
+					end
+				end)
 			end,
 			mode = { "n", "x" },
 			desc = "Quick chat",
