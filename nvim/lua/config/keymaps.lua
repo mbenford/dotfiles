@@ -5,6 +5,7 @@ require("which-key").add({
 	{ "<Space>", "<Nop>", mode = { "n", "x" } },
 	{ ";", ":", mode = { "n", "x" }, silent = false, desc = "Command line mode" },
 	{ "<C-;>", ":lua ", mode = { "n", "x" }, silent = false, desc = "Command line mode (Lua)" },
+	{ "<C-=>", ":lua= ", mode = { "n", "x" }, silent = false, desc = "Command line mode (Lua =)" },
 	{ "H", "^", mode = { "n", "x", "o" }, remap = true, desc = "Alias for ^" },
 	{ "L", "$", mode = { "n", "x", "o" }, remap = true, desc = "Alias for $" },
 	{ "M", "%", mode = { "n", "x", "o" }, remap = true, desc = "Alias for %" },
@@ -42,7 +43,7 @@ require("which-key").add({
 	{ "<Tab>", "<C-^>zz", desc = "Switch to the alternate buffer" },
 	{ "<C-p>", "<Cmd>put<CR>", desc = 'Put the text from register " on the line below' },
 	{ "<C-S-p>", "<Cmd>put!<CR>", desc = 'Put the text from register " on the line above' },
-	{ "<C-q>", "<Cmd>qa<CR>", desc = "Exit" },
+	{ "<C-q>", require("utils.remote").detach_or_quit, desc = "Exit" },
 	{ "<C-S-q>", "<Cmd>qa!<CR>", desc = "Exit without saving" },
 	{
 		"dd",
@@ -119,16 +120,16 @@ require("which-key").add({
 		desc = "Down when PMenu is visible",
 	},
 	{ "<Leader>k", vim.diagnostic.open_float, desc = "Open diagnostic window for current line" },
-	{ "[d", apply_zz(vim.diagnostic.goto_prev), desc = "Go to previous diagnostic" },
-	{ "]d", apply_zz(vim.diagnostic.goto_next), desc = "Go to next diagnostic" },
+	{ "[d", apply_zz(lazy(vim.diagnostic.jump, { count = -1, float = true })), desc = "Go to previous diagnostic" },
+	{ "]d", apply_zz(lazy(vim.diagnostic.jump, { count = 1, float = true })), desc = "Go to next diagnostic" },
 	{
 		"[e",
-		apply_zz(lazy(vim.diagnostic.goto_prev, { severity = vim.diagnostic.severity.ERROR })),
+		apply_zz(lazy(vim.diagnostic.jump, { count = -1, float = true, severity = vim.diagnostic.severity.ERROR })),
 		desc = "Go to previous diagnostic error",
 	},
 	{
 		"]e",
-		apply_zz(lazy(vim.diagnostic.goto_next, { severity = vim.diagnostic.severity.ERROR })),
+		apply_zz(lazy(vim.diagnostic.jump, { count = 1, float = true, severity = vim.diagnostic.severity.ERROR })),
 		desc = "Go to next diagnostic error",
 	},
 	{ "<Leader>q", "<Cmd>botright copen<CR>", desc = "Open Quickfix window" },
@@ -143,6 +144,7 @@ require("which-key").add({
 	{ "?", "?<C-g>u", mode = { "i" }, desc = "Create an undo break after a ?" },
 	{ "!", "!<C-g>u", mode = { "i" }, desc = "Create an undo break after a !" },
 	{ "<Space>", "<Space><C-g>u", mode = { "i" }, desc = "Create an undo break after a space" },
+	{ "<CR>", "<CR><C-g>u", mode = { "i" }, desc = "Create an undo break after a line break" },
 
 	-- Toggles
 	{ "<LocalLeader>tn", "<Cmd>set number!<CR>", desc = "Toggle numbers" },
@@ -150,4 +152,42 @@ require("which-key").add({
 	{ "<LocalLeader>tw", "<Cmd>set wrap!<CR>", desc = "Toggle line wrap" },
 	{ "<LocalLeader>th", "<Cmd>set hlsearch!<CR>", desc = "Toggle search highlight" },
 	{ "<LocalLeader>ts", "<Cmd>set spell!<CR>", desc = "Toggle spell checking" },
+	{
+		"<LocalLeader>tc",
+		function()
+			local listchars = vim.opt.listchars:get()
+			if listchars.eol == nil then
+				listchars = {
+					tab = " ➝",
+					space = "·",
+					lead = "·",
+					eol = "↲",
+				}
+			else
+				listchars = {
+					tab = "  ",
+					space = nil,
+					lead = nil,
+					eol = nil,
+				}
+			end
+			vim.opt.listchars = listchars
+		end,
+		desc = "Toggle list chars",
+	},
+
+	-- LSP
+	{ "<Leader>lh", vim.lsp.buf.hover, desc = "LSP Hover" },
+	{ "<C-k>", vim.lsp.buf.signature_help, desc = "LSP Signature Help" },
+	{ "<Leader>rr", vim.lsp.buf.rename, desc = "LSP Rename" },
+	{ "<Leader>la", vim.lsp.buf.code_action, desc = "LSP Code Action" },
+	-- {
+	-- 	"<Leader>lh",
+	-- 	function()
+	-- 		vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+	-- 	end,
+	-- 	buffer = bufnr,
+	-- 	desc = "LSP Inlay Hints",
+	-- },
+	{ "<Leader>l?", "<Cmd>LspInfo<CR>", desc = "LSP Info" },
 })

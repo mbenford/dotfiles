@@ -22,4 +22,8 @@ function M.debounce(fn, timeout)
 	end
 end
 
+function M.work_dir()
+	return string.upper(vim.fn.fnamemodify(vim.fn.getcwd(), ":t")) .. (vim.env.DEVPOD and " [DevPod]" or "")
+end
+
 return M

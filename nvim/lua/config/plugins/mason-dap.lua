@@ -1,5 +1,6 @@
 return {
 	"jay-babu/mason-nvim-dap.nvim",
+	cond = not vim.env.DEVPOD,
 	dependencies = {
 		"williamboman/mason.nvim",
 		"mfussenegger/nvim-dap",
@@ -7,7 +8,7 @@ return {
 	lazy = true,
 	event = "User DapLoaded",
 	opts = {
-		automatic_installation = true,
+		automatic_installation = false,
 		ensure_installed = {
 			"delve",
 		},

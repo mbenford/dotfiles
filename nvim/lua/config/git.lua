@@ -1,4 +1,4 @@
-vim.g.git = { head = "", ahead = 0, behind = 0 }
+vim.g.git = { status = "", head = "", ahead = 0, behind = 0 }
 
 local function set(key, value)
 	local git = vim.g.git
@@ -13,7 +13,7 @@ local function get_branch()
 		"rev-parse",
 		"--abbrev-ref",
 		"HEAD",
-	}, { text = true }, function(result)
+	}, { cwd = vim.fn.getcwd(), text = true }, function(result)
 		if result.code ~= 0 then
 			set("head", "")
 			return
@@ -55,7 +55,7 @@ local function get_status()
 		"git",
 		"status",
 		"--porcelain",
-	}, { text = true }, function(result)
+	}, { cwd = vim.fn.getcwd(), text = true }, function(result)
 		if result.code ~= 0 then
 			set("status", nil)
 			return
@@ -75,9 +75,14 @@ update()
 local timer = vim.uv.new_timer()
 timer:start(0, 10000, vim.schedule_wrap(update))
 
+local group = vim.api.nvim_create_augroup("Git", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePost", {
-	group = "Custom",
+	group = group,
 	callback = require("utils.misc").debounce(function()
 		get_status()
 	end, 1000),
+})
+vim.api.nvim_create_autocmd("DirChanged", {
+	group = group,
+	callback = update,
 })

@@ -1,7 +1,7 @@
 return {
 	"echasnovski/mini.surround",
 	version = "*",
-	event = { "BufRead", "BufNew" },
+	event = { "BufRead", "InsertEnter" },
 	opts = {
 		search_method = "cover_or_next",
 	},

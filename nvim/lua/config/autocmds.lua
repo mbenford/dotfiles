@@ -17,7 +17,7 @@ autocmd("VimResized", {
 -- Creates a highlight effect when text is yanked (copied)
 autocmd("TextYankPost", {
 	group = group,
-	callback = lazy(vim.highlight.on_yank, { higroup = "TextYank", timeout = 200 }),
+	callback = lazy(vim.hl.on_yank, { higroup = "TextYank", timeout = 200 }),
 })
 
 -- Adds a buffer-local keybinding 'q' to close some windows based on their file type
@@ -69,5 +69,15 @@ autocmd("BufWinEnter", {
 				win:close()
 			end,
 		})
+	end,
+})
+
+-- Updates the Snacks dashboard when the working directory changes
+autocmd("DirChanged", {
+	group = group,
+	callback = function()
+		if Snacks then
+			Snacks.dashboard.update()
+		end
 	end,
 })

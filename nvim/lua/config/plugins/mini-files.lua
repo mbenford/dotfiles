@@ -29,14 +29,6 @@ return {
 				config.height = 10
 				config.footer = string.format(" %d ", vim.api.nvim_buf_line_count(args.data.buf_id))
 				config.footer_pos = "center"
-
-				if config.title[#config.title][1] ~= " " then
-					table.insert(config.title, { " ", "NormalFloat" })
-				end
-				if config.title[1][1] ~= " " then
-					table.insert(config.title, 1, { " ", "NormalFloat" })
-				end
-
 				vim.api.nvim_win_set_config(args.data.win_id, config)
 			end,
 		})

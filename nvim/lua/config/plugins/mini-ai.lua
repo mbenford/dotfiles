@@ -1,7 +1,7 @@
 return {
 	"echasnovski/mini.ai",
 	version = "*",
-	event = { "BufRead", "BufNewFile" },
+	event = { "BufRead", "InsertEnter" },
 	opts = function()
 		local mini_ai = require("mini.ai")
 		local spec = mini_ai.gen_spec

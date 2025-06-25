@@ -1,7 +1,7 @@
 return {
 	"echasnovski/mini.operators",
 	version = "*",
-	event = { "BufRead", "BufNew" },
+	event = { "BufRead", "InsertEnter" },
 	opts = {
 		evaluate = {
 			func = function(input)

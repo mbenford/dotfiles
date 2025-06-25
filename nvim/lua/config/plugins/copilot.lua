@@ -1,6 +1,6 @@
 return {
 	"zbirenbaum/copilot.lua",
-	enabled = true,
+	cond = vim.fn.system("which node") ~= "",
 	event = "InsertEnter",
 	opts = {
 		suggestion = { enabled = false },

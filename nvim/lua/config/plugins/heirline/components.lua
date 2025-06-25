@@ -1,5 +1,3 @@
-local util = require("utils.string")
-
 local M = {}
 
 M.Space = { provider = " ", hl = "StatusLine" }
@@ -82,7 +80,7 @@ M.WorkDir = {
 	hl = "StatusLineWorkDir",
 	{
 		provider = function()
-			return " " .. string.upper(vim.fn.fnamemodify(vim.fn.getcwd(), ":t"))
+			return " " .. require("utils.misc").work_dir()
 		end,
 	},
 	M.Sep,
@@ -102,6 +100,7 @@ do
 		provider = function(self)
 			return self.icon
 		end,
+		M.Space,
 	}
 
 	local FileName = {
@@ -142,6 +141,7 @@ do
 				provider = "Untitled",
 			},
 		},
+		M.Space,
 	}
 
 	local FileFlags = {
@@ -153,15 +153,13 @@ do
 				return ""
 			end
 		end,
+		M.Space,
 	}
 
 	M.FileInfo = {
 		FileIcon,
-		M.Space,
 		FileName,
-		M.Space,
 		FileFlags,
-		M.Space,
 	}
 end
 
@@ -287,7 +285,7 @@ do
 		end,
 		{
 			provider = function(self)
-				return " " .. util.truncate_middle(self.git.head, 20)
+				return " " .. require("utils.string").truncate_middle(self.git.head, 20)
 			end,
 		},
 		M.Space,
@@ -381,7 +379,6 @@ do
 					return sign .. vim.b.gitsigns_status_dict[type]
 				end,
 			},
-			M.Space,
 		}
 	end
 
@@ -389,9 +386,9 @@ do
 		condition = function()
 			return vim.b.gitsigns_status_dict ~= nil
 		end,
-		GitDiff(" ", "added", "GitSignsAdd"),
-		GitDiff(" ", "changed", "GitSignsChange"),
-		GitDiff(" ", "removed", "GitSignsDelete"),
+		GitDiff("+", "added", "GitSignsAdd"),
+		GitDiff("~", "changed", "GitSignsChange"),
+		GitDiff("-", "removed", "GitSignsDelete"),
 		M.Sep,
 	}
 end

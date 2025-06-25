@@ -1,4 +1,5 @@
 local g = vim.g
+
 g.mapleader = " "
 g.maplocalleader = "\\"
 
@@ -26,7 +27,8 @@ o.ignorecase = true
 o.laststatus = 3
 o.linebreak = true
 o.list = true
-o.listchars = { tab = "  ", trail = "·" }
+o.listchars = { tab = "  ", trail = "·", multispace = "·", extends = "…", precedes = "…" }
+o.more = false
 o.mouse = "a"
 o.mousemodel = "extend"
 o.number = true
@@ -53,7 +55,7 @@ o.swapfile = false
 o.tabstop = 2
 o.termguicolors = true
 o.title = true
-o.titlestring = '%{expand("~") == getcwd() ? "Home" : fnamemodify(getcwd(), ":~")} :: Neovim'
+o.titlestring = '%{v:lua.require("utils.misc").work_dir()}' .. " :: Neovim"
 o.ttimeoutlen = 0
 o.undofile = true
 o.updatetime = 250

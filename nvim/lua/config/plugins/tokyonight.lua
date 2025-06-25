@@ -41,6 +41,7 @@ return {
 			hl.StatusLineWorkDir = { fg = colors.teal, bold = true }
 			hl.StatusLineGitBranch = { fg = colors.green }
 			hl.StatusLineGitCommits = { fg = colors.blue }
+			hl.StatusLineDevPod = { fg = colors.purple, bold = true }
 
 			-- LSP
 			hl.LspInfoBorder = "FloatBorder"

@@ -1,5 +1,6 @@
 return {
 	"mrjones2014/smart-splits.nvim",
+	cond = not vim.env.DEVPOD,
 	build = "./kitty/install-kittens.bash",
 	lazy = false,
 	opts = {},

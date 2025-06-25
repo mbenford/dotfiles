@@ -1,5 +1,6 @@
 return {
 	"nvim-neorg/neorg",
+	enabled = false,
 	version = "*",
 	ft = { "norg" },
 	cmd = "Neorg",

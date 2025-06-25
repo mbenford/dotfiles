@@ -22,7 +22,7 @@ vim.diagnostic.config({
 		scope = "line",
 		focusable = false,
 		severity_sort = true,
-		source = "always",
+		source = true,
 		border = "rounded",
 		header = "",
 		prefix = "",

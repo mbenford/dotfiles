@@ -13,7 +13,7 @@ return {
 					{ icon = " ", key = "fg", desc = "Grep", action = "<Leader>fg" },
 					{ icon = " ", key = "p", desc = "Plugins", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
 					{ icon = " ", key = "h", desc = "Health", action = ":checkhealth" },
-					{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
+					{ icon = " ", key = "q", desc = "Quit", action = require("utils.remote").detach_or_quit },
 				},
 				header = table.concat({
 					[[                                                                       ]],
@@ -31,6 +31,15 @@ return {
 			},
 			sections = {
 				{ section = "header" },
+				function()
+					return {
+						text = {
+							{ " " .. require("utils.misc").work_dir(), hl = "StatusLineWorkDir" },
+						},
+						align = "center",
+						padding = 1,
+					}
+				end,
 				{ section = "keys", gap = 1, padding = 2 },
 				{ section = "startup" },
 			},
