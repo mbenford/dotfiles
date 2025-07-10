@@ -18,17 +18,16 @@ return {
 	wibar_margins = { top = 5, bottom = 1, left = 5, right = 5 },
 	wibar_shape = fn.bind_right(gears.shape.rounded_rect, 8),
 	wibar_height = 30,
-	titlebar_font = "Ubuntu 11",
-	titlebar_size = 20,
+	titlebar_font = "Ubuntu 12",
+	titlebar_size = 25,
 
 	window_count_font = "Symbols Nerd Font 12",
 	widget_font = "JetBrains Mono 12",
 	widget_label_spacing = 3,
 	clock_font = "Ubuntu 12",
 
-	popup_title_font = "Ubuntu 11",
+	popup_title_font = "Ubuntu 12",
 
-	-- notification_font = "Ubuntu 12",
 	notification_appname_font = "Ubuntu 11",
 	notification_age_font = "Ubuntu 11",
 	notification_position = "top",

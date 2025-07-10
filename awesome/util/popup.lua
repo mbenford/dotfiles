@@ -1,7 +1,9 @@
+local api = { awesome = awesome, screen = screen, mousegrabber = mousegrabber }
 local awful = require("awful")
 local wibox = require("wibox")
 local gears = require("gears")
 local beautiful = require("beautiful")
+local backdrop = require("popups.backdrop")
 
 local Popup = {}
 Popup.__index = Popup
@@ -26,6 +28,18 @@ function Popup:show(opts)
 		self._private.timer:again()
 	elseif self._private.grabber then
 		self._private.grabber:start()
+		-- api.mousegrabber.run(function(event)
+		-- local any_button_pressed = event.buttons[1] or event.buttons[2] or event.buttons[3]
+		-- if any_button_pressed then
+		-- 	self:hide()
+		-- 	return false
+		-- end
+		-- return true
+		-- end, nil)
+	end
+
+	if self._private.backdrop then
+		backdrop.show()
 	end
 
 	if opts.title and self._private.decorations then
@@ -40,6 +54,7 @@ function Popup:hide()
 		self._private.timer:stop()
 	elseif self._private.grabber then
 		self._private.grabber:stop()
+		api.mousegrabber.stop()
 	end
 	self._private.instance.visible = false
 end
@@ -69,6 +84,11 @@ function Popup:keygrabber(opts)
 	})
 	self._private.grabber:connect_signal("stopped", function()
 		self._private.instance.visible = false
+		api.mousegrabber.stop()
+
+		if self._private.backdrop then
+			backdrop.hide()
+		end
 	end)
 end
 
@@ -102,9 +122,13 @@ end
 
 function Popup:xprops(props)
 	for k, v in pairs(props) do
-		awesome.register_xproperty("awesomewm_popup_" .. k, "string")
+		api.awesome.register_xproperty("awesomewm_popup_" .. k, "string")
 		self._private.instance:set_xproperty("awesomewm_popup_" .. k, v)
 	end
+end
+
+function Popup:backdrop()
+	self._private.backdrop = true
 end
 
 return new

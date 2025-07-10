@@ -122,6 +122,9 @@ popup:keygrabber({
 		end,
 	}),
 })
+popup:decorations({
+	title = { text = "Calendar" },
+})
 
 return {
 	show = function()

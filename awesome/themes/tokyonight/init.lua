@@ -80,6 +80,9 @@ function M.setup(opts)
 		titlebar_fg_focus = flavor.fg,
 		titlebar_bg_focus = flavor.blue7,
 
+		system_dialog_action_selected_fg = flavor.green,
+		system_dialog_action_disabled_fg = flavor.dark3,
+
 		separator_color = flavor.bg_dark,
 
 		widget_label_fg = flavor.cyan,
@@ -93,7 +96,7 @@ function M.setup(opts)
 		threshold_critical_fg = flavor.red1,
 
 		clock_fg = flavor.fg,
-		wibar_bg = gears.color.change_opacity(flavor.bg_dark, 0.95),
+		wibar_bg = flavor.bg_dark,
 
 		window_name_fg = flavor.fg,
 		window_name_bg = flavor.bg_dark,

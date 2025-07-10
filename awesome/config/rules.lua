@@ -51,7 +51,7 @@ ruled.client.connect_signal("request::rules", function()
 				},
 			},
 			properties = {
-				tag = "4",
+				tag = "S3",
 				screen = 2,
 				switch_to_tags = true,
 			},

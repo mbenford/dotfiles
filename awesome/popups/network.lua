@@ -18,7 +18,7 @@ local grade_color = {
 local network_list = widgets.list({
 	layout = {
 		layout = wibox.layout.flex.vertical,
-		max_widget_size = 92,
+		max_widget_size = 50,
 		spacing = 10,
 	},
 	page_size = 10,
@@ -94,9 +94,14 @@ local popup = Popup({
 	border_color = beautiful.popup_border_color,
 	border_width = beautiful.popup_border_width,
 	widget = {
-		widget = wibox.container.margin,
-		margins = 10,
-		content,
+		widget = wibox.container.constraint,
+		strategy = "exact",
+		height = 300,
+		{
+			widget = wibox.container.margin,
+			margins = 10,
+			content,
+		},
 	},
 })
 

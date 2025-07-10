@@ -27,4 +27,17 @@ scratchpad.register({
 		height = 0.9,
 		toggle_ezkey = "M-t",
 	},
+	["vpn"] = {
+		command = "kitty --name kitty-vpn -- vpn",
+		rule = { instance = "kitty-vpn" },
+		width = 1300,
+		height = 0.5,
+		toggle_ezkey = "M-C-v",
+	},
+	["pavucontrol"] = {
+		command = "pavucontrol",
+		width = 800,
+		height = 0.5,
+		toggle_ezkey = "M-p",
+	},
 })

@@ -77,12 +77,12 @@ function List:set_items(items)
 
 	for index, value in ipairs(items) do
 		local container = wibox.widget({
+			widget = wibox.container.background,
 			fg = self._private.item_fg,
 			bg = self._private.item_bg,
 			shape = self._private.item_shape,
 			border_color = self._private.item_border_color,
 			border_width = self._private.item_border_width,
-			widget = wibox.container.background,
 			self._private.item_creator(index, value),
 		})
 
@@ -96,6 +96,10 @@ function List:set_items(items)
 	self._private.items = items
 	self._private.count = #items
 	self:select(1)
+end
+
+function List:redraw()
+	self:set_items(self._private.items)
 end
 
 function List:clear()

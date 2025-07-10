@@ -120,14 +120,16 @@ local notification_list = widgets.list({
 							valign = "center",
 							halign = "left",
 							{
-								layout = wibox.layout.fixed.vertical,
+								layout = wibox.layout.flex.vertical,
 								{
 									widget = wibox.widget.textbox,
 									markup = title,
+									forced_width = 400,
 								},
 								{
 									widget = wibox.widget.textbox,
 									text = message,
+									forced_width = 400,
 								},
 							},
 						},
@@ -197,7 +199,7 @@ popup:keygrabber({
 
 return {
 	show = function()
-		popup:show({ screen = screen.primary })
 		notification_list:set_items(require("util.table").reverse(naughty.active))
+		popup:show({ screen = screen.primary })
 	end,
 }

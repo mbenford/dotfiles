@@ -5,8 +5,9 @@ local wibox = require("wibox")
 local widgets = require("widgets")
 
 api.screen.connect_signal("request::desktop_decoration", function(screen)
-	for i = 1, 4 do
-		awful.tag.add(i, {
+	for i = 1, 3 do
+		local name = string.format("%s%d", screen == api.screen.primary and "P" or "S", i)
+		awful.tag.add(name, {
 			screen = screen,
 			layout = awful.layout.suit.tile,
 			enable_padding = true,

@@ -14,6 +14,9 @@ local function get_height(value)
 end
 
 local function show_client(sp)
+	sp.client.scratchpad_id = sp.id
+	sp.client.floating = true
+	sp.client.skip_taskbar = true
 	sp.client:move_to_tag(awful.screen.focused().selected_tag)
 	sp.client:activate({ context = "unminimize", raise = true })
 	sp.client:geometry({ width = get_width(sp.width), height = get_height(sp.height) })
@@ -34,8 +37,6 @@ function M.register(scratchpads)
 			placement = (opts.placement or awful.placement.centered) + awful.placement.no_offscreen,
 			width = opts.width,
 			height = opts.height,
-			skip_taskbar = true,
-			floating = true,
 		}
 
 		if opts.toggle_ezkey ~= nil then
@@ -58,10 +59,6 @@ function M.toggle(name)
 				show_client(sp)
 			end,
 			properties = {
-				scratchpad_id = sp.id,
-				placement = sp.placement,
-				width = get_width(sp.width),
-				height = get_height(sp.height),
 				floating = true,
 				skip_taskbar = true,
 			},

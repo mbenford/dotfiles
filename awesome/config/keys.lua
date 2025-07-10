@@ -3,12 +3,26 @@ local awful = require("awful")
 local fn = require("util.fn")
 local ez = require("util.ez")
 local client = require("util.client")
+local tag = require("util.tag")
 local keychord = require("util.keychord")
 local mouse = require("util.mouse")
 local pulseaudio = require("util.pulseaudio")
 
 awful.keyboard.append_global_keybindings(ez.keys({
-	["M-w"] = require("popups.network").show_wifi,
+	-- Tags
+	["M-1"] = tag.view("P1"),
+	["M-2"] = tag.view("P2"),
+	["M-3"] = tag.view("P3"),
+	["M-8"] = tag.view("S1"),
+	["M-9"] = tag.view("S2"),
+	["M-0"] = tag.view("S3"),
+
+	["M-S-1"] = client.move_to_tag("P1"),
+	["M-S-2"] = client.move_to_tag("P2"),
+	["M-S-3"] = client.move_to_tag("P3"),
+	["M-S-8"] = client.move_to_tag("S1"),
+	["M-S-9"] = client.move_to_tag("S2"),
+	["M-S-0"] = client.move_to_tag("S3"),
 
 	-- Navigation
 	["M-h"] = fn.bind(awful.client.focus.bydirection, "left"),
@@ -44,7 +58,7 @@ awful.keyboard.append_global_keybindings(ez.keys({
 	["M-S-j"] = fn.bind(awful.client.swap.bydirection, "down"),
 	["M-S-k"] = fn.bind(awful.client.swap.bydirection, "up"),
 	["M-S-l"] = fn.bind(awful.client.swap.bydirection, "right"),
-	["M-m"] = fn.bind_client(function(c)
+	["M-m"] = client.bind(function(c)
 		local main = awful.client.getmaster()
 		local tag = c.first_tag
 
@@ -62,7 +76,7 @@ awful.keyboard.append_global_keybindings(ez.keys({
 	-- Layouts
 	["M-["] = fn.bind(awful.layout.inc, -1),
 	["M-]"] = fn.bind(awful.layout.inc, 1),
-	["M-f"] = fn.bind_tag(function(tag, c)
+	["M-f"] = tag.bind(function(tag, c)
 		if c.floating or #tag:clients() < 2 then
 			return
 		end
@@ -75,34 +89,34 @@ awful.keyboard.append_global_keybindings(ez.keys({
 			tag.layout = awful.layout.suit.max
 		end
 	end),
-	["M-S-f"] = fn.bind_tag(function(tag)
+	["M-S-f"] = tag.bind(function(tag)
 		tag.enable_padding = not tag.enable_padding
 	end),
 	["M-minus"] = fn.bind(awful.tag.incnmaster, -1),
 	["M-S-equal"] = fn.bind(awful.tag.incnmaster, 1),
-	["M-equal"] = fn.bind_tag(function(tag)
+	["M-equal"] = tag.bind(function(tag)
 		tag.master_count = 1
 	end),
 
 	-- Clients
-	["M-q"] = fn.bind_client(function(c)
+	["M-q"] = client.bind(function(c)
 		c:kill()
 	end),
-	["M-S-q"] = fn.bind_tag(function(tag)
+	["M-S-q"] = tag.bind(function(tag)
 		for _, c in ipairs(tag:clients()) do
 			c:kill()
 		end
 	end),
-	["M-C-f"] = fn.bind_client(function(c)
+	["M-C-f"] = client.bind(function(c)
 		c.floating = not c.floating
 	end),
-	["M-C-t"] = fn.bind_client(awful.titlebar.toggle),
-	["M-C-h"] = fn.bind_client(client.move_left),
-	["M-C-j"] = fn.bind_client(client.move_down),
-	["M-C-k"] = fn.bind_client(client.move_up),
-	["M-C-l"] = fn.bind_client(client.move_right),
-	["M-C-c"] = fn.bind_client(client.center),
-	["M-S-i"] = fn.bind_client(function(c)
+	["M-C-t"] = client.bind(awful.titlebar.toggle),
+	["M-C-h"] = client.bind(client.move_left),
+	["M-C-j"] = client.bind(client.move_down),
+	["M-C-k"] = client.bind(client.move_up),
+	["M-C-l"] = client.bind(client.move_right),
+	["M-C-c"] = client.bind(client.center),
+	["M-S-i"] = client.bind(function(c)
 		awful.client.movetoscreen()
 		c:swap(awful.client.getmaster())
 	end),
@@ -117,6 +131,7 @@ awful.keyboard.append_global_keybindings(ez.keys({
 		["p"] = fn.bind(awful.spawn, "rofi-projects"),
 		["d"] = fn.bind(awful.spawn, "rofi-dotfiles"),
 		["e"] = fn.bind(awful.spawn, "rofimoji"),
+		["w"] = fn.bind(awful.spawn, "rofi-windows"),
 	}),
 
 	-- Popups
@@ -142,7 +157,6 @@ awful.keyboard.append_global_keybindings(ez.keys({
 	["XF86AudioNext"] = fn.bind(awful.spawn, "playerctl next --all-players"),
 
 	-- Audio
-	-- ["XF86AudioRaiseVolume"] = fn.bind(volume_popup.raise_volume, "sink"),
 	["XF86AudioRaiseVolume"] = fn.bind_obj(pulseaudio, "set_volume", { type = "sink", value = "+2%" }),
 	["XF86AudioLowerVolume"] = fn.bind_obj(pulseaudio, "set_volume", { type = "sink", value = "-2%" }),
 	["XF86AudioMute"] = fn.bind_obj(pulseaudio, "set_mute", { type = "sink", value = "toggle" }),
@@ -150,30 +164,3 @@ awful.keyboard.append_global_keybindings(ez.keys({
 	["C-XF86AudioLowerVolume"] = fn.bind_obj(pulseaudio, "set_volume", { type = "source", value = "-2%" }),
 	["C-XF86AudioMute"] = fn.bind_obj(pulseaudio, "set_mute", { type = "source", value = "toggle" }),
 }))
-
--- Tags
-for i = 1, 9 do
-	awful.keyboard.append_global_keybindings(ez.keys({
-		["M-" .. i] = function()
-			local tag = awful.tag.find_by_name(awful.screen.focused(), tostring(i))
-			if tag then
-				tag:view_only()
-			end
-		end,
-		["M-S-" .. i] = fn.bind_client(function(c)
-			local tag = awful.tag.find_by_name(awful.screen.focused(), tostring(i))
-			if tag == nil then
-				tag = awful.tag.add(tostring(i), {
-					screen = awful.screen.focused(),
-					layout = awful.layout.suit.tile,
-					enable_padding = true,
-					volatile = true,
-				})
-			end
-
-			tag:view_only()
-			c:move_to_tag(tag)
-			c:swap(awful.client.getmaster())
-		end),
-	}))
-end

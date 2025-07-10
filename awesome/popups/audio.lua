@@ -152,11 +152,12 @@ popup:keygrabber({
 			end
 
 			pulseaudio:set_default(device.type, device.name):next(function()
-				for i in ipairs(devices) do
-					devices[i].is_default = devices[i].name == device.name
-				end
-				device_list:set_items(devices)
-				device_list:select(index)
+				popup:hide()
+				-- for i in ipairs(devices) do
+				-- 	devices[i].is_default = devices[i].name == device.name
+				-- end
+				-- device_list:set_items(devices)
+				-- device_list:select(index)
 			end)
 		end,
 	}),

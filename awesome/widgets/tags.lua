@@ -55,7 +55,7 @@ return {
 					content.text = beautiful.taglist_circles_selected
 					background.fg = beautiful.taglist_fg_focus
 				else
-					if #tag.tiled_clients(t) > 0 then
+					if #tag.visible_clients(t) > 0 then
 						content.text = beautiful.taglist_circles_not_empty
 						background.fg = beautiful.taglist_fg_not_empty
 					else
@@ -150,12 +150,12 @@ return {
 		content.font = beautiful.window_name_font
 
 		local function update_title(c)
-			if not c.floating and c.screen == screen and api.client.focus == c then
+			if c.screen == screen and api.client.focus == c then
 				content.text = c.name
 			end
 		end
 		local function clear_title(t)
-			if t.screen == screen and #tag.tiled_clients(t) == 0 then
+			if t.screen == screen and #tag.visible_clients(t) == 0 then
 				content.text = ""
 			end
 		end
@@ -188,7 +188,7 @@ return {
 			if t.screen == screen then
 				local count = 0
 				for _, c in pairs(t:clients()) do
-					if not c.floating then
+					if c.scratchpad_id == "" then
 						count = count + 1
 					end
 				end

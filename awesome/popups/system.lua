@@ -1,25 +1,25 @@
+local api = { screen = screen }
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local gears = require("gears")
 local widgets = require("widgets")
 local fn = require("util.fn")
 local ez = require("util.ez")
 local Popup = require("util.popup")
 local sysutil = require("util.system")
 local Promise = require("util.promise")
-local dialog = require("popups.dialog")
-local icons = require("icons")
 
 local commands = {
-	{ text = "Lock", icon = "system-lock-screen", exec = "lock", no_confirmation = true },
-	{ text = "Suspend", icon = "system-suspend", exec = "systemctl suspend" },
-	{ text = "Logout", icon = "system-log-out", exec = "loginctl terminate-user $USER" },
-	{ text = "Reboot", icon = "system-reboot", exec = "systemctl reboot" },
-	{ text = "Shutdown", icon = "system-shutdown", exec = "systemctl poweroff" },
+	{ text = "Lock", icon = "", exec = "lock-screen", no_confirmation = true },
+	{ text = "Suspend", icon = "󰤄", exec = "systemctl suspend" },
+	{ text = "Logout", icon = "󰍃", exec = "loginctl terminate-user $USER" },
+	{ text = "Update", icon = "󰚰", exec = "kitty --hold topgrade", no_confirmation = true },
+	{ text = "Reboot", icon = "󰜉", exec = "systemctl reboot" },
+	{ text = "Shutdown", icon = "", exec = "systemctl poweroff" },
 }
+local selected = nil
 
-local action_list = widgets.list({
+local actions = widgets.list({
 	layout = {
 		layout = wibox.layout.flex.horizontal,
 		spacing = 10,
@@ -27,111 +27,135 @@ local action_list = widgets.list({
 	cycle = true,
 	margins = 10,
 	items = commands,
+	page_size = #commands,
 	item_creator = function(index, value)
 		return wibox.widget({
 			widget = wibox.container.margin,
 			margins = 10,
 			forced_width = 100,
 			{
-				layout = wibox.layout.fixed.vertical,
-				spacing = 10,
-				fill_space = true,
+				widget = wibox.container.background,
+				fg = index == selected and beautiful.system_dialog_action_selected_fg
+					or (selected ~= nil and beautiful.system_dialog_action_disabled_fg or beautiful.fg),
 				{
-					widget = icons.system.icon,
-					name = value.icon,
-					size = 48,
-				},
-				{
-					widget = wibox.widget.textbox,
-					text = value.text,
-					halign = "center",
+					layout = wibox.layout.fixed.vertical,
+					spacing = 10,
+					fill_space = true,
+					{
+						widget = wibox.widget.textbox,
+						font = "Symbols Nerd Font 48",
+						text = value.icon,
+						halign = "center",
+					},
+					{
+						widget = wibox.widget.textbox,
+						text = index == selected and "Confirm?" or value.text,
+						halign = "center",
+					},
 				},
 			},
 		})
 	end,
 })
 
-local widget = wibox.widget({
-	widget = wibox.container.background,
-	{
-		layout = wibox.layout.fixed.vertical,
-		{
-			widget = wibox.container.margin,
-			margins = { top = 10, left = 10, right = 10 },
-			{
-				layout = wibox.layout.fixed.horizontal,
-				fill_space = true,
-				{
-					id = "hostname",
-					widget = wibox.widget.textbox,
-				},
-				{
-					id = "uptime",
-					widget = wibox.widget.textbox,
-					halign = "right",
-				},
-			},
-		},
-		action_list,
-	},
+local hostname = wibox.widget({
+	widget = wibox.widget.textbox,
+	id = "hostname",
+	text = "hostname",
 })
+
+local uptime = wibox.widget({
+	widget = wibox.widget.textbox,
+	id = "uptime",
+	text = "uptime",
+	halign = "right",
+})
+
 local popup = Popup({
 	placement = awful.placement.centered,
 	ontop = true,
+	bg = beautiful.bg_normal .. "F0",
 	border_color = beautiful.popup_border_color,
 	border_width = beautiful.popup_border_width,
-	widget = widget,
+	widget = {
+		widget = wibox.container.background,
+		{
+			layout = wibox.layout.fixed.vertical,
+			{
+				widget = wibox.container.margin,
+				margins = { top = 10, left = 10, right = 10 },
+				{
+					layout = wibox.layout.fixed.horizontal,
+					fill_space = true,
+					hostname,
+					uptime,
+				},
+			},
+			actions,
+		},
+	},
 })
 popup:keygrabber({
-	timeout = 10,
+	timeout = 30,
+	stop_key = "",
 	keybindings = ez.keys({
-		["h"] = fn.bind_obj(action_list, "prev_item"),
-		["l"] = fn.bind_obj(action_list, "next_item"),
+		["h"] = function()
+			if selected then
+				return
+			end
+			actions:prev_item()
+		end,
+		["l"] = function()
+			if selected then
+				return
+			end
+			actions:next_item()
+		end,
 		["Return"] = function()
-			popup:hide()
+			local index = actions:selected_index()
+			local command = commands[index]
 
-			local command = commands[action_list:selected_index()]
-			if command.no_confirmation then
-				gears.timer.delayed_call(function()
-					awful.spawn(command.exec)
-				end)
+			if index == selected or command.no_confirmation then
+				selected = nil
+				popup:hide()
+				awful.spawn(command.exec)
 				return
 			end
 
-			dialog.show({
-				text = string.format("Confirm %s?", command.text),
-				icon = command.icon,
-				buttons = {
-					{ text = "Yes" },
-					{ text = "No" },
-				},
-				button_callback = function(button)
-					if button.text == "No" then
-						return
-					end
+			selected = index
+			actions:redraw()
+			actions:select(selected)
+		end,
+		["Escape"] = function()
+			if selected == nil then
+				popup:hide()
+				return
+			end
 
-					gears.timer.delayed_call(function()
-						awful.spawn(command.exec)
-					end)
-				end,
-			})
+			local last_selected = selected
+			selected = nil
+			actions:redraw()
+			actions:select(last_selected)
 		end,
 	}),
 })
+popup:backdrop()
 
 return {
 	show = function()
+		selected = nil
+		actions:redraw()
+
 		local tasks = {
 			sysutil.uptime(),
 			sysutil.hostname(),
 		}
 		Promise.all(table.unpack(tasks)):next(function(values)
-			local uptime = values[1]
-			local hostname = values[2]
-			widget:get_children_by_id("hostname")[1].text = hostname
-			widget:get_children_by_id("uptime")[1].text = uptime
-			popup:show({ screen = screen.primary })
-			action_list:select(1)
+			uptime.text = values[1]
+			hostname.text = values[2]
+
+			popup:show({ screen = api.screen.primary })
+			actions:select(1)
 		end)
 	end,
 }

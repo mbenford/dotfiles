@@ -1,3 +1,4 @@
+local api = { client = client }
 local awful = require("awful")
 
 local function get_steps()
@@ -41,6 +42,26 @@ function M.place(client, x, y)
 	client.x = x
 	client.y = y
 	awful.placement.no_offscreen(client)
+end
+
+function M.move_to_tag(tag_name)
+	return M.bind(function(c)
+		local tag = awful.tag.find_by_name(nil, tag_name)
+		if tag then
+			tag:view_only()
+			tag:view_only()
+			c:move_to_tag(tag)
+			c:swap(awful.client.getmaster())
+		end
+	end)
+end
+
+function M.bind(fn)
+	return function()
+		if api.client.focus then
+			fn(api.client.focus)
+		end
+	end
 end
 
 return M

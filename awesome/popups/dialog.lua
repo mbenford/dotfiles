@@ -10,6 +10,7 @@ local fn = require("util.fn")
 return {
 	show = function(args)
 		args = args or {}
+		args.screen = args.screen or awful.screen.focused()
 		args.buttons = args.buttons or {
 			{ text = "OK" },
 			{ text = "Cancel" },
@@ -114,6 +115,7 @@ return {
 				end,
 			}),
 		})
-		popup:show()
+		popup:backdrop()
+		popup:show({ screen = args.screen })
 	end,
 }

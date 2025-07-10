@@ -1,6 +1,3 @@
-local api = { client = client }
-local awful = require("awful")
-
 local M = {}
 
 function M.map_threshold(value, thresholds)
@@ -43,28 +40,6 @@ function M.bind_require(mod, func, ...)
 	local args = { ... }
 	return function()
 		require(mod)[func](table.unpack(args))
-	end
-end
-
-function M.bind_client(fn)
-	return function()
-		if api.client.focus then
-			fn(api.client.focus)
-		end
-	end
-end
-
-function M.bind_tag(fn)
-	return function()
-		local client = api.client.focus
-		if client == nil then
-			return
-		end
-
-		local tag = client.screen.selected_tag
-		if tag then
-			fn(tag, client)
-		end
 	end
 end
 
