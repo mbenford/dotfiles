@@ -1,85 +1,112 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
-version: 2
-var:
-  PromptChar: 
 
 palette:
-  prompt-char-fg: "#a6da95"
-  prompt-char-error-fg: "#ed8796"
   default-bg: "#363a4f"
-  separator-fg: "#6e738d"
-  path-fg: "#8aadf4"
-  git-pristine-fg: "#a6da95"
-  git-dirty-fg: "#eed49f"
   executiontime-fg: "#c6a0f6"
+  git-dirty-fg: "#eed49f"
+  git-pristine-fg: "#a6da95"
+  path-fg: "#8aadf4"
+  prompt-char-error-fg: "#ed8796"
+  prompt-char-fg: "#a6da95"
+  separator-fg: "#6e738d"
   status-fg: "#ed8796"
-
-final_space: true
-console_title_template: "{{if .Segments.Git.RepoName}}{{.Segments.Git.RepoName}}{{else}}{{.Folder}}{{end}} - {{.Shell}}"
-
+  readonly-fg: "#db4b4b"
+  tool-fg: "#bb9af7"
+var:
+  PromptChar: 
 transient_prompt:
-  foreground: "p:prompt-char-fg"
-  background: transparent
   template: "{{.Var.PromptChar}} "
-
+  foreground: p:prompt-char-fg
+  background: transparent
+console_title_template: "{{if .Root}}[ROOT] {{end}}{{.PWD}} - {{.Shell}}"
 blocks:
-  - type: prompt
-    alignment: left
-    newline: true
-    segments:
-      - type: path
-        style: diamond
-        leading_diamond: ""
-        trailing_diamond: ""
-        foreground: "p:path-fg"
-        background: "p:default-bg"
-        properties:
-          style: agnoster_short
-          max_depth: 2
-        templates:
-          - "{{if not .Writable}} {{end}}"
-          - "{{if hasPrefix \"/\" .Parent}}/{{end}}"
-          - "{{if .Segments.Git.RepoName}}<b>{{.Segments.Git.RepoName}}</b>{{replace .Segments.Git.Dir \"\" .PWD}}{{end}}"
-          - "{{if not .Segments.Git.RepoName}}{{.Path}}{{end}}"
-      - type: git
-        style: diamond
-        leading_diamond: " "
-        trailing_diamond: ""
-        foreground: "p:git-pristine-fg"
-        background: "p:default-bg"
-        foreground_templates:
-          - "{{if or (.Working.Changed) (.Staging.Changed) }}p:git-dirty-fg{{end}}"
-        properties:
-          fetch_status: true
-          fetch_stash_count: false
-          branch_icon: " "
-          branch_identical_icon: ""
-        template: "{{.HEAD}}{{if .BranchStatus}} {{.BranchStatus}}{{end}}"
-      - type: executiontime
-        style: diamond
-        leading_diamond: " "
-        trailing_diamond: ""
-        foreground: "p:executiontime-fg"
-        background: "p:default-bg"
-        properties:
-          threshold: 3000
-          style: round
-        template: " {{.FormattedMs}}"
-      - type: status
-        style: diamond
-        leading_diamond: " "
-        trailing_diamond: ""
-        foreground: "p:status-fg"
-        background: "p:default-bg"
-        template: "{{if gt .Code 0}} {{reason .Code}} ({{.Code}}){{end}}"
-  - type: prompt
-    alignment: left
-    newline: true
-    segments:
-      - type: text
-        style: plain
-        foreground: "p:prompt-char-fg"
-        background: transparent
-        foreground_templates:
-          - "{{if gt .Code 0 }}p:prompt-char-error-fg{{end}}"
-        template: "{{.Var.PromptChar}}"
+- type: prompt
+  alignment: left
+  segments:
+  - properties:
+      max_depth: 2
+      style: agnoster_short
+    leading_diamond: 
+    trailing_diamond: 
+    foreground: p:path-fg
+    background: p:default-bg
+    type: path
+    style: diamond
+    templates:
+      - "{{if not .Writable}}<p:readonly-fg>\ue672</> {{end}}"
+      - "{{if hasPrefix \"/\" .Parent}}/{{end}}"
+      - "{{if .Segments.Git.RepoName}}<b>{{.Segments.Git.RepoName}}</b>{{replace .Segments.Git.Dir \"\" .PWD}}{{end}}"
+      - "{{if not .Segments.Git.RepoName}}{{.Path}}{{end}}"
+  - properties:
+      branch_icon: "\ue725 "
+      branch_identical_icon: ""
+      fetch_stash_count: false
+      fetch_status: true
+    leading_diamond: " \ue0b6"
+    trailing_diamond: 
+    template: "{{.HEAD}}{{if .BranchStatus}} {{.BranchStatus}}{{end}}"
+    foreground: p:git-pristine-fg
+    background: p:default-bg
+    type: git
+    style: diamond
+    foreground_templates:
+    - "{{if or (.Working.Changed) (.Staging.Changed) }}p:git-dirty-fg{{end}}"
+  - type: go
+    style: diamond
+    leading_diamond: " \ue0b6"
+    trailing_diamond: 
+    foreground: p:tool-fg
+    background: p:default-bg
+    template: "GO {{.Full}}"
+  - type: rust
+    style: diamond
+    leading_diamond: " \ue0b6"
+    trailing_diamond: 
+    foreground: p:tool-fg
+    background: p:default-bg
+    template: "RUST {{.Full}}"
+  - type: python
+    style: diamond
+    leading_diamond: " \ue0b6"
+    trailing_diamond: 
+    foreground: p:tool-fg
+    background: p:default-bg
+    template: "PYTHON {{.Full}}"
+  - type: node
+    style: diamond
+    leading_diamond: " \ue0b6"
+    trailing_diamond: 
+    foreground: p:tool-fg
+    background: p:default-bg
+    template: "NODE {{.Full}}"
+  - properties:
+      style: round
+      threshold: 3000
+    leading_diamond: " \ue0b6"
+    trailing_diamond: 
+    template:  {{.FormattedMs}}
+    foreground: p:executiontime-fg
+    background: p:default-bg
+    type: executiontime
+    style: diamond
+  - leading_diamond: " \ue0b6"
+    trailing_diamond: 
+    template: "{{if gt .Code 0}}\uf467 {{reason .Code}} ({{.Code}}){{end}}"
+    foreground: p:status-fg
+    background: p:default-bg
+    type: status
+    style: diamond
+  newline: true
+- type: prompt
+  alignment: left
+  segments:
+  - template: "{{.Var.PromptChar}}"
+    foreground: p:prompt-char-fg
+    background: transparent
+    type: text
+    style: plain
+    foreground_templates:
+    - "{{if gt .Code 0 }}p:prompt-char-error-fg{{end}}"
+  newline: true
+version: 3
+final_space: true
