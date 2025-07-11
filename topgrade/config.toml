@@ -1,3 +1,8 @@
 [misc]
-only = ["cargo", "firmware", "go", "pipx", "pip3", "rustup", "shell", "system", "tldr"]
+only = ["cargo", "firmware", "pipx", "pip3", "rustup", "shell", "system", "tldr"]
+pre_sudo = true
 no_retry = true
+
+[linux]
+arch_package_manager = "paru"
+show_arch_news = false
