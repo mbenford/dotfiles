@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Notion
-Exec=/usr/bin/brave --new-window --app=https://notion.so
+Exec=brave-profile Personal --new-window --app=https://notion.so
 Icon=notion
 Comment=Notion Web App
 StartupNotify=true

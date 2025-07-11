@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Drive
+Exec=brave-profile Personal --new-window --app=https://drive.google.com
+Icon=google-drive
+Comment=Google Drive Web App
+StartupNotify=true

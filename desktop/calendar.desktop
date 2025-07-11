@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=Google Calendar
+Name=Calendar
 Exec=brave-profile Personal --new-window --app=https://calendar.google.com
 Icon=google-agenda
 Comment=Calendar Web App

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=LinkedIn
+Exec=brave-profile Personal --new-window --app=https://linkedin.com
+Icon=linkedin
+Comment=LinkedIn Web App
+StartupNotify=true

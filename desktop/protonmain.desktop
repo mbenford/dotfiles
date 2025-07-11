@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=ProtonMail
+Exec=brave-profile Personal --new-window --app=https://mail.proton.me
+Icon=proton-mail
+Comment=ProtonMain Web App
+StartupNotify=true

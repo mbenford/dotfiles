@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=ChatGPT
+Exec=brave-profile Personal --new-window --app=https://chatgpt.com
+Comment=ChatGPT Web App
+Icon=chatgpt
+StartupNotify=true

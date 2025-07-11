@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Claude
+Exec=brave-profile Personal --new-window --app=https://claude.ai
+Comment=Claude Web App
+Icon=claude
+StartupNotify=true

@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Discord
-Exec=/usr/bin/brave --new-window --app=https://discord.com/app
-Icon=discord
-Comment=Discord Web App
-StartupNotify=true

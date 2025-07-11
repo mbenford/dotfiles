@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=YouTube Music
+Exec=brave-profile Personal --new-window --app=https://music.youtube.com
+Comment=YouTube Music Web App
+Icon=youtube-music
+StartupNotify=true
+
