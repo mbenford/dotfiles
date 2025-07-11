@@ -3,7 +3,7 @@
 	signingKey = AD5AE395
 
 [core]
-	editor = /usr/bin/nvim
+	editor = nvim
 	pager = delta
 
 [init]
