@@ -4,4 +4,4 @@ set -e
 
 state_file="$XDG_CONFIG_HOME/BraveSoftware/Brave-Browser/Local State"
 profile_folder=`jq --raw-output --arg name "$1" '.profile.info_cache | to_entries[] | select(.value.name == $name).key' "$state_file"`
-/usr/bin/brave --profile-directory="$profile_folder" $@
+/usr/bin/brave --profile-directory="$profile_folder" ${@:2}

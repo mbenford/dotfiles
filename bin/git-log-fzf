@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -e
 
 hash=`
@@ -9,8 +8,9 @@ hash=`
 	--date=format:%d-%m-%y \
 	--color=always \
 	| fzf \
+	--height=100% \
 	--preview 'git show {1} | delta'  \
-	--preview-window 'nohidden' \
+	--preview-window 'right,hidden' \
 	| awk '{printf $1}'
 `
 

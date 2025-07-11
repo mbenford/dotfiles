@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+rofi -show window -modes window \
+	-window-format '{t}&#10;<i><small>{c}</small></i>' \
+	-eh 2

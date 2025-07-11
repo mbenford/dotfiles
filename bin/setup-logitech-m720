@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-set -e
-
-device=$(ratbagctl list | awk -F':' '{print $1}')
-[[ -z "$device" ]] && exit 1
-
-ratbagctl $device button 4 action set button 4
-ratbagctl $device button 3 action set button 5

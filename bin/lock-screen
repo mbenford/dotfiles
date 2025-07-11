@@ -1,0 +1,25 @@
+#!/bin/env bash
+
+pactl set-sink-mute @DEFAULT_SINK@ 1
+pactl set-source-mute @DEFAULT_SOURCE@ 1
+playerctl stop --all-players --no-messages
+
+i3lock \
+	--nofork \
+	--screen=1 \
+	--radius=50 \
+	--ignore-empty-password \
+	--color="#000000" \
+	--greeter-text="" \
+	--greeter-color="#202020" \
+	--greeter-font="JetBrains Mono Nerd Font" \
+	--greeter-size=50 \
+	--greeter-pos="x+w/2:y+h-50" \
+	--verif-text="" \
+	--wrong-text="" \
+	--noinput-text="" \
+	--lock-text="" \
+	--lockfailed-text=""
+
+pactl set-sink-mute @DEFAULT_SINK@ 0
+pactl set-source-mute @DEFAULT_SOURCE@ 1

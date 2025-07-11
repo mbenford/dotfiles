@@ -1,0 +1,6 @@
+#!/bin/env bash
+
+set -e
+
+[[ -n "$1" ]] && pactl set-sink-volume @DEFAULT_SINK@ $1
+pactl get-sink-volume @DEFAULT_SINK@ 2>&1 | awk -F '/' '{printf $2}' | tr -d ' ' | cut -d "%" -f 1
