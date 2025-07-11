@@ -9,6 +9,7 @@ vim.lsp.enable({
 	"html",
 	"jsonls",
 	"lua_ls",
+	"marksman",
 	"rust_analyzer",
 	"terraformls",
 	"ts_ls",

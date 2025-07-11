@@ -14,31 +14,22 @@ M.Flex = function(priority, component)
 end
 
 local function mode_name(mode)
-	if mode:match("^n") then
-		return "NORMAL"
+	local modes = {
+		{ "NORMAL", "^n" },
+		{ "INSERT", "^i" },
+		{ "COMMAND", "^c" },
+		{ "VISUAL", "^[vV]" },
+		{ "VISUAL", "^\22" },
+		{ "SELECT", "^[sS]" },
+		{ "REPLACE", "^R" },
+		{ "TERM", "^t" },
+		{ "MORE", "rm" },
+	}
+	for _, m in ipairs(modes) do
+		if mode:match(m[2]) then
+			return m[1]
+		end
 	end
-	if mode:match("^[vV]") or mode:match("^\22") then
-		return "VISUAL"
-	end
-	if mode:match("^[sS]") or mode:match("^\19") then
-		return "SELECT"
-	end
-	if mode:match("^i") then
-		return "INSERT"
-	end
-	if mode:match("^R") then
-		return "REPLACE"
-	end
-	if mode:match("^c") then
-		return "COMMAND"
-	end
-	if mode:match("^t") then
-		return "TERM"
-	end
-	if mode == "rm" then
-		return "MORE"
-	end
-
 	return "UNKNOWN"
 end
 
@@ -210,6 +201,19 @@ M.FileFormat = {
 			end
 
 			return "LF"
+		end,
+	},
+	M.Sep,
+}
+
+M.WordCount = {
+	condition = function()
+		return vim.bo.filetype == "markdown" or vim.bo.filetype == "text"
+	end,
+	{
+		provider = function()
+			local wc = vim.fn.wordcount()
+			return string.format("WORDS:%d CHARS:%d", wc.words, wc.chars)
 		end,
 	},
 	M.Sep,

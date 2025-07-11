@@ -81,3 +81,52 @@ autocmd("DirChanged", {
 		end
 	end,
 })
+
+vim.g.extract_frontmatter = function()
+	local buf = vim.api.nvim_get_current_buf()
+	local ts = vim.treesitter
+
+	local md_parser = ts.get_parser(buf, "markdown")
+	if md_parser == nil then
+		return
+	end
+
+	local frontmatter_node = nil
+	local md_tree = md_parser:parse()[1]
+	local md_query = ts.query.parse("markdown", [[ ((minus_metadata) @frontmatter) ]])
+	for md_id, md_node in md_query:iter_captures(md_tree:root(), buf, 0, -1) do
+		if md_query.captures[md_id] == "frontmatter" then
+			frontmatter_node = md_node
+			break
+		end
+	end
+
+	if not frontmatter_node then
+		return
+	end
+
+	local range = { frontmatter_node:range() }
+
+	local yml_parser = ts.get_parser(buf, "yaml")
+	local yml_tree = yml_parser:parse()[1]
+	local yml_query = ts.query.parse("yaml", [[ ((block_mapping) @document) ]])
+	for yml_id, yml_node in yml_query:iter_captures(yml_tree:root(), buf, range[1], range[3]) do
+		if yml_query.captures[yml_id] == "document" then
+			for child, name in yml_node:iter_children() do
+				local key = ts.get_node_text(child:field("key")[1], buf)
+
+				if key == "modified" then
+					local node_range = { child:field("value")[1]:range() }
+					vim.api.nvim_buf_set_text(
+						buf,
+						node_range[1],
+						node_range[2],
+						node_range[3],
+						node_range[4],
+						{ tostring(os.date("%Y-%m-%d %H:%M:%S")) }
+					)
+				end
+			end
+		end
+	end
+end

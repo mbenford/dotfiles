@@ -37,6 +37,7 @@ return {
 					Flex(5, components.FileType),
 					Flex(6, components.FileIndent),
 					components.Location,
+					components.WordCount,
 					Flex(7, components.LspStatus),
 					Flex(7, components.Copilot),
 					Flex(8, components.GitInfo),
