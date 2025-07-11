@@ -2,9 +2,27 @@ watch-line() {
 	BUFFER="watch '$BUFFER'"
 }
 
+zoxide-fzf() {
+	local orig_buffer=$LBUFFER
+	local selection
+	selection=$(zoxide query --list | fzf) || {
+		LBUFFER=$orig_buffer
+		zle redisplay
+		return 0
+	}
+
+	if [[ -n "$selection" ]]; then
+		LBUFFER+="cd $selection"
+		cd $selection
+		zle accept-line
+	fi
+}
+
 zle -N watch-line
+zle -N zoxide-fzf
 
 bindkey '^[e' edit-command-line
 bindkey '^[i' insert-last-word
 bindkey '^[q' push-line
 bindkey '^[w' watch-line
+bindkey '^[d' zoxide-fzf

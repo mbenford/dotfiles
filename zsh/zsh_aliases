@@ -1,4 +1,5 @@
 # zsh
+alias zrc='zshrc'
 alias zreload='exec zsh'
 alias zalias='$EDITOR $ZDOTDIR/.zsh_aliases'
 alias zenv='$EDITOR $ZDOTDIR/.zshenv'
@@ -30,10 +31,15 @@ alias lgs='lazygit status '
 alias lgb='lazygit branch '
 alias lgst='lazygit stash '
 
+# docker
+alias lzd='lazydocker '
+alias dcls='docker-ps-fzf'
+alias dps='docker-ps-fzf'
+alias dils='docker-image-fzf'
+
 # misc
 alias cat='bat '
 alias open='xdg-open '
-alias lzd='lazydocker '
 alias sudoe='sudoedit '
 alias r='ranger'
 alias y='yazi'
@@ -43,6 +49,10 @@ alias vim='nvim'
 alias vc='nvim -u NONE'
 alias pn='pnpm'
 alias lwd='echo $OLDPWD'
+alias m='man '
+alias devc='devcontainer '
+alias devpod='devpod-cli '
+alias devp='devpod-cli '
 
 # work
 [[ -f "$ZDOTDIR/.zsh_aliases_work" ]] && source "$ZDOTDIR/.zsh_aliases_work"

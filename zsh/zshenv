@@ -10,8 +10,11 @@ ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_HISTORY_IGNORE="?(#c100,)"
 
 # fzf
-export FZF_DEFAULT_COMMAND="rg --files --hidden"
+export FZF_DEFAULT_COMMAND="fd --type file --hidden --no-ignore"
 export FZF_DEFAULT_OPTS_FILE="$XDG_CONFIG_HOME/fzf/config"
+
+# zoxide
+export _ZO_FZF_OPTS=""
 
 # golang
 export GOPATH=$HOME/.go
@@ -25,6 +28,19 @@ path+=$HOME/.cargo/bin
 
 # gcloud
 source $HOME/downloads/google-cloud-sdk/path.zsh.inc
+
+path+="${ASDF_DATA_DIR:-$HOME/.asdf}/shims"
+
+# bgnotify
+bgnotify_threshold=10
+function bgnotify_formatted {
+  local elapsed="$(( $3 % 60 ))s"
+  (( $3 < 60 ))   || elapsed="$((( $3 % 3600) / 60 ))m $elapsed"
+  (( $3 < 3600 )) || elapsed="$((  $3 / 3600 ))h $elapsed"
+
+  [ $1 -eq 0 ] && title="Success" || title="Failed"
+  notify-send --icon "terminal" --app-name "zsh" "$title - took ${elapsed}" "$2"
+}
 
 # work
 [[ -f "$ZDOTDIR/.zshenv_work" ]] && source "$ZDOTDIR/.zshenv_work"

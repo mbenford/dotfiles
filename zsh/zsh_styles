@@ -2,4 +2,3 @@
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:git-commit:*' sort false
 zstyle ':completion:*:git-rebase:*' sort false
-zstyle ':fzf-tab:complete:*' fzf-flags "--border=none" "--no-separator" "--no-info" "--no-highlight-line"
