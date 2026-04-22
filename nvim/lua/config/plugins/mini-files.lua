@@ -16,6 +16,20 @@ return {
 		windows = {
 			width_focus = 30,
 		},
+		content = {
+			sort = function(entries)
+				local function compare(a, b)
+					-- Directories always come before files
+					if a.fs_type ~= b.fs_type then
+						return a.fs_type == "directory"
+					end
+					-- Within the same type, sort case-sensitively by name
+					return a.name < b.name
+				end
+				table.sort(entries, compare)
+				return entries
+			end,
+		},
 	},
 	config = function(_, opts)
 		require("mini.files").setup(opts)

@@ -24,14 +24,12 @@ return {
 		terminal = {
 			win = { border = "rounded", title_pos = "center" },
 		},
-		input = {
-			enabled = true,
-			start_mode = "select",
-		},
+		input = { enabled = true },
 		styles = {
 			input = {
 				row = 1,
 				relative = "cursor",
+				noautocmd = false,
 			},
 		},
 	},
@@ -39,58 +37,81 @@ return {
 		{
 			"<Leader>xx",
 			function()
-				require("snacks").bufdelete.delete()
+				Snacks.bufdelete.delete()
 			end,
 			desc = "Unload current buffer",
 		},
 		{
 			"<Leader>xa",
 			function()
-				require("snacks").bufdelete.all()
+				Snacks.bufdelete.all()
 			end,
 			desc = "Unload all buffers",
 		},
 		{
 			"<Leader>xo",
 			function()
-				require("snacks").bufdelete.other()
+				Snacks.bufdelete.other()
 			end,
 			desc = "Unload other buffers",
 		},
 		{
 			"<Leader>gg",
 			function()
-				require("snacks").lazygit.open()
+				Snacks.lazygit.open({
+					win = {
+						on_close = function()
+							vim.g.git.update()
+						end,
+					},
+				})
 			end,
 			desc = "Open Lazygit",
 		},
 		{
 			"<Leader>gl",
 			function()
-				require("snacks").lazygit.log()
+				Snacks.lazygit.log()
 			end,
 			desc = "Open Lazygit - Log",
 		},
 		{
 			"<Leader>gf",
 			function()
-				require("snacks").lazygit.log_file()
+				Snacks.lazygit.log_file()
 			end,
 			desc = "Open Lazygit - Log current file",
 		},
 		{
+			"<Leader>gB",
+			function()
+				Snacks.terminal("git blame " .. vim.fn.expand("%"), {
+					cwd = vim.fn.getcwd(),
+					start_insert = false,
+				})
+			end,
+			desc = "Blame file",
+		},
+		{
 			"]n",
 			function()
-				require("snacks").words.jump(1)
+				Snacks.words.jump(1)
 			end,
 			desc = "Jump to next word",
 		},
 		{
 			"[n",
 			function()
-				require("snacks").words.jump(-1)
+				Snacks.words.jump(-1)
 			end,
 			desc = "Jump to previous word",
+		},
+		{
+			"<Leader>.",
+			function()
+				Snacks.scratch()
+			end,
+			desc = "Scratch buffer",
 		},
 	},
 }

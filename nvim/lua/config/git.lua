@@ -65,15 +65,15 @@ local function get_status()
 	end)
 end
 
-local function update()
+set("update", function()
 	get_branch()
 	get_commits()
 	get_status()
-end
+end)
 
-update()
+vim.g.git.update()
 local timer = vim.uv.new_timer()
-timer:start(0, 10000, vim.schedule_wrap(update))
+timer:start(0, 60000, vim.schedule_wrap(vim.g.git.update))
 
 local group = vim.api.nvim_create_augroup("Git", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePost", {
@@ -84,5 +84,5 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 vim.api.nvim_create_autocmd("DirChanged", {
 	group = group,
-	callback = update,
+	callback = vim.g.git.update,
 })

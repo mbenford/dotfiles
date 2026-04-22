@@ -6,12 +6,14 @@ return {
 		"antoinemadec/FixCursorHold.nvim",
 		"nvim-treesitter/nvim-treesitter",
 		{ "fredrikaverpil/neotest-golang", version = "*" },
+		"marilari88/neotest-vitest",
 	},
 	enabled = false,
 	opts = function()
 		return {
 			adapters = {
 				require("neotest-golang")({}),
+				require("neotest-vitest")({}),
 			},
 		}
 	end,

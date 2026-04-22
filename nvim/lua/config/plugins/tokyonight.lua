@@ -18,6 +18,8 @@ return {
 			hl.FloatTitle = { fg = colors.border_highlight, bg = colors.bg_float }
 			hl.WinBar = "Normal"
 			hl.WinBarNC = "Normal"
+			hl.DiffChange = "DiffDelete"
+			hl.DiffChanged = "DiffDelete"
 
 			-- Statusline
 			hl.StatusLineModeNORMAL = { fg = colors.bg_statusline, bg = colors.blue, bold = true }
@@ -69,6 +71,12 @@ return {
 			hl.DapLogPoint = { fg = colors.blue }
 			hl.DapStopped = { fg = colors.yellow }
 			hl.DapStoppedLine = { bg = darken(colors.yellow, 0.1) }
+
+			-- Git blame
+			hl.GitBlame = { fg = darken(colors.blue, 0.5), bg = hl.CursorLine.bg, italic = true }
+
+			-- Man
+			-- hl.manBold = { fg = colors.green, bold = true }
 		end,
 	},
 	config = function(_, opts)

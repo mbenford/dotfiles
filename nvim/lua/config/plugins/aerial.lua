@@ -1,5 +1,5 @@
 return {
 	"stevearc/aerial.nvim",
-	enabled = true,
+	enabled = false,
 	opts = {},
 }

@@ -5,7 +5,16 @@ return {
 		require("dial.config").augends:register_group({
 			default = {
 				augend.integer.alias.decimal,
+				augend.integer.alias.decimal_int,
 				augend.constant.alias.bool,
+				augend.constant.alias.Bool,
+				augend.date.alias["%Y-%m-%d"],
+				augend.date.alias["%d/%m/%Y"],
+
+				augend.constant.new({ elements = { "and", "or" }, word = true, cyclic = true }),
+				augend.constant.new({ elements = { "&&", "||" }, word = false, cyclic = true }),
+				augend.constant.new({ elements = { "on", "off" }, word = true, cyclic = true }),
+				augend.constant.new({ elements = { "yes", "no" }, word = true, cyclic = true }),
 			},
 		})
 	end,

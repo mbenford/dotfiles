@@ -62,7 +62,14 @@ return {
 			function()
 				Snacks.picker.recent({ filter = { cwd = true } })
 			end,
-			desc = "Files",
+			desc = "Recent Files",
+		},
+		{
+			"<Leader>fe",
+			function()
+				Snacks.picker.explorer()
+			end,
+			desc = "File Explorer",
 		},
 		{
 			"<Leader>fg",
@@ -70,6 +77,13 @@ return {
 				Snacks.picker.grep({ regex = false, layout = { preview = true } })
 			end,
 			desc = "Live grep",
+		},
+		{
+			"<Leader>fG",
+			function()
+				Snacks.picker.grep({ regex = true, args = { "-U" }, title = "Grep (multiline)", layout = { preview = true } })
+			end,
+			desc = "Live grep (multiline)",
 		},
 		{
 			"<Leader>f*",
@@ -156,41 +170,52 @@ return {
 			desc = "Filetypes",
 		},
 		{
+			"<Leader>fn",
+			function()
+				Snacks.picker.notifications()
+			end,
+			desc = "Notifications",
+		},
+		{
 			"<Leader>ld",
 			function()
-				Snacks.picker.lsp_definitions()
+				Snacks.picker.lsp_definitions({ layout = { preview = true } })
 			end,
 			desc = "LSP Definitions",
 		},
 		{
 			"<Leader>lr",
 			function()
-				Snacks.picker.lsp_references()
+				Snacks.picker.lsp_references({ layout = { preview = true } })
 			end,
 			desc = "LSP References",
 		},
 		{
 			"<Leader>li",
 			function()
-				Snacks.picker.lsp_implementations()
+				Snacks.picker.lsp_implementations({ layout = { preview = true } })
 			end,
 			desc = "LSP Implementations",
 		},
 		{
 			"<Leader>ls",
 			function()
-				Snacks.picker.lsp_symbols()
+				Snacks.picker.lsp_symbols({ layout = { preview = true } })
 			end,
 			desc = "LSP Symbols",
 		},
 		{
 			"<Leader>lci",
-			"<Cmd>Telescope lsp_incoming_calls<CR>",
+			function()
+				Snacks.picker.lsp_incoming_calls({ layout = { preview = true } })
+			end,
 			desc = "LSP incoming calls",
 		},
 		{
 			"<Leader>lco",
-			"<Cmd>Telescope lsp_outgoing_calls<CR>",
+			function()
+				Snacks.picker.lsp_outgoing_calls({ layout = { preview = true } })
+			end,
 			desc = "LSP outgoing calls",
 		},
 	},

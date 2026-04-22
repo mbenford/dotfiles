@@ -1,19 +1,18 @@
 return {
 	"MeanderingProgrammer/render-markdown.nvim",
-	enabled = true,
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter",
 		"echasnovski/mini.icons",
 	},
-	ft = { "markdown", "copilot-chat" },
+	ft = { "markdown", "codecompanion", "Avante" },
 	opts = {
+		file_types = { "markdown", "codecompanion", "Avante" },
 		anti_conceal = {
 			enabled = true,
 		},
-		file_types = { "markdown", "copilot-chat" },
 		render_modes = { "n", "V", "t", "i", "c" },
 		heading = {
-			border = true,
+			border = false,
 			position = "inline",
 			icons = {
 				"❱ ",
@@ -31,6 +30,6 @@ return {
 		},
 		dash = {},
 		win_options = { concealcursor = { rendered = "n" } },
-		completions = { blink = { enbaled = true } },
+		completions = { blink = { enabled = true } },
 	},
 }

@@ -2,17 +2,38 @@ return {
 	"rebelot/heirline.nvim",
 	opts = function()
 		local conditions = require("heirline.conditions")
+		local utils = require("heirline.utils")
 		local components = require("config.plugins.heirline.components")
 		local Flex = components.Flex
 
 		return {
+			tabline = {
+				utils.make_tablist(components.TabInfo),
+			},
 			statusline = {
 				hl = "StatusLine",
 				fallthrough = false,
 				{
 					condition = function()
 						return conditions.buffer_matches({
-							buftype = { "prompt", "nofile", "terminal", "quickfix", "help" },
+							filetype = { "man" },
+							buftype = { "help" },
+						})
+					end,
+					{
+						components.Mode,
+						components.FileInfo,
+						components.Fill,
+						components.FileType,
+						components.Location,
+						components.LocationPercentage,
+						components.WordCount,
+					},
+				},
+				{
+					condition = function()
+						return conditions.buffer_matches({
+							buftype = { "prompt", "nofile", "terminal", "quickfix" },
 						})
 					end,
 					{
@@ -27,7 +48,6 @@ return {
 					components.Mode,
 					components.WorkDir,
 					components.FileInfo,
-					Flex(8, components.GitSigns),
 					components.Diagnostics,
 					components.Fill,
 					components.RecordingStatus,
@@ -37,7 +57,6 @@ return {
 					Flex(5, components.FileType),
 					Flex(6, components.FileIndent),
 					components.Location,
-					components.WordCount,
 					Flex(7, components.LspStatus),
 					Flex(7, components.Copilot),
 					Flex(8, components.GitInfo),

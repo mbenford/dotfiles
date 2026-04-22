@@ -7,7 +7,7 @@ return {
 			preset = {
 				keys = {
 					{ icon = " ", key = "n", desc = "New", action = "<Leader>nf" },
-					{ icon = " ", key = "ee", desc = "Explore", action = "<Leader>ee" },
+					{ icon = " ", key = "ee", desc = "Explore", action = "<Leader>ee" },
 					{ icon = " ", key = "ff", desc = "Find", action = "<Leader>ff" },
 					{ icon = " ", key = "fo", desc = "Recent", action = "<Leader>fo" },
 					{ icon = " ", key = "fg", desc = "Grep", action = "<Leader>fg" },
@@ -34,7 +34,7 @@ return {
 				function()
 					return {
 						text = {
-							{ " " .. require("utils.misc").work_dir(), hl = "StatusLineWorkDir" },
+							{ "󰉋 " .. require("utils.misc").work_dir(), hl = "StatusLineWorkDir" },
 						},
 						align = "center",
 						padding = 1,

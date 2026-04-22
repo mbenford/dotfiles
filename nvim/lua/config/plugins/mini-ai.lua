@@ -7,10 +7,17 @@ return {
 		local spec = mini_ai.gen_spec
 		return {
 			custom_textobjects = {
-				F = spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+				F = spec.treesitter({
+					a = "@function.outer",
+					i = "@function.inner",
+				}),
 				o = spec.treesitter({
 					a = { "@conditional.outer", "@loop.outer" },
 					i = { "@conditional.inner", "@loop.inner" },
+				}),
+				c = spec.treesitter({
+					a = "@class.outer",
+					i = "@class.inner",
 				}),
 				B = function()
 					local from = { line = 1, col = 1 }

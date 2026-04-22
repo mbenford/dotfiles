@@ -8,12 +8,6 @@ autocmd("FocusLost", {
 	command = "silent! wa",
 })
 
--- Resizes splits when the Neovim window is resized
-autocmd("VimResized", {
-	group = group,
-	command = "wincmd =",
-})
-
 -- Creates a highlight effect when text is yanked (copied)
 autocmd("TextYankPost", {
 	group = group,
@@ -23,16 +17,15 @@ autocmd("TextYankPost", {
 -- Adds a buffer-local keybinding 'q' to close some windows based on their file type
 autocmd("FileType", {
 	group = group,
-	pattern = { "help", "qf", "vim", "checkhealth" },
+	pattern = { "help", "qf", "vim", "checkhealth", "man" },
 	callback = function(event)
-		require("which-key").add({ "x", "<C-w>q", buffer = event.buf, desc = "Close window" })
+		require("which-key").add({ "q", "<C-w>q", buffer = event.buf, desc = "Close window" })
 	end,
 })
 
 -- Opens help files in a floating window
 autocmd("BufWinEnter", {
 	group = group,
-	pattern = "*",
 	callback = function(event)
 		local filetype = vim.bo[event.buf].filetype
 		local file_path = event.match
@@ -55,8 +48,6 @@ autocmd("BufWinEnter", {
 			backdrop = false,
 			title = " HELP ",
 			title_pos = "center",
-			footer = string.format(" %s ", vim.fn.fnamemodify(file_path, ":~")),
-			footer_pos = "center",
 			wo = {
 				wrap = true,
 			},
@@ -72,6 +63,28 @@ autocmd("BufWinEnter", {
 	end,
 })
 
+-- Stops insert mode when Snacks input is shown as has any content (eg: LSP rename)
+autocmd("BufWinEnter", {
+	group = group,
+	callback = function(event)
+		local filetype = vim.bo[event.buf].filetype
+		if filetype ~= "snacks_input" then
+			return
+		end
+
+		vim.schedule(function()
+			local line_count = vim.api.nvim_buf_line_count(event.buf)
+			local has_content = line_count > 1 or vim.api.nvim_buf_get_lines(event.buf, 0, 1, false)[1] ~= ""
+			if not has_content then
+				return
+			end
+
+			vim.cmd.stopinsert()
+			vim.cmd.normal("0")
+		end)
+	end,
+})
+
 -- Updates the Snacks dashboard when the working directory changes
 autocmd("DirChanged", {
 	group = group,
@@ -81,6 +94,45 @@ autocmd("DirChanged", {
 		end
 	end,
 })
+
+autocmd("User", {
+	pattern = "MiniFilesActionRename",
+	callback = function(event)
+		if Snacks then
+			Snacks.rename.on_rename_file(event.data.from, event.data.to)
+		end
+	end,
+})
+
+-- local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+-- autocmd("User", {
+-- 	pattern = "CodeCompanion*",
+-- 	group = group,
+-- 	callback = function(request)
+-- 		local event = request.match:gsub("CodeCompanion", "")
+-- 		if event ~= "RequestStarted" or event == "RequestFinished" then
+-- 			return
+-- 		end
+--
+-- 		vim.notify("Thinking...", "info", {
+-- 			id = "code_companion_status",
+-- 			title = "Code Companion",
+-- 			history = false,
+-- 			keep = function()
+-- 				return event ~= "RequestFinished"
+-- 			end,
+-- 			opts = function(notif)
+-- 				notif.icon = ""
+-- 				if vim.endswith(event, "Started") then
+-- 					---@diagnostic disable-next-line: undefined-field
+-- 					notif.icon = spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+-- 				elseif vim.endswith(event, "Finished") then
+-- 					notif.icon = " "
+-- 				end
+-- 			end,
+-- 		})
+-- 	end,
+-- })
 
 vim.g.extract_frontmatter = function()
 	local buf = vim.api.nvim_get_current_buf()

@@ -1,7 +1,10 @@
 local g = vim.g
 
 g.mapleader = " "
-g.maplocalleader = "\\"
+g.maplocalleader = ","
+
+-- Disable plugin maps
+g.no_plugin_maps = true
 
 -- Disable unused providers
 g.loaded_python3_provider = 0

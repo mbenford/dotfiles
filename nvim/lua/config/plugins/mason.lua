@@ -1,5 +1,6 @@
 return {
 	"williamboman/mason.nvim",
+	event = { "BufRead", "BufWritePost" },
 	opts = {
 		ui = {
 			icons = {

@@ -55,8 +55,6 @@ require("which-key").add({
 	},
 	{ "<Leader>w", "<Cmd>silent! wa<CR>", desc = "Write all changed buffers" },
 	{ "<Leader>i", "i<Space><Esc>r", desc = "Insert one character" },
-	{ "<Leader>o", "mao<Esc>`a", desc = "Insert empty line below" },
-	{ "<Leader>O", "maO<Esc>`a", desc = "Insert empty line above" },
 	{ "<Leader>y", '"+yy', desc = "Yank current line to clipboard" },
 	{ "<Leader>y", '"+y', mode = { "x" }, desc = "Yank selected lines to clipboard" },
 	{ "<Leader>p", '"+p', desc = "Paste from clipboard after the cursor" },
@@ -97,8 +95,6 @@ require("which-key").add({
 	{ "gct", "gcoTODO: ", remap = true, desc = "Add a TODO comment" },
 	{ "gcn", "gcoNOTE: ", remap = true, desc = "Add a NOTE comment" },
 	{ "gcf", "gcoFIXME: ", remap = true, desc = "Add a FIXME comment" },
-	{ "<C-w><S-n>", "<Cmd>vnew<CR>", desc = "Resize window left" },
-	{ "<C-w><Tab>", "<C-w>^", desc = "Resize window left" },
 	{
 		"<Up>",
 		function()
@@ -132,7 +128,19 @@ require("which-key").add({
 		apply_zz(lazy(vim.diagnostic.jump, { count = 1, float = true, severity = vim.diagnostic.severity.ERROR })),
 		desc = "Go to next diagnostic error",
 	},
-	{ "<Leader>q", "<Cmd>botright copen<CR>", desc = "Open Quickfix window" },
+	{
+		"<Leader>q",
+		function()
+			for _, win in pairs(vim.fn.getwininfo()) do
+				if win["quickfix"] == 1 then
+					vim.cmd.cclose()
+					return
+				end
+			end
+			vim.cmd.copen({ mods = { split = "botright" } })
+		end,
+		desc = "Open Quickfix window",
+	},
 	{ "[q", "<Cmd>cprev<CR>zz", desc = "Go to previous item on quickfix list" },
 	{ "]q", "<Cmd>cnext<CR>zz", desc = "Go to next item on quickfix list" },
 	{ "[l", "<Cmd>lprev<CR>zz", desc = "Go to previous item on location list" },

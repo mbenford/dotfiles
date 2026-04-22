@@ -1,10 +1,10 @@
 return {
-	'rafamadriz/friendly-snippets',
-	event = 'InsertEnter',
+	"rafamadriz/friendly-snippets",
+	event = "InsertEnter",
 	dependencies = {
-		'LuaSnip',
+		"LuaSnip",
 	},
 	config = function()
-		require('luasnip.loaders.from_vscode').lazy_load()
+		require("luasnip.loaders.from_vscode").lazy_load()
 	end,
 }

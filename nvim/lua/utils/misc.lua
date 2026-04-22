@@ -26,4 +26,13 @@ function M.work_dir()
 	return string.upper(vim.fn.fnamemodify(vim.fn.getcwd(), ":t")) .. (vim.env.DEVPOD and " [DevPod]" or "")
 end
 
+function M.is_manpager()
+	for _, arg in ipairs(vim.v.argv) do
+		if arg == "+Man!" then
+			return true
+		end
+	end
+	return false
+end
+
 return M

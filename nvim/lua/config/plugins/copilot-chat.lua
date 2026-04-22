@@ -1,5 +1,6 @@
 return {
 	"CopilotC-Nvim/CopilotChat.nvim",
+	enabled = false,
 	branch = "main",
 	dependencies = {
 		{ "zbirenbaum/copilot.lua" },
@@ -7,15 +8,36 @@ return {
 	},
 	build = "make tiktoken",
 	opts = {
-		model = "claude-3.5-sonnet",
-		question_header = "󰭹 ",
-		answer_header = " ",
-		error_header = " ",
+		model = "claude-sonnet-4.5",
 		insert_at_end = true,
+		show_help = false,
+		auto_fold = true,
+		window = {
+			width = 0.4,
+		},
+		separator = "━━",
+		headers = {
+			user = " You",
+			assistant = " Copilot",
+			tool = " Tool",
+		},
 	},
 	init = function()
 		require("which-key").add({
 			{ "<Leader>c", group = "Copilot Chat", icon = "" },
+		})
+	end,
+	config = function(_, opts)
+		require("CopilotChat").setup(opts)
+
+		vim.api.nvim_create_autocmd("BufEnter", {
+			pattern = "copilot-chat",
+			callback = function()
+				local o = vim.opt_local
+				o.relativenumber = false
+				o.number = false
+				o.conceallevel = 0
+			end,
 		})
 	end,
 	keys = {
@@ -30,11 +52,12 @@ return {
 		{
 			"<leader>cq",
 			function()
+				local mode = vim.api.nvim_get_mode().mode
 				vim.ui.input({ prompt = "Copilot Quick Chat: " }, function(input)
 					if input and input ~= "" then
-						local mode = vim.api.nvim_get_mode().mode
-						local select = require("CopilotChat.select")
-						require("CopilotChat").ask(input, { selection = mode == "n" and select.buffer or select.visual })
+						vim.schedule_wrap(function() end)
+						vim.cmd.normal({ "gv", bang = true })
+						require("CopilotChat").ask(input, { resources = mode == "n" and "buffer" or "selection" })
 					end
 				end)
 			end,
@@ -43,10 +66,7 @@ return {
 		},
 		{
 			"<leader>cp",
-			function()
-				local actions = require("CopilotChat.actions")
-				actions.pick(actions.prompt_actions())
-			end,
+			function() end,
 			mode = { "n", "x" },
 			desc = "Prompt actions",
 		},
@@ -54,11 +74,7 @@ return {
 			"<leader>ce",
 			function()
 				local mode = vim.api.nvim_get_mode().mode
-				local select = require("CopilotChat.select")
-				require("CopilotChat").ask(
-					"Explain what this does",
-					{ selection = mode == "n" and select.buffer or select.visual }
-				)
+				require("CopilotChat").ask("Explain what this does", { resources = mode == "n" and "buffer" or "selection" })
 			end,
 			mode = { "n", "x" },
 			desc = "Explain",

@@ -4,13 +4,14 @@ return {
 	opts = function()
 		local builtin = require("statuscol.builtin")
 		return {
-			ft_ignore = { "snacks_picker_preview" },
+			ft_ignore = { "snacks_picker_preview", "man" },
 			relculright = true,
 			segments = {
 				{ text = { builtin.lnumfunc, " " } },
 				{
 					sign = {
-						namespace = { "gitsigns" },
+						-- namespace = { "gitsigns" },
+						namespace = { "MiniDiffViz" },
 						colwidth = 1,
 						auto = false,
 					},

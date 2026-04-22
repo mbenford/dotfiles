@@ -1,4 +1,4 @@
 return {
-	'tpope/vim-repeat',
-	event = { 'BufRead', 'InsertEnter' },
+	"tpope/vim-repeat",
+	event = { "BufRead", "InsertEnter" },
 }

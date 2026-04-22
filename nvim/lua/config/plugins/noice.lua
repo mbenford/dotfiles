@@ -11,6 +11,12 @@ return {
 				["vim.lsp.util.stylize_markdown"] = true,
 			},
 		},
+		routes = {
+			{
+				filter = { event = "notify", find = "CodeCompanion" },
+				view = "mini",
+			},
+		},
 		views = {
 			cmdline_input = {
 				view = "cmdline_popup",

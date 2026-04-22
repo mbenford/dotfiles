@@ -71,7 +71,7 @@ M.WorkDir = {
 	hl = "StatusLineWorkDir",
 	{
 		provider = function()
-			return " " .. require("utils.misc").work_dir()
+			return "󰉋 " .. require("utils.misc").work_dir()
 		end,
 	},
 	M.Sep,
@@ -96,7 +96,7 @@ do
 
 	local FileName = {
 		init = function(self)
-			self.filename = vim.fn.expand("%:.")
+			self.filename = vim.fn.expand("%:~:.")
 		end,
 		hl = function()
 			return vim.bo.modified and "StatusLineFilenameModified" or ""
@@ -206,14 +206,21 @@ M.FileFormat = {
 	M.Sep,
 }
 
-M.WordCount = {
-	condition = function()
-		return vim.bo.filetype == "markdown" or vim.bo.filetype == "text"
+M.TabInfo = {
+	provider = function(self)
+		return "%" .. self.tabnr .. "T " .. self.tabpage .. " %T"
 	end,
+	hl = function(self)
+		return self.is_active and "TabLineSel" or "TabLine"
+	end,
+}
+
+M.WordCount = {
 	{
 		provider = function()
 			local wc = vim.fn.wordcount()
-			return string.format("WORDS:%d CHARS:%d", wc.words, wc.chars)
+			local lines = vim.api.nvim_buf_line_count(0)
+			return string.format("WORDS:%d CHARS:%d LINES:%d", wc.words, wc.chars, lines)
 		end,
 	},
 	M.Sep,
@@ -279,6 +286,11 @@ M.SelectionCount = {
 
 M.Location = {
 	{ provider = "%2l:%-2v" },
+	M.Sep,
+}
+
+M.LocationPercentage = {
+	{ provider = "%P" },
 	M.Sep,
 }
 

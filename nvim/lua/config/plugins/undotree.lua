@@ -1,4 +1,5 @@
 return {
-	'mbbill/undotree',
-	event = 'BufRead',
+	"mbbill/undotree",
+	event = "BufRead",
+	enabled = false,
 }

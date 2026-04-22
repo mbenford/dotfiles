@@ -7,7 +7,10 @@ return {
 	event = "InsertEnter",
 	version = "1.*",
 	opts = {
-		keymap = { preset = "default" },
+		keymap = {
+			preset = "default",
+			["<kEnter>"] = { "select_and_accept" },
+		},
 		appearance = { nerd_font_variant = "mono" },
 		completion = {
 			list = {
