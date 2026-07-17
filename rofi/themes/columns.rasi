@@ -2,7 +2,7 @@
 @import "default.rasi"
 
 textbox {
-	font: "sans 14";
+	font: "mono 14";
 	padding: 5px;
 }
 
@@ -10,6 +10,7 @@ listview {
 	layout: vertical;
 	flow: horizontal;
 	columns: 5;
+	lines: 3;
 	fixed-height: false;
 	fixed-columns: true;
 	cycle: false;
@@ -23,7 +24,7 @@ element {
 
 element-text,
 element-text selected {
-  highlight: var(item-highlight);
+	highlight: var(item-highlight);
 	vertical-align: 0.5;
 	horizontal-align: 0.5;
 }

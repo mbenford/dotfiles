@@ -3,39 +3,33 @@
 from os import getenv
 from pathlib import Path
 from subprocess import Popen, DEVNULL
-from rofi import RofiScript
+import rofi
 import json
 
-
-config_dir = getenv('XDG_CONFIG_HOME')
-browser = "/usr/bin/brave"
-state_file = Path(config_dir, "BraveSoftware/Brave-Browser/Local State")
-
-class BraveProfiles(RofiScript):
-    def __init__(self):
-        super().__init__()
-        self.hotkeys(True)
-        self.custom_entry(False)
-        self.markup_rows(True)
+script = rofi.Script(message="Brave Profiles", no_custom="true")
 
 
-    def generate(self, args):
-        self.message("Available profiles")
-        with open(state_file, "r") as file:
-            data = json.load(file)
-            for key, value in data["profile"]["info_cache"].items():
-                self.row(value["name"], icon="brave", info=key)
+@script.start
+def load_profiles(_: rofi.Context) -> rofi.Result:
+    state_file = Path(
+        getenv("XDG_CONFIG_HOME", ""), "BraveSoftware/Brave-Browser/Local State"
+    )
+    with open(state_file, "r") as file:
+        data = json.load(file)
+
+    for key, value in sorted(
+        data["profile"]["info_cache"].items(), key=lambda x: x[1]["name"]
+    ):
+        yield rofi.Row(str(value["name"]), info=key, icon="brave")
 
 
-    def execute(self, selected, args):
-        profile = self.info(0)
-        args = [browser, f"--profile-directory={profile}"]
-
-        if self.retv() == 10:
-            args.append("--incognito")
-
-        Popen(args, stdout=DEVNULL, stderr=DEVNULL)
+@script.select
+def open_new_window(ctx: rofi.Context) -> rofi.Result:
+    _ = Popen(
+        ["/usr/bin/brave", f"--profile-directory={ctx.info}"],
+        stdout=DEVNULL,
+    )
 
 
 if __name__ == "__main__":
-    BraveProfiles().run()
+    script.run(theme="brave.rasi")

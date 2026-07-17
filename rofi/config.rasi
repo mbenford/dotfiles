@@ -11,6 +11,8 @@ configuration {
 	drun-match-fields: "name,generic";
 	drun-display-format: "{name}";
 
+	run-command: "app2unit -t service -- {cmd}";
+
 	kb-element-next: "";
 	kb-mode-next: "Tab";
 	kb-row-select: "Control-s";
@@ -38,4 +40,4 @@ configuration {
 	}
 }
 
-@theme "themes/default.rasi"
+@theme "themes/default"

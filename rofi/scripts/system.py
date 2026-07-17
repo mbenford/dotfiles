@@ -1,56 +1,68 @@
 #!/usr/bin/env python
 
+import shlex
 from subprocess import Popen, DEVNULL
-from rofi import RofiScript
+from typing import NamedTuple
+import rofi
+
+
+class Action(NamedTuple):
+    name: str
+    cmd: str
+    confirm: bool = True
+
 
 actions = [
-    dict(name="Suspend", icon="system-suspend", cmd="systemctl suspend"),
-    dict(name="Lock", icon="system-lock-screen", cmd="i3lock --blur 10", confirm=False),
-    dict(name="Logout", icon="system-log-out", cmd="loginctl terminate-user $USER"),
-    dict(name="Reboot", icon="system-reboot", cmd="systemctl reboot"),
-    dict(name="Shutdown", icon="system-shutdown", cmd="systemctl poweroff"),
+    Action("Lock", "loginctl lock-session", confirm=False),
+    Action("Suspend", "systemctl suspend"),
+    Action("Logout", "loginctl terminate-user $USER"),
+    Action("Reboot", "loginctl systemctl-session"),
+    Action("Shutdown", "systemctl poweroff"),
 ]
 
-class Powermenu(RofiScript):
-    def __init__(self):
-        super().__init__()
-        self.custom_entry(False)
+script = rofi.Script(no_custom="true")
 
 
-    def generate(self, args):
-        self.message(f"Uptime: {self.get_uptime()}")
-        for idx, action in enumerate(actions):
-            self.row(action["name"], icon=action["icon"], info=idx)
+@script.start
+def show_actions(_: rofi.Context) -> rofi.Result:
+    script.set_message(f"Uptime: {get_uptime()}")
+    for index, action in enumerate(actions):
+        yield rofi.Row(action.name, info=f"action:{index}")
 
 
-    def execute(self, selected, args):
-        action = actions[int(self.info(0))]
-        if action.get("confirm", True):
-            if self.info(1) is None:
-                self.message("Are you sure?")
-                self.row("Yes", icon="checkmark", info="y")
-                self.row("No", icon="emblem-error", info="n")
-                return
+@script.select
+def execute_action(ctx: rofi.Context) -> rofi.Result:
+    kind, _, value = ctx.info.partition(":")
 
-            if self.info(1) == "n":
-                return
+    if kind == "action":
+        action = actions[int(value)]
+        if action.confirm:
+            script.set_data(str(value))
+            script.set_message(f"Confirm {action.name}?")
+            yield rofi.Row("Yes", info="confirm:yes")
+            yield rofi.Row("No", info="confirm:no")
+            return
+    elif kind == "confirm" and value == "yes":
+        action = actions[int(ctx.data)]
+    else:
+        yield from show_actions(ctx)
+        return
 
-        action = actions[int(self.info(0))]
-        Popen(action.get("cmd"), shell=True, stdout=DEVNULL)
+    _ = Popen(shlex.split(action.cmd), stdout=DEVNULL)
 
 
-    def get_uptime(self):
-        with open('/proc/uptime', 'r') as f:
-            uptime_seconds = int(float(f.readline().split()[0]))
+def get_uptime() -> str:
+    with open("/proc/uptime", "r") as f:
+        uptime_seconds = int(float(f.readline().split()[0]))
 
-        if uptime_seconds > 86400:
-            return f"{uptime_seconds // 86400} days"
-        if uptime_seconds > 3600:
-            return f"{uptime_seconds // 3600} hours"
-        if uptime_seconds > 60:
-            return f"{uptime_seconds // 60} minutes"
-        return f"{uptime_seconds} seconds"
+    if uptime_seconds > 86400:
+        return f"{uptime_seconds // 86400} days"
+    if uptime_seconds > 3600:
+        return f"{uptime_seconds // 3600} hours"
+    if uptime_seconds > 60:
+        return f"{uptime_seconds // 60} minutes"
+    return f"{uptime_seconds} seconds"
 
 
 if __name__ == "__main__":
-    Powermenu().run()
+    script.run(theme="system.rasi")

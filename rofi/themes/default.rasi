@@ -1,22 +1,22 @@
 @import "shared/colors.rasi"
 
 * {
-	font: "sans 20";
+	font: "mono 14";
 	text-color: var(foreground);
 	background-color:	var(background);
 }
 
 window {
-	anchor: north;
-	y-offset: -25%;
-	width: 25%;
+	location: north;
+	y-offset: 30%;
+	width: 400px;
 	border-color: var(border);
-	border: 2px solid;
-	border-radius: 5px;
+	border: 1px solid;
+	border-radius: 12px;
 }
 
 inputbar {
-	padding: 5px;
+	padding: 0px 5px;
 	children: [entry, prompt];
 }
 
@@ -27,17 +27,17 @@ entry {
 	width: 100%;
 }
 
-prompt {
+prompt,
+num-rows,
+num-filtered-rows {
 	color: var(prompt-fg);
 	background-color: var(prompt-bg);
-	font: "mono 18";
 	width: 100px;
-	padding: 0px 10px;
+	padding: 5px;
 	vertical-align: 0.5;
 }
 
 textbox {
-	font: "mono 12";
 	horizontal-align: 0.5;
 }
 
@@ -45,16 +45,16 @@ listview {
 	border: 1px 0px 0px 0px;
 	border-color: var(border);
 	layout: vertical;
-	columns: 1;
 	lines: 5;
-	dynamic: true;
-	fixed-height: false;
+	dynamic: false;
+	fixed-height: true;
 	cycle: false;
-	require-input: true;
+	require-input: false;
 }
 
 element {
-	padding: 5px;
+	padding: 0 10px;
+	children: [element-text];
 }
 
 element selected,
@@ -66,13 +66,12 @@ element-text selected {
 
 element-text,
 element-text selected {
-	font: "sans 20";
   highlight: var(item-highlight);
 	vertical-align: 0.5;
 }
 
 element-icon {
-	size: 48;
+	size: 16;
 	padding: 0px 5px 0px 0px;
 }
 

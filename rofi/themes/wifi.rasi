@@ -1,0 +1,25 @@
+@import "shared/colors.rasi"
+@import "default.rasi"
+
+inputbar {
+	enabled: false;
+}
+
+listview {
+	fixed-columns: false;
+	lines: 5;
+	require-input: false;
+}
+
+element {
+	padding: 5px 0px;
+}
+
+element-text {
+	font: "sans 12";
+}
+
+element-icon {
+	size: 64;
+	padding: 0;
+}

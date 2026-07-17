@@ -1,0 +1,17 @@
+@import "shared/colors.rasi"
+@import "default.rasi"
+
+window {
+	anchor: north;
+	width: 40%;
+}
+
+element {
+	orientation: vertical;
+	children: [element-text];
+}
+
+element-text,
+element-text selected {
+	font: "sans 14";
+}

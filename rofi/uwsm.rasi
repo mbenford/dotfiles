@@ -1,0 +1,3 @@
+configuration {
+	run-command: "uwsm-app {cmd}";
+}

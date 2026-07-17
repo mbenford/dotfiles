@@ -3,39 +3,36 @@
 from os import getenv, path
 from pathlib import Path
 from subprocess import Popen, DEVNULL
-from functools import partial
-from rofi import RofiScript
+import rofi
 
-terminal = getenv("TERMINAL")
-editor = getenv("EDITOR")
-shell = getenv("SHELL")
-home = str(Path.home())
-basedir = f"{home}/.dotfiles"
-
-class Dotfiles(RofiScript):
-    def __init__(self):
-        super().__init__()
-        self.custom_entry(False)
-        self.markup_rows(True)
+script = rofi.Script(no_custom="true")
 
 
-    def generate(self, args):
-        folders = []
-        for entry in Path(basedir).glob("[!.git]*"):
-            if not entry.is_dir():
-                continue
+@script.start
+def list_folder(_: rofi.Context) -> rofi.Result:
+    folders: list[Path] = []
+    for entry in (Path.home() / ".dotfiles").glob("[!.git]*"):
+        if not entry.is_dir():
+            continue
 
-            folders.append(entry)
+        folders.append(entry)
 
-        for folder in sorted(folders):
-            self.row(f"{path.basename(folder)}", icon="folder", info=folder)
+    for folder in sorted(folders):
+        yield rofi.Row(
+            f"{path.basename(folder)}",
+            info=str(folder),
+            icon="folder",
+        )
 
 
-    def execute(self, selected, args):
-        file = self.info(0)
-        popen = partial(Popen, cwd=file, shell=True, stdout=DEVNULL)
-        popen(terminal)
+@script.select
+def open_folder(ctx: rofi.Context) -> rofi.Result:
+    _ = Popen(
+        getenv("TERMINAL", ""),
+        cwd=ctx.info,
+        stdout=DEVNULL,
+    )
 
 
 if __name__ == "__main__":
-    Dotfiles().run()
+    script.run()

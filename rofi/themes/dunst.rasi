@@ -1,0 +1,16 @@
+@import "shared/colors.rasi"
+@import "default.rasi"
+
+window {
+	width: 1000px;
+}
+
+listview {
+	lines: 5;
+	fixed-columns: false;
+	require-input: false;
+}
+
+element {
+	padding: 5px;
+}

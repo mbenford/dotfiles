@@ -1,10 +1,15 @@
 @import "shared/colors.rasi"
 @import "default.rasi"
 
+window {
+	location: center;
+	width: 1000px;
+}
+
 inputbar {
 	enabled: false;
 }
 
-list-view {
-	lines: 5;
+listview {
+	lines: 20;
 }

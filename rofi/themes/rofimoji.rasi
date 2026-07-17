@@ -1,13 +1,17 @@
 @import "shared/colors.rasi"
 @import "default.rasi"
 
+window {
+	width: 500px;
+}
+
 listview {
 	layout: vertical;
 	flow: horizontal;
-	columns: 6;
-	lines: 5;
+	columns: 10;
+	lines: 9;
 	fixed-height: false;
-	fixed-columns: true;
+	fixed-columns: false;
 	cycle: false;
 	require-input: false;
 }
@@ -19,8 +23,8 @@ element {
 
 element-text,
 element-text selected {
-	font: "Noto Color Emoji 28";
-  highlight: var(item-highlight);
+	font: "sans 16";
+	highlight: var(item-highlight);
 	vertical-align: 0.5;
 	horizontal-align: 0.5;
 }
