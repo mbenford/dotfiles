@@ -1,55 +1,89 @@
 pragma Singleton
 
 import Quickshell
+import Quickshell.Hyprland
+import Quickshell.Io
 import Quickshell.Services.Pipewire
 import QtQuick
 
 Singleton {
 	id: root
 
-	enum NodeType {
-		Sink,
-		Source
-	}
-
-	function getNode(type: int): PwNodeAudio {
-		const node = type === Audio.NodeType.Sink
+	function getNode(type: string): PwNodeAudio {
+		const node = type === "sink"
 			? Pipewire.defaultAudioSink
 			: Pipewire.defaultAudioSource
 
 		return node.ready ? node.audio : null
 	}
 
-	function getVolume(type: int): real {
-		return root.getNode(type)?.volume || 0
+	function getVolume(type: string): int {
+		const volume = getNode(type)?.volume.toFixed(2) || 0.00
+		return Math.trunc(volume * 100)
 	}
 
-	function isMuted(type: int): bool {
-		return root.getNode(type)?.muted | false
+	function setVolume(type: string, offset: int): void {
+		const node = getNode(type)
+		if (node === null) return
+
+		const volume = Math.max(0, Math.min(1, node.volume + offset / 100))
+		if (volume === node.volume) {
+			nodeUpdated(type)
+			return
+		}
+
+		node.volume = Math.max(0, Math.min(1, node.volume + offset / 100))
 	}
 
-	signal nodeUpdated(nodeType: int)
+	function isMuted(type: string): bool {
+		return getNode(type)?.muted | false
+	}
+
+	function toggleMute(type: string): void {
+		const node = getNode(type)
+		if (node === null) return
+
+		node.muted = !node.muted
+	}
+
+	signal nodeUpdated(type: string)
 
 	Connections {
-		readonly property int nodeType: Audio.NodeType.Sink
-
 		target: Pipewire.defaultAudioSink.audio
-		function onVolumeChanged(value) {
-			root.nodeUpdated(nodeType)
+
+		readonly property string type: "sink"
+		property int lastVolume: -1
+		property bool lastMuted: false
+
+		function onVolumeChanged() {
+			const volume = Math.round(target.volume * 100)
+			if (volume === lastVolume) return
+			lastVolume = volume
+			root.nodeUpdated(type)
 		}
 		function onMutedChanged() {
-			root.nodeUpdated(nodeType)
+			if (lastMuted === target.muted) return
+			lastMuted = target.muted
+			root.nodeUpdated(type)
 		}
 	}
 	Connections {
-		readonly property int nodeType: Audio.NodeType.Source
-
 		target: Pipewire.defaultAudioSource.audio
-		function onVolumeChanged(value) {
-			root.nodeUpdated(nodeType)
+
+		readonly property string type: "source"
+		property int lastVolume: -1
+		property bool lastMuted: false
+
+		function onVolumeChanged() {
+			const volume = Math.round(target.volume * 100)
+			if (volume === lastVolume) return
+			lastVolume = volume
+			root.nodeUpdated(type)
 		}
 		function onMutedChanged() {
-			root.nodeUpdated(nodeType)
+			if (lastMuted === target.muted) return
+			lastMuted = target.muted
+			root.nodeUpdated(type)
 		}
 	}
 
@@ -58,5 +92,30 @@ Singleton {
 			Pipewire.defaultAudioSink,
 			Pipewire.defaultAudioSource,
 		]
+	}
+
+	GlobalShortcut {
+		name: "audio:sink:volume-up"
+		onPressed: root.setVolume("sink", 5)
+	}
+	GlobalShortcut {
+		name: "audio:sink:volume-down"
+		onPressed: root.setVolume("sink", -5)
+	}
+	GlobalShortcut {
+		name: "audio:sink:mute"
+		onPressed: root.toggleMute("sink")
+	}
+	GlobalShortcut {
+		name: "audio:source:volume-up"
+		onPressed: root.setVolume("source", 5)
+	}
+	GlobalShortcut {
+		name: "audio:source:volume-down"
+		onPressed: root.setVolume("source", -5)
+	}
+	GlobalShortcut {
+		name: "audio:source:mute"
+		onPressed: root.toggleMute("source")
 	}
 }

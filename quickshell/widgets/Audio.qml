@@ -1,19 +1,19 @@
+import Quickshell.Widgets
 import QtQuick
 import QtQuick.Layouts
-import Quickshell.Widgets
 import qs.services
 
-WrapperItem {
+RowLayout {
 	id: root
 
-	required property int nodeType
-	readonly property string nodeTypeName: Qt.enumValueToString(Audio.NodeType, nodeType).toLowerCase()
-	readonly property string iconOn: `${root.nodeTypeName}-on`
-	readonly property string iconOff: `${root.nodeTypeName}-off`
+	required property string type
+	readonly property string iconOn: `${type}-on`
+	readonly property string iconOff: `${type}-off`
 
 	Indicator {
-		icon: Audio.isMuted(root.nodeType) ? root.iconOff : root.iconOn
-		value: Audio.getVolume(root.nodeType)
+		icon: Audio.isMuted(root.type) ? root.iconOff : root.iconOn
+		iconSize: 20
+		value: Audio.getVolume(root.type)
 		hideValue: true
 	}
 }

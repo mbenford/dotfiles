@@ -8,12 +8,12 @@ Item {
 	property int size: 18
 
 	Text {
-	id: txt
-	font {
-		family: "Symbols Nerd Font"
-		pixelSize: root.size
-	}
-	text: String.fromCodePoint(root.codePoint)
-	color: root.color
+		id: txt
+		font {
+			family: "Symbols Nerd Font"
+			pixelSize: root.size
+		}
+		text: String.fromCodePoint(root.codePoint)
+		color: root.color
 	}
 }

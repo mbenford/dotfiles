@@ -7,13 +7,13 @@ RowLayout {
 
 	property string icon: ""
 	property list<string> icons: []
+	property int iconSize: 20
 	property string label: ""
 	property real value: 0.0
 	property color color: "#ffffff"
 	property bool hideValue: false
 
 	Icon {
-		id: icon
 		name: {
 			if (root.icon !== "") return root.icon
 			if (root.icons.length > 0) {
@@ -23,7 +23,7 @@ RowLayout {
 			}
 			return ""
 		}
-		size: 20
+		size: root.iconSize
 		visible: root.icon !== "" || root.icons.length > 0
 	}
 

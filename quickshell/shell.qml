@@ -32,13 +32,14 @@ ShellRoot {
 				Widgets.System {},
 				Widgets.Network {},
 				Widgets.Bluetooth {},
-				Widgets.Audio { nodeType: Services.Audio.NodeType.Sink },
-				Widgets.Audio { nodeType: Services.Audio.NodeType.Source },
+				Widgets.Audio { type: "sink" },
+				Widgets.Audio { type: "source" },
 				Widgets.Battery {},
 			]
 		}
 	}
 	Popups.VolumeOSD {}
 	Popups.MediaOSD {}
-	Popups.Notification {}
+	Popups.BatteryOSD {}
+	// Popups.Notification {}
 }

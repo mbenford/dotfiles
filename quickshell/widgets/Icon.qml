@@ -10,7 +10,7 @@ WrapperItem {
 
 	Image {
 		id: img
-		source: Quickshell.shellDir + "/icons/" + root.name + ".svg"
+		source: root.name ? `${Quickshell.shellDir}/icons/${root.name}.svg` : ""
 		sourceSize: Qt.size(root.size, root.size)
 	}
 }

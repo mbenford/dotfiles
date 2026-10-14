@@ -3,30 +3,50 @@ pragma ComponentBehavior: Bound
 import Quickshell
 import Quickshell.Wayland
 import QtQuick
+import qs.settings as Settings
 
-BasePopup {
+Item {
 	id: root
-	window: PanelWindow {
-		WlrLayershell.namespace: "quickshell.osd"
-		anchors.bottom: true
-		margins.bottom: screen.height / 5
-		implicitWidth: 300
-		implicitHeight: 80
-		color: "transparent"
-		exclusiveZone: 0
+	implicitWidth: 300
+	implicitHeight: 80
 
-		Rectangle {
-			id: pane
-			anchors.fill: parent
-			radius: height / 2
-			color: "#80000000"
+	required property Component content
+	property int interval: Settings.OSD.timeout
 
-			Loader {
+	LazyLoader {
+		id: loader
+		active: isVisible()
+
+		PanelWindow {
+			WlrLayershell.namespace: "quickshell.osd"
+			anchors.bottom: true
+			margins.bottom: screen.height / 5
+			implicitWidth: root.implicitWidth
+			implicitHeight: root.implicitHeight
+			color: "transparent"
+			exclusiveZone: 0
+
+			Rectangle {
+				id: pane
 				anchors.fill: parent
-				sourceComponent: root.content
+				radius: height / 2
+				color: Settings.OSD.backgroundColor
+
+				Loader {
+					anchors.fill: parent
+					sourceComponent: root.content
+				}
 			}
 		}
 	}
 
-	required property Component content
+	function show(): void {
+		OSDManager.enter(root)
+	}
+	function hide(): void {
+		OSDManager.release(root)
+	}
+	function isVisible(): bool {
+		return OSDManager.active === root
+	}
 }

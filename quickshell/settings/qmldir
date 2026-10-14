@@ -1,0 +1,3 @@
+module qs.config
+
+singleton OSD 1.0 OSD.qml

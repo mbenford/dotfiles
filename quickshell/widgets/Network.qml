@@ -1,19 +1,19 @@
-import Quickshell
+import Quickshell.Widgets
 import Quickshell.Networking
 import QtQuick
 import QtQuick.Layouts
 
-RowLayout {
+WrapperItem {
 	id: root
-	spacing: 5
 
 	property var device: Networking.devices.values.find(d => d.type === DeviceType.Wifi)
 	property var active: device?.networks.values.find(n => n.connected)
 	readonly property real signal: active ? active.signalStrength : 0
 
 	Indicator {
-	icons: ["wifi-0", "wifi-1", "wifi-2", "wifi-3", "wifi-4"]
-	value: root.signal
-	hideValue: true
+		icons: ["wifi-0", "wifi-1", "wifi-2", "wifi-3", "wifi-4"]
+		// icons: ["signal_wifi_statusbar_null", "network_wifi_1_bar", "network_wifi_2_bar", "network_wifi_3_bar", "signal_wifi_4_bar"]
+		value: root.signal
+		hideValue: true
 	}
 }
