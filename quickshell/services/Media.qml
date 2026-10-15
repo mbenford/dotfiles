@@ -15,57 +15,108 @@ Singleton {
 			?? null
 	}
 
-	signal mediaAction(action: string, player: MprisPlayer, value: var)
-
-	function play(playerName: string): bool {
-		return run(playerName, "play", p => p.canPlay, p => p.play())
-	}
-	function pause(playerName: string): bool {
-		return run(playerName, "pause", p => p.canPause, p => p.pause())
-	}
-	function playpause(playerName: string): bool {
-		return run(playerName, "playpause", p => p.canTogglePlaying, p => p.togglePlaying())
-	}
-	function stop(playerName: string): bool {
-		return run(playerName, "stop", p => p.canControl, p => p.stop())
-	}
-	function next(playerName: string): bool {
-		return run(playerName, "next", p => p.canGoNext, p => p.next())
-	}
-	function previous(playerName: string): bool {
-		return run(playerName, "prev", p => p.canGoPrevious, p => p.previous())
-	}
-	function seek(offset: int, playerName: string): bool {
-		return run(playerName, "seek", p => p.canSeek, p => p.seek(offset), offset)
-	}
-	function setPosition(seconds: int, playerName: string): bool {
-		return run(playerName, "setPosition", p => p.canSeek && p.positionSupported, p => { p.position = seconds }, seconds)
+	readonly property QtObject currentTrack: QtObject {
+		property string title: ""
+		property string artist: ""
+		property string art: ""
 	}
 
-	function run(playerName: string, action: string, canExecute: bool, operation, value: var): bool {
-		const players = resolve(playerName).filter(canExecute)
-		if (players.length === 0) {
-			root.mediaAction(action, null, null)
+	signal actionRequested(player: MprisPlayer, action: string, value: var)
+
+	function play(): bool {
+		return run("play", false, p => p.canPlay, p => p.play())
+	}
+	function pause(): bool {
+		return run("pause", false, p => p.canPause, p => p.pause())
+	}
+	function playpause(): bool {
+		return run("playpause", false, p => p.canTogglePlaying, p => p.togglePlaying())
+	}
+	function stop(): bool {
+		return run("stop", false, p => p.canControl, p => p.stop())
+	}
+	function next(): bool {
+		return run("next", true, p => p.canGoNext, p => p.next())
+	}
+	function previous(): bool {
+		return run("prev", true, p => p.canGoPrevious, p => p.previous())
+	}
+	function seek(offset: int): bool {
+		return run("seek", false, p => p.canSeek, p => p.seek(offset), offset)
+	}
+	function setPosition(seconds: int): bool {
+		return run("position", false, p => p.canSeek && p.positionSupported, p => { p.position = seconds }, seconds)
+	}
+
+	function run(action: string, isAsync: bool, canExecute: var, operation, value: var): bool {
+		const player = root.activePlayer
+		if (!canExecute(player)) {
+			root.currentTrack.title = ""
+			root.currentTrack.artist = ""
+			root.currentTrack.art = ""
+			root.actionRequested(null, action, null)
 			return false
 		}
 
-		players.forEach(p => {
-			operation(p)
-			root.mediaAction(action, p, value)
-		})
+		operation(player)
+		root.actionRequested(player, action, value)
+		if (isAsync) settler.start()
+		else {
+			root.currentTrack.title = player.trackTitle
+			root.currentTrack.artist = player.trackArtist
+			root.currentTrack.art = player.trackArtUrl
+		}
 		return true
 	}
 
-	function resolve(playerName: string): list<MprisPlayer> {
-		if (!playerName) return root.activePlayer ? [root.activePlayer] : []
+	Connections {
+		id: settler
+		target: root.activePlayer
+		enabled: false
+		property string previousTrackID: ""
 
-		const all = Mpris.players.values
-		if (playerName === "*") return all.filter(() => true)
+		function start(): void {
+			enabled = true
+			previousTrackID = fingerprint(target)
+		}
 
-		const name = playerName.toLowerCase()
-		return all.filter(p => p.identity.toLowerCase() === name
-			|| p.desktopEntry.toLowerCase() === name
-			|| p.dbusName.toLowerCase().includes(name))
+		function stop(): void {
+			enabled = false
+		}
+
+		function changed(prop: string): void {
+			const id = fingerprint(target)
+			if (id === "") return
+
+			const settled = prop !== "position"
+				? id !== previousTrackID
+				: id === previousTrackID && target.position < 2
+
+			if (settled) {
+				enabled = false
+				root.currentTrack.title = target.trackTitle
+				root.currentTrack.artist = target.trackArtist
+				root.currentTrack.art = ""
+				artTimer.restart()
+			}
+		}
+
+		function fingerprint(player: MprisPlayer): string {
+			if (player.trackTitle === "" || player.trackArtist === "") return ""
+			return `${player.trackTitle}:${player.trackArtist}`
+		}
+
+		function onTrackTitleChanged(): void { changed("title") }
+		function onTrackArtistChanged(): void { changed("artist") }
+		function onPositionChanged(): void { changed("position"); }
+	}
+
+	Timer {
+		id: artTimer
+		interval: 500
+		onTriggered: {
+			root.currentTrack.art = root.activePlayer?.trackArtUrl
+		}
 	}
 
 	function describe(player: MprisPlayer): var {
@@ -85,22 +136,22 @@ Singleton {
 
 	GlobalShortcut {
 		name: "media:play-pause"
-		onPressed: root.playpause("*")
+		onPressed: root.playpause()
 	}
 	GlobalShortcut {
 		name: "media:previous"
-		onPressed: root.previous("*")
+		onPressed: root.previous()
 	}
 	GlobalShortcut {
 		name: "media:next"
-		onPressed: root.next("*")
+		onPressed: root.next()
 	}
 	GlobalShortcut {
 		name: "media:replay"
-		onPressed: root.seek(-5, "*")
+		onPressed: root.seek(-5)
 	}
 	GlobalShortcut {
 		name: "media:skip"
-		onPressed: root.seek(5, "*")
+		onPressed: root.seek(5)
 	}
 }
